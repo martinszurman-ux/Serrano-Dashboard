@@ -3,49 +3,77 @@ import pandas as pd
 import os
 
 def render_tarifas(destino):
-    # 1. INICIALIZACIÓN Y BLINDAJE DE SESIÓN
+    # 1. INICIALIZACIÓN
     folder = "vcp" if destino == "Villa Carlos Paz" else "san_pedro"
     session_key = f"sel_index_{folder}"
     
     if session_key not in st.session_state:
         st.session_state[session_key] = 0
 
-    # 2. ESTILOS CSS (Diseño de Cards, Widgets y Tabla Institucional Centrada)
+    # 2. ESTILOS CSS (Diseño Hero para el Pago)
     st.markdown("""
         <style>
+        /* Cards de Itinerario */
         .plan-card-container {
             border-radius: 15px; padding: 20px; background: white;
             border: 1px solid #eee; text-align: center;
             min-height: 140px; display: flex; flex-direction: column;
             justify-content: center; align-items: center; margin-bottom: 10px;
+            transition: transform 0.3s ease;
         }
-        .selected-plan { border: 2px solid #d32f2f !important; background-color: #fffafb !important; }
+        .selected-plan { 
+            border: 2px solid #d32f2f !important; 
+            background-color: #fffafb !important;
+            transform: scale(1.02);
+        }
         .day-number { color: #d32f2f; font-size: 2.8rem; font-weight: 900; line-height: 1; }
         .transport-icon { font-size: 1.6rem; margin-left: 8px; }
         .day-text { color: #6c757d; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
 
-        .widget-3d-inner {
-            background: linear-gradient(145deg, #f8f9fa, #ffffff);
-            border-radius: 15px; padding: 20px; text-align: center;
-            border: 1px solid #ddd;
-            box-shadow: inset 2px 2px 5px #edeff0, inset -2px -2px 5px #ffffff;
-            min-height: 140px; display: flex; flex-direction: column; 
-            justify-content: center; align-items: center;
+        /* MEGA WIDGET HERO */
+        .hero-payment-card {
+            background: linear-gradient(145deg, #ffffff, #f0f2f6);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            border: 1px solid #e0e4e8;
+            box-shadow: 20px 20px 60px #d9dbe0, -20px -20px 60px #ffffff;
+            max-width: 500px;
+            margin: 20px auto;
         }
-        .label-widget { color: #6c757d; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; }
-        .val-widget { color: #212529; font-size: 1.8rem; font-weight: 800; margin: 0; }
-        .val-promo { color: #2e7d32; }
+        .hero-label { 
+            color: #6c757d; 
+            font-size: 0.9rem; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+        }
+        .hero-value { 
+            color: #1a1c1e; 
+            font-size: 4rem; 
+            font-weight: 900; 
+            margin: 0;
+            line-height: 1;
+            background: -webkit-linear-gradient(#1a1c1e, #4a4d52);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-subtitle {
+            color: #d32f2f;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
 
-        /* Estilo para centrar títulos y celdas de la tabla */
+        /* Tabla Centrada */
         .styled-table th {
             background-color: #333333 !important;
             color: white !important;
             font-weight: bold !important;
             text-align: center !important;
         }
-        .styled-table td {
-            text-align: center !important;
-        }
+        .styled-table td { text-align: center !important; }
         </style>
     """, unsafe_allow_html=True)
 
@@ -63,7 +91,6 @@ def render_tarifas(destino):
 
         # --- SECCIÓN 1: SELECCIONÁ TU ITINERARIO ---
         st.write("### 📅 Seleccioná tu itinerario")
-        
         planes = df['Programa'].tolist()
         cols_p = st.columns(len(planes))
         
@@ -76,14 +103,12 @@ def render_tarifas(destino):
             with cols_p[i]:
                 es_activo = st.session_state[session_key] == i
                 clase_card = "selected-plan" if es_activo else ""
-                
                 st.markdown(f'''
                     <div class="plan-card-container {clase_card}">
                         <div><span class="day-number">{numero}</span><span class="transport-icon">{icono}</span></div>
                         <div class="day-text">{resto}</div>
                     </div>
                 ''', unsafe_allow_html=True)
-                
                 if st.button("Seleccionar", key=f"btn_{folder}_{i}", use_container_width=True):
                     st.session_state[session_key] = i
                     st.rerun()
@@ -99,99 +124,69 @@ def render_tarifas(destino):
         opciones_cuotas = [c.replace('_', ' ') for c in df.columns if c not in excluir_botones]
         opciones_finales = ["1 Pago"] + opciones_cuotas
 
-        c_text, c_pills = st.columns([1, 4])
-        with c_text:
-            st.markdown("<p style='font-weight:700; color:#495057; margin-top:10px;'>Opciones de Pago:</p>", unsafe_allow_html=True)
+        # Selector de Cuotas (Pills centrado)
+        st.markdown("<p style='text-align:center; font-weight:700; color:#495057; margin-bottom:15px;'>Elegí tu plan de pago:</p>", unsafe_allow_html=True)
+        _, c_pills, _ = st.columns([1, 4, 1])
         with c_pills:
             cuota_sel = st.pills("Selecciona cuotas", options=opciones_finales, default=opciones_finales[1], label_visibility="collapsed", key=f"pills_{folder}")
             if not cuota_sel: cuota_sel = opciones_finales[1]
 
-        # --- SECCIÓN 3: LÍNEA GRIS Y WIDGETS ---
-        st.markdown("<hr style='border-top: 1px solid #bbb; margin: 30px 0;'>", unsafe_allow_html=True)
+        # --- SECCIÓN 3: EL GRAN WIDGET HERO ---
+        st.markdown("<hr style='border-top: 1px solid #eee; margin: 30px 0;'>", unsafe_allow_html=True)
         
-        col1, col2, col3 = st.columns(3)
-        
-        col_total_interna = next((c for c in df.columns if 'valor' in c.lower() or 'costo' in c.lower()), None)
-        val_total_viaje = clean_val(v[col_total_interna]) if col_total_interna else 0.0
-        descuento_termino = val_total_viaje * 0.10
+        # Lógica de Monto
+        if cuota_sel == "1 Pago":
+            m_display = f"${clean_val(v['Contado']):,.0f}"
+            label_cuota = "Pago Único"
+        else:
+            c_db = cuota_sel.replace(' ', '_')
+            m_display = f"${clean_val(v[c_db]):,.0f}"
+            label_cuota = f"Por Cuota ({cuota_sel})"
 
-        # Widget 1: Valor Final
-        with col1:
-            st.markdown(f"""
-                <div class="widget-3d-inner">
-                    <p class="label-widget">💰 Valor Final del Viaje</p>
-                    <p class="val-widget">${val_total_viaje:,.0f}</p>
-                </div>
-            """, unsafe_allow_html=True)
+        # Render del Hero Widget Centrado
+        st.markdown(f"""
+            <div class="hero-payment-card">
+                <p class="hero-label">Monto a abonar</p>
+                <p class="hero-value">{m_display}</p>
+                <p class="hero-subtitle">💳 Plan {label_cuota}</p>
+            </div>
+        """, unsafe_allow_html=True)
 
-        # Widget 2: Monto Cuota
-        with col2:
-            if cuota_sel == "1 Pago":
-                m_display = f"${clean_val(v['Contado']):,.0f}"
-                label_cuota = "Monto Pago Único"
-            else:
-                c_db = cuota_sel.replace(' ', '_')
-                m_display = f"${clean_val(v[c_db]):,.0f}"
-                label_cuota = f"Monto de la {cuota_sel}"
-            
-            st.markdown(f"""
-                <div class="widget-3d-inner">
-                    <p class="label-widget">💳 {label_cuota}</p>
-                    <p class="val-widget">{m_display}</p>
-                </div>
-            """, unsafe_allow_html=True)
-
-        # Widget 3: Descuento
-        with col3:
-            st.markdown(f"""
-                <div class="widget-3d-inner">
-                    <p class="label-widget">🎁 Descuento Pago Término</p>
-                    <p class="val-widget val-promo">-${descuento_termino:,.0f}</p>
-                </div>
-            """, unsafe_allow_html=True)
-
-        # Texto aclaratorio del descuento actualizado
+        # Texto del regalo/descuento debajo del gran widget
         st.markdown("""
-            <p style='font-size: 0.95rem; color: #333333; text-align: center; margin-top: 20px; font-weight: 500; max-width: 800px; margin-left: auto; margin-right: auto;'>
-                🎁 Pagando todas las cuotas del 1 al 10 de cada mes, en efectivo en nuestras oficinas de Serrano, obtenés un 10% de descuento sobre el total del viaje, aplicado en la última cuota.
-            </p>
+            <div style='max-width: 700px; margin: 30px auto; padding: 20px; background-color: #fdf2f2; border-radius: 12px; border: 1px dashed #d32f2f;'>
+                <p style='font-size: 1rem; color: #333333; text-align: center; margin: 0; font-weight: 500;'>
+                    🎁 <b>¡Beneficio Exclusivo!</b> Pagando todas las cuotas del 1 al 10 de cada mes en efectivo en Serrano, 
+                    obtenés un <b>10% de descuento</b> sobre el total del viaje (aplicado en la última cuota).
+                </p>
+            </div>
         """, unsafe_allow_html=True)
 
         # --- SECCIÓN 4: TABLA Y BENEFICIOS ---
         st.divider()
-        
         with st.expander("Ver tabla comparativa de todas las tarifas"):
             df_format = df.copy()
             cols_a_borrar = [c for c in df_format.columns if 'valor del viaje' in c.lower() or 'costo total' in c.lower()]
             df_format = df_format.drop(columns=cols_a_borrar)
-            
             if 'Contado' in df_format.columns:
                 df_format = df_format.rename(columns={'Contado': 'Valor 1 Pago'})
-            
             df_format.columns = [c.replace('_', ' ') for c in df_format.columns]
-            
             for col in df_format.columns.drop('Programa'): 
                 df_format[col] = df_format[col].apply(clean_val)
             
             st.markdown('<div class="styled-table">', unsafe_allow_html=True)
             st.table(df_format.set_index('Programa').style.format("$ {:,.0f}")
                      .set_table_styles([
-                         {'selector': 'th', 'props': [('background-color', '#333333'), 
-                                                      ('color', 'white'), 
-                                                      ('font-weight', 'bold'),
-                                                      ('text-align', 'center !important')]},
+                         {'selector': 'th', 'props': [('background-color', '#333333'), ('color', 'white'), ('font-weight', 'bold'), ('text-align', 'center !important')]},
                          {'selector': 'td', 'props': [('text-align', 'center !important')]}
                      ]))
             st.markdown('</div>', unsafe_allow_html=True)
 
         st.write("#### 🛡️ Beneficios y Servicios Incluidos")
         beneficios = [
-            "Liberados para niños y acompañantes.", 
-            "Descuentos según formas de pago.", 
-            "Opciones de pago personalizadas.", 
-            "Ayudas complementarias incluidas.", 
-            "Fiesta de Egresados.", 
-            "Importantes descuentos en Camperas.", 
+            "Liberados para niños y acompañantes.", "Descuentos según formas de pago.", 
+            "Opciones de pago personalizadas.", "Ayudas complementarias incluidas.", 
+            "Fiesta de Egresados.", "Importantes descuentos en Camperas.", 
             "DJ + Luces y sonido para evento privado."
         ]
         c1, c2 = st.columns(2)
