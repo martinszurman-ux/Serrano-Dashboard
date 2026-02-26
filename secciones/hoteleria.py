@@ -68,6 +68,3 @@ def render_hoteleria(destino):
         * **Tranquilidad y Servicio:** Un ambiente ideal para el descanso del contingente.
         * **Gastronomía:** Reconocido por su excelente servicio de comedor para delegaciones.
         """)
-
-    # --- NOTA COMÚN ---
-    st.info("🛎️ **Nota:** La asignación definitiva del hotel se confirma según disponibilidad al momento de la reserva del grupo.")
