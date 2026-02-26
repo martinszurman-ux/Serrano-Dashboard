@@ -3,78 +3,69 @@ from datetime import datetime
 import streamlit.components.v1 as components
 
 def render_adhesion(logo_url):
-    # CSS para una carilla única sin deformar el contenido
+    # CSS Final: Protege el diseño en la web y ajusta escala solo al imprimir
     st.markdown("""
         <style>
-        /* Optimización de la vista Web */
-        .main .block-container { 
-            padding-top: 1rem !important; 
-            padding-bottom: 0rem !important; 
-        }
+        /* Vista Web Normal */
+        .main .block-container { padding-top: 2rem; }
         
         @media print {
+            /* Forzar carilla única sin deformar */
             @page {
                 size: A4;
-                margin: 1cm; /* Margen estándar para que no se corte nada */
+                margin: 0.8cm;
             }
-            /* ESCALADO NATURAL */
             html, body {
-                zoom: 95%; /* Un toque leve para asegurar el cierre de la hoja */
+                zoom: 94%; /* Ajuste leve para asegurar que entren las firmas */
             }
             header, [data-testid="stSidebar"], .no-print, .stButton, footer, [data-testid="stHeader"] {
                 display: none !important;
             }
             .main .block-container { padding: 0 !important; margin: 0 !important; }
             
-            /* Ajuste de tipografía para legibilidad */
-            h2 { font-size: 1.6rem !important; margin-top: 0 !important; margin-bottom: 10px !important; }
-            p, div, label { font-size: 10pt !important; color: black !important; }
-            
-            /* Quitar el sombreado gris de los inputs en el PDF */
-            input { 
+            /* Inputs limpios para el PDF */
+            input, textarea { 
                 border: none !important; 
                 background: transparent !important; 
                 font-weight: bold !important;
                 color: black !important;
             }
-            /* Reducir espacio entre líneas de Streamlit */
-            [data-testid="stVerticalBlock"] > div { margin-top: -10px !important; }
-            hr { margin: 10px 0 !important; }
+            [data-testid="stVerticalBlock"] > div { margin-top: -5px !important; }
         }
         </style>
     """, unsafe_allow_html=True)
 
-    # Cabecera Institucional
-    st.image(logo_url, width=120)
+    # Cabecera Institucional (Logo original)
+    st.image(logo_url, width=150)
     st.markdown("<h2 style='text-align: center; color: black; margin-top: -10px;'>SOLICITUD DE INGRESO</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; font-weight: bold;'>Ficha del Pasajero</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; font-weight: bold;'>Ficha del Cliente / Pasajero</p>", unsafe_allow_html=True)
 
-    # --- DATOS DE CONTROL ---
+    # --- DATOS DE CONTROL (RESTAURADOS) ---
     col1, col2, col3, col4 = st.columns(4)
     col1.date_input("Fecha", datetime.now())
     col2.text_input("Cliente N°")
     col3.text_input("Contrato")
     col4.text_input("% L.O.")
 
-    c_ins, c_anio = st.columns([2, 1])
+    c_ins, c_anio = st.columns(2)
     c_ins.text_input("Colegio / Instituto")
     c_anio.text_input("Año y División")
 
     st.markdown("---")
     
-    # --- DATOS ALUMNO ---
-    st.write("**DATOS DEL PASAJERO**")
+    # --- DATOS DEL ALUMNO (RESTAURADOS) ---
+    st.write("**DATOS DEL ALUMNO / PASAJERO**")
     ca1, ca2 = st.columns(2)
     ca1.text_input("Apellido")
     ca2.text_input("Nombres")
     
-    # Agrupamos DNI y Nacimiento para ganar espacio vertical
-    cdni1, cdni2, cdni3 = st.columns(3)
-    cdni1.text_input("D.N.I. Nº")
-    cdni2.date_input("Vto. D.N.I.") 
-    cdni3.date_input("Nacimiento", min_value=datetime(1990,1,1))
+    col_d1, col_d2 = st.columns(2)
+    col_d1.text_input("D.N.I. Nº")
+    col_d2.date_input("Vencimiento D.N.I.") # Restaurado
     
-    st.radio("Sexo", ["Masculino", "Femenino", "X"], horizontal=True)
+    col_f1, col_f2 = st.columns(2)
+    col_f1.date_input("Fecha de Nacimiento", min_value=datetime(1990,1,1))
+    col_f2.radio("Sexo", ["Masculino", "Femenino", "X"], horizontal=True)
 
     cd1, cd2, cd3 = st.columns([2, 1, 1])
     cd1.text_input("Domicilio")
@@ -83,41 +74,49 @@ def render_adhesion(logo_url):
 
     st.markdown("---")
     
-    # --- DATOS PADRES ---
-    st.write("**DATOS DE RESPONSABLES / TUTORES**")
+    # --- DATOS DE LOS PADRES (RESTAURADOS) ---
+    st.write("**DATOS DE LOS PADRES / TUTORES**")
     ct1, ct2 = st.columns(2)
-    ct1.text_input("Responsable 1 (Nombre y DNI)")
-    ct2.text_input("Responsable 2 (Nombre y DNI)")
+    ct1.text_input("Madre / Padre / Tutor (1)")
+    ct1.text_input("D.N.I. (1)")
+    ct2.text_input("Madre / Padre / Tutor (2)")
+    ct2.text_input("D.N.I. (2)")
     
-    c_mail, c_obs = st.columns([1, 1])
-    c_mail.text_input("E-mail")
-    c_obs.text_input("Observaciones")
+    st.text_input("E-mail de contacto:")
+    st.text_area("Observaciones:") # Restaurado amplio
 
     st.markdown("---")
     
-    # --- PLANES ---
-    st.write("**Plan de Pago Elegido:**")
-    st.pills("Planes", options=["PLAN 1", "PLAN 2", "PLAN 3", "PLAN 4", "PLAN 5", "OTROS"], default="PLAN 1", label_visibility="collapsed")
+    # --- PLANES COMO BOTONES (RESTAURADOS) ---
+    st.write("**Seleccione su Plan de Pago:**")
+    plan_sel = st.pills(
+        "Planes", 
+        options=["PLAN 1", "PLAN 2", "PLAN 3", "PLAN 4", "PLAN 5", "OTROS"], 
+        default="PLAN 1", 
+        label_visibility="collapsed"
+    )
+    if plan_sel == "OTROS":
+        st.text_input("Especifique plan:")
 
-    # TEXTO LEGAL (Legible pero compacto)
+    # --- TEXTO LEGAL EXACTO (RESTAURADO) ---
     st.markdown(f"""
-        <div style="font-size: 0.85rem; text-align: justify; border: 1px solid #ccc; padding: 12px; color: black; background: #fdfdfd; line-height: 1.2; margin-top: 10px;">
+        <div style="font-size: 0.9rem; text-align: justify; border: 1px solid #ccc; padding: 15px; background-color: #f9f9f9; color: black; margin-top: 10px;">
         Declaro bajo juramento que los datos aqui volcados son absolutamente exactos y acepto, para la cancelacion de los servicios 
         a prestar por <b>SERRANO TURISMO</b>, el plan de pagos que figura en la solicitud de reserva mencionada anteriormente.<br><br>
-        Los planes contado deberan abonarse dentro de los 30 dias de haberse firmado el contrato. 
-        Ademas declaro conocer todas y cada uno de las condiciones del contrato suscripto. 
+        Los planes contado deberan abonarse dentro de los 30 dias de haberse firmado el contrato.<br><br>
+        Ademas declaro conocer todas y cada uno de las condiciones del contrato suscripto por mi y/u otro representantes del contingente de referencia.<br>
         <b>NOTA:</b> de no marcarse ningun plan de pago, su chequera se emitira como <b>PLAN 1</b>.
         </div>
     """, unsafe_allow_html=True)
 
-    # FIRMAS
-    st.markdown("<br><br>", unsafe_allow_html=True)
+    # --- FIRMAS (RESTAURADAS) ---
+    st.markdown("<br><br><br>", unsafe_allow_html=True)
     fcol1, fcol2 = st.columns(2)
-    fcol1.markdown("<hr style='border:1px solid black; margin-bottom:0;'><p style='text-align:center;'>Firma del Responsable</p>", unsafe_allow_html=True)
-    fcol2.markdown("<hr style='border:1px solid black; margin-bottom:0;'><p style='text-align:center;'>Aclaración y D.N.I.</p>", unsafe_allow_html=True)
+    fcol1.markdown("<hr style='border:1px solid black;'><p style='text-align:center;'>Firma del Padre/Madre/Tutor</p>", unsafe_allow_html=True)
+    fcol2.markdown("<hr style='border:1px solid black;'><p style='text-align:center;'>Aclaración y D.N.I.</p>", unsafe_allow_html=True)
 
-    # BOTÓN DE IMPRESIÓN
-    st.markdown("<div class='no-print'><br></div>", unsafe_allow_html=True)
+    # --- BOTÓN DE IMPRESIÓN (RESTAURADO E INFALIBLE) ---
+    st.divider()
     components.html(
         """
         <html>
