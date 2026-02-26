@@ -25,7 +25,7 @@ st.markdown("""
         background-image: url('https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png');
         background-size: cover;
         background-position: center;
-        filter: blur(10px) brightness(0.4); /* Esfumado más elegante */
+        filter: blur(10px) brightness(0.4); 
         z-index: -1;
     }
     .header-text {
@@ -93,7 +93,7 @@ if opcion == "Tarifas y Formas de Pago":
     st.markdown(f"""
         <div class="header-container">
             <div class="header-image"></div>
-            <div class="header-text">TARIFARIO {destino.upper()} 2027</div>
+            <div class="header-text">TARIFARIO {destino.upper()} 2026/27</div>
         </div>
     """, unsafe_allow_html=True)
 
@@ -110,29 +110,32 @@ if opcion == "Tarifas y Formas de Pago":
         col_selec, col_valor, col_promo = st.columns([1.1, 0.9, 1.4])
         
         def clean_val(val):
+            if pd.isna(val): return 0.0
             if isinstance(val, str):
                 return float(val.replace('$', '').replace('.', '').replace(',', '').strip())
             return float(val)
 
+        # Mapeo dinámico de columnas según lo que exista en el CSV
+        opciones_cuotas = [c.replace('_', ' ') for c in df_tarifas.columns if c != 'Programa']
+        
         with col_selec:
             st.write("**💳 Elegí tus cuotas:**")
-            cuota_sel = st.pills(
+            cuota_sel_label = st.pills(
                 "Opciones:",
-                options=["Contado", "3 Cuotas", "6 Cuotas", "12 Cuotas", "18 Cuotas"],
-                default="Contado",
+                options=opciones_cuotas,
+                default=opciones_cuotas[0],
                 label_visibility="collapsed"
             )
 
-        col_map = {"Contado": "Contado", "3 Cuotas": "3_Cuotas", "6 Cuotas": "6_Cuotas", "12 Cuotas": "12_Cuotas", "18 Cuotas": "18_Cuotas"}
-        valor_cuota = clean_val(datos_plan[col_map[cuota_sel]])
+        col_name = cuota_sel_label.replace(' ', '_')
+        valor_cuota = clean_val(datos_plan[col_name])
         valor_contado = clean_val(datos_plan['Contado'])
         valor_con_descuento = valor_contado * 0.90
 
         with col_valor:
-            st.metric(label=f"Monto {cuota_sel}", value=f"${valor_cuota:,.0f}")
+            st.metric(label=f"Monto {cuota_sel_label}", value=f"${valor_cuota:,.0f}")
 
         with col_promo:
-            # TODO EL TEXTO AHORA ESTÁ DENTRO DEL WIDGET
             st.markdown(f"""
             <div class="promo-box">
                 <p style="margin:0; color: #2e7d32; font-weight: bold; font-size: 0.85rem; letter-spacing: 0.5px;">💎 PAGO EFECTIVO (OFICINA)</p>
@@ -145,12 +148,13 @@ if opcion == "Tarifas y Formas de Pago":
         with st.expander("📊 Comparar todos los planes disponibles"):
             st.table(df_tarifas.set_index('Programa'))
 
-        # Notas finales
+        # Notas finales profesionales
         st.markdown("""
         <div style="background-color: #f8f9fa; padding: 20px; border-radius: 10px; border: 1px solid #dee2e6;">
             <p style="margin-bottom: 8px;"><strong>• LIBERADOS PARA NIÑOS Y ACOMPAÑANTES SEGÚN CONTRATO.</strong></p>
             <p style="margin-bottom: 8px;"><strong>• DESCUENTOS ESPECIALES SEGÚN FORMAS DE PAGO SELECCIONADAS.</strong></p>
-            <p style="margin-bottom: 0px;"><strong>• VALORES EXPRESADOS EN PESOS ARGENTINOS, TEMPORADA 2027.</strong></p>
+            <p style="margin-bottom: 8px;"><strong>• SE PUEDEN REALIZAR OTRAS OPCIONES DE PAGO DE ACUERDO A LA NECESIDAD DE CADA FAMILIA.</strong></p>
+            <p style="margin-bottom: 0px;"><strong>• AYUDAS COMPLEMENTARIAS Y RIFAS INCLUIDAS PARA RECAUDAR FONDOS.</strong></p>
         </div>
         """, unsafe_allow_html=True)
     else:
