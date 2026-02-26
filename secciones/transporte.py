@@ -8,7 +8,7 @@ def render_transporte(destino):
 
     # Rutas de imágenes locales
     img_micro_local = "assets/micros.png" 
-    img_avion_local = "assets/AVION.jpg"  # CAMBIO: Ahora apunta a tu archivo local
+    img_avion_local = "assets/avion.png"  # CAMBIO: Ahora busca avion.png
 
     # --- CASO 1: VILLA CARLOS PAZ (Avión + Micro) ---
     if "Villa Carlos Paz" in destino:
@@ -19,7 +19,7 @@ def render_transporte(destino):
         if os.path.exists(img_avion_local):
             st.image(img_avion_local, caption="Vuelos exclusivos para Serrano Turismo", use_container_width=True)
         else:
-            st.error(f"⚠️ No se encontró el archivo en: {img_avion_local}. Verificá que el nombre sea AVION.jpg")
+            st.error(f"⚠️ No se encontró el archivo en: {img_avion_local}. Verificá que el nombre sea exactamente avion.png")
             
         st.write("Optimizamos tu tiempo con cupos confirmados en nuestra aerolínea de bandera.")
         
@@ -31,7 +31,7 @@ def render_transporte(destino):
         # Verificamos si la imagen existe en la carpeta assets
         if os.path.exists(img_micro_local):
             st.image(img_micro_local, caption="Nuestras unidades de Serrano Turismo", use_container_width=True)
-            # WIDGET DE NORMATIVA (Justo debajo de la foto)
+            # WIDGET DE NORMATIVA
             st.info("ℹ️ Toda nuestra flota cumple estrictamente con las normativas de la CNRT.")
         else:
             st.error(f"⚠️ No se encontró el archivo en: {img_micro_local}. Verificá el nombre del archivo.")
@@ -46,13 +46,12 @@ def render_transporte(destino):
         * ✅ **Exclusividad:** El mismo bus queda a disposición del grupo durante todos los días del viaje para los traslados a excursiones.
         """)
 
-    # --- CASO 2: SAN PEDRO (O cualquier otro destino) ---
+    # --- CASO 2: SAN PEDRO ---
     elif "San Pedro" in destino:
         st.subheader("🚍 Transporte Terrestre Exclusivo")
         
         if os.path.exists(img_micro_local):
             st.image(img_micro_local, caption="Unidades equipadas para tu confort", use_container_width=True)
-            # WIDGET DE NORMATIVA (Repetido aquí para este destino)
             st.info("ℹ️ Toda nuestra flota cumple estrictamente con las normativas de la CNRT.")
             
         st.write(f"Viajá con la tranquilidad de **Serrano Turismo**. Traslados directos a **{destino}** con coordinación permanente.")
