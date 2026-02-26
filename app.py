@@ -1,50 +1,43 @@
-import streamlit as st
-import pandas as pd
-import os
+elif seccion_seleccionada == "Tarifas y Formas de Pago":
+    # Imagen de fondo en la cabecera (La URL que me pasaste del logo o una de VCP)
+    st.image("https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png", use_container_width=True)
+    
+    st.header("💰 Cotizador de Viaje - Temporada 2027")
+    
+    # 1. Selección de Opción Arriba
+    programa_elegido = st.selectbox("Seleccioná tu plan de viaje:", df_tarifas['Programa'])
+    datos_plan = df_tarifas[df_tarifas['Programa'] == programa_elegido].iloc[0]
+    
+    col_cuotas, col_widget = st.columns([1, 1])
+    
+    with col_cuotas:
+        cuota_sel = st.select_slider(
+            "Seleccioná la cantidad de cuotas fijas:",
+            options=["Contado", "3 Cuotas", "6 Cuotas", "12 Cuotas", "18 Cuotas"]
+        )
+        
+        # Mapeo de nombres a columnas
+        col_map = {"Contado": "Contado", "3 Cuotas": "3_Cuotas", "6 Cuotas": "6_Cuotas", "12 Cuotas": "12_Cuotas", "18 Cuotas": "18_Cuotas"}
+        valor_cuota = datos_plan[col_map[cuota_sel]]
+        
+    with col_widget:
+        # 2. Widget de costo y descuento
+        st.metric(label=f"Valor de {cuota_sel}", value=f"${valor_cuota:,.0f}")
+        
+        valor_total_efectivo = datos_plan['Contado'] * 0.90
+        st.info(f"💡 **Beneficio Serrano:** Si pagás todas las cuotas en efectivo en nuestra oficina, el valor final del viaje tiene un **10% de descuento**.")
+        st.success(f"✅ **Valor Final con Descuento: ${valor_total_efectivo:,.0f}**")
 
-st.set_page_config(page_title="Serrano Turismo", layout="wide")
-
-# Logo
-LOGO_URL = "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png"
-
-with st.sidebar:
-    st.image(LOGO_URL, use_container_width=True)
+    # 3. Comparativo abajo
     st.divider()
-    
-    destino = st.selectbox("📍 Seleccioná el Destino", ["Villa Carlos Paz", "San Pedro"])
-    folder = "vcp" if destino == "Villa Carlos Paz" else "san_pedro"
-    
-    opcion = st.radio("📂 Información del Viaje", [
-        "Transporte", "Hotelería", "Régimen de Comidas", 
-        "Excursiones de Día", "Actividades Nocturnas", 
-        "Seguro Médico", "Coordinación", 
-        "Tarifas y Formas de Pago", "Regalos y Promociones"
-    ])
+    st.subheader("📊 Comparativo de Planes")
+    st.table(df_tarifas.set_index('Programa'))
 
-# --- CORRECCIÓN DE TILDES Y FORMATO ---
-# Esta función limpia el nombre de la opción para que coincida con el archivo real
-def limpiar_nombre_archivo(texto):
-    reemplazos = {
-        "á": "a", "é": "e", "í": "i", "ó": "o", "ú": "u",
-        " ": "_"
-    }
-    texto = texto.lower()
-    for original, reemplazo in reemplazos.items():
-        texto = texto.replace(original, reemplazo)
-    return texto + ".csv"
-
-file_name = limpiar_nombre_archivo(opcion)
-path = f"data/{folder}/{file_name}"
-
-st.title(f"{opcion}")
-
-if os.path.exists(path):
-    df = pd.read_csv(path)
-    for index, row in df.iterrows():
-        with st.expander(f"🔹 {row['Titulo']}", expanded=True):
-            st.write(row['Contenido'])
-            if 'Destacado' in row:
-                st.info(row['Destacado'])
-else:
-    st.error(f"No se encontró el archivo: `{file_name}`")
-    st.info(f"Asegurate de que en GitHub el archivo se llame exactamente: **{file_name}**")
+    # 4. Notas del PDF (Prolijas y Profesionales)
+    st.markdown("""
+    ---
+    ### 📝 Notas Importantes
+    * **Liberados:** Cupos liberados disponibles para niños y acompañantes.
+    * **Bonificaciones:** Descuentos especiales según la forma de pago elegida.
+    * **Vigencia:** Tarifario válido para la temporada 2027.
+    """)
