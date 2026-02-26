@@ -72,18 +72,28 @@ def render_tarifas(destino):
             box-shadow: 0px 6px 20px rgba(0,0,0,0.1);
         }
         
-        /* AJUSTE DE TAMAÑO: Números e Iconos */
+        /* AJUSTE DE TAMAÑO Y ALINEACIÓN VERTICAL */
         .day-number { 
-            color: #4A90E2; /* Un azul vibrante pero elegante */
-            font-size: 3.5rem; /* Antes era 2.8rem */
+            color: #4A90E2; /* Azul elegante */
+            font-size: 3.5rem; /* Tamaño XL */
             font-weight: 900; 
-            line-height: 1; 
+            line-height: 1; /* Para que el texto no tenga espacio extra arriba/abajo */
+            margin: 0; /* Asegurar que no haya márgenes que lo desvíen */
         }
         
         .transport-icon { 
-            font-size: 2.2rem; /* Antes era 1.6rem */
-            margin-left: 10px; 
-            vertical-align: middle;
+            font-size: 2.2rem; /* Tamaño XL */
+            line-height: 1;
+            margin: 0; /* Eliminar margen izquierdo previo */
+        }
+        
+        /* Contenedor Flex para número e icono */
+        .header-content {
+            display: flex;
+            justify-content: center;
+            align-items: center; /* ESTO ES LO QUE LOS ALINEA VERTICALMENTE */
+            gap: 10px; /* Espacio horizontal entre número e icono */
+            width: 100%;
         }
         
         .day-text { 
@@ -164,9 +174,10 @@ def render_tarifas(destino):
                 es_activo = st.session_state[session_key] == i
                 clase_card = "selected-plan" if es_activo else ""
                 
+                # HTML corregido con la nueva clase .header-content
                 card_html = f"""
                 <div class="plan-card-container {clase_card}">
-                    <div>
+                    <div class="header-content">
                         <span class="day-number">{numero}</span>
                         <span class="transport-icon">{icono}</span>
                     </div>
@@ -223,7 +234,6 @@ def render_tarifas(destino):
             </div>
         """, unsafe_allow_html=True)
 
-        # Bloque de beneficio (bordes azules suaves ahora)
         st.markdown("""
             <div style='max-width: 700px; margin: 30px auto; padding: 20px; background-color: #f0f7ff; border-radius: 12px; border: 1px dashed #4A90E2;'>
                 <p style='font-size: 1rem; color: #333333; text-align: center; margin: 0; font-weight: 500;'>
