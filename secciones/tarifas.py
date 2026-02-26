@@ -10,7 +10,7 @@ def render_tarifas(destino):
     if session_key not in st.session_state:
         st.session_state[session_key] = 0
 
-    # 2. ESTILOS CSS (Diseño de Cards, Widgets y Tipografía)
+    # 2. ESTILOS CSS (Diseño de Cards, Widgets y Tabla Institucional)
     st.markdown("""
         <style>
         .plan-card-container {
@@ -35,6 +35,14 @@ def render_tarifas(destino):
         .label-widget { color: #6c757d; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; }
         .val-widget { color: #212529; font-size: 1.8rem; font-weight: 800; margin: 0; }
         .val-promo { color: #2e7d32; }
+
+        /* Estilo para la tabla comparativa */
+        .styled-table thead tr th {
+            background-color: #333333 !important;
+            color: white !important;
+            font-weight: bold !important;
+            text-align: center !important;
+        }
         </style>
     """, unsafe_allow_html=True)
 
@@ -42,7 +50,7 @@ def render_tarifas(destino):
     
     if os.path.exists(path_tarifas):
         df = pd.read_csv(path_tarifas)
-        df.columns = df.columns.str.strip() # Limpia espacios en nombres de columnas
+        df.columns = df.columns.str.strip()
         
         def clean_val(val):
             if pd.isna(val): return 0.0
@@ -84,9 +92,9 @@ def render_tarifas(destino):
 
         # --- SECCIÓN 2: OPCIONES DE PAGO ---
         st.write("") 
-        # Excluimos columnas que no son cuotas para el selector
-        excluir = ['Programa', 'Contado', 'Valor del Viaje', 'Costo Total', 'Valor del viaje']
-        opciones_cuotas = [c.replace('_', ' ') for c in df.columns if c not in excluir]
+        # Columnas a excluir de los botones de cuotas
+        excluir_botones = ['Programa', 'Contado', 'Valor del Viaje', 'Costo Total', 'Valor del viaje']
+        opciones_cuotas = [c.replace('_', ' ') for c in df.columns if c not in excluir_botones]
         opciones_finales = ["1 Pago"] + opciones_cuotas
 
         c_text, c_pills = st.columns([1, 4])
@@ -101,9 +109,9 @@ def render_tarifas(destino):
         
         col1, col2, col3 = st.columns(3)
         
-        # Detección dinámica de la columna de valor total
-        col_total = next((c for c in df.columns if 'valor' in c.lower() or 'costo' in c.lower()), None)
-        val_total_viaje = clean_val(v[col_total]) if col_total else 0.0
+        # Valor total para cálculos internos (no se muestra en tabla)
+        col_total_interna = next((c for c in df.columns if 'valor' in c.lower() or 'costo' in c.lower()), None)
+        val_total_viaje = clean_val(v[col_total_interna]) if col_total_interna else 0.0
         descuento_termino = val_total_viaje * 0.10
 
         # Widget 1: Valor Final
@@ -141,7 +149,6 @@ def render_tarifas(destino):
                 </div>
             """, unsafe_allow_html=True)
 
-        # Texto aclaratorio del descuento
         st.markdown("""
             <p style='font-size: 0.95rem; color: #333333; text-align: center; margin-top: 20px; font-weight: 500;'>
                 El descuento por pago en término se aplica sobre la última cuota si se abonan todas del 1 al 10 de cada mes.
@@ -152,11 +159,34 @@ def render_tarifas(destino):
         st.divider()
         
         with st.expander("Ver tabla comparativa de todas las tarifas"):
+            # Preparación de la tabla para percepción del cliente
             df_format = df.copy()
+            
+            # 1. Sacamos las columnas de valor total/viaje
+            cols_a_borrar = [c for c in df_format.columns if 'valor del viaje' in c.lower() or 'costo total' in c.lower()]
+            df_format = df_format.drop(columns=cols_a_borrar)
+            
+            # 2. Renombramos 'Contado' a 'Valor 1 Pago'
+            if 'Contado' in df_format.columns:
+                df_format = df_format.rename(columns={'Contado': 'Valor 1 Pago'})
+            
+            # 3. Limpieza estética de nombres de columnas (reemplazar _ por espacio)
             df_format.columns = [c.replace('_', ' ') for c in df_format.columns]
+            
+            # 4. Formateo de números
             for col in df_format.columns.drop('Programa'): 
                 df_format[col] = df_format[col].apply(clean_val)
-            st.table(df_format.set_index('Programa').style.format("$ {:,.0f}"))
+            
+            # Render con estilos CSS aplicados a los headers
+            st.markdown('<div class="styled-table">', unsafe_allow_html=True)
+            st.table(df_format.set_index('Programa').style.format("$ {:,.0f}")
+                     .set_table_styles([
+                         {'selector': 'th', 'props': [('background-color', '#333333'), 
+                                                      ('color', 'white'), 
+                                                      ('font-weight', 'bold'),
+                                                      ('text-align', 'center')]}
+                     ]))
+            st.markdown('</div>', unsafe_allow_html=True)
 
         st.write("#### 🛡️ Beneficios y Servicios Incluidos")
         beneficios = [
