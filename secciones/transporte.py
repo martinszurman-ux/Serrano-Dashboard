@@ -1,41 +1,38 @@
 import streamlit as st
 
 def render_transporte(destino):
-    st.markdown("<h1 style='text-align: center; color: #1E3A8A;'>🚌 LOGÍSTICA Y TRANSPORTE</h1>", unsafe_allow_html=True)
+    st.markdown(f"<h1 style='text-align: center; color: #1E3A8A;'>🚌 TRANSPORTE A {destino.upper()}</h1>", unsafe_allow_html=True)
     st.markdown("---")
 
-    # Creamos dos solapas para organizar la info
-    tab1, tab2 = st.tabs(["🚍 Transporte Terrestre", "✈️ Conexión Aérea"])
+    # Definimos las rutas de las imágenes
+    img_micro = "assets/micro_serrano_caratula.jpg"
+    img_avion = "http://googleusercontent.com/image_collection/image_retrieval/820812993248442781_0"
 
-    with tab1:
-        st.subheader("Unidades de Última Generación")
-        col_img_1, col_img_2, col_img_3 = st.columns([1, 4, 1])
-        with col_img_2:
-            # Usamos la foto del micro que guardaste en assets
-            st.image("assets/micro_serrano_caratula.jpg", caption="Unidad de Serrano Turismo", use_container_width=True)
+    # --- CASO 1: VILLA CARLOS PAZ (Ambas opciones juntas) ---
+    if "Villa Carlos Paz" in destino:
+        st.subheader("✈️ Opción Aérea")
+        st.image(img_avion, caption="Vuelos con Aerolíneas Argentinas", use_container_width=True)
+        st.write("Contamos con cupos confirmados y traslados exclusivos aeropuerto-hotel-aeropuerto.")
         
-        st.write(f"Viajá a **{destino}** con el máximo confort. Nuestras unidades cuentan con doble chofer profesional, habilitación CNRT y seguimiento satelital.")
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.divider()
+        
+        st.subheader("🚍 Opción Terrestre")
+        st.image(img_micro, caption="Nuestras unidades de última generación", use_container_width=True)
+        st.write("Unidades equipadas con el máximo confort para el viaje a las sierras.")
 
-    with tab2:
-        st.subheader("Vuelos Nacionales con Aerolíneas Argentinas")
-        
-        # Mostramos la imagen del avión
-        st.image("http://googleusercontent.com/image_collection/image_retrieval/820812993248442781_0", 
-                 caption="Alianza estratégica con nuestra aerolínea de bandera", 
-                 use_container_width=True)
-        
-        st.write(f"""
-        Para los contingentes que prefieren optimizar los tiempos de viaje a **{destino}**, 
-        contamos con cupos confirmados en **Aerolíneas Argentinas**.
-        
-        **Beneficios del Servicio Aéreo:**
-        * Traslados exclusivos Aeropuerto - Hotel - Aeropuerto.
-        * Despacho de equipaje incluido.
-        * Coordinación permanente desde el check-in.
-        """)
-        
-        st.info("✈️ **Nota:** Consultá disponibilidad de fechas y tarifas diferenciales para la opción aérea.")
+    # --- CASO 2: SAN PEDRO (Solo Micro) ---
+    else:
+        st.subheader("🚍 Transporte Terrestre")
+        st.image(img_micro, caption="Unidad habilitada por CNRT", use_container_width=True)
+        st.write("Viajá seguro a San Pedro en nuestras unidades exclusivas con doble chofer profesional.")
 
+    # --- INFORMACIÓN COMÚN ---
     st.divider()
-    st.markdown("### 🛠️ Seguridad Garantizada")
-    st.write("Tanto en bus como en avión, todos nuestros pasajeros viajan bajo estrictas normas de seguridad y asistencia permanente.")
+    col1, col2 = st.columns(2)
+    with col1:
+        st.success("✅ **Seguridad:** Seguimiento GPS 24hs y cinturones inerciales.")
+    with col2:
+        st.success("🛋️ **Confort:** Aire acondicionado, calefacción y toilette a bordo.")
+
+    st.info(f"💡 Todas las opciones de transporte para **{destino}** cumplen con las normativas vigentes para garantizar un viaje placentero.")
