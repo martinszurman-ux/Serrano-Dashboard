@@ -1,118 +1,139 @@
 import streamlit as st
+import pandas as pd
 import os
 
-# 1. Importación de las secciones modulares
-# Asegúrate de que los archivos existan en la carpeta /secciones
-from secciones.tarifas import render_tarifas
-from secciones.adhesion import render_adhesion
-from secciones.seguro import render_seguro
-from secciones.transporte import render_transporte
-from secciones.hoteleria import render_hoteleria
-from secciones.excursiones import render_excursiones
-from secciones.actividades_nocturnas import render_nocturnas
-from secciones.standard import render_standard
-
-# 2. Configuración general de la página
-st.set_page_config(page_title="Serrano Turismo - Dashboard", layout="wide")
-
-# 3. Estilos Globales (CSS que comparten todas las secciones)
-st.markdown("""
-    <style>
-    .main { background-color: #ffffff; }
+def render_tarifas(destino):
+    folder = "vcp" if destino == "Villa Carlos Paz" else "san_pedro"
     
-    /* Estilo para los Headers de cada sección */
-    .header-container {
-        height: 150px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 15px;
-        background-color: #495057;
-        margin-bottom: 30px;
-    }
-    .header-text-overlay {
-        color: white;
-        font-size: 2.2rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-    }
+    def seleccionar_plan(indice):
+        st.session_state[f"sel_index_{folder}"] = indice
 
-    /* Estilos para los Widgets 3D (Se usan en Tarifas y Seguro) */
-    .widget-3d-grad, .widget-3d-inner {
-        background: linear-gradient(145deg, #f0f0f0, #ffffff);
-        border-radius: 20px;
-        padding: 25px;
-        text-align: center;
-        border: 1px solid #e0e0e0;
-        box-shadow: 8px 8px 16px #d1d1d1, -8px -8px 16px #ffffff;
-        margin-bottom: 15px;
-    }
+    st.markdown("""
+        <style>
+        .plan-card-container {
+            border-radius: 15px; padding: 20px; background: white;
+            border: 1px solid #eee; text-align: center;
+            min-height: 160px; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; margin-bottom: 10px;
+        }
+        .selected-plan { border: 2px solid #d32f2f !important; background-color: #fffafb !important; }
+        .day-number { color: #d32f2f; font-size: 3rem; font-weight: 900; line-height: 1; }
+        .transport-icon { font-size: 1.8rem; margin-left: 8px; }
+        .day-text { color: #6c757d; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
 
-    .widget-title { color: #6c757d; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; }
-    .widget-value { color: #212529; font-size: 2.2rem; font-weight: 800; margin: 0; }
-    
-    /* Ocultar botones de navegación visualmente para usar las tarjetas como botones */
-    .stButton button {
-        background-color: transparent !important;
-        border: none !important;
-        color: transparent !important;
-    }
-    </style>
+        .widget-3d-inner {
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            border-radius: 15px; padding: 20px; text-align: center;
+            border: 1px solid #ddd;
+            box-shadow: inset 3px 3px 6px #d1d1d1, inset -3px -3px 6px #ffffff;
+            min-height: 180px; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center;
+        }
+
+        /* Estilo para los bullets profesionales */
+        .benefit-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 8px 0; border-bottom: 1px solid #f1f1f1;
+            color: #495057; font-size: 0.95rem;
+        }
+        .benefit-icon { color: #2e7d32; font-weight: bold; }
+        
+        .promo-box-text {
+            font-size: 0.75rem; font-weight: 800; color: #d32f2f;
+            line-height: 1.3; text-transform: uppercase; margin-top: 10px;
+        }
+        </style>
     """, unsafe_allow_html=True)
 
-# 4. Sidebar y Navegación
-LOGO_URL = "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png"
-
-with st.sidebar:
-    st.image(LOGO_URL, use_container_width=True)
-    st.divider()
+    path_tarifas = f"data/{folder}/tarifas_y_formas_de_pago.csv"
     
-    # Selección de Destino (Villa Carlos Paz o San Pedro)
-    # Basado en la configuración de carpetas
-    destino = st.selectbox("📍 Seleccioná el Destino", ["Villa Carlos Paz", "San Pedro"])
-    
-    st.divider()
-    
-    # Menú de navegación principal
-    opcion = st.radio("📂 Navegación", [
-        "Tarifas y Formas de Pago", 
-        "Transporte", 
-        "Hotelería", 
-        "Excursiones", 
-        "Actividades Nocturnas",
-        "Solicitud de Adhesión", 
-        "Seguro Médico"
-    ])
-    
-    st.sidebar.divider()
-    st.sidebar.caption("Serrano Turismo - 29 años de trayectoria")
+    if os.path.exists(path_tarifas):
+        df = pd.read_csv(path_tarifas)
+        st.write("### 📅 Seleccioná tu itinerario")
+        
+        session_key = f"sel_index_{folder}"
+        if session_key not in st.session_state:
+            st.session_state[session_key] = 0
 
-# 5. Lógica de Enrutamiento (Ejecución de módulos)
-# Cada función render_X recibe los parámetros necesarios para funcionar
-if opcion == "Tarifas y Formas de Pago":
-    render_tarifas(destino)
+        planes = df['Programa'].tolist()
+        cols_p = st.columns(len(planes))
 
-elif opcion == "Transporte":
-    render_transporte(destino)
+        for i, plan in enumerate(planes):
+            partes = plan.split(' ', 1)
+            numero = partes[0]
+            resto = partes[1] if len(partes) > 1 else "Días"
+            icono = "🚌" if "bus" in plan.lower() else "✈️"
+            with cols_p[i]:
+                es_activo = st.session_state[session_key] == i
+                clase_card = "selected-plan" if es_activo else ""
+                st.markdown(f'<div class="plan-card-container {clase_card}"><div><span class="day-number">{numero}</span><span class="transport-icon">{icono}</span></div><div class="day-text">{resto}</div></div>', unsafe_allow_html=True)
+                if st.button("Seleccionar", key=f"btn_plan_{folder}_{i}", use_container_width=True):
+                    st.session_state[session_key] = i
+                    st.rerun()
 
-elif opcion == "Hotelería":
-    render_hoteleria(destino)
+        v = df.iloc[st.session_state[session_key]]
+        st.divider()
 
-elif opcion == "Excursiones":
-    render_excursiones(destino)
+        # --- SECCIÓN DE MONTOS ---
+        col_opc, col_monto, col_cash = st.columns(3)
 
-elif opcion == "Actividades Nocturnas":
-    render_nocturnas(destino)
+        def clean_val(val):
+            return float(str(val).replace('$', '').replace('.', '').replace(',', '').strip())
 
-elif opcion == "Solicitud de Adhesión":
-    # Le pasamos el logo para que lo use en la cabecera del formulario
-    render_adhesion(LOGO_URL)
+        with col_opc:
+            st.markdown("<p style='text-align:center; color:#6c757d; font-size:0.85rem; font-weight:700; text-transform:uppercase;'>Opciones de Pago</p>", unsafe_allow_html=True)
+            opciones_c = [c.replace('_', ' ') for c in df.columns if c not in ['Programa', 'Contado']]
+            cuota_sel = st.pills("Cuotas", options=opciones_c, default=opciones_c[0], label_visibility="collapsed", key=f"pills_{folder}")
+            if not cuota_sel: cuota_sel = opciones_c[0]
 
-elif opcion == "Seguro Médico":
-    render_seguro()
+        c_db = cuota_sel.replace(' ', '_')
+        val_c = clean_val(v[c_db])
+        val_cont = clean_val(v['Contado'])
 
-else:
-    # Para cualquier otra opción que use la lógica estándar de CSV
-    render_standard(destino, opcion)
+        with col_monto:
+            st.markdown(f"""
+                <div class="widget-3d-inner">
+                    <p style='color:#6c757d; font-size:0.8rem; font-weight:700;'>MONTO {cuota_sel.upper()}</p>
+                    <p style='color:#212529; font-size:2.2rem; font-weight:800; margin:0;'>${val_c:,.0f}</p>
+                    <div class="promo-box-text">
+                        Abonando del 1 al 10 en oficina:<br>10% OFF en la última cuota
+                    </div>
+                </div>
+            """, unsafe_allow_html=True)
 
+        with col_cash:
+            st.markdown(f"""
+                <div class="widget-3d-inner">
+                    <p style='color:#6c757d; font-size:0.8rem; font-weight:700;'>💎 PAGO CONTADO</p>
+                    <p style='color:#2e7d32; font-size:2.2rem; font-weight:800; margin:0;'>${val_cont * 0.9:,.0f}</p>
+                    <p style='font-size:0.7rem; color:#6c757d; margin-top:5px;'>Bonificación inmediata aplicada</p>
+                </div>
+            """, unsafe_allow_html=True)
+
+        st.divider()
+        st.write("### 📊 Tabla Comparativa")
+        df_format = df.copy()
+        df_format.columns = [c.replace('_', ' ') for c in df_format.columns]
+        for col in df_format.columns.drop('Programa'):
+            df_format[col] = df_format[col].apply(clean_val)
+        st.table(df_format.set_index('Programa').style.format("$ {:,.0f}"))
+
+        # --- BULLETS PROFESIONALES ---
+        st.write("#### 🛡️ Beneficios y Servicios Incluidos")
+        beneficios = [
+            "Liberados para niños y acompañantes.",
+            "Descuentos según formas de pago.",
+            "Se pueden realizar otras opciones de pago de acuerdo a la necesidad de cada familia.",
+            "Ayudas complementarias incluidas.",
+            "Fiesta de Egresados.",
+            "Importantes descuentos en Camperas de Egresados.",
+            "DJ + Luces y sonido para un evento privado y recaudar fondos."
+        ]
+        
+        col_b1, col_b2 = st.columns(2)
+        for i, b in enumerate(beneficios):
+            with col_b1 if i % 2 == 0 else col_b2:
+                st.markdown(f'<div class="benefit-item"><span class="benefit-icon">✓</span>{b}</div>', unsafe_allow_html=True)
+
+    else:
+        st.error("CSV no encontrado.")
