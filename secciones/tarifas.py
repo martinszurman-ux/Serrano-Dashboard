@@ -49,8 +49,9 @@ def render_tarifas(destino):
             justify-content: center; align-items: center;
         }
         .promo-box-text {
-            font-size: 0.7rem; font-weight: 800; color: #d32f2f;
-            line-height: 1.2; text-transform: uppercase; margin-top: 10px;
+            font-size: 0.75rem; font-weight: 600; color: #d32f2f;
+            line-height: 1.3; margin-top: 10px;
+            padding: 0 5px;
         }
         /* Estilo para tabla contable */
         th { text-align: center !important; font-weight: bold !important; background-color: #f2f2f2 !important; }
@@ -112,12 +113,11 @@ def render_tarifas(destino):
         val_contado_base = clean_val(v['Contado'])
 
         with col_monto:
-            # Título constante para el widget
             label = "MONTO CUOTAS"
             
             if cuota_sel == "1 Pago":
                 m_display = "No aplica cuotas"
-                font_size = "1.5rem" # Tamaño ajustado para que el texto largo quepa
+                font_size = "1.5rem" 
             else:
                 c_db = cuota_sel.replace(' ', '_')
                 m_display = f"${clean_val(v[c_db]):,.0f}"
@@ -136,7 +136,8 @@ def render_tarifas(destino):
                     <p style='color:#6c757d; font-size:0.8rem; font-weight:700;'>💎 PAGO CONTADO</p>
                     <p style='color:#2e7d32; font-size:2.5rem; font-weight:800; margin:0;'>${val_contado_base * 0.9:,.0f}</p>
                     <div class="promo-box-text">
-                        Pagando todas las cuotas del 1 al 10 de cada mes, en efectivo en nuestras oficinas de Serrano, obtenés un 10% de descuento sobre el total del viaje, aplicado en la última cuota.
+                        Pagando todas las cuotas del 1 al 10 de cada mes, en efectivo en nuestras oficinas de Serrano, 
+                        obtenés un 10% de descuento sobre el total del viaje, aplicado en la última cuota.
                     </div>
                 </div>
             """, unsafe_allow_html=True)
