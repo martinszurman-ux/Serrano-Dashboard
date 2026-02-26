@@ -5,9 +5,11 @@ import os
 def render_tarifas(destino):
     folder = "vcp" if destino == "Villa Carlos Paz" else "san_pedro"
     
+    # Función de actualización de estado
     def seleccionar_plan(indice):
         st.session_state[f"sel_index_{folder}"] = indice
 
+    # Estilos CSS: Limpieza de JEO y formato de tabla minimalista
     st.markdown("""
         <style>
         .plan-card-click {
@@ -30,12 +32,14 @@ def render_tarifas(destino):
             color: #495057; font-size: 0.85rem; font-weight: 700; 
             text-transform: uppercase; text-align: center;
         }
+        
         .stButton button {
             background-color: transparent !important; border: none !important;
             color: transparent !important; height: 140px !important;
             width: 100% !important; position: absolute; top: 0; left: 0;
             z-index: 10; cursor: pointer;
         }
+
         .widget-3d-inner {
             background: linear-gradient(145deg, #f0f0f0, #ffffff);
             border-radius: 15px; padding: 20px; text-align: center;
@@ -44,9 +48,23 @@ def render_tarifas(destino):
             min-height: 160px; display: flex; flex-direction: column; 
             justify-content: center; align-items: center;
         }
-        .jeo-mark {
-            font-size: 5rem; font-weight: 900; color: rgba(0,0,0,0.05);
-            text-align: center; margin: 20px 0; letter-spacing: 15px;
+
+        /* Estilo Minimalista para la Tabla */
+        .stDataFrame, table {
+            border: none !important;
+            color: #495057 !important;
+        }
+        thead tr th {
+            background-color: #f8f9fa !important;
+            color: #6c757d !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            font-size: 0.75rem !important;
+            border-bottom: 2px solid #dee2e6 !important;
+        }
+        tbody tr td {
+            border-bottom: 1px solid #eee !important;
+            font-size: 0.9rem !important;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -84,8 +102,8 @@ def render_tarifas(destino):
                 """, unsafe_allow_html=True)
                 st.button(f"Plan_{i}", key=f"btn_{folder}_{i}", on_click=seleccionar_plan, args=(i,))
 
-        st.markdown('<div class="jeo-mark">JEO</div>', unsafe_allow_html=True)
-
+        # --- YA NO ESTÁ EL JEO ---
+        
         v = df.iloc[st.session_state[session_key]]
         st.divider()
 
@@ -110,5 +128,21 @@ def render_tarifas(destino):
 
         with col_cash:
             st.markdown(f"""<div class="widget-3d-inner"><p style='color:#6c757d; font-size:0.85rem; font-weight:700; text-transform:uppercase;'>💎 Efectivo (10% OFF)</p><p style='color:#495057; font-size:2.2rem; font-weight:800; margin:0;'>${val_cont * 0.9:,.0f}</p></div>""", unsafe_allow_html=True)
+
+        st.divider()
+        st.write("### 📊 Tabla Comparativa de Planes")
+        
+        # --- FORMATO CONTABILIDAD Y GRISES ---
+        # Aplicamos formato a todas las columnas numéricas
+        cols_numericas = df.columns.drop('Programa')
+        df_format = df.copy()
+        
+        # Convertimos a numérico primero para asegurar el formato
+        for col in cols_numericas:
+            df_format[col] = df_format[col].apply(clean_val)
+
+        # Renderizado con estilo contable
+        st.table(df_format.set_index('Programa').style.format("$ {:,.0f}"))
+        
     else:
-        st.error("Archivo no encontrado.")
+        st.error("Base de datos no encontrada.")
