@@ -7,7 +7,7 @@ def render_comidas(destino):
 
     ruta_base = "assets/"
 
-    # --- TEXTO LIMPIO (Termina en Menú Diferenciado) ---
+    # --- TEXTO LIMPIO SIN ETIQUETAS SOBRANTES ---
     features_html = """
     ✔️ <b>Pensión completa:</b> desayuno, almuerzo, merienda, cena y quinta comida.<br><br>
     ✔️ <b>Menú buffet libre:</b> Variedad y calidad garantizada.<br><br>
@@ -43,11 +43,9 @@ def render_comidas(destino):
             if os.path.exists(img4): st.image(img4, use_container_width=True)
 
     with col_der:
-        # Bloque de texto con estilo profesional
+        # Bloque de texto corregido (Se eliminaron los </div> sobrantes)
         st.markdown(f"""
-            <div style='background-color: #f8f9fa; padding: 25px; border-radius: 15px; border-left: 5px solid #1E3A8A;'>
-                <div style='font-size: 1.0rem; line-height: 1.6; color: #333;'>
-                    {features_html}
-                </div>
+            <div style='background-color: #f8f9fa; padding: 25px; border-radius: 15px; border-left: 5px solid #1E3A8A; color: #333; font-size: 1.0rem; line-height: 1.6;'>
+                {features_html}
             </div>
         """, unsafe_allow_html=True)
