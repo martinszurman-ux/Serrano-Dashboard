@@ -1,46 +1,67 @@
 import streamlit as st
+import os
 
 def render_comidas(destino):
-    # Título de la sección
-    st.write(f"### 🍽️ Servicio de Comidas - {destino}")
-    
-    # Mensaje de bienvenida estética
-    st.markdown(f"""
-        <div style="background-color: #f0f2f6; padding: 20px; border-radius: 10px; border-left: 5px solid #444444;">
-            <p style="color: #444444; font-size: 1.1rem; font-weight: 600; margin: 0;">
-                Nuestra propuesta gastronómica está diseñada para brindar una alimentación equilibrada, 
-                variada y de alta calidad durante todo el viaje en {destino}.
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    st.divider()
+    st.markdown(f"<h1 style='text-align: center; color: #1E3A8A;'>🍽️ RÉGIMEN DE COMIDAS - {destino.upper()}</h1>", unsafe_allow_html=True)
+    st.markdown("---")
 
-    # Columnas para organizar la info
-    col1, col2 = st.columns(2)
+    ruta_base = "assets/"
 
-    with col1:
-        st.markdown("#### 🥗 Régimen de Pensión Completa")
-        st.write("""
-        * **Desayuno Buffet:** Infusiones, jugos, tostadas, frutas y pastelería.
-        * **Almuerzo:** Plato principal, guarnición, postre y bebida.
-        * **Merienda:** Merienda temática o clásica según actividad.
-        * **Cena:** Entrada, plato principal, postre y bebida.
-        """)
+    # --- TEXTO DETALLADO (Lado derecho) ---
+    features_html = """
+    ✔️ <b>Pensión completa:</b> desayuno, almuerzo, merienda, cena y quinta comida.<br><br>
+    ✔️ <b>Menú buffet libre:</b> Variedad y calidad garantizada.<br><br>
+    ✔️ <b>Hidratación:</b> Provisión de agua mineral libre las 24hs.<br><br>
+    ✔️ <b>Sistema Todo Incluido:</b> Sándwiches, alfajores, bizcochuelos, frutas, helados, gaseosas y jugos libre todos los días.<br><br>
+    ✔️ <b>Servicio en Ruta:</b> Desayuno y almuerzo en el viaje de ida. Almuerzo y merienda en el regreso en nuestros paradores exclusivos.<br><br>
+    ✔️ <b>Estaciones Saludables:</b> Disponibles en excursiones y hotel.<br><br>
+    ✔️ <b>Menú Diferenciado:</b> Atención especial en dietas médicas o celíacas.
+    """
 
-    with col2:
-        st.markdown("#### 🛡️ Dietas Especiales")
-        st.info("""
-        Contamos con menús adaptados para:
-        * Celíacos (Sin TACC)
-        * Vegetarianos / Veganos
-        * Alérgicos e Intolerantes
+    # --- LÓGICA DE IMÁGENES POR DESTINO ---
+    if "Villa Carlos Paz" in destino:
+        fotos = [
+            "desayuno.jpg",
+            "almuerzo.jpg",
+            "refrigerio.jpg",
+            "dietas.png"
+        ]
+    else:  # SAN PEDRO
+        fotos = [
+            "desayuno san pedro.jpg",
+            "comida san pedro 1.jpeg",
+            "comida san pedro.jpeg",
+            "dietas.png"
+        ]
+
+    # --- DISEÑO DE COLUMNAS ---
+    col_izq, col_der = st.columns([1.2, 1])
+
+    with col_izq:
+        # Mostramos las 4 fotos en una grilla de 2x2
+        c1, c2 = st.columns(2)
         
-        *Es importante informar estas condiciones en la Ficha de Adhesión.*
-        """)
+        # Foto 1 y 2
+        with c1:
+            img1 = os.path.join(ruta_base, fotos[0])
+            if os.path.exists(img1): st.image(img1, use_container_width=True)
+            
+            img3 = os.path.join(ruta_base, fotos[2])
+            if os.path.exists(img3): st.image(img3, use_container_width=True)
+            
+        # Foto 3 y 4
+        with c2:
+            img2 = os.path.join(ruta_base, fotos[1])
+            if os.path.exists(img2): st.image(img2, use_container_width=True)
+            
+            img4 = os.path.join(ruta_base, fotos[3])
+            if os.path.exists(img4): st.image(img4, use_container_width=True)
 
-    st.divider()
-    
-    # Espacio para futuras fotos
-    st.write("#### 📸 Galería de Menús")
-    st.warning("Próximamente: Fotos reales de nuestros platos y salones comedores.")
+    with col_der:
+        st.markdown(f"""
+            <div style='background-color: #f8f9fa; padding: 25px; border-radius: 15px; border-left: 5px solid #1E3A8A;'>
+                <div style='font-size: 1.0rem; line-height: 1.6; color: #333;'>
+                    {features_html}
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
