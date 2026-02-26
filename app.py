@@ -19,60 +19,69 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO: FUERZA ANCHO TOTAL EN CONTENEDORES INTERNOS
+# 3. CSS MAESTRO: ANCHO UNIFICADO Y HOVER GRIS MATE
 st.markdown("""
     <style>
-    /* Reducir espacio superior del logo */
-    [data-testid="stSidebarNav"] {display: none;}
-    [data-testid="stSidebarContent"] { padding-top: 1rem !important; }
-    
-    [data-testid="stSidebar"] img {
-        max-width: 130px !important;
-        margin: 0 auto !important;
-        display: block !important;
+    /* 1. Reset de contenedores del Sidebar para forzar ancho total */
+    [data-testid="stSidebarContent"] {
+        padding: 1rem 0.5rem !important;
     }
-
-    /* ESTA ES LA CLAVE: Forzar a los contenedores de Streamlit a ser 100% ancho */
-    [data-testid="element-container"], .stButton, .stButton button {
+    
+    /* Forzar a cada bloque de botón a ocupar el 100% del contenedor */
+    [data-testid="stVerticalBlock"] > div {
         width: 100% !important;
     }
 
-    /* DISEÑO DE BOTONES: GRIS OSCURO MATE */
+    .stButton, .stButton button {
+        width: 100% !important;
+        display: block !important;
+    }
+
+    /* 2. Estilo de los Botones: Gris Oscuro Mate */
     div.stButton > button {
         background: linear-gradient(145deg, #444444, #2c2c2c) !important;
         color: white !important;
         border: 1px solid #1a1a1a !important;
         border-radius: 8px !important;
-        height: 48px !important;
+        height: 50px !important; /* Alto uniforme */
         padding: 0px 20px !important;
         font-weight: 700 !important;
         text-align: left !important;
         display: flex !important;
         align-items: center !important;
         justify-content: flex-start !important;
-        transition: all 0.2s ease-in-out !important;
+        transition: all 0.3s ease !important;
         margin-bottom: 2px !important;
     }
     
+    /* 3. HOVER: Cambio de Rojo a Gris/Blanco Minimalista */
     div.stButton > button:hover {
-        background: #1a1a1a !important;
-        border-color: #d32f2f !important; /* Brillo rojo sutil al pasar el mouse */
+        background: #555555 !important; /* Gris un poco más claro */
+        border-color: #ffffff !important; /* Recuadro Blanco/Plata */
+        color: #ffffff !important;
         transform: translateX(4px) !important;
+        box-shadow: 0 4px 12px rgba(255,255,255,0.1) !important;
     }
 
-    /* BOTÓN DE ADHESIÓN: RESALTADO */
+    /* 4. Botón de Adhesión (Diferenciado) */
     .btn-adhesion div.stButton > button {
-        background: linear-gradient(145deg, #222222, #000000) !important;
-        border: 1px solid #d32f2f !important;
+        background: linear-gradient(145deg, #1a1a1a, #000000) !important;
+        border: 1px solid #555555 !important;
         margin-top: 20px !important;
         justify-content: center !important;
         padding-left: 0 !important;
     }
+    
+    .btn-adhesion div.stButton > button:hover {
+        border-color: #ffffff !important;
+        background: #333333 !important;
+    }
 
-    /* Limpiar iconos y espaciado de texto */
-    div.stButton > button p {
-        margin: 0 !important;
-        font-size: 15px !important;
+    /* Logo */
+    [data-testid="stSidebar"] img {
+        max-width: 130px !important;
+        margin: 0 auto 10px auto !important;
+        display: block !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -86,9 +95,9 @@ with st.sidebar:
     st.divider()
     
     destino = st.selectbox("📍 Destino", ["Villa Carlos Paz", "San Pedro"])
-    st.write("") # Espaciado
+    st.write("") 
 
-    # Lista de botones. Ahora todos medirán exactamente lo mismo.
+    # Menú de botones
     if st.button("🚌 1. Transporte"):
         st.session_state.seccion_activa = "Transporte"
     
@@ -107,7 +116,7 @@ with st.sidebar:
     if st.button("💰 6. Tarifas"):
         st.session_state.seccion_activa = "Tarifas"
 
-    # Botón de Adhesión (Diferenciado por el div con clase btn-adhesion)
+    # Botón de Adhesión
     st.markdown('<div class="btn-adhesion">', unsafe_allow_html=True)
     if st.button("📝 FICHA DE ADHESIÓN"):
         st.session_state.seccion_activa = "Adhesión"
