@@ -19,70 +19,106 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. ESTILO DEL BOTÓN DE ADHESIÓN (Gris Mate)
+# 3. CSS PARA BOTONES MATE (Comunes y Adhesión)
 st.markdown("""
     <style>
-    div.stButton > button:first-child {
+    /* Estilo para los botones de sección */
+    div.stButton > button {
+        background: linear-gradient(145deg, #f0f0f0, #e6e6e6) !important;
+        color: #495057 !important;
+        border: 1px solid #d1d1d1 !important;
+        border-radius: 10px !important;
+        padding: 10px 20px !important;
+        font-weight: 600 !important;
+        width: 100% !important;
+        text-align: left !important;
+        transition: all 0.3s ease !important;
+        margin-bottom: -10px !important;
+    }
+    
+    div.stButton > button:hover {
+        border-color: #bcbcbc !important;
+        background: linear-gradient(145deg, #e6e6e6, #d9d9d9) !important;
+        transform: translateX(5px);
+    }
+
+    /* Estilo para el botón ACTIVO (el que está seleccionado) */
+    .stButton [data-testid="baseButton-secondaryContainer"] {
+        /* Streamlit usa identificadores dinámicos, pero podemos forzar vía lógica de Python */
+    }
+
+    /* Estilo especial para el botón de ADHESIÓN (Gris Oscuro) */
+    .btn-adhesion > div.stButton > button {
         background: linear-gradient(145deg, #495057, #343a40) !important;
         color: white !important;
         border: 1px solid #212529 !important;
-        border-radius: 10px !important;
-        padding: 12px 20px !important;
-        font-weight: 700 !important;
-        text-transform: uppercase !important;
-        width: 100% !important;
-        margin-top: 10px;
+        margin-top: 20px !important;
+    }
+    
+    .btn-adhesion > div.stButton > button:hover {
+        background: linear-gradient(145deg, #343a40, #212529) !important;
+        color: #ffffff !important;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# 4. SIDEBAR Y NAVEGACIÓN
+# 4. LÓGICA DE NAVEGACIÓN EN SIDEBAR
+if "seccion_activa" not in st.session_state:
+    st.session_state.seccion_activa = "Transporte"
+
 with st.sidebar:
     st.image(LOGO_URL, use_container_width=True)
     st.divider()
     
-    destino = st.selectbox("📍 Destino Seleccionado", ["Villa Carlos Paz", "San Pedro"])
+    destino = st.selectbox("📍 Seleccioná el Destino", ["Villa Carlos Paz", "San Pedro"])
     
-    opciones_menu = [
-        "1. Transporte",
-        "2. Hotelería",
-        "3. Excursiones",
-        "4. Actividades",
-        "5. Seguro Médico",
-        "6. Tarifas"
-    ]
+    st.write("### 📂 Menú Principal")
     
-    seleccion = st.radio("Menú de Navegación", opciones_menu, key="menu_radio")
+    # Botones de navegación
+    if st.button("🚌 1. Transporte"):
+        st.session_state.seccion_activa = "Transporte"
     
+    if st.button("🏨 2. Hotelería"):
+        st.session_state.seccion_activa = "Hotelería"
+        
+    if st.button("🏞️ 3. Excursiones"):
+        st.session_state.seccion_activa = "Excursiones"
+        
+    if st.button("🌙 4. Actividades"):
+        st.session_state.seccion_activa = "Actividades"
+        
+    if st.button("🏥 5. Seguro Médico"):
+        st.session_state.seccion_activa = "Seguro"
+        
+    if st.button("💰 6. Tarifas"):
+        st.session_state.seccion_activa = "Tarifas"
+
     st.divider()
     
-    if st.button("📝 Solicitud de Adhesión"):
-        st.session_state.go_to_adhesion = True
-    else:
-        if "go_to_adhesion" not in st.session_state:
-            st.session_state.go_to_adhesion = False
+    # Botón de Adhesión con contenedor para estilo especial
+    st.markdown('<div class="btn-adhesion">', unsafe_allow_html=True)
+    if st.button("📝 SOLICITUD DE ADHESIÓN"):
+        st.session_state.seccion_activa = "Adhesión"
+    st.markdown('</div>', unsafe_allow_html=True)
 
-# 5. LÓGICA DE RENDERIZADO
-if st.session_state.go_to_adhesion:
-    # IMPORTANTE: Tu función adhesion.py solo pide logo_url, no pide destino.
-    # Así que la llamamos exactamente como ella espera:
-    render_adhesion(LOGO_URL) 
-    
-    st.sidebar.markdown("---")
-    if st.sidebar.button("⬅️ Volver al Menú Principal"):
-        st.session_state.go_to_adhesion = False
-        st.rerun()
+# 5. RENDERIZADO DE LA SECCIÓN SELECCIONADA
+if st.session_state.seccion_activa == "Transporte":
+    render_transporte(destino)
 
-else:
-    if seleccion == "1. Transporte":
-        render_transporte(destino)
-    elif seleccion == "2. Hotelería":
-        render_hoteleria(destino)
-    elif seleccion == "3. Excursiones":
-        render_excursiones(destino)
-    elif seleccion == "4. Actividades":
-        render_nocturnas(destino)
-    elif seleccion == "5. Seguro Médico":
-        render_seguro(destino)
-    elif seleccion == "6. Tarifas":
-        render_tarifas(destino)
+elif st.session_state.seccion_activa == "Hotelería":
+    render_hoteleria(destino)
+
+elif st.session_state.seccion_activa == "Excursiones":
+    render_excursiones(destino)
+
+elif st.session_state.seccion_activa == "Actividades":
+    render_nocturnas(destino)
+
+elif st.session_state.seccion_activa == "Seguro":
+    render_seguro(destino)
+
+elif st.session_state.seccion_activa == "Tarifas":
+    render_tarifas(destino)
+
+elif st.session_state.seccion_activa == "Adhesión":
+    render_adhesion(LOGO_URL)
