@@ -10,62 +10,35 @@ def render_tarifas(destino):
     if session_key not in st.session_state:
         st.session_state[session_key] = 0
 
-    # CSS corregido para superposición total
+    # CSS: Limpieza y diseño de botones
     st.markdown("""
         <style>
-        .pago-header-container {
-            display: flex; flex-direction: column; align-items: center;
-            justify-content: center; text-align: center; width: 100%; margin-bottom: 10px;
-        }
-
-        /* Contenedor relativo para que el botón se pegue aquí */
-        .plan-column-container {
-            position: relative;
-            width: 100%;
-        }
-
-        .plan-card-click {
+        .plan-card-container {
             border-radius: 15px; padding: 15px; background: white;
             border: 2px solid #eee; transition: all 0.3s ease;
-            min-height: 140px;
-            display: flex; flex-direction: column; justify-content: center;
-            pointer-events: none; /* La tarjeta no bloquea el clic al botón */
+            min-height: 180px; display: flex; flex-direction: column; 
+            justify-content: space-between; align-items: center;
         }
-        
         .selected-plan { 
             border: 3px solid #d32f2f !important; 
             background-color: #fff5f5 !important;
-            box-shadow: 0 4px 12px rgba(211, 47, 47, 0.2);
+        }
+        .card-top { display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .day-number { color: #d32f2f; font-size: 2.8rem; font-weight: 900; line-height: 1; }
+        .transport-icon-big { font-size: 2rem; }
+        .day-text-bottom { color: #495057; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 10px;}
+
+        /* Título de Opciones Centrado */
+        .pago-header {
+            text-align: center; width: 100%; margin-top: 20px;
+            color: #6c757d; font-size: 0.9rem; font-weight: 800; text-transform: uppercase;
         }
 
-        .card-top { display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 5px; }
-        .day-number { color: #d32f2f; font-size: 3.2rem; font-weight: 900; line-height: 1; }
-        .transport-icon-big { font-size: 2.5rem; }
-        .day-text-bottom { color: #495057; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; text-align: center; }
-
-        /* EL TRUCO: Botón invisible que cubre TODA la columna */
-        .stButton button {
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 140px !important;
-            background-color: transparent !important;
-            border: none !important;
-            color: transparent !important;
-            z-index: 100 !important;
-            cursor: pointer !important;
-        }
-        .stButton button:hover {
-            border: none !important;
-            background-color: rgba(0,0,0,0.03) !important;
-        }
-
-        /* Botones de cuotas (Pills) XL y Centrados */
-        div[data-testid="stPills"] { display: flex; justify-content: center; width: 100% !important; }
+        /* Botones de cuotas XL */
+        div[data-testid="stPills"] { display: flex; justify-content: center; width: 100%; }
         div[data-testid="stPills"] button {
-            padding: 15px 30px !important; font-size: 1.1rem !important;
-            font-weight: 800 !important; border-radius: 12px !important; min-width: 120px;
+            padding: 12px 25px !important; font-size: 1rem !important;
+            font-weight: 800 !important; border-radius: 10px !important;
         }
         
         .widget-3d-inner {
@@ -73,9 +46,13 @@ def render_tarifas(destino):
             border-radius: 15px; padding: 20px; text-align: center;
             border: 1px solid #ddd;
             box-shadow: inset 3px 3px 6px #d1d1d1, inset -3px -3px 6px #ffffff;
-            min-height: 160px; display: flex; flex-direction: column; 
+            min-height: 140px; display: flex; flex-direction: column; 
             justify-content: center; align-items: center;
         }
+
+        /* Tabla Contable */
+        th { text-align: center !important; font-weight: bold !important; background-color: #f2f2f2 !important; }
+        td { text-align: center !important; }
         </style>
     """, unsafe_allow_html=True)
 
@@ -95,15 +72,12 @@ def render_tarifas(destino):
             icono = "🚌" if "bus" in plan.lower() else "✈️"
 
             with cols_p[i]:
-                # Envolvemos todo en un div relativo para el botón flotante
-                st.markdown(f'<div class="plan-column-container">', unsafe_allow_html=True)
-                
                 es_activo = st.session_state[session_key] == i
                 clase_activa = "selected-plan" if es_activo else ""
                 
                 # Render visual de la tarjeta
                 st.markdown(f"""
-                    <div class="plan-card-click {clase_activa}">
+                    <div class="plan-card-container {clase_activa}">
                         <div class="card-top">
                             <div class="day-number">{numero}</div>
                             <div class="transport-icon-big">{icono}</div>
@@ -112,12 +86,10 @@ def render_tarifas(destino):
                     </div>
                 """, unsafe_allow_html=True)
                 
-                # Botón invisible superpuesto
-                if st.button(f"Hidden_{folder}_{i}", key=f"btn_h_{folder}_{i}"):
+                # Botón de selección explícito adentro de la columna
+                if st.button("Seleccionar", key=f"sel_{folder}_{i}", use_container_width=True, type="primary" if es_activo else "secondary"):
                     st.session_state[session_key] = i
                     st.rerun()
-                
-                st.markdown('</div>', unsafe_allow_html=True)
 
         v = df.iloc[st.session_state[session_key]]
         st.divider()
@@ -129,34 +101,26 @@ def render_tarifas(destino):
             return float(str(val).replace('$', '').replace('.', '').replace(',', '').strip())
 
         with col_opc:
-            st.markdown("""
-                <div class="pago-header-container">
-                    <p style='color:#6c757d; font-size:0.9rem; font-weight:800; text-transform:uppercase; margin:0;'>Opciones de Pago</p>
-                </div>
-            """, unsafe_allow_html=True)
-            
+            st.markdown("<p class='pago-header'>Opciones de Pago</p>", unsafe_allow_html=True)
             opciones_c = [c.replace('_', ' ') for c in df.columns if c not in ['Programa', 'Contado']]
-            cuota_sel = st.pills("Cuotas", options=opciones_c, default=opciones_c[0], label_visibility="collapsed", key=f"pi_{folder}")
-            
-            if not cuota_sel:
-                cuota_sel = opciones_c[0]
+            cuota_sel = st.pills("Cuotas", options=opciones_c, default=opciones_c[0], label_visibility="collapsed", key=f"p_{folder}")
+            if not cuota_sel: cuota_sel = opciones_c[0]
 
         c_db = cuota_sel.replace(' ', '_')
         val_c = clean_val(v[c_db])
         val_cont = clean_val(v['Contado'])
 
         with col_monto:
-            st.markdown(f"""<div class="widget-3d-inner"><p style='color:#6c757d; font-size:0.85rem; font-weight:700; text-transform:uppercase;'>Monto {cuota_sel}</p><p style='color:#212529; font-size:2.2rem; font-weight:800; margin:0;'>${val_c:,.0f}</p></div>""", unsafe_allow_html=True)
+            st.markdown(f"""<div class="widget-3d-inner"><p style='color:#6c757d; font-size:0.8rem; font-weight:700;'>MONTO {cuota_sel.upper()}</p><p style='color:#212529; font-size:2.2rem; font-weight:800; margin:0;'>${val_c:,.0f}</p></div>""", unsafe_allow_html=True)
 
         with col_cash:
-            st.markdown(f"""<div class="widget-3d-inner"><p style='color:#6c757d; font-size:0.85rem; font-weight:700; text-transform:uppercase;'>💎 Efectivo (10% OFF)</p><p style='color:#495057; font-size:2.2rem; font-weight:800; margin:0;'>${val_cont * 0.9:,.0f}</p></div>""", unsafe_allow_html=True)
+            st.markdown(f"""<div class="widget-3d-inner"><p style='color:#6c757d; font-size:0.8rem; font-weight:700;'>💎 EFECTIVO (10% OFF)</p><p style='color:#495057; font-size:2.2rem; font-weight:800; margin:0;'>${val_cont * 0.9:,.0f}</p></div>""", unsafe_allow_html=True)
 
         st.divider()
         st.write("### 📊 Tabla Comparativa de Planes")
         df_format = df.copy()
         df_format.columns = [c.replace('_', ' ') for c in df_format.columns]
-        cols_num = df_format.columns.drop('Programa')
-        for col in cols_num:
+        for col in df_format.columns.drop('Programa'):
             df_format[col] = df_format[col].apply(clean_val)
 
         st.table(df_format.set_index('Programa').style.format("$ {:,.0f}"))
