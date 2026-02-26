@@ -6,15 +6,21 @@ def render_transporte(destino):
     st.markdown(f"<h1 style='text-align: center; color: #1E3A8A;'>🚌 TRANSPORTE A {destino.upper()}</h1>", unsafe_allow_html=True)
     st.markdown("---")
 
-    # Rutas de imágenes
+    # Rutas de imágenes locales
     img_micro_local = "assets/micros.png" 
-    img_avion = "https://images.unsplash.com/photo-1436491865332-7a61a109c0f3?auto=format&fit=crop&q=80&w=1000"
+    img_avion_local = "assets/AVION.jpg"  # CAMBIO: Ahora apunta a tu archivo local
 
     # --- CASO 1: VILLA CARLOS PAZ (Avión + Micro) ---
     if "Villa Carlos Paz" in destino:
         # SECCIÓN AÉREA
         st.subheader("✈️ Opción Aérea: Aerolíneas Argentinas")
-        st.image(img_avion, caption="Vuelos exclusivos para Serrano Turismo", use_container_width=True)
+        
+        # Verificamos si el archivo del avión existe en la carpeta assets
+        if os.path.exists(img_avion_local):
+            st.image(img_avion_local, caption="Vuelos exclusivos para Serrano Turismo", use_container_width=True)
+        else:
+            st.error(f"⚠️ No se encontró el archivo en: {img_avion_local}. Verificá que el nombre sea AVION.jpg")
+            
         st.write("Optimizamos tu tiempo con cupos confirmados en nuestra aerolínea de bandera.")
         
         st.divider()
@@ -56,4 +62,3 @@ def render_transporte(destino):
         * **Aire acondicionado y calefacción.**
         * **Coordinadores a bordo.**
         """)
-        
