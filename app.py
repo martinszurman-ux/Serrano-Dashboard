@@ -19,31 +19,47 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO: ANCHO UNIFICADO Y HOVER GRIS MATE
+# 3. CSS MAESTRO: LOGO CENTRADO Y MENÚ ULTRA-COMPACTO
 st.markdown("""
     <style>
-    /* 1. Reset de contenedores del Sidebar para forzar ancho total */
+    /* Eliminar el espacio en blanco superior del sidebar */
     [data-testid="stSidebarContent"] {
-        padding: 1rem 0.5rem !important;
+        padding-top: 1rem !important; /* Mínimo espacio arriba */
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
     }
     
-    /* Forzar a cada bloque de botón a ocupar el 100% del contenedor */
-    [data-testid="stVerticalBlock"] > div {
-        width: 100% !important;
+    /* Centrar logo horizontalmente */
+    [data-testid="stSidebar"] img {
+        max-width: 140px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        display: block !important;
+        padding-bottom: 0px !important;
     }
 
+    /* Reducir espacio de los divisores y bloques verticales */
+    [data-testid="stSidebar"] hr {
+        margin: 0.5rem 0 !important;
+    }
+    
+    [data-testid="stVerticalBlock"] > div {
+        width: 100% !important;
+        gap: 0.2rem !important; /* Reduce espacio entre botones */
+    }
+
+    /* Estilo de los Botones: Gris Oscuro Mate (Bloqueado) */
     .stButton, .stButton button {
         width: 100% !important;
         display: block !important;
     }
 
-    /* 2. Estilo de los Botones: Gris Oscuro Mate */
     div.stButton > button {
         background: linear-gradient(145deg, #444444, #2c2c2c) !important;
         color: white !important;
         border: 1px solid #1a1a1a !important;
         border-radius: 8px !important;
-        height: 50px !important; /* Alto uniforme */
+        height: 46px !important;
         padding: 0px 20px !important;
         font-weight: 700 !important;
         text-align: left !important;
@@ -51,37 +67,28 @@ st.markdown("""
         align-items: center !important;
         justify-content: flex-start !important;
         transition: all 0.3s ease !important;
-        margin-bottom: 2px !important;
+        margin-bottom: -5px !important; /* Sube un poco cada botón hacia el anterior */
     }
     
-    /* 3. HOVER: Cambio de Rojo a Gris/Blanco Minimalista */
+    /* Hover Minimalista Blanco */
     div.stButton > button:hover {
-        background: #555555 !important; /* Gris un poco más claro */
-        border-color: #ffffff !important; /* Recuadro Blanco/Plata */
-        color: #ffffff !important;
+        background: #555555 !important;
+        border-color: #ffffff !important;
         transform: translateX(4px) !important;
-        box-shadow: 0 4px 12px rgba(255,255,255,0.1) !important;
     }
 
-    /* 4. Botón de Adhesión (Diferenciado) */
+    /* Botón de Adhesión (Diferenciado) */
     .btn-adhesion div.stButton > button {
         background: linear-gradient(145deg, #1a1a1a, #000000) !important;
         border: 1px solid #555555 !important;
-        margin-top: 20px !important;
+        margin-top: 10px !important; /* Espacio reducido para que suba */
         justify-content: center !important;
         padding-left: 0 !important;
     }
-    
-    .btn-adhesion div.stButton > button:hover {
-        border-color: #ffffff !important;
-        background: #333333 !important;
-    }
 
-    /* Logo */
-    [data-testid="stSidebar"] img {
-        max-width: 130px !important;
-        margin: 0 auto 10px auto !important;
-        display: block !important;
+    /* Ajuste de tipografía en botones */
+    div.stButton > button p {
+        font-size: 14px !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -91,13 +98,13 @@ if "seccion_activa" not in st.session_state:
     st.session_state.seccion_activa = "Transporte"
 
 with st.sidebar:
+    # El CSS se encarga de centrar esta imagen
     st.image(LOGO_URL)
     st.divider()
     
     destino = st.selectbox("📍 Destino", ["Villa Carlos Paz", "San Pedro"])
-    st.write("") 
-
-    # Menú de botones
+    
+    # Menú de botones unificados
     if st.button("🚌 1. Transporte"):
         st.session_state.seccion_activa = "Transporte"
     
@@ -116,7 +123,7 @@ with st.sidebar:
     if st.button("💰 6. Tarifas"):
         st.session_state.seccion_activa = "Tarifas"
 
-    # Botón de Adhesión
+    # Botón de Adhesión (CTA Final)
     st.markdown('<div class="btn-adhesion">', unsafe_allow_html=True)
     if st.button("📝 FICHA DE ADHESIÓN"):
         st.session_state.seccion_activa = "Adhesión"
