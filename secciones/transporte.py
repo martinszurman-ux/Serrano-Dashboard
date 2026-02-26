@@ -4,8 +4,9 @@ def render_transporte(destino):
     st.markdown(f"<h1 style='text-align: center; color: #1E3A8A;'>🚌 TRANSPORTE A {destino.upper()}</h1>", unsafe_allow_html=True)
     st.markdown("---")
 
-    # Enlaces a las imágenes (Asegurate de que las rutas en tu repositorio sean correctas)
-    img_micro_web = "assets/micro_serrano_caratula.jpg"
+    # ENLACES DIRECTOS (Para evitar el error de MediaFileStorage)
+    # He usado el link directo de la imagen que subiste para que no falle
+    img_micro_web = "https://raw.githubusercontent.com/AI-Hobbyist/serrano-dashboard/main/assets/image_0.png"
     img_avion_web = "https://raw.githubusercontent.com/AI-Hobbyist/serrano-dashboard/main/assets/image_1.png"
 
     # --- CASO 1: VILLA CARLOS PAZ (Avión + Micro) ---
@@ -17,7 +18,7 @@ def render_transporte(destino):
         st.divider()
         
         st.subheader("🚍 Opción Terrestre")
-        st.image(img_micro_web, caption="Unidades de última generación", use_container_width=True)
+        st.image(img_micro_web, caption="Unidad de Serrano Turismo", use_container_width=True)
         
         # Puntos clave solicitados
         st.markdown("""
@@ -39,24 +40,20 @@ def render_transporte(destino):
         """)
         st.write(f"Traslados directos a {destino} con unidades habilitadas por la CNRT.")
 
-    # --- DETALLES DE SERVICIO (SIEMPRE VISIBLES) ---
+    # --- DETALLES TÉCNICOS ---
     st.markdown("---")
     st.markdown("### 🛠️ Equipamiento y Características Técnicas")
     
     col1, col2 = st.columns(2)
     with col1:
-        st.markdown("🔒 **Seguridad y Técnica**")
+        st.markdown("🔒 **Seguridad**")
         st.write("• Doble chofer profesional")
         st.write("• Seguimiento GPS en tiempo real")
         st.write("• Cinturones de seguridad inerciales")
-        st.write("• Control de velocidad reglamentado")
-        
     with col2:
-        st.markdown("🛋️ **Confort a Bordo**")
+        st.markdown("🛋️ **Confort**")
         st.write("• Aire acondicionado y calefacción")
         st.write("• Pantallas LED y sonido central")
         st.write("• Toilette a bordo")
-        st.write("• Butacas reclinables de alta gama")
 
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.info("💡 Todas nuestras unidades pasan por rigurosos controles técnicos antes de cada salida para garantizar un viaje seguro.")
+    st.info("💡 Todas nuestras unidades pasan por rigurosos controles técnicos antes de cada salida.")
