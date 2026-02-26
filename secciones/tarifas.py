@@ -152,4 +152,51 @@ def render_tarifas(destino):
 
         # Texto aclaratorio del descuento actualizado
         st.markdown("""
-            <p style='font-size: 0.95rem; color: #333333; text-
+            <p style='font-size: 0.95rem; color: #333333; text-align: center; margin-top: 20px; font-weight: 500; max-width: 800px; margin-left: auto; margin-right: auto;'>
+                🎁 Pagando todas las cuotas del 1 al 10 de cada mes, en efectivo en nuestras oficinas de Serrano, obtenés un 10% de descuento sobre el total del viaje, aplicado en la última cuota.
+            </p>
+        """, unsafe_allow_html=True)
+
+        # --- SECCIÓN 4: TABLA Y BENEFICIOS ---
+        st.divider()
+        
+        with st.expander("Ver tabla comparativa de todas las tarifas"):
+            df_format = df.copy()
+            cols_a_borrar = [c for c in df_format.columns if 'valor del viaje' in c.lower() or 'costo total' in c.lower()]
+            df_format = df_format.drop(columns=cols_a_borrar)
+            
+            if 'Contado' in df_format.columns:
+                df_format = df_format.rename(columns={'Contado': 'Valor 1 Pago'})
+            
+            df_format.columns = [c.replace('_', ' ') for c in df_format.columns]
+            
+            for col in df_format.columns.drop('Programa'): 
+                df_format[col] = df_format[col].apply(clean_val)
+            
+            st.markdown('<div class="styled-table">', unsafe_allow_html=True)
+            st.table(df_format.set_index('Programa').style.format("$ {:,.0f}")
+                     .set_table_styles([
+                         {'selector': 'th', 'props': [('background-color', '#333333'), 
+                                                      ('color', 'white'), 
+                                                      ('font-weight', 'bold'),
+                                                      ('text-align', 'center !important')]},
+                         {'selector': 'td', 'props': [('text-align', 'center !important')]}
+                     ]))
+            st.markdown('</div>', unsafe_allow_html=True)
+
+        st.write("#### 🛡️ Beneficios y Servicios Incluidos")
+        beneficios = [
+            "Liberados para niños y acompañantes.", 
+            "Descuentos según formas de pago.", 
+            "Opciones de pago personalizadas.", 
+            "Ayudas complementarias incluidas.", 
+            "Fiesta de Egresados.", 
+            "Importantes descuentos en Camperas.", 
+            "DJ + Luces y sonido para evento privado."
+        ]
+        c1, c2 = st.columns(2)
+        for i, b in enumerate(beneficios):
+            with c1 if i % 2 == 0 else c2:
+                st.markdown(f'<div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #f1f1f1; color:#495057;"><span style="color:#2e7d32; font-weight:bold;">✓</span>{b}</div>', unsafe_allow_html=True)
+    else:
+        st.error("Archivo de datos no encontrado.")
