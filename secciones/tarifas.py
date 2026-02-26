@@ -3,14 +3,14 @@ import pandas as pd
 import os
 
 def render_tarifas(destino):
-    # 1. ESCUDO DE INICIALIZACIÓN (Previene el KeyError)
+    # 1. ESCUDO DE INICIALIZACIÓN
     folder = "vcp" if destino == "Villa Carlos Paz" else "san_pedro"
     session_key = f"sel_index_{folder}"
     
     if session_key not in st.session_state:
         st.session_state[session_key] = 0
 
-    # 2. ESTILOS (Degradados Mate y Diseño Final)
+    # 2. ESTILOS (Mantenemos tus estilos originales)
     st.markdown("""
         <style>
         .plan-card-container {
@@ -23,8 +23,6 @@ def render_tarifas(destino):
         .day-number { color: #d32f2f; font-size: 3rem; font-weight: 900; line-height: 1; }
         .transport-icon { font-size: 1.8rem; margin-left: 8px; }
         .day-text { color: #6c757d; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
-
-        /* BOTONES MATE PROFESIONAL */
         .stButton > button {
             background: linear-gradient(145deg, #f0f0f0, #e6e6e6) !important;
             color: #495057 !important;
@@ -38,8 +36,6 @@ def render_tarifas(destino):
             color: white !important;
             border: none !important;
         }
-
-        /* WIDGETS DE PAGO */
         .widget-3d-inner {
             background: linear-gradient(145deg, #f0f0f0, #ffffff);
             border-radius: 15px; padding: 20px; text-align: center;
@@ -53,7 +49,6 @@ def render_tarifas(destino):
             line-height: 1.3; margin-top: 10px;
             padding: 0 5px;
         }
-        /* Estilo para tabla contable */
         th { text-align: center !important; font-weight: bold !important; background-color: #f2f2f2 !important; }
         td { text-align: center !important; }
         </style>
@@ -69,6 +64,7 @@ def render_tarifas(destino):
         planes = df['Programa'].tolist()
         cols_p = st.columns(len(planes))
         for i, plan in enumerate(planes):
+            # Limpieza básica para el texto del card (ej: "5 Días en Bu" -> "5")
             partes = plan.split(' ', 1)
             numero = partes[0]
             resto = partes[1] if len(partes) > 1 else "Días"
@@ -78,7 +74,6 @@ def render_tarifas(destino):
                 clase_card = "selected-plan" if es_activo else ""
                 st.markdown(f'<div class="plan-card-container {clase_card}"><div><span class="day-number">{numero}</span><span class="transport-icon">{icono}</span></div><div class="day-text">{resto}</div></div>', unsafe_allow_html=True)
                 
-                # Botón de selección con estilo condicional
                 if es_activo: st.markdown('<div class="selected-btn">', unsafe_allow_html=True)
                 if st.button("Seleccionar", key=f"btn_{folder}_{i}", use_container_width=True):
                     st.session_state[session_key] = i
@@ -96,25 +91,30 @@ def render_tarifas(destino):
         col_opc, col_monto, col_cash = st.columns(3)
 
         def clean_val(val):
+            if pd.isna(val): return 0.0
+            # Eliminamos cualquier caracter no numérico excepto el punto decimal si existiera
+            # Pero como tus miles vienen con punto, primero quitamos puntos y comas.
+            clean = str(val).replace('$', '').replace('.', '').replace(',', '').replace('s', '').strip()
             try:
-                return float(str(val).replace('$', '').replace('.', '').replace(',', '').strip())
+                return float(clean)
             except:
                 return 0.0
 
         with col_opc:
             st.markdown("<p style='text-align:center; color:#6c757d; font-size:0.85rem; font-weight:700; text-transform:uppercase;'>Opciones de Pago</p>", unsafe_allow_html=True)
-            opciones_csv = [c.replace('_', ' ') for c in df.columns if c not in ['Programa', 'Contado']]
+            # EXCLUIMOS 'Programa', 'Contado' y el nuevo 'Valor del Viaje' de las opciones de cuotas
+            excluir = ['Programa', 'Contado', 'Valor del Viaje']
+            opciones_csv = [c.replace('_', ' ') for c in df.columns if c not in excluir]
             opciones_finales = ["1 Pago"] + opciones_csv
             
             cuota_sel = st.pills("Cuotas", options=opciones_finales, default=opciones_finales[1], label_visibility="collapsed", key=f"pills_{folder}")
             if not cuota_sel: cuota_sel = opciones_finales[1]
 
-        # Cálculos
-        val_contado_base = clean_val(v['Contado'])
+        # Cálculos basados en la nueva estructura
+        val_viaje_total = clean_val(v['Valor del Viaje'])
 
         with col_monto:
             label = "MONTO CUOTAS"
-            
             if cuota_sel == "1 Pago":
                 m_display = "No aplica cuotas"
                 font_size = "1.5rem" 
@@ -131,10 +131,12 @@ def render_tarifas(destino):
             """, unsafe_allow_html=True)
 
         with col_cash:
+            # El 10% de descuento se aplica sobre el 'Valor del Viaje' (Precio de Lista)
+            pago_contado_promo = val_viaje_total * 0.9
             st.markdown(f"""
                 <div class="widget-3d-inner">
                     <p style='color:#6c757d; font-size:0.8rem; font-weight:700;'>💎 PAGO CONTADO</p>
-                    <p style='color:#2e7d32; font-size:2.5rem; font-weight:800; margin:0;'>${val_contado_base * 0.9:,.0f}</p>
+                    <p style='color:#2e7d32; font-size:2.5rem; font-weight:800; margin:0;'>${pago_contado_promo:,.0f}</p>
                     <div class="promo-box-text">
                         Pagando todas las cuotas del 1 al 10 de cada mes, en efectivo en nuestras oficinas de Serrano, 
                         obtenés un 10% de descuento sobre el total del viaje, aplicado en la última cuota.
@@ -166,4 +168,4 @@ def render_tarifas(destino):
             with c1 if i % 2 == 0 else c2:
                 st.markdown(f'<div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #f1f1f1; color:#495057;"><span style="color:#2e7d32; font-weight:bold;">✓</span>{b}</div>', unsafe_allow_html=True)
     else:
-        st.error("Archivo de datos no encontrado.")
+        st.error(f"Archivo de datos no encontrado en: {path_tarifas}")
