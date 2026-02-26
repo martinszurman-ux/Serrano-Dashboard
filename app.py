@@ -7,7 +7,6 @@ st.set_page_config(page_title="Serrano Turismo - Dashboard", layout="wide")
 
 st.markdown("""
     <style>
-    /* Contenedor de imagen esfumada para la cabecera por defecto */
     .header-container {
         position: relative;
         height: 200px;
@@ -35,13 +34,11 @@ st.markdown("""
         text-shadow: 2px 2px 10px rgba(0,0,0,0.9);
         letter-spacing: 1px;
     }
-    /* Estilo para métricas */
     [data-testid="stMetricValue"] { 
         font-size: 2rem !important; 
         color: #1E3A8A; 
         font-weight: bold;
     }
-    /* Widget de Beneficio Promocional */
     .promo-box {
         background-color: #e8f5e9; 
         padding: 18px; 
@@ -63,7 +60,9 @@ LOGO_URL = "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png
 with st.sidebar:
     st.image(LOGO_URL, use_container_width=True)
     st.divider()
-    destino = st.selectbox("📍 Seleccioná el Destino", ["Villa Carlos Paz", "San Pedro"]) [cite: 1, 2, 3]
+    
+    # Selección de Destino (Villa Carlos Paz o San Pedro)
+    destino = st.selectbox("📍 Seleccioná el Destino", ["Villa Carlos Paz", "San Pedro"])
     folder = "vcp" if destino == "Villa Carlos Paz" else "san_pedro"
     
     opcion = st.radio("📂 Navegación", [
@@ -77,7 +76,6 @@ with st.sidebar:
     ])
 
     st.sidebar.divider()
-    # Información de oficinas 
     st.markdown(f"""
     <div class="footer-text">
     <b>Nuestras Oficinas</b><br>
@@ -98,7 +96,6 @@ def limpiar_nombre_archivo(texto):
 
 # --- SECCIÓN TARIFAS ---
 if opcion == "Tarifas y Formas de Pago":
-    # Lógica de Imagen de Header Dinámica
     header_img_path = None
     for ext in [".jpg", ".png", ".jpeg"]:
         temp_path = f"data/{folder}/tarifas_y_formas_header{ext}"
@@ -119,23 +116,24 @@ if opcion == "Tarifas y Formas de Pago":
     path_tarifas = f"data/{folder}/tarifas_y_formas_de_pago.csv"
     if os.path.exists(path_tarifas):
         df_tarifas = pd.read_csv(path_tarifas)
-        programa_sel = st.selectbox("🎯 Seleccioná tu Plan de Viaje:", df_tarifas['Programa']) [cite: 4]
-        v = df_tarifas[df_tarifas['Programa'] == programa_sel].iloc[0] [cite: 4]
+        programa_sel = st.selectbox("🎯 Seleccioná tu Plan de Viaje:", df_tarifas['Programa'])
+        v = df_tarifas[df_tarifas['Programa'] == programa_sel].iloc[0]
 
         st.divider()
         col1, col2, col3 = st.columns([1.1, 0.9, 1.4])
 
         with col1:
-            # Pill selector para las columnas de cuotas detectadas en el CSV
             columnas_cuotas = [c.replace('_', ' ') for c in df_tarifas.columns if c not in ['Programa', 'Contado']]
             cuota_label = st.pills("Opciones de pago:", options=columnas_cuotas, default=columnas_cuotas[0])
         
         col_name = cuota_label.replace(' ', '_')
-        monto_cuota = float(str(v[col_name]).replace('$', '').replace('.', ''))
-        monto_contado = float(str(v['Contado']).replace('$', '').replace('.', ''))
+        
+        # Extracción de valores numéricos de los planes 
+        monto_cuota = float(str(v[col_name]).replace('$', '').replace('.', '').replace(',', ''))
+        monto_contado = float(str(v['Contado']).replace('$', '').replace('.', '').replace(',', ''))
 
         with col2:
-            st.metric(label=f"Monto {cuota_label}", value=f"${monto_cuota:,.0f}") [cite: 4]
+            st.metric(label=f"Monto {cuota_label}", value=f"${monto_cuota:,.0f}")
 
         with col3:
             st.markdown(f"""
@@ -144,11 +142,14 @@ if opcion == "Tarifas y Formas de Pago":
                 <h3 style="margin:5px 0; color: #1b5e20;">Final: ${monto_contado * 0.9:,.0f}</h3>
                 <p style="margin:0; font-size: 0.8rem; color: #388e3c;">Incluye 10% de bonificación especial.</p>
             </div>
-            """, unsafe_allow_html=True) [cite: 4]
+            """, unsafe_allow_html=True)
 
         st.divider()
         with st.expander("📊 Comparativa de todos los planes"):
-            st.dataframe(df_tarifas.set_index('Programa')) [cite: 4]
+            st.dataframe(df_tarifas.set_index('Programa'))
+        
+        # Notas finales del documento original [cite: 6]
+        st.info("Nota: Se pueden realizar otras opciones de pago de acuerdo a la necesidad de cada familia.")
 
 # --- SECCIÓN FORMULARIO PREVENTA ---
 elif opcion == "Formulario de Preventa":
@@ -186,7 +187,7 @@ else:
                 st.write(row['Contenido'])
                 if 'Destacado' in row: st.info(row['Destacado'])
     else:
-        st.error("Contenido en proceso de carga...")
+        st.error(f"El archivo {limpiar_nombre_archivo(opcion)} no se encuentra en la carpeta {folder}.")
 
 # Pie de página Sidebar
 st.sidebar.markdown(f"### [📲 Consultar por WhatsApp](https://api.whatsapp.com/send?phone=5491167877990&text=Hola%20Martin,%20consulto%20por%20{destino})")
