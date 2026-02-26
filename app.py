@@ -267,6 +267,72 @@ elif opcion == "Tarifas y Formas de Pago":
     else:
         st.error("Base de datos de tarifas no encontrada.")
 
+
+
+# =================================================================
+# SECCIÓN: SEGURO MÉDICO (CÓDIGO PARA PEGAR EN APP.PY)
+# =================================================================
+elif opcion == "Seguro Médico":
+    # 1. Cabecera con Logo de Assistravel
+    st.markdown(f"""
+        <div style="text-align: center; padding: 20px; background: linear-gradient(145deg, #f0f0f0, #ffffff); border-radius: 20px; box-shadow: 8px 8px 16px #d1d1d1, -8px -8px 16px #ffffff; margin-bottom: 30px;">
+            <img src="https://assistravel.com/web/image/website/1/logo/Assistravel?unique=966a426" width="300">
+            <h2 style="color: #495057; font-weight: 800; margin-top: 10px;">COBERTURA MÉDICA INTEGRAL</h2>
+        </div>
+    """, unsafe_allow_html=True)
+
+    st.write("Serrano Turismo garantiza la máxima seguridad para sus pasajeros a través de la cobertura líder de Assistravel.")
+
+    # 2. Widgets en Grises con Degradado y Efecto 3D
+    col_med1, col_med2, col_med3 = st.columns(3)
+
+    with col_med1:
+        st.markdown(f"""
+            <div class="widget-3d-grad">
+                <div style="font-size: 3.5rem;">🏥</div>
+                <p class='widget-title'>Asistencia Médica</p>
+                <p style="color: #495057; font-size: 0.9rem;">Atención primaria, especialistas y emergencias las 24 hs en destino.</p>
+            </div>
+        """, unsafe_allow_html=True)
+
+    with col_med2:
+        st.markdown(f"""
+            <div class="widget-3d-grad">
+                <div style="font-size: 3.5rem;">💊</div>
+                <p class='widget-title'>Medicamentos</p>
+                <p style="color: #495057; font-size: 0.9rem;">Cobertura en farmacia y gastos de internación por enfermedad o accidente.</p>
+            </div>
+        """, unsafe_allow_html=True)
+
+    with col_med3:
+        st.markdown(f"""
+            <div class="widget-3d-grad">
+                <div style="font-size: 3.5rem;">📲</div>
+                <p class='widget-title'>App Viaxlab</p>
+                <p style="color: #495057; font-size: 0.9rem;">Seguimiento médico en tiempo real y pulsera inteligente NFC para cada alumno.</p>
+            </div>
+        """, unsafe_allow_html=True)
+
+    st.divider()
+
+    # 3. Información Adicional y FAQ de Salud
+    with st.expander("🔍 Detalles de la Cobertura (Assistravel)"):
+        st.markdown("""
+        * **Odontología de Urgencia:** Cobertura inmediata para problemas agudos.
+        * **Traslados Sanitarios:** Ambulancias propias en Carlos Paz y San Pedro.
+        * **Seguro de Responsabilidad Civil:** Protección legal total para el pasajero.
+        * **Seguro de Accidentes Personales:** Cobertura por invalidez o fallecimiento según Ley Nacional.
+        """)
+
+    st.info("💡 Consejo para padres: Pueden ver el estado de salud y actividades de sus hijos en tiempo real instalando la App Viaxlab desde el Play Store o App Store.")
+
+# =================================================================
+# FIN DE LA SECCIÓN SEGURO MÉDICO
+# =================================================================
+
+
+
+
 # --- VISTA ESTÁNDAR ---
 else:
     st.title(opcion)
@@ -282,3 +348,4 @@ else:
 
 st.sidebar.divider()
 st.sidebar.caption("Serrano Turismo - 29 años de trayectoria")
+
