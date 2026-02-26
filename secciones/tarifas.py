@@ -10,20 +10,20 @@ def render_tarifas(destino):
     if session_key not in st.session_state:
         st.session_state[session_key] = 0
 
-    # 2. ESTILOS CSS (Ajustes de color, posición y diseño Hero)
+    # 2. ESTILOS CSS (Diseño Hero con Efecto Interactivo)
     st.markdown("""
         <style>
-        /* Mover el contenido hacia arriba para que el header no sea invasivo */
+        /* Mover el contenido hacia arriba */
         [data-testid="stImage"] {
             margin-top: -45px;
             margin-bottom: -10px;
         }
         
-        /* Widgets Superiores con fondo #D9D9D9 */
+        /* Widgets Superiores */
         .plan-card-container {
             border-radius: 15px; 
             padding: 20px; 
-            background: #D9D9D9; /* El color que pediste */
+            background: #D9D9D9;
             border: 1px solid #ccc; 
             text-align: center;
             min-height: 140px; 
@@ -35,10 +35,9 @@ def render_tarifas(destino):
             transition: all 0.3s ease;
         }
         
-        /* Efecto cuando la tarjeta está seleccionada */
         .selected-plan { 
             border: 2px solid #d32f2f !important; 
-            background-color: #ffffff !important; /* Cambia a blanco al seleccionar para resaltar */
+            background-color: #ffffff !important;
             transform: scale(1.05);
             box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
         }
@@ -47,17 +46,29 @@ def render_tarifas(destino):
         .transport-icon { font-size: 1.6rem; margin-left: 8px; }
         .day-text { color: #495057; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
 
-        /* MEGA WIDGET HERO */
+        /* MEGA WIDGET HERO CON EFECTO HOVER COPADO */
         .hero-payment-card {
             background: linear-gradient(145deg, #ffffff, #f0f2f6);
             border-radius: 24px;
             padding: 40px;
             text-align: center;
             border: 1px solid #e0e4e8;
-            box-shadow: 20px 20px 60px #d9dbe0, -20px -20px 60px #ffffff;
+            box-shadow: 15px 15px 40px #d9dbe0, -15px -15px 40px #ffffff;
             max-width: 500px;
             margin: 20px auto;
+            
+            /* Animación de entrada y transición para el hover */
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: default;
         }
+
+        /* EFECTO AL PASAR EL MOUSE */
+        .hero-payment-card:hover {
+            transform: translateY(-12px) scale(1.03); /* Se eleva y se agranda apenas */
+            box-shadow: 25px 25px 60px #c0c2c7, -15px -15px 40px #ffffff;
+            background: linear-gradient(145deg, #ffffff, #e6e9ef);
+        }
+
         .hero-label { 
             color: #6c757d; font-size: 0.9rem; font-weight: 700; 
             text-transform: uppercase; letter-spacing: 1.5px;
@@ -80,7 +91,7 @@ def render_tarifas(destino):
         </style>
     """, unsafe_allow_html=True)
 
-    # --- CARGA DEL HEADER (Centrado y más pequeño) ---
+    # --- HEADER ---
     header_path = f"data/{folder}/tarifas_y_formas_header.png"
     if os.path.exists(header_path):
         _, col_img, _ = st.columns([1.2, 3, 1.2])
@@ -151,6 +162,7 @@ def render_tarifas(destino):
             m_display = f"${clean_val(v[c_db]):,.0f}"
             label_cuota = f"Por Cuota ({cuota_sel})"
 
+        # Render del Hero Widget Centrado con el nuevo efecto
         st.markdown(f"""
             <div class="hero-payment-card">
                 <p class="hero-label">Monto a abonar</p>
@@ -159,7 +171,7 @@ def render_tarifas(destino):
             </div>
         """, unsafe_allow_html=True)
 
-        # Caja de Beneficio con el nuevo texto
+        # Caja de Beneficio
         st.markdown("""
             <div style='max-width: 700px; margin: 30px auto; padding: 20px; background-color: #fdf2f2; border-radius: 12px; border: 1px dashed #d32f2f;'>
                 <p style='font-size: 1rem; color: #333333; text-align: center; margin: 0; font-weight: 500;'>
