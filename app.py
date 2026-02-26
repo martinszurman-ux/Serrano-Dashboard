@@ -19,65 +19,60 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS: BOTONES GRIS OSCURO MATE, TEXTO BLANCO Y ANCHO TOTAL
+# 3. CSS MAESTRO: FUERZA ANCHO TOTAL EN CONTENEDORES INTERNOS
 st.markdown("""
     <style>
-    /* Logo compacto */
+    /* Reducir espacio superior del logo */
+    [data-testid="stSidebarNav"] {display: none;}
+    [data-testid="stSidebarContent"] { padding-top: 1rem !important; }
+    
     [data-testid="stSidebar"] img {
-        max-width: 140px !important;
+        max-width: 130px !important;
         margin: 0 auto !important;
         display: block !important;
     }
-    
-    /* Espaciado del sidebar */
-    [data-testid="stSidebarContent"] {
-        padding-top: 1rem !important;
+
+    /* ESTA ES LA CLAVE: Forzar a los contenedores de Streamlit a ser 100% ancho */
+    [data-testid="element-container"], .stButton, .stButton button {
+        width: 100% !important;
     }
 
-    /* ESTILO DE LOS BOTONES: GRIS OSCURO MATE */
+    /* DISEÑO DE BOTONES: GRIS OSCURO MATE */
     div.stButton > button {
         background: linear-gradient(145deg, #444444, #2c2c2c) !important;
         color: white !important;
         border: 1px solid #1a1a1a !important;
         border-radius: 8px !important;
-        
-        /* FUERZA EL MISMO ANCHO Y ALTO */
-        width: 100% !important;
-        min-width: 100% !important;
-        height: 45px !important;
-        
-        font-weight: 700 !important; /* Negrita */
+        height: 48px !important;
+        padding: 0px 20px !important;
+        font-weight: 700 !important;
         text-align: left !important;
         display: flex !important;
         align-items: center !important;
         justify-content: flex-start !important;
-        padding-left: 20px !important;
-        
         transition: all 0.2s ease-in-out !important;
-        margin-bottom: 5px !important;
+        margin-bottom: 2px !important;
     }
     
-    /* Efecto Hover */
     div.stButton > button:hover {
         background: #1a1a1a !important;
-        border-color: #000000 !important;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3) !important;
-        transform: scale(1.02);
+        border-color: #d32f2f !important; /* Brillo rojo sutil al pasar el mouse */
+        transform: translateX(4px) !important;
     }
 
-    /* ESTILO ESPECIAL PARA FICHA DE ADHESIÓN (Más resaltado) */
+    /* BOTÓN DE ADHESIÓN: RESALTADO */
     .btn-adhesion div.stButton > button {
-        background: linear-gradient(145deg, #1a1a1a, #000000) !important;
-        border: 2px solid #d32f2f !important; /* Un borde sutil rojo para diferenciar */
-        margin-top: 15px !important;
+        background: linear-gradient(145deg, #222222, #000000) !important;
+        border: 1px solid #d32f2f !important;
+        margin-top: 20px !important;
         justify-content: center !important;
-        padding-left: 0px !important;
+        padding-left: 0 !important;
     }
 
-    /* Ajuste para que los iconos no se peguen al texto */
+    /* Limpiar iconos y espaciado de texto */
     div.stButton > button p {
         margin: 0 !important;
-        font-size: 14px !important;
+        font-size: 15px !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -91,9 +86,9 @@ with st.sidebar:
     st.divider()
     
     destino = st.selectbox("📍 Destino", ["Villa Carlos Paz", "San Pedro"])
-    st.write("") # Espacio pequeño
+    st.write("") # Espaciado
 
-    # Menú de botones unificados
+    # Lista de botones. Ahora todos medirán exactamente lo mismo.
     if st.button("🚌 1. Transporte"):
         st.session_state.seccion_activa = "Transporte"
     
@@ -112,7 +107,7 @@ with st.sidebar:
     if st.button("💰 6. Tarifas"):
         st.session_state.seccion_activa = "Tarifas"
 
-    # Botón de Adhesión (Diferenciado)
+    # Botón de Adhesión (Diferenciado por el div con clase btn-adhesion)
     st.markdown('<div class="btn-adhesion">', unsafe_allow_html=True)
     if st.button("📝 FICHA DE ADHESIÓN"):
         st.session_state.seccion_activa = "Adhesión"
