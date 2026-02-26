@@ -6,7 +6,7 @@ st.set_page_config(page_title="Serrano Turismo - Dashboard", layout="wide")
 # URL DEL LOGO
 LOGO_URL = "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png"
 
-# 2. IMPORTACIÓN DE MÓDULOS
+# 2. IMPORTACIÓN DE MÓDULOS (Sin cambios)
 try:
     from secciones.transporte import render_transporte
     from secciones.hoteleria import render_hoteleria
@@ -19,45 +19,24 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO: LOGO CENTRADO, SUBIR MENÚ Y NOTAS DISCRETAS
+# 3. CSS MAESTRO (Ajuste en hover de links)
 st.markdown("""
     <style>
-    /* Eliminar espacios superiores del sidebar */
     [data-testid="stSidebarContent"] {
         padding-top: 0.5rem !important; 
         padding-left: 0.5rem !important;
         padding-right: 0.5rem !important;
     }
 
-    /* CONTENEDOR PARA CENTRADO ABSOLUTO DEL LOGO */
     .logo-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        margin-bottom: -10px !important;
-        margin-top: -10px !important;
+        display: flex; justify-content: center; align-items: center;
+        width: 100%; margin-bottom: -10px !important; margin-top: -10px !important;
     }
-    
-    .logo-container img {
-        max-width: 130px !important;
-    }
+    .logo-container img { max-width: 130px !important; }
 
-    /* Reducir espacio de divisores */
-    [data-testid="stSidebar"] hr {
-        margin: 0.4rem 0 !important;
-    }
+    [data-testid="stSidebar"] hr { margin: 0.4rem 0 !important; }
 
     /* BOTONES MATE (SE MANTIENEN IGUAL) */
-    [data-testid="stVerticalBlock"] > div {
-        width: 100% !important;
-        gap: 0.1rem !important;
-    }
-
-    .stButton, .stButton button {
-        width: 100% !important;
-    }
-
     div.stButton > button {
         background: linear-gradient(145deg, #444444, #2c2c2c) !important;
         color: white !important;
@@ -73,14 +52,12 @@ st.markdown("""
         transition: all 0.3s ease !important;
         margin-bottom: -6px !important;
     }
-    
     div.stButton > button:hover {
         background: #555555 !important;
         border-color: #ffffff !important;
         transform: translateX(4px) !important;
     }
 
-    /* Botón de Adhesión */
     .btn-adhesion div.stButton > button {
         background: linear-gradient(145deg, #1a1a1a, #000000) !important;
         border: 1px solid #555555 !important;
@@ -88,64 +65,81 @@ st.markdown("""
         justify-content: center !important;
     }
 
-    /* ESTILO PARA LAS NOTAS DISCRETAS AL FINAL */
-    .sidebar-notes {
-        color: #888888;
-        font-size: 0.7rem;
-        text-align: center;
-        margin-top: 20px;
-        line-height: 1.2;
-        font-style: italic;
+    /* ESTILO DE CONTACTO ACTUALIZADO */
+    .sidebar-footer {
+        color: #999999;
+        font-size: 0.72rem;
+        margin-top: 15px;
+        line-height: 1.4;
     }
+    .footer-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 6px;
+    }
+    .footer-item a {
+        color: #999999 !important;
+        text-decoration: none !important;
+        transition: all 0.2s ease;
+    }
+    /* EFECTO HOVER: BLANCO Y NEGRITA */
+    .footer-item a:hover {
+        color: #ffffff !important;
+        font-weight: bold !important;
+    }
+    .footer-icon { font-size: 0.85rem; min-width: 15px; text-align: center; }
     </style>
 """, unsafe_allow_html=True)
 
-# 4. LÓGICA DE NAVEGACIÓN
+# 4. LÓGICA DE NAVEGACIÓN (Sin cambios)
 if "seccion_activa" not in st.session_state:
     st.session_state.seccion_activa = "Transporte"
 
 with st.sidebar:
-    # LOGO CENTRADO USANDO DIV
     st.markdown(f'<div class="logo-container"><img src="{LOGO_URL}"></div>', unsafe_allow_html=True)
     st.divider()
     
     destino = st.selectbox("📍 Destino", ["Villa Carlos Paz", "San Pedro"])
     
-    # Menú de botones
-    if st.button("🚌 1. Transporte"):
-        st.session_state.seccion_activa = "Transporte"
-    
-    if st.button("🏨 2. Hotelería"):
-        st.session_state.seccion_activa = "Hotelería"
-        
-    if st.button("🏞️ 3. Excursiones"):
-        st.session_state.seccion_activa = "Excursiones"
-        
-    if st.button("🌙 4. Actividades"):
-        st.session_state.seccion_activa = "Actividades"
-        
-    if st.button("🏥 5. Seguro Médico"):
-        st.session_state.seccion_activa = "Seguro"
-        
-    if st.button("💰 6. Tarifas"):
-        st.session_state.seccion_activa = "Tarifas"
+    if st.button("🚌 1. Transporte"): st.session_state.seccion_activa = "Transporte"
+    if st.button("🏨 2. Hotelería"): st.session_state.seccion_activa = "Hotelería"
+    if st.button("🏞️ 3. Excursiones"): st.session_state.seccion_activa = "Excursiones"
+    if st.button("🌙 4. Actividades"): st.session_state.seccion_activa = "Actividades"
+    if st.button("🏥 5. Seguro Médico"): st.session_state.seccion_activa = "Seguro"
+    if st.button("💰 6. Tarifas"): st.session_state.seccion_activa = "Tarifas"
 
-    # Botón de Adhesión
     st.markdown('<div class="btn-adhesion">', unsafe_allow_html=True)
-    if st.button("📝 FICHA DE ADHESIÓN"):
-        st.session_state.seccion_activa = "Adhesión"
+    if st.button("📝 FICHA DE ADHESIÓN"): st.session_state.seccion_activa = "Adhesión"
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # NOTAS DISCRETAS (No pusiste el texto, así que puse ejemplos de Serrano)
-    st.markdown("""
-        <div class="sidebar-notes">
-            Serrano Turismo ® 2026<br>
-            Legajo N° 12345 - Disp. 678/20<br>
-            Todos los derechos reservados.
+    # NUEVO BLOQUE DE DATOS
+    st.markdown(f"""
+        <div class="sidebar-footer">
+            <div class="footer-item">
+                <span class="footer-icon">📍</span>
+                <span>Av. Rivadavia 4532 - Gal. Alefa (L. 10)<br>C1042AAP - C.A.B.A.</span>
+            </div>
+            <div class="footer-item">
+                <span class="footer-icon">📍</span>
+                <span>Del Cimarrón 1846 - 1°P - Of. 4<br>CP: 1714 - Parque Leloir Ituzaingo</span>
+            </div>
+            <div class="footer-item">
+                <span class="footer-icon">📞</span>
+                <span>11 - 4847-6467</span>
+            </div>
+            <div class="footer-item">
+                <span class="footer-icon">💬</span>
+                <a href="https://wa.me/541156096283" target="_blank">11 - 5609-6283 (Whatsapp)</a>
+            </div>
+            <div class="footer-item">
+                <span class="footer-icon">✉️</span>
+                <a href="mailto:info@serranoturismo.com.ar">info@serranoturismo.com.ar</a>
+            </div>
         </div>
     """, unsafe_allow_html=True)
 
-# 5. RENDERIZADO
+# 5. RENDERIZADO (Sin cambios)
 if st.session_state.seccion_activa == "Transporte":
     render_transporte(destino)
 elif st.session_state.seccion_activa == "Hotelería":
