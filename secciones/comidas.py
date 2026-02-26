@@ -7,21 +7,12 @@ def render_comidas(destino):
 
     ruta_base = "assets/"
 
-    # --- TEXTO COMO PARRAFO PURO ---
-    # Usamos etiquetas de párrafo <p> para que Streamlit no lo trate como bloque de código
-    features_html = f"""
-    <p style='margin-bottom: 12px;'>✔️ <b>Pensión completa:</b> desayuno, almuerzo, merienda, cena y quinta comida.</p>
-    <p style='margin-bottom: 12px;'>✔️ <b>Menú buffet libre:</b> Variedad y calidad garantizada.</p>
-    <p style='margin-bottom: 12px;'>✔️ <b>Hidratación:</b> Provisión de agua mineral libre las 24hs.</p>
-    <p style='margin-bottom: 12px;'>✔️ <b>Sistema Todo Incluido:</b> Sándwiches, alfajores, bizcochuelos, frutas, helados, gaseosas y jugos libre todos los días.</p>
-    <p style='margin-bottom: 12px;'>✔️ <b>Servicio en Ruta:</b> Desayuno y almuerzo en el viaje de ida. Almuerzo y merienda en el regreso en nuestros paradores exclusivos.</p>
-    <p style='margin-bottom: 12px;'>✔️ <b>Estaciones Saludables:</b> Disponibles en excursiones y hotel.</p>
-    <p style='margin-bottom: 12px;'>✔️ <b>Menú Diferenciado:</b> Atención especial en dietas médicas o celíacas.</p>
-    """
+    # --- TEXTO EN UNA SOLA LÍNEA PARA EVITAR ERRORES DE RENDERIZADO ---
+    features_html = "<p style='margin-bottom:12px;'>✔️ <b>Pensión completa:</b> desayuno, almuerzo, merienda, cena y quinta comida.</p><p style='margin-bottom:12px;'>✔️ <b>Menú buffet libre:</b> Variedad y calidad garantizada.</p><p style='margin-bottom:12px;'>✔️ <b>Hidratación:</b> Provisión de agua mineral libre las 24hs.</p><p style='margin-bottom:12px;'>✔️ <b>Sistema Todo Incluido:</b> Sándwiches, alfajores, bizcochuelos, frutas, helados, gaseosas y jugos libre todos los días.</p><p style='margin-bottom:12px;'>✔️ <b>Servicio en Ruta:</b> Desayuno y almuerzo en el viaje de ida. Almuerzo y merienda en el regreso en nuestros paradores exclusivos.</p><p style='margin-bottom:12px;'>✔️ <b>Estaciones Saludables:</b> Disponibles en excursiones y hotel.</p><p style='margin-bottom:12px;'>✔️ <b>Menú Diferenciado:</b> Atención especial en dietas médicas o celíacas.</p>" #
 
     if "Villa Carlos Paz" in destino:
         fotos = ["desayuno.jpg", "almuerzo.jpg", "refrigerio.jpg", "dietas.png"]
-    else: # SAN PEDRO
+    else:
         fotos = ["desayuno san pedro.jpg", "comida san pedro 1.jpeg", "comida san pedro.jpeg", "dietas.png"]
 
     col_izq, col_der = st.columns([1.2, 1])
@@ -40,9 +31,5 @@ def render_comidas(destino):
             if os.path.exists(img4): st.image(img4, use_container_width=True)
 
     with col_der:
-        # El contenedor ahora tiene un estilo que impide la selección de código
-        st.markdown(f"""
-            <div style='background-color: #f8f9fa; padding: 25px; border-radius: 15px; border-left: 5px solid #1E3A8A; color: #333; font-size: 1.05rem; line-height: 1.2;'>
-                {features_html}
-            </div>
-        """, unsafe_allow_html=True)
+        # Renderizado directo sin espacios extra
+        st.markdown(f"<div style='background-color:#f8f9fa; padding:25px; border-radius:15px; border-left:5px solid #1E3A8A; color:#333; font-size:1.05rem; line-height:1.2;'>{features_html}</div>", unsafe_allow_html=True) #
