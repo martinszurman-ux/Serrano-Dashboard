@@ -5,21 +5,36 @@ import os
 def render_tarifas(destino):
     folder = "vcp" if destino == "Villa Carlos Paz" else "san_pedro"
     
-    def seleccionar_plan(indice):
-        st.session_state[f"sel_index_{folder}"] = indice
+    # 1. Lógica de selección robusta
+    session_key = f"sel_index_{folder}"
+    if session_key not in st.session_state:
+        st.session_state[session_key] = 0
 
-    # CSS para agrandar botones, centralizarlos y mantener la estética
+    # 2. CSS Totalmente corregido
     st.markdown("""
         <style>
+        /* Contenedor de Opciones de Pago Centrado */
+        .pago-header-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
         .plan-card-click {
             border-radius: 15px; padding: 15px; background: white;
             border: 2px solid #eee; transition: all 0.3s ease;
             min-height: 140px; position: relative;
             display: flex; flex-direction: column; justify-content: center;
+            cursor: pointer;
         }
         .selected-plan { 
             border: 3px solid #d32f2f !important; 
             background-color: #fff5f5 !important;
+            box-shadow: 0 4px 12px rgba(211, 47, 47, 0.15);
         }
         .card-top {
             display: flex; justify-content: center; align-items: center;
@@ -31,18 +46,19 @@ def render_tarifas(destino):
             color: #495057; font-size: 0.85rem; font-weight: 700; 
             text-transform: uppercase; text-align: center;
         }
-        
-        /* Botones de cuotas (Pills) agrandados y centralizados */
+
+        /* Botones de cuotas (Pills) XL y Centrados */
         div[data-testid="stPills"] {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            width: 100% !important;
         }
         div[data-testid="stPills"] button {
-            padding: 10px 20px !important;
-            font-size: 1rem !important;
-            font-weight: bold !important;
-            border-radius: 10px !important;
+            padding: 15px 30px !important;
+            font-size: 1.1rem !important;
+            font-weight: 800 !important;
+            border-radius: 12px !important;
+            min-width: 120px;
         }
         
         .widget-3d-inner {
@@ -53,13 +69,6 @@ def render_tarifas(destino):
             min-height: 160px; display: flex; flex-direction: column; 
             justify-content: center; align-items: center;
         }
-
-        th {
-            text-align: center !important; font-weight: bold !important;
-            text-transform: uppercase; color: #333 !important;
-            background-color: #f2f2f2 !important;
-        }
-        td { text-align: center !important; }
         </style>
     """, unsafe_allow_html=True)
 
@@ -69,10 +78,6 @@ def render_tarifas(destino):
         df = pd.read_csv(path_tarifas)
         st.write("### 📅 Seleccioná tu itinerario")
         
-        session_key = f"sel_index_{folder}"
-        if session_key not in st.session_state:
-            st.session_state[session_key] = 0
-
         planes = df['Programa'].tolist()
         cols_p = st.columns(len(planes))
 
@@ -85,6 +90,8 @@ def render_tarifas(destino):
             with cols_p[i]:
                 es_activo = st.session_state[session_key] == i
                 clase_activa = "selected-plan" if es_activo else ""
+                
+                # Render visual
                 st.markdown(f"""
                     <div class="plan-card-click {clase_activa}">
                         <div class="card-top">
@@ -94,7 +101,11 @@ def render_tarifas(destino):
                         <div class="day-text-bottom">{resto}</div>
                     </div>
                 """, unsafe_allow_html=True)
-                st.button(f"P_{i}", key=f"b_{folder}_{i}", on_click=seleccionar_plan, args=(i,))
+                
+                # Botón nativo de Streamlit con transparencia total para capturar el clic
+                if st.button(f"Seleccionar {plan}", key=f"select_btn_{folder}_{i}", use_container_width=True):
+                    st.session_state[session_key] = i
+                    st.rerun()
 
         v = df.iloc[st.session_state[session_key]]
         st.divider()
@@ -106,21 +117,24 @@ def render_tarifas(destino):
             return float(str(val).replace('$', '').replace('.', '').replace(',', '').strip())
 
         with col_opc:
-            st.markdown("<p style='color:#6c757d; font-size:0.85rem; font-weight:700; text-transform:uppercase; text-align:center; margin-top:10px;'>Opciones de Pago</p>", unsafe_allow_html=True)
+            # Título forzado al centro con HTML puro para evitar desalineación
+            st.markdown("""
+                <div class="pago-header-container">
+                    <p style='color:#6c757d; font-size:0.9rem; font-weight:800; text-transform:uppercase; margin:0;'>Opciones de Pago</p>
+                </div>
+            """, unsafe_allow_html=True)
             
-            # Definimos las opciones limpias del CSV
             opciones_c = [c.replace('_', ' ') for c in df.columns if c not in ['Programa', 'Contado']]
             
-            # Forzamos 3 cuotas como default si no hay selección
+            # Selector de cuotas con valor por defecto
             cuota_sel = st.pills(
                 "Cuotas", 
                 options=opciones_c, 
-                default=opciones_c[0], # El primero suele ser 3 cuotas en el CSV
+                default=opciones_c[0], 
                 label_visibility="collapsed", 
                 key=f"pi_{folder}"
             )
             
-            # Seguridad: si cuota_sel es None (clic por fuera), usamos el default
             if not cuota_sel:
                 cuota_sel = opciones_c[0]
 
