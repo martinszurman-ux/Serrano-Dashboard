@@ -86,6 +86,18 @@ st.markdown("""
     }
     .ws-link:hover { color: #ffffff !important; font-weight: bold !important; }
     .ws-icon-img { width: 18px; height: 18px; border-radius: 3px; object-fit: cover; }
+
+/* Ocultar el botón de Fork, el icono de GitHub y el menú de Streamlit */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    
+    /* Bloqueo específico para el toolbar de la esquina superior derecha */
+    .stAppToolbar {
+        display: none !important;
+    }
+
+    
     </style>
 """, unsafe_allow_html=True)
 
@@ -145,3 +157,4 @@ elif st.session_state.seccion_activa == "Tarifas":
     render_tarifas(destino)
 elif st.session_state.seccion_activa == "Adhesión":
     render_adhesion(LOGO_URL)
+
