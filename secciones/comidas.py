@@ -7,35 +7,32 @@ def render_comidas(destino):
 
     ruta_base = "assets/"
 
-    # --- TEXTO LIMPIO SIN ETIQUETAS SOBRANTES ---
-    features_html = """
-    ✔️ <b>Pensión completa:</b> desayuno, almuerzo, merienda, cena y quinta comida.<br><br>
-    ✔️ <b>Menú buffet libre:</b> Variedad y calidad garantizada.<br><br>
-    ✔️ <b>Hidratación:</b> Provisión de agua mineral libre las 24hs.<br><br>
-    ✔️ <b>Sistema Todo Incluido:</b> Sándwiches, alfajores, bizcochuelos, frutas, helados, gaseosas y jugos libre todos los días.<br><br>
-    ✔️ <b>Servicio en Ruta:</b> Desayuno y almuerzo en el viaje de ida. Almuerzo y merienda en el regreso en nuestros paradores exclusivos.<br><br>
-    ✔️ <b>Estaciones Saludables:</b> Disponibles en excursiones y hotel.<br><br>
-    ✔️ <b>Menú Diferenciado:</b> Atención especial en dietas médicas o celíacas.
+    # --- TEXTO COMO PARRAFO PURO ---
+    # Usamos etiquetas de párrafo <p> para que Streamlit no lo trate como bloque de código
+    features_html = f"""
+    <p style='margin-bottom: 12px;'>✔️ <b>Pensión completa:</b> desayuno, almuerzo, merienda, cena y quinta comida.</p>
+    <p style='margin-bottom: 12px;'>✔️ <b>Menú buffet libre:</b> Variedad y calidad garantizada.</p>
+    <p style='margin-bottom: 12px;'>✔️ <b>Hidratación:</b> Provisión de agua mineral libre las 24hs.</p>
+    <p style='margin-bottom: 12px;'>✔️ <b>Sistema Todo Incluido:</b> Sándwiches, alfajores, bizcochuelos, frutas, helados, gaseosas y jugos libre todos los días.</p>
+    <p style='margin-bottom: 12px;'>✔️ <b>Servicio en Ruta:</b> Desayuno y almuerzo en el viaje de ida. Almuerzo y merienda en el regreso en nuestros paradores exclusivos.</p>
+    <p style='margin-bottom: 12px;'>✔️ <b>Estaciones Saludables:</b> Disponibles en excursiones y hotel.</p>
+    <p style='margin-bottom: 12px;'>✔️ <b>Menú Diferenciado:</b> Atención especial en dietas médicas o celíacas.</p>
     """
 
-    # --- LÓGICA DE IMÁGENES POR DESTINO ---
     if "Villa Carlos Paz" in destino:
         fotos = ["desayuno.jpg", "almuerzo.jpg", "refrigerio.jpg", "dietas.png"]
-    else:  # SAN PEDRO
+    else: # SAN PEDRO
         fotos = ["desayuno san pedro.jpg", "comida san pedro 1.jpeg", "comida san pedro.jpeg", "dietas.png"]
 
-    # --- DISEÑO DE COLUMNAS ---
     col_izq, col_der = st.columns([1.2, 1])
 
     with col_izq:
-        # Grilla de 2x2 para las fotos
         c1, c2 = st.columns(2)
         with c1:
             img1 = os.path.join(ruta_base, fotos[0])
             if os.path.exists(img1): st.image(img1, use_container_width=True)
             img3 = os.path.join(ruta_base, fotos[2])
             if os.path.exists(img3): st.image(img3, use_container_width=True)
-            
         with c2:
             img2 = os.path.join(ruta_base, fotos[1])
             if os.path.exists(img2): st.image(img2, use_container_width=True)
@@ -43,9 +40,9 @@ def render_comidas(destino):
             if os.path.exists(img4): st.image(img4, use_container_width=True)
 
     with col_der:
-        # Bloque de texto corregido (Se eliminaron los </div> sobrantes)
+        # El contenedor ahora tiene un estilo que impide la selección de código
         st.markdown(f"""
-            <div style='background-color: #f8f9fa; padding: 25px; border-radius: 15px; border-left: 5px solid #1E3A8A; color: #333; font-size: 1.0rem; line-height: 1.6;'>
+            <div style='background-color: #f8f9fa; padding: 25px; border-radius: 15px; border-left: 5px solid #1E3A8A; color: #333; font-size: 1.05rem; line-height: 1.2;'>
                 {features_html}
             </div>
         """, unsafe_allow_html=True)
