@@ -6,7 +6,7 @@ st.set_page_config(page_title="Serrano Turismo - Dashboard", layout="wide")
 # URL DEL LOGO
 LOGO_URL = "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png"
 
-# 2. IMPORTACIÓN DE MÓDULOS (Sin cambios)
+# 2. IMPORTACIÓN DE MÓDULOS
 try:
     from secciones.transporte import render_transporte
     from secciones.hoteleria import render_hoteleria
@@ -19,80 +19,82 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO (Ajuste en hover de links)
+# 3. CSS MAESTRO: FUERZA BRUTA PARA ANCHO UNIFORME
 st.markdown("""
     <style>
-    [data-testid="stSidebarContent"] {
-        padding-top: 0.5rem !important; 
-        padding-left: 0.5rem !important;
-        padding-right: 0.5rem !important;
+    /* 1. RESET DE ANCHOS: Obliga a todos los contenedores de botones a ser 100% */
+    [data-testid="stSidebarContent"] [data-testid="stVerticalBlock"] > div {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    .stButton, .stButton > button {
+        width: 100% !important;
+        min-width: 100% !important;
+        display: block !important;
     }
 
-    .logo-container {
-        display: flex; justify-content: center; align-items: center;
-        width: 100%; margin-bottom: -10px !important; margin-top: -10px !important;
-    }
-    .logo-container img { max-width: 130px !important; }
-
-    [data-testid="stSidebar"] hr { margin: 0.4rem 0 !important; }
-
-    /* BOTONES MATE (SE MANTIENEN IGUAL) */
+    /* 2. DISEÑO DE BOTONES: GRIS OSCURO MATE (FLAMA) */
     div.stButton > button {
         background: linear-gradient(145deg, #444444, #2c2c2c) !important;
         color: white !important;
         border: 1px solid #1a1a1a !important;
         border-radius: 8px !important;
-        height: 46px !important;
+        height: 48px !important;
         padding: 0px 20px !important;
         font-weight: 700 !important;
         text-align: left !important;
         display: flex !important;
         align-items: center !important;
         justify-content: flex-start !important;
-        transition: all 0.3s ease !important;
-        margin-bottom: -6px !important;
+        transition: all 0.2s ease-in-out !important;
+        margin-bottom: -5px !important;
     }
+    
     div.stButton > button:hover {
         background: #555555 !important;
         border-color: #ffffff !important;
         transform: translateX(4px) !important;
     }
 
+    /* 3. BOTÓN DE ADHESIÓN (Diferenciado) */
     .btn-adhesion div.stButton > button {
         background: linear-gradient(145deg, #1a1a1a, #000000) !important;
         border: 1px solid #555555 !important;
-        margin-top: 8px !important;
+        margin-top: 15px !important;
         justify-content: center !important;
+        padding-left: 0 !important;
     }
 
-    /* ESTILO DE CONTACTO ACTUALIZADO */
+    /* 4. LOGO CENTRADO Y MENÚ SUPERIOR */
+    [data-testid="stSidebarContent"] { padding-top: 0.5rem !important; }
+    .logo-container {
+        display: flex; justify-content: center; width: 100%;
+        margin-bottom: -10px !important; margin-top: -10px !important;
+    }
+    .logo-container img { max-width: 130px !important; }
+
+    /* 5. CONTACTO ABAJO: MINIMALISTA */
     .sidebar-footer {
         color: #999999;
         font-size: 0.72rem;
-        margin-top: 15px;
+        margin-top: 20px;
         line-height: 1.4;
     }
-    .footer-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 8px;
-        margin-bottom: 6px;
-    }
+    .footer-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
     .footer-item a {
         color: #999999 !important;
         text-decoration: none !important;
         transition: all 0.2s ease;
     }
-    /* EFECTO HOVER: BLANCO Y NEGRITA */
     .footer-item a:hover {
         color: #ffffff !important;
         font-weight: bold !important;
     }
-    .footer-icon { font-size: 0.85rem; min-width: 15px; text-align: center; }
     </style>
 """, unsafe_allow_html=True)
 
-# 4. LÓGICA DE NAVEGACIÓN (Sin cambios)
+# 4. LÓGICA DE NAVEGACIÓN
 if "seccion_activa" not in st.session_state:
     st.session_state.seccion_activa = "Transporte"
 
@@ -102,6 +104,7 @@ with st.sidebar:
     
     destino = st.selectbox("📍 Destino", ["Villa Carlos Paz", "San Pedro"])
     
+    # Menú de botones (Ahora blindados en ancho)
     if st.button("🚌 1. Transporte"): st.session_state.seccion_activa = "Transporte"
     if st.button("🏨 2. Hotelería"): st.session_state.seccion_activa = "Hotelería"
     if st.button("🏞️ 3. Excursiones"): st.session_state.seccion_activa = "Excursiones"
@@ -113,33 +116,28 @@ with st.sidebar:
     if st.button("📝 FICHA DE ADHESIÓN"): st.session_state.seccion_activa = "Adhesión"
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # NUEVO BLOQUE DE DATOS
+    # Bloque de contacto con hipervínculos
     st.markdown(f"""
         <div class="sidebar-footer">
             <div class="footer-item">
-                <span class="footer-icon">📍</span>
-                <span>Av. Rivadavia 4532 - Gal. Alefa (L. 10)<br>C1042AAP - C.A.B.A.</span>
+                <span>📍 Av. Rivadavia 4532 - Galería Alefa (local 10)<br>C1042AAP - C.A.B.A.</span>
             </div>
             <div class="footer-item">
-                <span class="footer-icon">📍</span>
-                <span>Del Cimarrón 1846 - 1°P - Of. 4<br>CP: 1714 - Parque Leloir Ituzaingo</span>
+                <span>📍 Del Cimarrón 1846 - 1er Piso - Of. 4<br>C.P.: 1714 - Parque Leloir Ituzaingo</span>
             </div>
             <div class="footer-item">
-                <span class="footer-icon">📞</span>
-                <span>11 - 4847-6467</span>
+                <span>📞 11 - 4847-6467</span>
             </div>
             <div class="footer-item">
-                <span class="footer-icon">💬</span>
-                <a href="https://wa.me/541156096283" target="_blank">11 - 5609-6283 (Whatsapp)</a>
+                <span>💬 <a href="https://wa.me/541156096283" target="_blank">11 - 5609-6283 (Whatsapp)</a></span>
             </div>
             <div class="footer-item">
-                <span class="footer-icon">✉️</span>
-                <a href="mailto:info@serranoturismo.com.ar">info@serranoturismo.com.ar</a>
+                <span>✉️ <a href="mailto:info@serranoturismo.com.ar">info@serranoturismo.com.ar</a></span>
             </div>
         </div>
     """, unsafe_allow_html=True)
 
-# 5. RENDERIZADO (Sin cambios)
+# 5. RENDERIZADO
 if st.session_state.seccion_activa == "Transporte":
     render_transporte(destino)
 elif st.session_state.seccion_activa == "Hotelería":
