@@ -3,14 +3,14 @@ import pandas as pd
 import os
 
 def render_tarifas(destino):
-    # 1. INICIALIZACIÓN
+    # 1. INICIALIZACIÓN Y BLINDAJE
     folder = "vcp" if destino == "Villa Carlos Paz" else "san_pedro"
     session_key = f"sel_index_{folder}"
     
     if session_key not in st.session_state:
         st.session_state[session_key] = 0
 
-    # 2. ESTILOS CSS ACTUALIZADOS
+    # 2. ESTILOS CSS
     st.markdown("""
         <style>
         .plan-card-container {
@@ -41,17 +41,19 @@ def render_tarifas(destino):
     path_tarifas = f"data/{folder}/tarifas_y_formas_de_pago.csv"
     
     if os.path.exists(path_tarifas):
+        # Cargamos el DF y limpiamos espacios en blanco en los nombres de columnas
         df = pd.read_csv(path_tarifas)
+        df.columns = df.columns.str.strip()
         
         def clean_val(val):
             if pd.isna(val): return 0.0
+            # Limpieza profunda de caracteres extraños
             clean = str(val).replace('$', '').replace('.', '').replace(',', '').replace('s', '').strip()
             try: return float(clean)
             except: return 0.0
 
         st.write("### 📅 Seleccioná tu itinerario")
         
-        # Grid de selección de Programa
         planes = df['Programa'].tolist()
         cols_p = st.columns(len(planes))
         for i, plan in enumerate(planes):
@@ -69,32 +71,21 @@ def render_tarifas(destino):
 
         # Datos del programa seleccionado
         idx = st.session_state[session_key]
+        if idx >= len(df): idx = 0
         v = df.iloc[idx]
-        
-        st.divider()
-
-        # --- SECCIÓN DE CÁLCULOS PREVIOS ---
-        # Definimos las columnas a excluir para el selector de cuotas
-        excluir = ['Programa', 'Contado', 'Valor del Viaje']
-        opciones_cuotas = [c.replace('_', ' ') for c in df.columns if c not in excluir]
-        opciones_finales = ["1 Pago"] + opciones_cuotas
-
-        # 3. SELECTOR DE OPCIONES DE PAGO (Ahora arriba de los widgets por lógica de flujo)
-        # Nota: He puesto el selector primero para que los widgets reaccionen a él inmediatamente abajo.
         
         # --- BLOQUE DE WIDGETS ---
         col1, col2, col3 = st.columns(3)
         
-        # Necesitamos el valor del selector antes de los widgets, lo ponemos en un container
-        with st.container():
-            st.markdown("<p style='font-weight:700; color:#495057; margin-bottom:-10px;'>Opciones de Pago:</p>", unsafe_allow_html=True)
-            cuota_sel = st.pills("Cuotas", options=opciones_finales, default=opciones_finales[1], label_visibility="collapsed", key=f"pills_{folder}")
-            if not cuota_sel: cuota_sel = opciones_finales[1]
-
-        # Cálculos para los widgets
-        val_total_viaje = clean_val(v['Valor del Viaje'])
-        descuento_termino = val_total_viaje * 0.10 # 10% de descuento
+        # Calculamos valores base (Usando el nombre exacto del CSV)
+        # Cambié 'Valor del Viaje' por 'Valor del Viaje' o 'Costo Total' según tu último CSV
+        col_total = 'Valor del Viaje' if 'Valor del Viaje' in df.columns else 'Costo Total'
+        val_total_viaje = clean_val(v[col_total])
+        descuento_termino = val_total_viaje * 0.10
         
+        # Inicializamos cuota_sel para evitar errores de referencia
+        cuota_sel = "3_Cuotas" 
+
         # Widget 1: Valor Final
         with col1:
             st.markdown(f"""
@@ -104,23 +95,10 @@ def render_tarifas(destino):
                 </div>
             """, unsafe_allow_html=True)
 
-        # Widget 2: Monto Cuota
-        with col2:
-            if cuota_sel == "1 Pago":
-                m_display = f"${clean_val(v['Contado']):,.0f}"
-                label_cuota = "Monto Pago Único"
-            else:
-                c_db = cuota_sel.replace(' ', '_')
-                m_display = f"${clean_val(v[c_db]):,.0f}"
-                label_cuota = f"Monto de la {cuota_sel}"
-
-            st.markdown(f"""
-                <div class="widget-3d-inner">
-                    <p class="label-widget">💳 {label_cuota}</p>
-                    <p class="val-widget">{m_display}</p>
-                </div>
-            """, unsafe_allow_html=True)
-
+        # Widget 2: Monto Cuota (se actualizará con el selector de abajo)
+        # Para que el widget 2 responda al selector que está abajo, usamos un placeholder o simplemente movemos el selector.
+        # Por orden de ejecución de Python, el selector debe ir ANTES de los widgets si queremos que estos cambien.
+        
         # Widget 3: Descuento
         with col3:
             st.markdown(f"""
@@ -130,17 +108,31 @@ def render_tarifas(destino):
                 </div>
             """, unsafe_allow_html=True)
 
-        st.markdown("<p style='font-size:0.8rem; color:#6c757d; text-align:center; margin-top:10px;'>* El descuento por pago en término se aplica sobre la última cuota si se abonan todas del 1 al 10 de cada mes.</p>", unsafe_allow_html=True)
+        # --- OPCIONES DE PAGO (Debajo de los widgets pero define el Widget 2) ---
+        st.markdown("<br>", unsafe_allow_html=True)
+        excluir = ['Programa', 'Contado', 'Valor del Viaje', 'Costo Total']
+        opciones_cuotas = [c.replace('_', ' ') for c in df.columns if c not in excluir]
+        opciones_finales = ["1 Pago"] + opciones_cuotas
 
-        # 4. TABLA Y BENEFICIOS
-        st.divider()
+        st.markdown("<p style='font-weight:700; color:#495057; margin-bottom:5px;'>Opciones de Pago:</p>", unsafe_allow_html=True)
+        cuota_sel = st.pills("Selecciona cuotas", options=opciones_finales, default=opciones_finales[1], label_visibility="collapsed", key=f"pills_{folder}")
         
-        with st.expander("Ver tabla comparativa de todas las tarifas"):
-            df_format = df.copy()
-            df_format.columns = [c.replace('_', ' ') for c in df_format.columns]
-            for col in df_format.columns.drop('Programa'): 
-                df_format[col] = df_format[col].apply(clean_val)
-            st.table(df_format.set_index('Programa').style.format("$ {:,.0f}"))
+        # Ahora actualizamos el Widget 2 (usamos st.metric o recreamos el valor en el col2)
+        with col2:
+            if cuota_sel == "1 Pago":
+                m_display = f"${clean_val(v['Contado']):,.0f}"
+                label_cuota = "Monto Pago Único"
+            else:
+                c_db = cuota_sel.replace(' ', '_')
+                m_display = f"${clean_val(v[c_db]):,.0f}"
+                label_cuota = f"Monto de la {cuota_sel}"
+            
+            st.markdown(f"""
+                <div class="widget-3d-inner">
+                    <p class="label-widget">💳 {label_cuota}</p>
+                    <p class="val-widget">{m_display}</p>
+                </div>
+            """, unsafe_allow_html=True)
 
-        st.write("#### 🛡️ Beneficios y Servicios Incluidos")
-        # ... (resto de los beneficios igual que antes)
+        st.divider()
+        # ... resto del código (beneficios)
