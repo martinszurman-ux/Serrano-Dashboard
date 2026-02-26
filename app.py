@@ -1,18 +1,16 @@
 import streamlit as st
-import os
 
 # 1. CONFIGURACIÓN INICIAL
 st.set_page_config(page_title="Serrano Turismo - Dashboard", layout="wide")
 
-# URL DEL LOGO PRINCIPAL
+# URL DEL LOGO
 LOGO_URL = "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png"
 
 # 2. IMPORTACIÓN DE MÓDULOS
 try:
     from secciones.transporte import render_transporte
     from secciones.hoteleria import render_hoteleria
-    # Agregamos la importación de comidas (asegurate de tener el archivo secciones/comidas.py)
-    # from secciones.comidas import render_comidas 
+    from secciones.comidas import render_comidas
     from secciones.excursiones import render_excursiones
     from secciones.actividades_nocturnas import render_nocturnas
     from secciones.seguro import render_seguro
@@ -20,21 +18,29 @@ try:
     from secciones.adhesion import render_adhesion
 except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
-    # No detenemos la app para que puedas ver el error específico si falta un archivo
+    st.stop()
 
-# 3. CSS MAESTRO
+# 3. CSS MAESTRO (Ancho blindado, letra grande y hover blanco)
 st.markdown("""
     <style>
     [data-testid="stSidebarContent"] [data-testid="stVerticalBlock"] > div {
         width: 100% !important;
         max-width: 100% !important;
     }
+    
+    .stButton, .stButton > button {
+        width: 100% !important;
+        min-width: 100% !important;
+        display: block !important;
+    }
+
     div.stButton > button {
         background: linear-gradient(145deg, #444444, #2c2c2c) !important;
         color: white !important;
         border: 1px solid #1a1a1a !important;
         border-radius: 8px !important;
         height: 52px !important;
+        padding: 0px 20px !important;
         font-weight: 700 !important;
         font-size: 17px !important;
         text-align: left !important;
@@ -43,13 +49,14 @@ st.markdown("""
         justify-content: flex-start !important;
         transition: all 0.2s ease-in-out !important;
         margin-bottom: -4px !important;
-        width: 100% !important;
     }
+    
     div.stButton > button:hover {
         background: #555555 !important;
         border-color: #ffffff !important;
         transform: translateX(4px) !important;
     }
+
     .btn-adhesion div.stButton > button {
         background: linear-gradient(145deg, #1a1a1a, #000000) !important;
         border: 1px solid #555555 !important;
@@ -57,11 +64,28 @@ st.markdown("""
         justify-content: center !important;
         font-size: 18px !important;
     }
-    .logo-container { display: flex; justify-content: center; width: 100%; margin-bottom: -10px; }
+
+    .logo-container {
+        display: flex; justify-content: center; width: 100%;
+        margin-bottom: -10px !important; margin-top: -10px !important;
+    }
     .logo-container img { max-width: 130px !important; }
-    .sidebar-footer { color: #999999; font-size: 0.75rem; margin-top: 15px; }
+
+    .sidebar-footer {
+        color: #999999;
+        font-size: 0.75rem;
+        margin-top: 15px;
+        line-height: 1.4;
+    }
     .footer-item { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-    .ws-link { text-decoration: none !important; color: #999999 !important; display: flex; align-items: center; gap: 6px; }
+    
+    .ws-link {
+        display: flex; align-items: center; gap: 6px;
+        text-decoration: none !important; color: #999999 !important;
+        transition: all 0.3s;
+    }
+    .ws-link:hover { color: #ffffff !important; font-weight: bold !important; }
+    .ws-icon-img { width: 18px; height: 18px; border-radius: 3px; object-fit: cover; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -75,18 +99,34 @@ with st.sidebar:
     
     destino = st.selectbox("📍 Destino", ["Villa Carlos Paz", "San Pedro"])
     
-    # BOTONES
+    # Menú Actualizado (Orden solicitado)
     if st.button("🚌 1. Transporte"): st.session_state.seccion_activa = "Transporte"
     if st.button("🏨 2. Hotelería"): st.session_state.seccion_activa = "Hotelería"
-    if st.button("🍽️ 2b. Comidas"): st.session_state.seccion_activa = "Comidas"
-    if st.button("🏞️ 3. Excursiones"): st.session_state.seccion_activa = "Excursiones"
-    if st.button("🌙 4. Actividades"): st.session_state.seccion_activa = "Actividades"
-    if st.button("🏥 5. Seguro Médico"): st.session_state.seccion_activa = "Seguro"
-    if st.button("💰 6. Tarifas"): st.session_state.seccion_activa = "Tarifas"
+    if st.button("🍽️ 3. Comidas"): st.session_state.seccion_activa = "Comidas"
+    if st.button("🏞️ 4. Excursiones"): st.session_state.seccion_activa = "Excursiones"
+    if st.button("🌙 5. Actividades Nocturnas"): st.session_state.seccion_activa = "Actividades"
+    if st.button("🏥 6. Seguro Médico"): st.session_state.seccion_activa = "Seguro"
+    if st.button("💰 7. Tarifas"): st.session_state.seccion_activa = "Tarifas"
 
     st.markdown('<div class="btn-adhesion">', unsafe_allow_html=True)
     if st.button("📝 FICHA DE ADHESIÓN"): st.session_state.seccion_activa = "Adhesión"
     st.markdown('</div>', unsafe_allow_html=True)
+
+    # CONTACTO
+    st.markdown(f"""
+        <div class="sidebar-footer">
+            <div class="footer-item"><span>📍 Av. Rivadavia 4532 - Galería Alefa (local 10)</span></div>
+            <div class="footer-item"><span>📍 Del Cimarrón 1846 - Ituzaingo</span></div>
+            <div class="footer-item"><span>📞 11 - 4847-6467</span></div>
+            <div class="footer-item">
+                <a href="https://wa.me/541156096283" target="_blank" class="ws-link">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" class="ws-icon-img">
+                    <span>11 - 5609-6283 (Whatsapp)</span>
+                </a>
+            </div>
+            <div class="footer-item"><span>✉️ <a href="mailto:info@serranoturismo.com.ar" style="text-decoration:none; color:inherit;">info@serranoturismo.com.ar</a></span></div>
+        </div>
+    """, unsafe_allow_html=True)
 
 # 5. RENDERIZADO
 if st.session_state.seccion_activa == "Transporte":
@@ -94,9 +134,7 @@ if st.session_state.seccion_activa == "Transporte":
 elif st.session_state.seccion_activa == "Hotelería":
     render_hoteleria(destino)
 elif st.session_state.seccion_activa == "Comidas":
-    st.title("🍽️ Régimen de Comidas")
-    st.info(f"Detalle del servicio gastronómico para {destino}.")
-    # Aquí irá render_comidas(destino) cuando tengamos el archivo
+    render_comidas(destino)
 elif st.session_state.seccion_activa == "Excursiones":
     render_excursiones(destino)
 elif st.session_state.seccion_activa == "Actividades":
