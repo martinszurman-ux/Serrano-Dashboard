@@ -1,6 +1,11 @@
 import streamlit as st
 from datetime import datetime
 
+# =================================================================
+# 📋 MÓDULO: SOLICITUD DE ADHESIÓN (Serrano Turismo)
+# Versión: Ficha Completa + Vencimiento DNI + Botón de Impresión
+# =================================================================
+
 def render_adhesion(logo_url):
     # CSS para optimizar la impresión de los datos completados
     st.markdown("""
@@ -21,20 +26,16 @@ def render_adhesion(logo_url):
                 border: none !important;
                 padding: 0 !important;
             }
-            input {
-                border: none !important;
-                color: black !important;
-            }
         }
         </style>
     """, unsafe_allow_html=True)
 
-    # Cabecera
+    # Cabecera Institucional
     st.image(logo_url, width=150)
     st.markdown("<h2 style='text-align: center; color: black; margin-bottom: 0;'>SOLICITUD DE INGRESO</h2>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; font-weight: bold;'>Ficha del Cliente / Pasajero</p>", unsafe_allow_html=True)
 
-    with st.form("form_adhesion_completo"):
+    with st.form("form_adhesion_final_print"):
         # --- DATOS DE CONTROL ---
         col1, col2, col3, col4 = st.columns(4)
         with col1: st.date_input("Fecha", datetime.now())
@@ -56,7 +57,7 @@ def render_adhesion(logo_url):
             st.date_input("Fecha de Nacimiento", min_value=datetime(2000,1,1))
         with ca2:
             st.text_input("Nombres")
-            st.date_input("Vencimiento D.N.I.") # NUEVO CAMPO AGREGADO
+            st.date_input("Vencimiento D.N.I.") # Campo solicitado
             st.radio("Sexo", ["Masculino", "Femenino", "X"], horizontal=True)
 
         cd1, cd2, cd3 = st.columns([2, 1, 1])
@@ -83,11 +84,11 @@ def render_adhesion(logo_url):
         # Selector de Plan
         plan_sel = st.pills("Plan de Pago:", options=["PLAN 1", "PLAN 2", "PLAN 3", "PLAN 4", "PLAN 5", "OTROS"])
         if plan_sel == "OTROS":
-            st.text_input("Aclarar plan:")
+            st.text_input("Especifique otro plan:")
 
         # Texto Legal Exacto
         st.markdown(f"""
-            <div style="font-size: 0.9rem; text-align: justify; border: 1px solid #ccc; padding: 15px; background-color: #fcfcfc;">
+            <div style="font-size: 0.9rem; text-align: justify; border: 1px solid #ccc; padding: 15px; background-color: #fcfcfc; color: black;">
             Declaro bajo juramento que los datos aqui volcados son absolutamente exactos y acepto, para la cancelacion de los servicios 
             a prestar por <b>SERRANO TURISMO</b>, el plan de pagos que figura en la solicitud de reserva mencionada anteriormente.<br><br>
             Los planes contado deberan abonarse dentro de los 30 dias de haberse firmado el contrato.<br><br>
@@ -96,7 +97,7 @@ def render_adhesion(logo_url):
             </div>
         """, unsafe_allow_html=True)
 
-        # Firmas
+        # Espacio para Firmas
         st.markdown("<br><br><br>", unsafe_allow_html=True)
         fcol1, fcol2 = st.columns(2)
         with fcol1:
@@ -106,7 +107,10 @@ def render_adhesion(logo_url):
             st.markdown("<hr style='border: 1px solid black;'>", unsafe_allow_html=True)
             st.caption("Aclaración y D.N.I.")
 
-        st.form_submit_button("Confirmar Datos para la Ficha")
+        # Botón para confirmar y refrescar datos
+        st.form_submit_button("Confirmar datos para la Ficha")
 
-    # BOTÓN DE IMPRESIÓN
-    st.button("🖨️ IMPRIMIR SOLICITUD COMPLETADA", on_click=lambda: st.write('<script>window.print();</script>', unsafe_allow_html=True))
+    # --- BOTÓN DE IMPRESIÓN (Este es el que faltaba) ---
+    st.markdown("---")
+    if st.button("🖨️ GENERAR E IMPRIMIR FORMULARIO"):
+        st.write('<script>window.print();</script>', unsafe_allow_html=True)
