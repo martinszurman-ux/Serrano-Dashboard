@@ -4,11 +4,11 @@ import streamlit.components.v1 as components
 
 # =================================================================
 # 📋 MÓDULO: SOLICITUD DE ADHESIÓN (Serrano Turismo)
-# VERSIÓN: Cambio DNI a CUIL + Bloqueo de Segunda Hoja
+# VERSIÓN: DNI/CUIL Combinado + Nota en último renglón
 # =================================================================
 
 def render_adhesion(logo_url):
-    # CSS para forzar carilla única y eliminar la hoja fantasma
+    # CSS para control de impresión y diseño de carilla única
     st.markdown("""
         <style>
         .main .block-container { 
@@ -22,7 +22,6 @@ def render_adhesion(logo_url):
                 size: A4;
                 margin: 0.4cm; 
             }
-            /* ESCALADO PARA UNA CARILLA */
             html, body {
                 zoom: 92%; 
                 height: 100%;
@@ -39,7 +38,6 @@ def render_adhesion(logo_url):
             h2 { font-size: 1.3rem !important; margin-top: -15px !important; margin-bottom: 2px !important; }
             p, div, label { font-size: 9pt !important; line-height: 1.0 !important; }
             
-            /* Inputs compactos */
             input, textarea { 
                 border: none !important; 
                 background: transparent !important; 
@@ -81,8 +79,8 @@ def render_adhesion(logo_url):
     ca2.text_input("Nombres")
     
     cd1, cd2, cd3 = st.columns([2, 1, 1])
-    cd1.text_input("C.U.I.L. Nº") # CAMBIO A CUIL
-    cd2.date_input("Vencimiento C.U.I.L.") # CAMBIO A CUIL
+    cd1.text_input("D.N.I. / C.U.I.L. Nº") # Ajustado
+    cd2.date_input("Vencimiento D.N.I.") # Ajustado
     cd3.date_input("Nacimiento", min_value=datetime(1990,1,1))
     
     st.radio("Sexo", ["Masculino", "Femenino", "X"], horizontal=True)
@@ -99,12 +97,12 @@ def render_adhesion(logo_url):
     
     cp1_a, cp1_b, cp1_c = st.columns([2, 1, 1])
     cp1_a.text_input("Madre / Padre / Tutor (1)")
-    cp1_b.text_input("C.U.I.L. (1)") # CAMBIO A CUIL
+    cp1_b.text_input("C.U.I.L. (1)")
     cp1_c.text_input("Teléfono (1)")
     
     cp2_a, cp2_b, cp2_c = st.columns([2, 1, 1])
     cp2_a.text_input("Madre / Padre / Tutor (2)")
-    cp2_b.text_input("C.U.I.L. (2)") # CAMBIO A CUIL
+    cp2_b.text_input("C.U.I.L. (2)")
     cp2_c.text_input("Teléfono (2)")
     
     st.text_input("E-mail de contacto:")
@@ -116,14 +114,14 @@ def render_adhesion(logo_url):
     st.write("**Seleccione su Plan de Pago:**")
     st.pills("Planes", options=["PLAN 1", "PLAN 2", "PLAN 3", "PLAN 4", "PLAN 5", "OTROS"], default="PLAN 1", label_visibility="collapsed")
 
-    # TEXTO LEGAL
+    # TEXTO LEGAL (Nota en el último renglón)
     st.markdown(f"""
         <div style="font-size: 0.8rem; text-align: justify; border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9; color: black; line-height: 1.1;">
         Declaro bajo juramento que los datos aqui volcados son absolutamente exactos y acepto, para la cancelacion de los servicios 
-        a prestar por <b>SERRANO TURISMO</b>, el plan de pagos que figura en la solicitud de reserva mencionada anteriormente.<br>
+        a prestar por <b>SERRANO TURISMO</b>, el plan de pagos que figura en la solicitud de reserva mencionada anteriormente.<br><br>
         Los planes contado deberan abonarse dentro de los 30 dias de haberse firmado el contrato. 
-        Ademas declaro conocer todas y cada uno de las condiciones del contrato suscripto. 
-        <b>NOTA:</b> de no marcarse plan, se emitira como <b>PLAN 1</b>.
+        Ademas declaro conocer todas y cada uno de las condiciones del contrato suscripto por mi y/u otro representantes del contingente de referencia.<br><br>
+        <b>NOTA: de no marcarse ningun plan de pago, su chequera se emitira como PLAN 1.</b>
         </div>
     """, unsafe_allow_html=True)
 
@@ -132,7 +130,7 @@ def render_adhesion(logo_url):
     st.markdown("<br>", unsafe_allow_html=True)
     fcol1, fcol2 = st.columns(2)
     fcol1.markdown("<hr style='border:0.5px solid black; margin-bottom:0;'><p style='text-align:center; font-size:8pt;'>Firma del Responsable</p>", unsafe_allow_html=True)
-    fcol2.markdown("<hr style='border:0.5px solid black; margin-bottom:0;'><p style='text-align:center; font-size:8pt;'>Aclaración y C.U.I.L.</p>", unsafe_allow_html=True) # CAMBIO A CUIL
+    fcol2.markdown("<hr style='border:0.5px solid black; margin-bottom:0;'><p style='text-align:center; font-size:8pt;'>Aclaración y C.U.I.L.</p>", unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
     # --- BOTÓN DE IMPRESIÓN ---
