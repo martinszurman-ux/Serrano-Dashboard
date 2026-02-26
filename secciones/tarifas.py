@@ -19,14 +19,10 @@ def render_tarifas(destino):
             margin-bottom: -10px;
         }
         
-        /* Centrado Absoluto de st.pills */
-        div[data-testid="stPills"] {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-        }
+        /* FUERZA EL CENTRADO DE LOS PILLS */
         div[data-testid="stPills"] > div {
-            justify-content: center;
+            justify-content: center !important;
+            display: flex !important;
         }
 
         /* Widgets Superiores (Itinerarios) */
@@ -132,7 +128,6 @@ def render_tarifas(destino):
                 es_activo = st.session_state[session_key] == i
                 clase_card = "selected-plan" if es_activo else ""
                 
-                # HTML corregido para evitar SyntaxError
                 card_html = f'<div class="plan-card-container {clase_card}"><div><span class="day-number">{numero}</span><span class="transport-icon">{icono}</span></div><div class="day-text">{resto}</div></div>'
                 st.markdown(card_html, unsafe_allow_html=True)
                 
@@ -153,8 +148,11 @@ def render_tarifas(destino):
 
         st.markdown("<p style='text-align:center; font-weight:700; color:#495057; margin-bottom:15px;'>Elegí tu plan de pago:</p>", unsafe_allow_html=True)
         
-        cuota_sel = st.pills("Selecciona cuotas", options=opciones_finales, default=opciones_finales[1], label_visibility="collapsed", key=f"pills_{folder}")
-        if not cuota_sel: cuota_sel = opciones_finales[1]
+        # Envolvemos en columnas para asegurar el centrado visual total
+        _, c_pills, _ = st.columns([1, 6, 1])
+        with c_pills:
+            cuota_sel = st.pills("Selecciona cuotas", options=opciones_finales, default=opciones_finales[1], label_visibility="collapsed", key=f"pills_{folder}")
+            if not cuota_sel: cuota_sel = opciones_finales[1]
 
         # --- SECCIÓN 3: EL GRAN WIDGET HERO ---
         st.markdown("<hr style='border-top: 1px solid #eee; margin: 30px 0;'>", unsafe_allow_html=True)
