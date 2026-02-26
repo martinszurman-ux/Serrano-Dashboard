@@ -44,11 +44,10 @@ def render_tarifas(destino):
             min-height: 160px; display: flex; flex-direction: column; 
             justify-content: center; align-items: center;
         }
+        /* Estilos para la tabla contable */
         th {
-            text-align: center !important;
-            font-weight: bold !important;
-            text-transform: uppercase;
-            color: #333 !important;
+            text-align: center !important; font-weight: bold !important;
+            text-transform: uppercase; color: #333 !important;
             background-color: #f2f2f2 !important;
         }
         td { text-align: center !important; }
@@ -91,25 +90,27 @@ def render_tarifas(destino):
         v = df.iloc[st.session_state[session_key]]
         st.divider()
 
+        # --- SECCIÓN DE PAGOS Y MONTOS ---
         col_opc, col_monto, col_cash = st.columns(3)
 
         def clean_val(val):
             return float(str(val).replace('$', '').replace('.', '').replace(',', '').strip())
 
+        # Widget 1: Solo texto y selector (Sin el recuadro gris)
         with col_opc:
-            st.markdown('<div class="widget-3d-inner">', unsafe_allow_html=True)
-            st.markdown("<p style='color:#6c757d; font-size:0.85rem; font-weight:700; text-transform:uppercase;'>Opciones de Pago</p>", unsafe_allow_html=True)
+            st.markdown("<p style='color:#6c757d; font-size:0.85rem; font-weight:700; text-transform:uppercase; text-align:center; margin-top:20px;'>Opciones de Pago</p>", unsafe_allow_html=True)
             opciones_c = [c.replace('_', ' ') for c in df.columns if c not in ['Programa', 'Contado']]
-            cuota_sel = st.pills("C", options=opciones_c, default=opciones_c[0], label_visibility="collapsed", key=f"pi_{folder}")
-            st.markdown('</div>', unsafe_allow_html=True)
+            cuota_sel = st.pills("Cuotas", options=opciones_c, default=opciones_c[0], label_visibility="collapsed", key=f"pi_{folder}")
 
         c_db = cuota_sel.replace(' ', '_')
         val_c = clean_val(v[c_db])
         val_cont = clean_val(v['Contado'])
 
+        # Widget 2: Monto con recuadro
         with col_monto:
             st.markdown(f"""<div class="widget-3d-inner"><p style='color:#6c757d; font-size:0.85rem; font-weight:700; text-transform:uppercase;'>Monto {cuota_sel}</p><p style='color:#212529; font-size:2.2rem; font-weight:800; margin:0;'>${val_c:,.0f}</p></div>""", unsafe_allow_html=True)
 
+        # Widget 3: Efectivo con recuadro
         with col_cash:
             st.markdown(f"""<div class="widget-3d-inner"><p style='color:#6c757d; font-size:0.85rem; font-weight:700; text-transform:uppercase;'>💎 Efectivo (10% OFF)</p><p style='color:#495057; font-size:2.2rem; font-weight:800; margin:0;'>${val_cont * 0.9:,.0f}</p></div>""", unsafe_allow_html=True)
 
@@ -121,6 +122,7 @@ def render_tarifas(destino):
         for col in cols_num:
             df_format[col] = df_format[col].apply(clean_val)
 
+        # Tabla contable minimalista
         st.table(df_format.set_index('Programa').style.format("$ {:,.0f}"))
     else:
-        st.error("Error: CSV no encontrado.")
+        st.error("CSV no encontrado.")
