@@ -19,39 +19,43 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO: LOGO CENTRADO Y MENÚ ULTRA-COMPACTO
+# 3. CSS MAESTRO: LOGO CENTRADO, SUBIR MENÚ Y NOTAS DISCRETAS
 st.markdown("""
     <style>
-    /* Eliminar el espacio en blanco superior del sidebar */
+    /* Eliminar espacios superiores del sidebar */
     [data-testid="stSidebarContent"] {
-        padding-top: 1rem !important; /* Mínimo espacio arriba */
+        padding-top: 0.5rem !important; 
         padding-left: 0.5rem !important;
         padding-right: 0.5rem !important;
     }
+
+    /* CONTENEDOR PARA CENTRADO ABSOLUTO DEL LOGO */
+    .logo-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-bottom: -10px !important;
+        margin-top: -10px !important;
+    }
     
-    /* Centrar logo horizontalmente */
-    [data-testid="stSidebar"] img {
-        max-width: 140px !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-        display: block !important;
-        padding-bottom: 0px !important;
+    .logo-container img {
+        max-width: 130px !important;
     }
 
-    /* Reducir espacio de los divisores y bloques verticales */
+    /* Reducir espacio de divisores */
     [data-testid="stSidebar"] hr {
-        margin: 0.5rem 0 !important;
+        margin: 0.4rem 0 !important;
     }
-    
+
+    /* BOTONES MATE (SE MANTIENEN IGUAL) */
     [data-testid="stVerticalBlock"] > div {
         width: 100% !important;
-        gap: 0.2rem !important; /* Reduce espacio entre botones */
+        gap: 0.1rem !important;
     }
 
-    /* Estilo de los Botones: Gris Oscuro Mate (Bloqueado) */
     .stButton, .stButton button {
         width: 100% !important;
-        display: block !important;
     }
 
     div.stButton > button {
@@ -67,28 +71,31 @@ st.markdown("""
         align-items: center !important;
         justify-content: flex-start !important;
         transition: all 0.3s ease !important;
-        margin-bottom: -5px !important; /* Sube un poco cada botón hacia el anterior */
+        margin-bottom: -6px !important;
     }
     
-    /* Hover Minimalista Blanco */
     div.stButton > button:hover {
         background: #555555 !important;
         border-color: #ffffff !important;
         transform: translateX(4px) !important;
     }
 
-    /* Botón de Adhesión (Diferenciado) */
+    /* Botón de Adhesión */
     .btn-adhesion div.stButton > button {
         background: linear-gradient(145deg, #1a1a1a, #000000) !important;
         border: 1px solid #555555 !important;
-        margin-top: 10px !important; /* Espacio reducido para que suba */
+        margin-top: 8px !important;
         justify-content: center !important;
-        padding-left: 0 !important;
     }
 
-    /* Ajuste de tipografía en botones */
-    div.stButton > button p {
-        font-size: 14px !important;
+    /* ESTILO PARA LAS NOTAS DISCRETAS AL FINAL */
+    .sidebar-notes {
+        color: #888888;
+        font-size: 0.7rem;
+        text-align: center;
+        margin-top: 20px;
+        line-height: 1.2;
+        font-style: italic;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -98,13 +105,13 @@ if "seccion_activa" not in st.session_state:
     st.session_state.seccion_activa = "Transporte"
 
 with st.sidebar:
-    # El CSS se encarga de centrar esta imagen
-    st.image(LOGO_URL)
+    # LOGO CENTRADO USANDO DIV
+    st.markdown(f'<div class="logo-container"><img src="{LOGO_URL}"></div>', unsafe_allow_html=True)
     st.divider()
     
     destino = st.selectbox("📍 Destino", ["Villa Carlos Paz", "San Pedro"])
     
-    # Menú de botones unificados
+    # Menú de botones
     if st.button("🚌 1. Transporte"):
         st.session_state.seccion_activa = "Transporte"
     
@@ -123,11 +130,20 @@ with st.sidebar:
     if st.button("💰 6. Tarifas"):
         st.session_state.seccion_activa = "Tarifas"
 
-    # Botón de Adhesión (CTA Final)
+    # Botón de Adhesión
     st.markdown('<div class="btn-adhesion">', unsafe_allow_html=True)
     if st.button("📝 FICHA DE ADHESIÓN"):
         st.session_state.seccion_activa = "Adhesión"
     st.markdown('</div>', unsafe_allow_html=True)
+
+    # NOTAS DISCRETAS (No pusiste el texto, así que puse ejemplos de Serrano)
+    st.markdown("""
+        <div class="sidebar-notes">
+            Serrano Turismo ® 2026<br>
+            Legajo N° 12345 - Disp. 678/20<br>
+            Todos los derechos reservados.
+        </div>
+    """, unsafe_allow_html=True)
 
 # 5. RENDERIZADO
 if st.session_state.seccion_activa == "Transporte":
