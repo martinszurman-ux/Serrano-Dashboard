@@ -1,45 +1,54 @@
 import streamlit as st
 import pandas as pd
+import json
 
-# Configuración de la página
-st.set_page_config(page_title="Serrano Turismo - Dashboard de Experiencia", layout="wide")
+# Configuración inicial
+st.set_page_config(page_title="Serrano Turismo - Clientes", layout="wide")
 
-# Estilo personalizado
-st.markdown("""
-    <style>
-    .main { background-color: #f5f7f9; }
-    .stButton>button { background-color: #ff4b4b; color: white; }
-    </style>
-    """, unsafe_allow_html=True)
+# Cargar configuración del menú
+with open('menu_data.json', 'r') as f:
+    menu_config = json.load(f)
 
-st.title("🚀 Experiencia Serrano Turismo")
-st.subheader("Todo lo que necesitás saber sobre tu próximo gran viaje")
+# --- SECCIÓN 1: MENÚ LATERAL (SIDEBAR) ---
+with st.sidebar:
+    st.image(menu_config['logo_url'], use_container_width=True)
+    st.divider()
+    
+    st.subheader("📍 Seleccioná tu Viaje")
+    destino_nombres = [d['nombre'] for d in menu_config['destinos']]
+    destino_elegido = st.selectbox("Destino", destino_nombres)
+    
+    st.subheader("📂 Información")
+    # Buscamos las secciones del destino elegido en el JSON
+    secciones = next(d['secciones'] for d in menu_config['destinos'] if d['nombre'] == destino_elegido)
+    seccion_elegida = st.radio("Ver detalles de:", secciones)
 
-# Cargar datos
+# --- SECCIÓN 2 Y 3: CONTENIDO PRINCIPAL ---
 df = pd.read_csv('data.csv')
+info = df[df['Destino'] == destino_elegido].iloc[0]
 
-# Selector de Destino
-destino_select = st.selectbox("Seleccioná tu destino:", df['Destino'].unique())
-datos = df[df['Destino'] == destino_select].iloc[0]
+st.title(f"Experiencia {destino_elegido}")
 
-# Diseño en columnas
-col1, col2 = st.columns([1, 1])
+if seccion_elegida == "General":
+    st.header("¡Bienvenidos a la aventura!")
+    st.image(info['Imagen_URL'], use_container_width=True)
+    st.write("Explorá las opciones en el menú de la izquierda para conocer cada detalle.")
 
-with col1:
-    st.image(datos['Imagen_URL'], use_container_width=True)
-    st.info(f"✨ **Promoción Actual:** {datos['Promo_Vigente']}")
+elif seccion_elegida == "Hotelería":
+    st.header("🏨 Nuestra Hotelería")
+    st.subheader(info['Hotel_Nombre'])
+    st.write(info['Hotel_Info'])
+    # Aquí podrías agregar más fotos si sumamos columnas al CSV
 
-with col2:
-    st.header(f"🏨 Hotelería en {destino_select}")
-    st.write(f"**{datos['Hotel_Nombre']}**")
-    st.write(datos['Hotel_Highlight'])
-    
-    st.header("👨‍🏫 Nuestro Staff")
-    st.success(datos['Staff_Valor'])
-    
-    st.header("🍕 Sistema All Inclusive")
-    st.write("Pensión completa, gaseosa libre de primera marca y agua mineral 24hs.")
+elif seccion_elegida == "Staff y Valores":
+    st.header("👨‍🏫 Profesionales a cargo")
+    st.success(info['Staff_Valor'])
+    st.info("🍴 **All Inclusive:** " + info['All_Inclusive'])
 
-# Pie de página con contacto
-st.divider()
-st.write("¿Tenés dudas? Contactanos por WhatsApp o seguinos en la App Viaxlab.")
+elif seccion_elegida == "Tarifas y Promos":
+    st.header("💰 Tarifas y Beneficios")
+    st.warning(f"🔥 **PROMO:** {info['Promo']}")
+    st.write("Consultá por nuestros planes de pago con cuponera y beneficios por cantidad de pasajeros.")
+
+st.sidebar.divider()
+st.sidebar.caption("Serrano Turismo - 29 años de trayectoria")
