@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import os
+from PIL import Image
 
 def render_tarifas(destino):
     # 1. INICIALIZACIÓN
@@ -10,7 +11,7 @@ def render_tarifas(destino):
     if session_key not in st.session_state:
         st.session_state[session_key] = 0
 
-    # 2. ESTILOS CSS (Diseño Hero para el Pago)
+    # 2. ESTILOS CSS (Diseño Hero, Cards y Tipografía)
     st.markdown("""
         <style>
         /* Cards de Itinerario */
@@ -77,6 +78,11 @@ def render_tarifas(destino):
         </style>
     """, unsafe_allow_html=True)
 
+    # --- CARGA DEL HEADER ---
+    header_path = f"data/{folder}/tarifas_y_formas_header.png"
+    if os.path.exists(header_path):
+        st.image(header_path, use_container_width=True)
+
     path_tarifas = f"data/{folder}/tarifas_y_formas_de_pago.csv"
     
     if os.path.exists(path_tarifas):
@@ -124,7 +130,6 @@ def render_tarifas(destino):
         opciones_cuotas = [c.replace('_', ' ') for c in df.columns if c not in excluir_botones]
         opciones_finales = ["1 Pago"] + opciones_cuotas
 
-        # Selector de Cuotas (Pills centrado)
         st.markdown("<p style='text-align:center; font-weight:700; color:#495057; margin-bottom:15px;'>Elegí tu plan de pago:</p>", unsafe_allow_html=True)
         _, c_pills, _ = st.columns([1, 4, 1])
         with c_pills:
@@ -134,7 +139,6 @@ def render_tarifas(destino):
         # --- SECCIÓN 3: EL GRAN WIDGET HERO ---
         st.markdown("<hr style='border-top: 1px solid #eee; margin: 30px 0;'>", unsafe_allow_html=True)
         
-        # Lógica de Monto
         if cuota_sel == "1 Pago":
             m_display = f"${clean_val(v['Contado']):,.0f}"
             label_cuota = "Pago Único"
@@ -143,7 +147,6 @@ def render_tarifas(destino):
             m_display = f"${clean_val(v[c_db]):,.0f}"
             label_cuota = f"Por Cuota ({cuota_sel})"
 
-        # Render del Hero Widget Centrado
         st.markdown(f"""
             <div class="hero-payment-card">
                 <p class="hero-label">Monto a abonar</p>
@@ -152,7 +155,7 @@ def render_tarifas(destino):
             </div>
         """, unsafe_allow_html=True)
 
-        # Texto del regalo/descuento debajo del gran widget
+        # Caja de Beneficio/Descuento
         st.markdown("""
             <div style='max-width: 700px; margin: 30px auto; padding: 20px; background-color: #fdf2f2; border-radius: 12px; border: 1px dashed #d32f2f;'>
                 <p style='font-size: 1rem; color: #333333; text-align: center; margin: 0; font-weight: 500;'>
