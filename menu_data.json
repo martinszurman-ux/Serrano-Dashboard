@@ -1,13 +1,15 @@
 {
+    "logo_url": "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png",
     "destinos": [
         {
+            "id": "SP",
             "nombre": "San Pedro",
-            "secciones": ["General", "Hotelería", "Staff y Valores", "Tarifas y Promos"]
+            "secciones": ["Inicio", "Hotelería", "Staff y Valores", "Tarifas y Promos"]
         },
         {
+            "id": "VCP",
             "nombre": "Villa Carlos Paz",
-            "secciones": ["General", "Hotelería", "Staff y Valores", "Tarifas y Promos"]
+            "secciones": ["Inicio", "Hotelería", "Staff y Valores", "Tarifas y Promos"]
         }
-    ],
-    "logo_url": "https://tu-link-de-logo.com/logo-serrano.png"
+    ]
 }
