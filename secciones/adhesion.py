@@ -3,30 +3,23 @@ from datetime import datetime
 
 # =================================================================
 # 📋 MÓDULO: SOLICITUD DE ADHESIÓN (Serrano Turismo)
-# VERSIÓN: Triple Seguridad (Estado + JS Directo + Persistencia)
+# FUNCIÓN: Ficha con persistencia y botón de impresión garantizado
 # =================================================================
 
 def render_adhesion(logo_url):
-    # 1. CSS de Alta Fidelidad y Control de Impresión
+    # 1. Estilos CSS para la web y para la impresora
     st.markdown("""
         <style>
-        /* Estilo del botón de impresión en la web */
-        .btn-imprimir {
-            display: block;
-            width: 100%;
+        /* Estilos en pantalla */
+        .instruccion-final {
+            background-color: #e3f2fd;
             padding: 15px;
-            background-color: #2E7D32 !important;
-            color: white !important;
-            text-align: center;
-            font-weight: bold;
             border-radius: 10px;
-            cursor: pointer;
-            margin-top: 20px;
-            text-decoration: none;
-            font-size: 1.2rem;
-            border: none;
+            border-left: 5px solid #1E3A8A;
+            margin: 20px 0;
         }
         
+        /* Estilos de Impresión (PDF) */
         @media print {
             header, [data-testid="stSidebar"], .no-print, .stButton, footer, [data-testid="stHeader"] {
                 display: none !important;
@@ -34,20 +27,17 @@ def render_adhesion(logo_url):
             .main .block-container { padding: 0 !important; margin: 0 !important; }
             body { color: black !important; background: white !important; }
             div[data-testid="stForm"] { border: none !important; padding: 0 !important; }
+            input { border: none !important; font-weight: bold !important; }
         }
         </style>
     """, unsafe_allow_html=True)
 
-    # 2. Inicialización del Estado (Para que los botones no desaparezcan)
-    if 'form_confirmado' not in st.session_state:
-        st.session_state.form_confirmado = False
-
     # Cabecera
     st.image(logo_url, width=150)
-    st.markdown("<h2 style='text-align: center;'>SOLICITUD DE INGRESO</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center; color: black;'>SOLICITUD DE INGRESO</h2>", unsafe_allow_html=True)
 
-    # 3. Formulario de Carga
-    with st.form("form_serrano_final"):
+    # 2. Formulario Principal
+    with st.form("ficha_definitiva"):
         col1, col2, col3, col4 = st.columns(4)
         with col1: st.date_input("Fecha", datetime.now())
         with col2: st.text_input("Cliente N°")
@@ -59,7 +49,8 @@ def render_adhesion(logo_url):
         with c_anio: st.text_input("Año y División")
 
         st.markdown("---")
-        st.write("**DATOS DEL ALUMNO**")
+        st.write("**DATOS DEL ALUMNO / PASAJERO**")
+        
         ca1, ca2 = st.columns(2)
         with ca1:
             st.text_input("Apellido")
@@ -71,7 +62,7 @@ def render_adhesion(logo_url):
             st.radio("Sexo", ["Masculino", "Femenino", "X"], horizontal=True)
 
         st.markdown("---")
-        st.write("**DATOS DE LOS PADRES**")
+        st.write("**DATOS DE LOS PADRES / TUTORES**")
         ct1, ct2 = st.columns(2)
         with ct1: 
             st.text_input("Madre / Padre / Tutor (1)")
@@ -80,11 +71,12 @@ def render_adhesion(logo_url):
             st.text_input("Madre / Padre / Tutor (2)")
             st.text_input("D.N.I. (2)")
         
-        st.text_input("E-mail de contacto")
-        st.text_area("Observaciones")
+        st.text_input("E-mail de contacto:")
+        st.text_area("Observaciones:")
 
         st.markdown("---")
-        st.pills("Plan de Pago:", options=["PLAN 1", "PLAN 2", "PLAN 3", "PLAN 4", "PLAN 5", "OTROS"])
+        st.write("**PLAN DE PAGO ELEGIDO**")
+        plan_sel = st.pills("Seleccione:", options=["PLAN 1", "PLAN 2", "PLAN 3", "PLAN 4", "PLAN 5", "OTROS"], label_visibility="collapsed")
         
         st.markdown(f"""
             <div style="font-size: 0.9rem; text-align: justify; border: 1px solid #ccc; padding: 15px; color: black; background: #fff;">
@@ -102,18 +94,15 @@ def render_adhesion(logo_url):
         fcol1.markdown("<hr style='border:1px solid black;'><p style='text-align:center;'>Firma</p>", unsafe_allow_html=True)
         fcol2.markdown("<hr style='border:1px solid black;'><p style='text-align:center;'>Aclaración y DNI</p>", unsafe_allow_html=True)
 
-        # Botón de Confirmación
-        if st.form_submit_button("✅ 1. CONFIRMAR DATOS"):
-            st.session_state.form_confirmado = True
+        # Botón para "congelar" los datos en la pantalla antes de imprimir
+        st.form_submit_button("✅ 1. CONFIRMAR DATOS")
 
-    # 4. Botón de Impresión (Solo se ve si confirmaron los datos)
-    if st.session_state.form_confirmado:
-        st.success("✅ Datos anclados. Presione el botón de abajo para imprimir o guardar como PDF.")
-        
-        # Botón con JavaScript inyectado directamente en el evento onClick
-        if st.button("🖨️ 2. CLIC AQUÍ PARA IMPRIMIR / DESCARGAR PDF"):
-            st.markdown("""
-                <script>
-                    window.print();
-                </script>
-            """, unsafe_allow_html=True)
+    # 3. Botón de Impresión PERMANENTE (Fuera del formulario)
+    st.markdown("""
+        <div class="instruccion-final">
+            <strong>PASO FINAL:</strong> Una vez confirmados los datos arriba, presione el botón verde para descargar su PDF.
+        </div>
+    """, unsafe_allow_html=True)
+
+    if st.button("🖨️ 2. DESCARGAR / IMPRIMIR SOLICITUD", type="primary"):
+        st.write('<script>window.print();</script>', unsafe_allow_html=True)
