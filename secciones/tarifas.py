@@ -8,6 +8,7 @@ def render_tarifas(destino):
     def seleccionar_plan(indice):
         st.session_state[f"sel_index_{folder}"] = indice
 
+    # CSS para agrandar botones, centralizarlos y mantener la estética
     st.markdown("""
         <style>
         .plan-card-click {
@@ -30,12 +31,20 @@ def render_tarifas(destino):
             color: #495057; font-size: 0.85rem; font-weight: 700; 
             text-transform: uppercase; text-align: center;
         }
-        .stButton button {
-            background-color: transparent !important; border: none !important;
-            color: transparent !important; height: 140px !important;
-            width: 100% !important; position: absolute; top: 0; left: 0;
-            z-index: 10; cursor: pointer;
+        
+        /* Botones de cuotas (Pills) agrandados y centralizados */
+        div[data-testid="stPills"] {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
         }
+        div[data-testid="stPills"] button {
+            padding: 10px 20px !important;
+            font-size: 1rem !important;
+            font-weight: bold !important;
+            border-radius: 10px !important;
+        }
+        
         .widget-3d-inner {
             background: linear-gradient(145deg, #f0f0f0, #ffffff);
             border-radius: 15px; padding: 20px; text-align: center;
@@ -44,7 +53,7 @@ def render_tarifas(destino):
             min-height: 160px; display: flex; flex-direction: column; 
             justify-content: center; align-items: center;
         }
-        /* Estilos para la tabla contable */
+
         th {
             text-align: center !important; font-weight: bold !important;
             text-transform: uppercase; color: #333 !important;
@@ -96,21 +105,32 @@ def render_tarifas(destino):
         def clean_val(val):
             return float(str(val).replace('$', '').replace('.', '').replace(',', '').strip())
 
-        # Widget 1: Solo texto y selector (Sin el recuadro gris)
         with col_opc:
-            st.markdown("<p style='color:#6c757d; font-size:0.85rem; font-weight:700; text-transform:uppercase; text-align:center; margin-top:20px;'>Opciones de Pago</p>", unsafe_allow_html=True)
+            st.markdown("<p style='color:#6c757d; font-size:0.85rem; font-weight:700; text-transform:uppercase; text-align:center; margin-top:10px;'>Opciones de Pago</p>", unsafe_allow_html=True)
+            
+            # Definimos las opciones limpias del CSV
             opciones_c = [c.replace('_', ' ') for c in df.columns if c not in ['Programa', 'Contado']]
-            cuota_sel = st.pills("Cuotas", options=opciones_c, default=opciones_c[0], label_visibility="collapsed", key=f"pi_{folder}")
+            
+            # Forzamos 3 cuotas como default si no hay selección
+            cuota_sel = st.pills(
+                "Cuotas", 
+                options=opciones_c, 
+                default=opciones_c[0], # El primero suele ser 3 cuotas en el CSV
+                label_visibility="collapsed", 
+                key=f"pi_{folder}"
+            )
+            
+            # Seguridad: si cuota_sel es None (clic por fuera), usamos el default
+            if not cuota_sel:
+                cuota_sel = opciones_c[0]
 
         c_db = cuota_sel.replace(' ', '_')
         val_c = clean_val(v[c_db])
         val_cont = clean_val(v['Contado'])
 
-        # Widget 2: Monto con recuadro
         with col_monto:
             st.markdown(f"""<div class="widget-3d-inner"><p style='color:#6c757d; font-size:0.85rem; font-weight:700; text-transform:uppercase;'>Monto {cuota_sel}</p><p style='color:#212529; font-size:2.2rem; font-weight:800; margin:0;'>${val_c:,.0f}</p></div>""", unsafe_allow_html=True)
 
-        # Widget 3: Efectivo con recuadro
         with col_cash:
             st.markdown(f"""<div class="widget-3d-inner"><p style='color:#6c757d; font-size:0.85rem; font-weight:700; text-transform:uppercase;'>💎 Efectivo (10% OFF)</p><p style='color:#495057; font-size:2.2rem; font-weight:800; margin:0;'>${val_cont * 0.9:,.0f}</p></div>""", unsafe_allow_html=True)
 
@@ -122,7 +142,6 @@ def render_tarifas(destino):
         for col in cols_num:
             df_format[col] = df_format[col].apply(clean_val)
 
-        # Tabla contable minimalista
         st.table(df_format.set_index('Programa').style.format("$ {:,.0f}"))
     else:
         st.error("CSV no encontrado.")
