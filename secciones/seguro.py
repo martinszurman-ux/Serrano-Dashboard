@@ -1,35 +1,55 @@
 import streamlit as st
 
-def render_seguro():
-    st.markdown("""
-        <style>
-        .med-container {
-            background: linear-gradient(145deg, #f0f0f0, #ffffff);
-            border-radius: 20px; padding: 25px; text-align: center;
-            border: 1px solid #e0e0e0; box-shadow: 8px 8px 16px #d1d1d1, -8px -8px 16px #ffffff;
-            margin-bottom: 15px; min-height: 380px; display: flex;
-            flex-direction: column; justify-content: center; align-items: center;
-        }
-        .med-icon { font-size: 4rem; margin-bottom: 20px; }
-        .med-title { color: #495057; font-size: 1.2rem; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; min-height: 50px; display: flex; align-items: center; }
-        .med-text { color: #6c757d; font-size: 0.95rem; line-height: 1.5; }
-        </style>
-    """, unsafe_allow_html=True)
+def render_seguro(destino):
+    st.markdown(f"<h1 style='text-align: center; color: #1E3A8A;'>🏥 ASISTENCIA Y SEGURO MÉDICO</h1>", unsafe_allow_html=True)
+    st.markdown("---")
 
-    st.markdown(f"""
-        <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 20px; border: 1px solid #eee; margin-bottom: 30px;">
-            <img src="https://assistravel.com/web/image/website/1/logo/Assistravel?unique=966a426" width="280">
-            <h2 style="color: #495057; font-weight: 800; margin-top: 15px;">COBERTURA MÉDICA NACIONAL</h2>
-        </div>
-    """, unsafe_allow_html=True)
+    # --- ENCABEZADO: RESPALDO ---
+    st.markdown("### 🛡️ Respaldo y Cobertura Nacional")
+    st.write("Trabajamos con las empresas más importantes del país para garantizar una respuesta inmediata y eficaz en todo momento.")
 
-    col_m1, col_m2, col_m3 = st.columns(3)
-    with col_m1:
-        st.markdown('<div class="med-container"><div class="med-icon">🏥</div><div class="med-title">Asistencia en Destino</div><p class="med-text">Atención primaria y especialistas las 24 hs.</p></div>', unsafe_allow_html=True)
-    with col_m2:
-        st.markdown('<div class="med-container"><div class="med-icon">💊</div><div class="med-title">Servicio de Farmacia</div><p class="med-text">Cobertura completa en medicamentos recetados.</p></div>', unsafe_allow_html=True)
-    with col_m3:
-        st.markdown('<div class="med-container"><div class="med-icon">🛡️</div><div class="med-title">Seguro de Accidentes</div><p class="med-text">Responsabilidad Civil y Accidentes Personales.</p></div>', unsafe_allow_html=True)
+    col1, col2 = st.columns(2)
     
-    st.divider()
-    st.markdown("### 📲 Control y Seguimiento en Tiempo Real (App Viaxlab)")
+    with col1:
+        st.info("🏢 **Aseguradora:** San Cristóbal Seguros.")
+        st.info("🩺 **Prestador Médico:** Assistravel.")
+
+    with col2:
+        st.success("👨‍⚕️ **Médico permanente:** A disposición las 24 hs en el hotel.")
+        st.success("💊 **Medicamentos en mano:** Respuesta eficaz sin demoras.")
+
+    st.markdown("---")
+
+    # --- DETALLES DE COBERTURA ---
+    st.markdown("### 📋 Alcance de la Cobertura Total")
+    st.write("La cobertura es inmediata y permanente desde el inicio hasta el fin del tour, incluyendo tramos de ruta y seguimiento post-viaje.")
+
+    # Usamos una lista de checks para que sea fácil de leer
+    cobertura_html = """
+    <div style='background-color: #f0f2f6; padding: 20px; border-radius: 10px;'>
+        <ul style='list-style-type: none; padding-left: 0;'>
+            <li>✅ <b>Traslados:</b> Terrestres y aéreos (regulares y sanitarios).</li>
+            <li>✅ <b>Atención Médica:</b> Internaciones, cirugías mayor y menor.</li>
+            <li>✅ <b>Insumos:</b> Material descartable, rayos, yesos y odontología.</li>
+            <li>✅ <b>Medicamentos:</b> Incluidos en la atención inmediata.</li>
+            <li>✅ <b>Preexistencias:</b> Cobertura de agudizaciones de cuadros previos.</li>
+            <li>✅ <b>Seguimiento:</b> Asistencia post-viaje hasta el alta médica definitiva.</li>
+        </ul>
+    </div>
+    """
+    st.markdown(cobertura_html, unsafe_allow_html=True)
+
+    st.markdown("---")
+
+    # --- TECNOLOGÍA Y RED ---
+    col_a, col_b = st.columns([1.5, 1])
+
+    with col_a:
+        st.markdown("### 📱 Tecnología de Vanguardia")
+        st.write("**VIAXLAB APP:** Todos nuestros pasajeros están identificados con una pulsera de seguimiento que contiene su ficha médica digital para una atención precisa y rápida.")
+
+    with col_b:
+        st.markdown("### 🏥 Red Sanitaria")
+        st.write("Contamos con más de **45 Clínicas y Sanatorios** de alta complejidad en todo el trayecto y destino.")
+
+    st.warning("⚠️ **Dato clave:** La cobertura opera con el sistema de 'medicamentos en mano', lo que significa que el pasajero recibe el tratamiento de forma inmediata sin necesidad de trámites extras.")
