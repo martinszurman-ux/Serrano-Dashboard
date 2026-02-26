@@ -19,7 +19,7 @@ def render_tarifas(destino):
             margin-bottom: -10px;
         }
         
-        /* --- CORRECCIÓN DE CENTRADO DE PILLS Y TÍTULO --- */
+        /* --- CONTENEDOR SELECTOR DE PAGO --- */
         .contenedor-selector-pago {
             display: flex;
             flex-direction: column;
@@ -49,51 +49,48 @@ def render_tarifas(destino):
             font-size: 1.1rem;
         }
 
-        /* Widgets Superiores (Itinerarios) */
+        /* --- WIDGETS DE ITINERARIO (Sencillos y Prolijos) --- */
         .plan-card-container {
             border-radius: 15px; 
             padding: 20px; 
-            background: #E8E8E8; /* Plateado muy suave */
+            background: #E8E8E8; 
             border: 1px solid #d1d1d1; 
             text-align: center;
-            min-height: 160px; /* Aumentado un poco para el nuevo tamaño de fuente */
+            min-height: 160px; 
             display: flex; 
             flex-direction: column;
             justify-content: center; 
             align-items: center; 
             margin-bottom: 10px;
-            transition: all 0.3s ease;
+            transition: border 0.3s ease, background-color 0.3s ease; /* Sin flash/salto */
         }
         
         .selected-plan { 
-            border: 2px solid #4A90E2 !important; /* Borde azul al seleccionar */
+            border: 2px solid #4A90E2 !important; 
             background-color: #ffffff !important;
-            transform: scale(1.05);
-            box-shadow: 0px 6px 20px rgba(0,0,0,0.1);
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.05);
         }
         
-        /* AJUSTE DE TAMAÑO Y ALINEACIÓN VERTICAL */
-        .day-number { 
-            color: #4A90E2; /* Azul elegante */
-            font-size: 3.5rem; /* Tamaño XL */
-            font-weight: 900; 
-            line-height: 1; /* Para que el texto no tenga espacio extra arriba/abajo */
-            margin: 0; /* Asegurar que no haya márgenes que lo desvíen */
-        }
-        
-        .transport-icon { 
-            font-size: 2.2rem; /* Tamaño XL */
-            line-height: 1;
-            margin: 0; /* Eliminar margen izquierdo previo */
-        }
-        
-        /* Contenedor Flex para número e icono */
         .header-content {
             display: flex;
             justify-content: center;
-            align-items: center; /* ESTO ES LO QUE LOS ALINEA VERTICALMENTE */
-            gap: 10px; /* Espacio horizontal entre número e icono */
+            align-items: center;
+            gap: 10px;
             width: 100%;
+        }
+
+        .day-number { 
+            color: #4A90E2; 
+            font-size: 3.5rem; 
+            font-weight: 900; 
+            line-height: 1; 
+            margin: 0;
+        }
+        
+        .transport-icon { 
+            font-size: 2.2rem; 
+            line-height: 1;
+            margin: 0;
         }
         
         .day-text { 
@@ -104,18 +101,25 @@ def render_tarifas(destino):
             margin-top: 10px;
         }
 
-        /* MEGA WIDGET HERO */
+        /* --- EL GRAN WIDGET HERO (Efecto Genial Restaurado) --- */
         .hero-payment-card {
             background: linear-gradient(145deg, #ffffff, #f0f2f6);
             border-radius: 24px;
             padding: 40px;
             text-align: center;
             border: 1px solid #e0e4e8;
+            /* Sombra inicial neumórfica */
             box-shadow: 15px 15px 40px #d9dbe0, -15px -15px 40px #ffffff;
             max-width: 500px;
-            margin: 20px auto;
+            margin: 30px auto;
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: default;
+        }
+
+        .hero-payment-card:hover {
+            transform: translateY(-12px) scale(1.03);
+            box-shadow: 25px 25px 60px #c0c2c7, -15px -15px 40px #ffffff;
+            background: linear-gradient(145deg, #ffffff, #e6e9ef);
         }
 
         .hero-label { 
@@ -123,6 +127,7 @@ def render_tarifas(destino):
             text-transform: uppercase; letter-spacing: 1.5px;
             margin-bottom: 10px;
         }
+        
         .hero-value { 
             color: #1a1c1e; font-size: 4rem; font-weight: 900; margin: 0;
             line-height: 1;
@@ -130,8 +135,10 @@ def render_tarifas(destino):
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        
         .hero-subtitle { color: #4A90E2; font-size: 1.2rem; font-weight: 600; margin-top: 10px; }
 
+        /* Estilo para tabla comparativa */
         .styled-table th {
             background-color: #333333 !important;
             color: white !important; font-weight: bold !important; text-align: center !important;
@@ -174,7 +181,6 @@ def render_tarifas(destino):
                 es_activo = st.session_state[session_key] == i
                 clase_card = "selected-plan" if es_activo else ""
                 
-                # HTML corregido con la nueva clase .header-content
                 card_html = f"""
                 <div class="plan-card-container {clase_card}">
                     <div class="header-content">
@@ -234,6 +240,7 @@ def render_tarifas(destino):
             </div>
         """, unsafe_allow_html=True)
 
+        # Beneficio (ajustado al azul acero)
         st.markdown("""
             <div style='max-width: 700px; margin: 30px auto; padding: 20px; background-color: #f0f7ff; border-radius: 12px; border: 1px dashed #4A90E2;'>
                 <p style='font-size: 1rem; color: #333333; text-align: center; margin: 0; font-weight: 500;'>
@@ -246,7 +253,6 @@ def render_tarifas(destino):
         # --- SECCIÓN 4: TABLA Y BENEFICIOS ---
         st.divider()
         with st.expander("Ver tabla comparativa de todas las tarifas"):
-            # (El código de la tabla se mantiene igual)
             df_format = df.copy()
             cols_a_borrar = [c for c in df_format.columns if 'valor del viaje' in c.lower() or 'costo total' in c.lower()]
             df_format = df_format.drop(columns=cols_a_borrar)
@@ -276,4 +282,4 @@ def render_tarifas(destino):
             with c1 if i % 2 == 0 else c2:
                 st.markdown(f'<div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #f1f1f1; color:#495057;"><span style="color:#4A90E2; font-weight:bold;">✓</span>{b}</div>', unsafe_allow_html=True)
     else:
-        st.error(f"Archivo de datos no encontrado.")
+        st.error("Archivo de datos no encontrado.")
