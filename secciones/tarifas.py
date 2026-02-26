@@ -10,7 +10,7 @@ def render_tarifas(destino):
     if session_key not in st.session_state:
         st.session_state[session_key] = 0
 
-    # 2. ESTILOS CSS (Diseño de Cards, Widgets y Tabla Institucional)
+    # 2. ESTILOS CSS (Diseño de Cards, Widgets y Tabla Institucional Centrada)
     st.markdown("""
         <style>
         .plan-card-container {
@@ -36,11 +36,14 @@ def render_tarifas(destino):
         .val-widget { color: #212529; font-size: 1.8rem; font-weight: 800; margin: 0; }
         .val-promo { color: #2e7d32; }
 
-        /* Estilo para la tabla comparativa */
-        .styled-table thead tr th {
+        /* Estilo para centrar títulos y celdas de la tabla */
+        .styled-table th {
             background-color: #333333 !important;
             color: white !important;
             font-weight: bold !important;
+            text-align: center !important;
+        }
+        .styled-table td {
             text-align: center !important;
         }
         </style>
@@ -92,7 +95,6 @@ def render_tarifas(destino):
 
         # --- SECCIÓN 2: OPCIONES DE PAGO ---
         st.write("") 
-        # Columnas a excluir de los botones de cuotas
         excluir_botones = ['Programa', 'Contado', 'Valor del Viaje', 'Costo Total', 'Valor del viaje']
         opciones_cuotas = [c.replace('_', ' ') for c in df.columns if c not in excluir_botones]
         opciones_finales = ["1 Pago"] + opciones_cuotas
@@ -109,7 +111,6 @@ def render_tarifas(destino):
         
         col1, col2, col3 = st.columns(3)
         
-        # Valor total para cálculos internos (no se muestra en tabla)
         col_total_interna = next((c for c in df.columns if 'valor' in c.lower() or 'costo' in c.lower()), None)
         val_total_viaje = clean_val(v[col_total_interna]) if col_total_interna else 0.0
         descuento_termino = val_total_viaje * 0.10
@@ -145,62 +146,4 @@ def render_tarifas(destino):
             st.markdown(f"""
                 <div class="widget-3d-inner">
                     <p class="label-widget">🎁 Descuento Pago Término</p>
-                    <p class="val-widget val-promo">-${descuento_termino:,.0f}</p>
-                </div>
-            """, unsafe_allow_html=True)
-
-        st.markdown("""
-            <p style='font-size: 0.95rem; color: #333333; text-align: center; margin-top: 20px; font-weight: 500;'>
-                El descuento por pago en término se aplica sobre la última cuota si se abonan todas del 1 al 10 de cada mes.
-            </p>
-        """, unsafe_allow_html=True)
-
-        # --- SECCIÓN 4: TABLA Y BENEFICIOS ---
-        st.divider()
-        
-        with st.expander("Ver tabla comparativa de todas las tarifas"):
-            # Preparación de la tabla para percepción del cliente
-            df_format = df.copy()
-            
-            # 1. Sacamos las columnas de valor total/viaje
-            cols_a_borrar = [c for c in df_format.columns if 'valor del viaje' in c.lower() or 'costo total' in c.lower()]
-            df_format = df_format.drop(columns=cols_a_borrar)
-            
-            # 2. Renombramos 'Contado' a 'Valor 1 Pago'
-            if 'Contado' in df_format.columns:
-                df_format = df_format.rename(columns={'Contado': 'Valor 1 Pago'})
-            
-            # 3. Limpieza estética de nombres de columnas (reemplazar _ por espacio)
-            df_format.columns = [c.replace('_', ' ') for c in df_format.columns]
-            
-            # 4. Formateo de números
-            for col in df_format.columns.drop('Programa'): 
-                df_format[col] = df_format[col].apply(clean_val)
-            
-            # Render con estilos CSS aplicados a los headers
-            st.markdown('<div class="styled-table">', unsafe_allow_html=True)
-            st.table(df_format.set_index('Programa').style.format("$ {:,.0f}")
-                     .set_table_styles([
-                         {'selector': 'th', 'props': [('background-color', '#333333'), 
-                                                      ('color', 'white'), 
-                                                      ('font-weight', 'bold'),
-                                                      ('text-align', 'center')]}
-                     ]))
-            st.markdown('</div>', unsafe_allow_html=True)
-
-        st.write("#### 🛡️ Beneficios y Servicios Incluidos")
-        beneficios = [
-            "Liberados para niños y acompañantes.", 
-            "Descuentos según formas de pago.", 
-            "Opciones de pago personalizadas.", 
-            "Ayudas complementarias incluidas.", 
-            "Fiesta de Egresados.", 
-            "Importantes descuentos en Camperas.", 
-            "DJ + Luces y sonido para evento privado."
-        ]
-        c1, c2 = st.columns(2)
-        for i, b in enumerate(beneficios):
-            with c1 if i % 2 == 0 else c2:
-                st.markdown(f'<div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #f1f1f1; color:#495057;"><span style="color:#2e7d32; font-weight:bold;">✓</span>{b}</div>', unsafe_allow_html=True)
-    else:
-        st.error("Archivo de datos no encontrado.")
+                    <p class="val-widget val-promo">-${descuento_termino:,.0f
