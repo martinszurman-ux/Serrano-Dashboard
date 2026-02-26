@@ -6,9 +6,9 @@ def render_transporte(destino):
     st.markdown(f"<h1 style='text-align: center; color: #1E3A8A;'>🚌 TRANSPORTE A {destino.upper()}</h1>", unsafe_allow_html=True)
     st.markdown("---")
 
-    # Rutas de imágenes locales
+    # Rutas de imágenes locales - CORREGIDAS
     img_micro_local = "assets/micros.png" 
-    img_avion_local = "assets/avion.png"  # CAMBIO: Ahora busca avion.png
+    img_avion_local = "assets/AVION.jpg"  # CAMBIO: Coincide exactamente con tu archivo
 
     # --- CASO 1: VILLA CARLOS PAZ (Avión + Micro) ---
     if "Villa Carlos Paz" in destino:
@@ -19,7 +19,9 @@ def render_transporte(destino):
         if os.path.exists(img_avion_local):
             st.image(img_avion_local, caption="Vuelos exclusivos para Serrano Turismo", use_container_width=True)
         else:
-            st.error(f"⚠️ No se encontró el archivo en: {img_avion_local}. Verificá que el nombre sea exactamente avion.png")
+            # Mensaje de ayuda si sigue fallando
+            st.error(f"⚠️ No se encontró: {img_avion_local}")
+            st.info("Revisá en tu carpeta assets si el nombre es AVION.jpg, avion.jpg o AVION.JPG")
             
         st.write("Optimizamos tu tiempo con cupos confirmados en nuestra aerolínea de bandera.")
         
@@ -28,13 +30,11 @@ def render_transporte(destino):
         # SECCIÓN TERRESTRE
         st.subheader("🚍 Opción Terrestre")
         
-        # Verificamos si la imagen existe en la carpeta assets
         if os.path.exists(img_micro_local):
             st.image(img_micro_local, caption="Nuestras unidades de Serrano Turismo", use_container_width=True)
-            # WIDGET DE NORMATIVA
             st.info("ℹ️ Toda nuestra flota cumple estrictamente con las normativas de la CNRT.")
         else:
-            st.error(f"⚠️ No se encontró el archivo en: {img_micro_local}. Verificá el nombre del archivo.")
+            st.error(f"⚠️ No se encontró: {img_micro_local}")
             
         st.write(f"Nuestras unidades de **Serrano Turismo** te llevan a **{destino}** recorriendo los mejores caminos cordobeses durante el día, para que no te pierdas nada del paisaje.")
 
