@@ -9,7 +9,7 @@ def render_tarifas(destino):
     def seleccionar_plan(indice):
         st.session_state[f"sel_index_{folder}"] = indice
 
-    # CSS Refinado para integración total
+    # CSS Refinado para integración total y marca JEO
     st.markdown("""
         <style>
         .plan-card-click {
@@ -33,7 +33,7 @@ def render_tarifas(destino):
             text-transform: uppercase; text-align: center;
         }
 
-        /* Capa transparente para el botón */
+        /* Botón transparente */
         .stButton button {
             background-color: transparent !important; border: none !important;
             color: transparent !important; height: 140px !important;
@@ -49,18 +49,21 @@ def render_tarifas(destino):
             text-align: center;
             border: 1px solid #ddd;
             box-shadow: inset 3px 3px 6px #d1d1d1, inset -3px -3px 6px #ffffff;
-            min-height: 160px; /* Aumentado para que quepan las pills */
+            min-height: 160px;
             display: flex; 
             flex-direction: column; 
             justify-content: center;
             align-items: center;
         }
         
-        /* Ajuste para que las Pills no tengan margen extra */
-        div[data-testid="stPills"] {
-            margin-top: 10px;
-            width: 100%;
-            justify-content: center;
+        /* Marca JEO */
+        .jeo-mark {
+            font-size: 5rem;
+            font-weight: 900;
+            color: rgba(0,0,0,0.05);
+            text-align: center;
+            margin: 20px 0;
+            letter-spacing: 15px;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -100,6 +103,9 @@ def render_tarifas(destino):
                 
                 st.button(f"Plan_{i}", key=f"btn_{folder}_{i}", on_click=seleccionar_plan, args=(i,))
 
+        # --- MARCA DE VERIFICACIÓN JEO ---
+        st.markdown('<div class="jeo-mark">JEO</div>', unsafe_allow_html=True)
+
         v = df.iloc[st.session_state[session_key]]
         st.divider()
 
@@ -111,41 +117,7 @@ def render_tarifas(destino):
 
         # WIDGET 1: OPCIONES DE PAGO (INTEGRADO)
         with col_opc:
-            # Abrimos el div 3D
             st.markdown('<div class="widget-3d-inner">', unsafe_allow_html=True)
             st.markdown("<p class='widget-title'>Opciones de Pago</p>", unsafe_allow_html=True)
-            
-            # Las pills se renderizan aquí adentro
             opciones_c = [c.replace('_', ' ') for c in df.columns if c not in ['Programa', 'Contado']]
-            cuota_sel = st.pills("Cuotas", options=opciones_c, default=opciones_c[0], label_visibility="collapsed", key=f"pills_val_{folder}")
-            
-            # Cerramos el div 3D
-            st.markdown('</div>', unsafe_allow_html=True)
-
-        c_db = cuota_sel.replace(' ', '_')
-        val_c = clean_val(v[c_db])
-        val_cont = clean_val(v['Contado'])
-
-        # WIDGET 2: MONTO
-        with col_monto:
-            st.markdown(f"""
-                <div class="widget-3d-inner">
-                    <p class='widget-title'>Monto {cuota_sel}</p>
-                    <p class='widget-value'>${val_c:,.0f}</p>
-                </div>
-            """, unsafe_allow_html=True)
-
-        # WIDGET 3: EFECTIVO
-        with col_cash:
-            st.markdown(f"""
-                <div class="widget-3d-inner">
-                    <p class='widget-title'>💎 Efectivo (10% OFF)</p>
-                    <p class='widget-value' style='color: #495057;'>${val_cont * 0.9:,.0f}</p>
-                </div>
-            """, unsafe_allow_html=True)
-
-        st.divider()
-        with st.expander("📊 Ver tabla comparativa completa"):
-            st.table(df.set_index('Programa'))
-    else:
-        st.error(f"Base de datos no encontrada.")
+            cuota_sel = st.pills("Cuotas", options=opciones_c, default=opciones_c[0],
