@@ -19,10 +19,36 @@ def render_tarifas(destino):
             margin-bottom: -10px;
         }
         
-        /* FUERZA EL CENTRADO DE LOS PILLS */
+        /* --- CORRECCIÓN DE CENTRADO DE PILLS Y TÍTULO --- */
+        .contenedor-selector-pago {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        /* Fuerza el centrado de los Pills nativos de Streamlit */
+        div[data-testid="stPills"] {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        
         div[data-testid="stPills"] > div {
             justify-content: center !important;
             display: flex !important;
+            gap: 8px;
+        }
+
+        /* Estilo del texto "Elegí tu plan" */
+        .instruccion-pago {
+            text-align: center; 
+            font-weight: 700; 
+            color: #495057; 
+            margin-bottom: 15px;
+            font-size: 1.1rem;
         }
 
         /* Widgets Superiores (Itinerarios) */
@@ -140,19 +166,26 @@ def render_tarifas(destino):
         if idx >= len(df): idx = 0
         v = df.iloc[idx]
 
-        # --- SECCIÓN 2: OPCIONES DE PAGO ---
+        # --- SECCIÓN 2: OPCIONES DE PAGO (AJUSTADA) ---
         st.write("") 
         excluir_botones = ['Programa', 'Contado', 'Valor del Viaje', 'Costo Total', 'Valor del viaje']
         opciones_cuotas = [c.replace('_', ' ') for c in df.columns if c not in excluir_botones]
         opciones_finales = ["1 Pago"] + opciones_cuotas
 
-        st.markdown("<p style='text-align:center; font-weight:700; color:#495057; margin-bottom:15px;'>Elegí tu plan de pago:</p>", unsafe_allow_html=True)
+        # Agrupamos título y pills en un contenedor para control total
+        st.markdown('<div class="contenedor-selector-pago">', unsafe_allow_html=True)
+        st.markdown('<p class="instruccion-pago">Elegí tu plan de pago:</p>', unsafe_allow_html=True)
         
-        # Envolvemos en columnas para asegurar el centrado visual total
-        _, c_pills, _ = st.columns([1, 6, 1])
-        with c_pills:
-            cuota_sel = st.pills("Selecciona cuotas", options=opciones_finales, default=opciones_finales[1], label_visibility="collapsed", key=f"pills_{folder}")
-            if not cuota_sel: cuota_sel = opciones_finales[1]
+        cuota_sel = st.pills(
+            "Selecciona cuotas", 
+            options=opciones_finales, 
+            default=opciones_finales[1] if len(opciones_finales) > 1 else opciones_finales[0], 
+            label_visibility="collapsed", 
+            key=f"pills_{folder}"
+        )
+        if not cuota_sel: cuota_sel = opciones_finales[1]
+        
+        st.markdown('</div>', unsafe_allow_html=True)
 
         # --- SECCIÓN 3: EL GRAN WIDGET HERO ---
         st.markdown("<hr style='border-top: 1px solid #eee; margin: 30px 0;'>", unsafe_allow_html=True)
@@ -196,10 +229,10 @@ def render_tarifas(destino):
             
             st.markdown('<div class="styled-table">', unsafe_allow_html=True)
             st.table(df_format.set_index('Programa').style.format("$ {:,.0f}")
-                     .set_table_styles([
-                         {'selector': 'th', 'props': [('background-color', '#333333'), ('color', 'white'), ('font-weight', 'bold'), ('text-align', 'center !important')]},
-                         {'selector': 'td', 'props': [('text-align', 'center !important')]}
-                     ]))
+                    .set_table_styles([
+                        {'selector': 'th', 'props': [('background-color', '#333333'), ('color', 'white'), ('font-weight', 'bold'), ('text-align', 'center !important')]},
+                        {'selector': 'td', 'props': [('text-align', 'center !important')]}
+                    ]))
             st.markdown('</div>', unsafe_allow_html=True)
 
         st.write("#### 🛡️ Beneficios y Servicios Incluidos")
@@ -214,4 +247,4 @@ def render_tarifas(destino):
             with c1 if i % 2 == 0 else c2:
                 st.markdown(f'<div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #f1f1f1; color:#495057;"><span style="color:#2e7d32; font-weight:bold;">✓</span>{b}</div>', unsafe_allow_html=True)
     else:
-        st.error("Archivo de datos no encontrado.")
+        st.error(f"Archivo de datos no encontrado en: {path_tarifas}")
