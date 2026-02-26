@@ -29,7 +29,6 @@ def render_tarifas(destino):
             margin: 20px 0;
         }
 
-        /* Fuerza el centrado de los Pills nativos de Streamlit */
         div[data-testid="stPills"] {
             display: flex;
             justify-content: center;
@@ -42,7 +41,6 @@ def render_tarifas(destino):
             gap: 8px;
         }
 
-        /* Estilo del texto "Elegí tu plan" */
         .instruccion-pago {
             text-align: center; 
             font-weight: 700; 
@@ -55,10 +53,10 @@ def render_tarifas(destino):
         .plan-card-container {
             border-radius: 15px; 
             padding: 20px; 
-            background: #E0E0E0; /* Tono plateado más claro y delicado */
-            border: 1px solid #ccc; 
+            background: #E8E8E8; /* Plateado muy suave */
+            border: 1px solid #d1d1d1; 
             text-align: center;
-            min-height: 140px; 
+            min-height: 160px; /* Aumentado un poco para el nuevo tamaño de fuente */
             display: flex; 
             flex-direction: column;
             justify-content: center; 
@@ -68,15 +66,33 @@ def render_tarifas(destino):
         }
         
         .selected-plan { 
-            border: 2px solid #BDBDBD !important; /* Recuadro gris del tono del relleno al seleccionar */
+            border: 2px solid #4A90E2 !important; /* Borde azul al seleccionar */
             background-color: #ffffff !important;
             transform: scale(1.05);
-            box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0px 6px 20px rgba(0,0,0,0.1);
         }
         
-        .day-number { color: #BDBDBD; font-size: 2.8rem; font-weight: 900; line-height: 1; } /* Número en gris al seleccionar */
-        .transport-icon { font-size: 1.6rem; margin-left: 8px; }
-        .day-text { color: #495057; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+        /* AJUSTE DE TAMAÑO: Números e Iconos */
+        .day-number { 
+            color: #4A90E2; /* Un azul vibrante pero elegante */
+            font-size: 3.5rem; /* Antes era 2.8rem */
+            font-weight: 900; 
+            line-height: 1; 
+        }
+        
+        .transport-icon { 
+            font-size: 2.2rem; /* Antes era 1.6rem */
+            margin-left: 10px; 
+            vertical-align: middle;
+        }
+        
+        .day-text { 
+            color: #495057; 
+            font-size: 0.85rem; 
+            font-weight: 700; 
+            text-transform: uppercase;
+            margin-top: 10px;
+        }
 
         /* MEGA WIDGET HERO */
         .hero-payment-card {
@@ -92,12 +108,6 @@ def render_tarifas(destino):
             cursor: default;
         }
 
-        .hero-payment-card:hover {
-            transform: translateY(-12px) scale(1.03);
-            box-shadow: 25px 25px 60px #c0c2c7, -15px -15px 40px #ffffff;
-            background: linear-gradient(145deg, #ffffff, #e6e9ef);
-        }
-
         .hero-label { 
             color: #6c757d; font-size: 0.9rem; font-weight: 700; 
             text-transform: uppercase; letter-spacing: 1.5px;
@@ -106,11 +116,11 @@ def render_tarifas(destino):
         .hero-value { 
             color: #1a1c1e; font-size: 4rem; font-weight: 900; margin: 0;
             line-height: 1;
-            background: -webkit-linear-gradient(#1a1c1e, #4a4d52);
+            background: -webkit-linear-gradient(#1a1c1e, #4A90E2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .hero-subtitle { color: #BDBDBD; font-size: 1.2rem; font-weight: 600; margin-top: 10px; } /* Subtítulo en gris */
+        .hero-subtitle { color: #4A90E2; font-size: 1.2rem; font-weight: 600; margin-top: 10px; }
 
         .styled-table th {
             background-color: #333333 !important;
@@ -154,7 +164,15 @@ def render_tarifas(destino):
                 es_activo = st.session_state[session_key] == i
                 clase_card = "selected-plan" if es_activo else ""
                 
-                card_html = f'<div class="plan-card-container {clase_card}"><div><span class="day-number">{numero}</span><span class="transport-icon">{icono}</span></div><div class="day-text">{resto}</div></div>'
+                card_html = f"""
+                <div class="plan-card-container {clase_card}">
+                    <div>
+                        <span class="day-number">{numero}</span>
+                        <span class="transport-icon">{icono}</span>
+                    </div>
+                    <div class="day-text">{resto}</div>
+                </div>
+                """
                 st.markdown(card_html, unsafe_allow_html=True)
                 
                 if st.button("Seleccionar", key=f"btn_{folder}_{i}", use_container_width=True):
@@ -166,13 +184,12 @@ def render_tarifas(destino):
         if idx >= len(df): idx = 0
         v = df.iloc[idx]
 
-        # --- SECCIÓN 2: OPCIONES DE PAGO (AJUSTADA) ---
+        # --- SECCIÓN 2: OPCIONES DE PAGO ---
         st.write("") 
         excluir_botones = ['Programa', 'Contado', 'Valor del Viaje', 'Costo Total', 'Valor del viaje']
         opciones_cuotas = [c.replace('_', ' ') for c in df.columns if c not in excluir_botones]
         opciones_finales = ["1 Pago"] + opciones_cuotas
 
-        # Agrupamos título y pills en un contenedor para control total
         st.markdown('<div class="contenedor-selector-pago">', unsafe_allow_html=True)
         st.markdown('<p class="instruccion-pago">Elegí tu plan de pago:</p>', unsafe_allow_html=True)
         
@@ -206,8 +223,10 @@ def render_tarifas(destino):
             </div>
         """, unsafe_allow_html=True)
 
+        # Bloque de beneficio (bordes azules suaves ahora)
         st.markdown("""
-            <div style='max-width: 700px; margin: 30px auto; padding: 20px; background-color: #fdf2f2; border-radius: 12px; border: 1px dashed #BDBDBD;'> <p style='font-size: 1rem; color: #333333; text-align: center; margin: 0; font-weight: 500;'>
+            <div style='max-width: 700px; margin: 30px auto; padding: 20px; background-color: #f0f7ff; border-radius: 12px; border: 1px dashed #4A90E2;'>
+                <p style='font-size: 1rem; color: #333333; text-align: center; margin: 0; font-weight: 500;'>
                     🎁 <b>¡Beneficio Exclusivo!</b> Pagando todas las cuotas del 1 al 10 de cada mes en efectivo en Serrano, 
                     obtenés un <b>10% de descuento</b> sobre el total del viaje (aplicado en la última cuota).
                 </p>
@@ -217,6 +236,7 @@ def render_tarifas(destino):
         # --- SECCIÓN 4: TABLA Y BENEFICIOS ---
         st.divider()
         with st.expander("Ver tabla comparativa de todas las tarifas"):
+            # (El código de la tabla se mantiene igual)
             df_format = df.copy()
             cols_a_borrar = [c for c in df_format.columns if 'valor del viaje' in c.lower() or 'costo total' in c.lower()]
             df_format = df_format.drop(columns=cols_a_borrar)
@@ -244,6 +264,6 @@ def render_tarifas(destino):
         c1, c2 = st.columns(2)
         for i, b in enumerate(beneficios):
             with c1 if i % 2 == 0 else c2:
-                st.markdown(f'<div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #f1f1f1; color:#495057;"><span style="color:#2e7d32; font-weight:bold;">✓</span>{b}</div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #f1f1f1; color:#495057;"><span style="color:#4A90E2; font-weight:bold;">✓</span>{b}</div>', unsafe_allow_html=True)
     else:
-        st.error(f"Archivo de datos no encontrado en: {path_tarifas}")
+        st.error(f"Archivo de datos no encontrado.")
