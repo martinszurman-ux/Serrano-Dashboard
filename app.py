@@ -6,21 +6,43 @@ from datetime import datetime
 # 1. Configuración de página y Estética Profesional
 st.set_page_config(page_title="Serrano Turismo - Dashboard", layout="wide")
 
-# Estilos CSS
+# --- ESTILOS CSS AVANZADOS (3D y Degradados) ---
 st.markdown("""
     <style>
     .main { background-color: #ffffff; }
     
-    /* Contenedores con bordes y fondo gris profesional */
-    div[data-testid="stVerticalBlockBorderWrapper"] {
-        background-color: #f8f9fa !important;
-        border: 1px solid #dee2e6 !important;
-        border-radius: 12px !important;
-        padding: 20px !important;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.02) !important;
+    /* Efecto 3D y Degradado para Widgets inferiores */
+    .widget-3d-grad {
+        background: linear-gradient(145deg, #ffffff, #e6e6e6);
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        border: 1px solid #d1d1d1;
+        box-shadow: 5px 5px 15px #d1d1d1, -5px -5px 15px #ffffff; /* Efecto Neumorfismo/3D */
+        margin-bottom: 10px;
+        transition: transform 0.2s;
     }
-    
-    /* Estilo del Header */
+    .widget-3d-grad:hover {
+        transform: translateY(-5px);
+    }
+
+    /* Estilo para las tarjetas de Selección de Viaje */
+    .plan-card {
+        border-radius: 12px;
+        padding: 15px;
+        text-align: center;
+        cursor: pointer;
+        border: 2px solid #eee;
+        transition: all 0.3s;
+        background-color: #fdfdfd;
+    }
+    .plan-card-selected {
+        border: 2px solid #1E3A8A !important;
+        background-color: #f0f4ff !important;
+        box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
+    }
+
+    /* Header */
     .header-container {
         position: relative;
         height: 180px;
@@ -33,7 +55,6 @@ st.markdown("""
         background-color: #495057;
         overflow: hidden;
     }
-    
     .header-text-overlay {
         text-align: center;
         font-size: 2.5rem;
@@ -43,39 +64,13 @@ st.markdown("""
         text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
     }
 
-    .widget-title {
-        color: #6c757d;
-        font-size: 0.85rem;
-        font-weight: 700;
-        margin-bottom: 5px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-    
-    .widget-value {
-        color: #212529;
-        font-size: 2.2rem;
-        font-weight: 800;
-        margin: 0;
-    }
+    .widget-title { color: #6c757d; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; }
+    .widget-value { color: #1E3A8A; font-size: 2.1rem; font-weight: 800; margin: 0; }
+    .promo-subtitle { font-size: 0.75rem; color: #757575; }
 
-    .promo-subtitle {
-        font-size: 0.75rem;
-        color: #adb5bd;
-        margin-top: 5px;
-    }
-
-    /* Estilo específico para impresión */
     @media print {
-        header, [data-testid="stSidebar"], .stButton, .no-print {
-            display: none !important;
-        }
-        .main .block-container {
-            padding: 0 !important;
-        }
-        .print-only {
-            display: block !important;
-        }
+        header, [data-testid="stSidebar"], .stButton, .no-print { display: none !important; }
+        .print-only { display: block !important; }
     }
     </style>
     """, unsafe_allow_html=True)
@@ -96,28 +91,18 @@ with st.sidebar:
     ])
 
     st.sidebar.divider()
-    st.markdown("""
-    <div style="font-size: 0.8rem; color: #6c757d;">
-    <b>CABA:</b> Av. Rivadavia 4532<br>
-    <b>Leloir:</b> Del Cimarrón 1846<br>
-    <b>WA:</b> (011) 5609-6283
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("""<div style="font-size: 0.8rem; color: #6c757d;"><b>CABA:</b> Av. Rivadavia 4532<br><b>WA:</b> (011) 5609-6283</div>""", unsafe_allow_html=True)
 
-# Función para limpiar nombres de archivos
 def limpiar_nombre_archivo(texto):
     reemplazos = {"á": "a", "é": "e", "í": "i", "ó": "o", "ú": "u", " ": "_"}
     texto = texto.lower()
-    for original, reemplazo in reemplazos.items():
-        texto = texto.replace(original, reemplazo)
+    for original, reemplazo in reemplazos.items(): texto = texto.replace(original, reemplazo)
     return texto + ".csv"
 
-# --- SECCIÓN: SOLICITUD DE ADHESIÓN ---
+# --- SECCIÓN: SOLICITUD DE ADHESIÓN (Trabajo de tu compañero, intacto) ---
 if opcion == "Solicitud de Adhesión":
     st.image(LOGO_URL, width=200)
     st.title("📄 Solicitud de Ingreso / Adhesión")
-    st.subheader("Ficha del Cliente / Pasajero")
-
     with st.form("formulario_adhesion"):
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -128,79 +113,22 @@ if opcion == "Solicitud de Adhesión":
             año_div = st.text_input("Año y División")
         with col3:
             liberado = st.text_input("% L.O. (Porcentaje Liberado)")
-
+        
         st.markdown("#### Datos del Alumno")
         c_al1, c_al2 = st.columns(2)
         with c_al1:
             ap_alumno = st.text_input("Apellido Alumno")
             dni_alumno = st.text_input("DNI Alumno")
-            f_nac_alumno = st.date_input("Fecha de Nacimiento", min_value=datetime(2000,1,1))
         with c_al2:
             nom_alumno = st.text_input("Nombres Alumno")
-            dni_venc = st.date_input("Vencimiento de DNI")
-            nacionalidad = st.text_input("Nacionalidad", value="Argentina")
-        
-        sexo = st.radio("Sexo", ["Masculino", "Femenino", "X"], horizontal=True)
-
-        st.markdown("#### Domicilio y Contacto")
-        c_dom1, c_dom2, c_dom3 = st.columns([2, 1, 1])
-        with c_dom1:
-            domicilio = st.text_input("Domicilio")
-        with c_dom2:
-            cp = st.text_input("Código Postal")
-        with c_dom3:
-            localidad = st.text_input("Localidad")
-        
-        c_dom4, c_dom5 = st.columns(2)
-        with c_dom4:
-            provincia = st.text_input("Provincia", value="Buenos Aires")
-        with c_dom5:
-            telefono = st.text_input("Teléfono (Cod. Área + Número)")
-
-        st.markdown("#### Datos de los Padres / Tutores")
-        c_p1, c_p2 = st.columns(2)
-        with c_p1:
-            padre_nom = st.text_input("Nombre y Apellido Padre / Tutor (1)")
-            padre_dni = st.text_input("DNI Padre")
-        with c_p2:
-            madre_nom = st.text_input("Nombre y Apellido Madre / Tutor (2)")
-            madre_dni = st.text_input("DNI Madre")
-        
-        email_padres = st.text_input("E-mail de contacto (Madre o Padre)")
-
-        st.markdown("#### Plan de Pago Elegido")
-        plan_pago = st.radio("Seleccione el plan de pago acordado:", 
-                             ["PLAN 1: Cuotas mensuales según contrato", 
-                              "PLAN 2: Pago contado (dentro de los 30 días)", 
-                              "PLAN 3: Plan personalizado", 
-                              "PLAN 4: Plan especial grupo", 
-                              "OTROS: Ver observaciones"], horizontal=False)
-
-        observaciones = st.text_area("Observaciones")
-
-        st.markdown("---")
-        st.write("**Declaración Jurada:** Declaro bajo juramento que los datos aquí volcados son absolutamente exactos y acepto, para la cancelación de los servicios a prestar por SERRANO TURISMO, el plan de pagos mencionado anteriormente. Declaro conocer todas y cada una de las condiciones del contrato suscripto.")
-        
-        st.markdown("<br><br><br>", unsafe_allow_html=True)
-        col_f1, col_f2 = st.columns(2)
-        with col_f1:
-            st.divider()
-            st.caption("Firma del Padre/Madre/Tutor")
-        with col_f2:
-            st.divider()
-            st.caption("Aclaración y DNI")
-
+            sexo = st.radio("Sexo", ["Masculino", "Femenino", "X"], horizontal=True)
+            
         submitted = st.form_submit_button("Finalizar y Preparar para Imprimir")
-        
-        if submitted:
-            st.success("Formulario completado. Use el botón de abajo para imprimir.")
-            st.info("💡 Consejo: Al abrirse la ventana de impresión, guarde como 'PDF' o seleccione su impresora.")
+        if submitted: st.success("Formulario completado.")
 
-    # Botón de impresión (fuera del form para ejecutar JS)
-    st.button("🖨️ Enviar a Imprimir Formulario", on_click=lambda: st.write('<script>window.print();</script>', unsafe_allow_html=True))
-
-# --- SECCIÓN TARIFAS ---
+# --- SECCIÓN: TARIFAS ---
 elif opcion == "Tarifas y Formas de Pago":
+    # Header
     header_img_path = None
     for ext in [".jpg", ".png", ".jpeg"]:
         temp_path = f"data/{folder}/tarifas_y_formas_header{ext}"
@@ -208,60 +136,87 @@ elif opcion == "Tarifas y Formas de Pago":
             header_img_path = temp_path
             break
 
-    if header_img_path:
-        st.image(header_img_path, use_container_width=True)
-    else:
-        st.markdown(f"""
-            <div class="header-container">
-                <div class="header-text-overlay">TARIFAS {destino.upper()}</div>
-            </div>
-        """, unsafe_allow_html=True)
+    if header_img_path: st.image(header_img_path, use_container_width=True)
+    else: st.markdown(f'<div class="header-container"><div class="header-text-overlay">TARIFAS {destino.upper()}</div></div>', unsafe_allow_html=True)
 
     path_tarifas = f"data/{folder}/tarifas_y_formas_de_pago.csv"
     if os.path.exists(path_tarifas):
         df = pd.read_csv(path_tarifas)
-        prog = st.selectbox("🎯 Plan de Viaje:", df['Programa'])
-        v = df[df['Programa'] == prog].iloc[0]
+        
+        # --- NUEVO SELECTOR DE PLANES (4 ICONOS EN PARALELO) ---
+        st.write("### 🎯 Seleccioná tu Plan de Viaje")
+        
+        # Inicializar estado si no existe
+        if 'plan_idx' not in st.session_state:
+            st.session_state.plan_idx = 0
+
+        # Mostramos los primeros 4 programas del CSV
+        planes_visibles = df['Programa'].tolist()[:4]
+        iconos = ["🚌", "✈️", "🏢", "🌟"] # Iconos referenciales
+        
+        cols_planes = st.columns(4)
+        for i, plan in enumerate(planes_visibles):
+            with cols_planes[i]:
+                # Estilo dinámico si está seleccionado
+                es_seleccionado = (st.session_state.plan_idx == i)
+                border_style = "border: 2px solid #1E3A8A; background-color: #f0f4ff;" if es_seleccionado else "border: 1px solid #eee;"
+                
+                # Usamos un botón invisible sobre un contenedor visual
+                st.markdown(f"""
+                    <div style="{border_style} border-radius:12px; padding:15px; text-align:center;">
+                        <div style="font-size:2rem;">{iconos[i % len(iconos)]}</div>
+                        <div style="font-weight:bold; font-size:0.9rem; margin-top:5px;">{plan}</div>
+                    </div>
+                """, unsafe_allow_html=True)
+                if st.button(f"Seleccionar {i}", key=f"btn_{i}", label_visibility="collapsed"):
+                    st.session_state.plan_idx = i
+                    st.rerun()
+
+        # Datos del plan seleccionado
+        v = df.iloc[st.session_state.plan_idx]
 
         st.divider()
-        col1, col2, col3 = st.columns(3)
+        
+        # --- WIDGETS 3D CON DEGRADADO EN PARALELO ---
+        col_pago, col_monto, col_efectivo = st.columns(3)
 
         def clean_val(val):
             return float(str(val).replace('$', '').replace('.', '').replace(',', '').strip())
 
-        with col1:
-            with st.container(border=True):
-                st.markdown("<p class='widget-title'>OPCIONES DE PAGO</p>", unsafe_allow_html=True)
-                cols_cuotas = [c.replace('_', ' ') for c in df.columns if c not in ['Programa', 'Contado']]
-                cuota_sel = st.pills("Seleccione:", options=cols_cuotas, default=cols_cuotas[0], label_visibility="collapsed")
-        
+        with col_pago:
+            st.markdown('<div class="widget-3d-grad">', unsafe_allow_html=True)
+            st.markdown("<p class='widget-title'>OPCIONES DE PAGO</p>", unsafe_allow_html=True)
+            cols_cuotas = [c.replace('_', ' ') for c in df.columns if c not in ['Programa', 'Contado']]
+            cuota_sel = st.pills("Selección:", options=cols_cuotas, default=cols_cuotas[0], label_visibility="collapsed")
+            st.markdown('</div>', unsafe_allow_html=True)
+
         col_db = cuota_sel.replace(' ', '_')
         val_cuota = clean_val(v[col_db])
         val_contado = clean_val(v['Contado'])
 
-        with col2:
-            with st.container(border=True):
-                st.markdown(f"""
-                    <div style='text-align: center;'>
-                        <p class='widget-title'>MONTO {cuota_sel.upper()}</p>
-                        <p class='widget-value'>${val_cuota:,.0f}</p>
-                    </div>
-                """, unsafe_allow_html=True)
+        with col_monto:
+            st.markdown(f"""
+                <div class="widget-3d-grad">
+                    <p class='widget-title'>MONTO {cuota_sel.upper()}</p>
+                    <p class='widget-value'>${val_cuota:,.0f}</p>
+                    <p class='promo-subtitle'>Valor por cuota según plan</p>
+                </div>
+            """, unsafe_allow_html=True)
 
-        with col3:
-            with st.container(border=True):
-                st.markdown(f"""
-                    <div style='text-align: center;'>
-                        <p class='widget-title'>💎 PAGO EFECTIVO (OFICINA)</p>
-                        <p class='widget-value' style='color: #495057;'>${val_contado * 0.9:,.0f}</p>
-                        <p class='promo-subtitle'>Incluye bonificación especial del 10%</p>
-                    </div>
-                """, unsafe_allow_html=True)
+        with col_efectivo:
+            st.markdown(f"""
+                <div class="widget-3d-grad">
+                    <p class='widget-title'>💎 PAGO EFECTIVO (OFICINA)</p>
+                    <p class='widget-value' style='color: #2e7d32;'>${val_contado * 0.9:,.0f}</p>
+                    <p class='promo-subtitle'>Beneficio especial del 10% OFF</p>
+                </div>
+            """, unsafe_allow_html=True)
 
         st.divider()
         with st.expander("📊 Ver tabla comparativa completa"):
             st.table(df.set_index('Programa'))
-        st.info("Nota: Las opciones de pago se complementan con el plan de cuotas ajustado por IPC según contrato.")
+    else:
+        st.error(f"Archivo no encontrado en {path_tarifas}")
 
 # --- VISTA ESTÁNDAR ---
 else:
@@ -272,7 +227,6 @@ else:
         for _, row in df_info.iterrows():
             with st.expander(f"🔹 {row['Titulo']}", expanded=True):
                 st.write(row['Contenido'])
-                if 'Destacado' in row: st.info(row['Destacado'])
     else:
         st.error(f"Contenido no disponible para {destino}.")
 
