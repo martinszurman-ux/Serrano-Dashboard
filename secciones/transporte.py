@@ -2,8 +2,14 @@ import streamlit as st
 import os
 
 def render_transporte(destino):
-    # Título principal
-    st.markdown(f"<h1 style='text-align: center; color: #1E3A8A;'>🚌 TRANSPORTE A {destino.upper()}</h1>", unsafe_allow_html=True)
+    # Lógica para el título dinámico con emojis
+    if "Villa Carlos Paz" in destino:
+        titulo_emoji = "✈️ 🚌"
+    else:
+        titulo_emoji = "🚌"
+
+    # Título principal con estilo
+    st.markdown(f"<h1 style='text-align: center; color: #1E3A8A;'>{titulo_emoji} TRANSPORTE A {destino.upper()}</h1>", unsafe_allow_html=True)
     st.markdown("---")
 
     # Rutas de imágenes
@@ -15,18 +21,16 @@ def render_transporte(destino):
         # SECCIÓN AÉREA
         st.subheader("✈️ Opción Aérea: Aerolíneas Argentinas")
         if os.path.exists(img_avion_local):
-            # Cambiamos use_container_width por un width fijo para achicarla
-            st.image(img_avion_local, caption="Vuelos por la mañana de ida y por la tarde/noche en el regreso", width=650)
+            st.image(img_avion_local, caption="Vuelos exclusivos para Serrano Turismo", width=650)
         else:
             st.error(f"⚠️ No se encontró: {img_avion_local}")
             
-        st.write("Optimizamos el tiempo con vuelos en nuestra aerolínea de bandera.")
+        st.write("Optimizamos tu tiempo con cupos confirmados en nuestra aerolínea de bandera.")
         st.divider()
         
         # SECCIÓN TERRESTRE
         st.subheader("🚍 Opción Terrestre")
         if os.path.exists(img_micro_local):
-            # Ajustamos también el tamaño del micro
             st.image(img_micro_local, caption="Nuestras unidades de Serrano Turismo", width=650)
             st.info("ℹ️ Toda nuestra flota cumple estrictamente con las normativas de la CNRT.")
         else:
