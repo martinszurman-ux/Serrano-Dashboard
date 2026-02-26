@@ -38,24 +38,30 @@ def render_transporte(destino):
             
         st.write(f"Nuestras unidades de **Serrano Turismo** te llevan a **{destino}** recorriendo los mejores caminos cordobeses.")
 
-        # Características
+        # Características (Igualadas)
         st.markdown("### ✨ Características de nuestro servicio:")
         st.markdown("""
         * ✅ **Buses de última generación:** Unidades modernas con máximo confort.
         * ✅ **Empresas de transporte Charter:** Seguridad y exclusividad garantizada.
-        * ✅ **Exclusividad:** El mismo bus queda a disposición del grupo durante todos los días del viaje.
+        * ✅ **Exclusividad:** El mismo bus queda a disposición del grupo durante todos los días del viaje para los traslados a excursiones.
         """)
 
     # --- CASO 2: SAN PEDRO ---
     elif "San Pedro" in destino:
         st.subheader("🚍 Transporte Terrestre Exclusivo")
+        
         if os.path.exists(img_micro_local):
             st.image(img_micro_local, caption="Unidades equipadas para tu confort", width=650)
             st.info("ℹ️ Toda nuestra flota cumple estrictamente con las normativas de la CNRT.")
+        else:
+            st.error(f"⚠️ No se encontró: {img_micro_local}")
             
-        st.write(f"Viajá con la tranquilidad de **Serrano Turismo** a **{destino}**.")
+        st.write(f"Viajá con la tranquilidad de **Serrano Turismo**. Traslados directos a **{destino}** con coordinación permanente.")
+        
+        # Características (Ahora igualadas a Carlos Paz)
+        st.markdown("### ✨ Características de nuestro servicio:")
         st.markdown("""
-        * **Unidades con Mix de asientos (Semicama/Cama).**
-        * **Aire acondicionado y calefacción.**
-        * **Coordinadores a bordo.**
+        * ✅ **Buses de última generación:** Unidades modernas con máximo confort.
+        * ✅ **Empresas de transporte Charter:** Seguridad y exclusividad garantizada.
+        * ✅ **Exclusividad:** El mismo bus queda a disposición del grupo durante todos los días del viaje para los traslados a excursiones.
         """)
