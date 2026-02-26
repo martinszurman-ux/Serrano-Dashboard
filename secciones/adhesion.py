@@ -3,72 +3,91 @@ from datetime import datetime
 
 # =================================================================
 # 📋 MÓDULO: SOLICITUD DE ADHESIÓN (Serrano Turismo)
-# FUNCIÓN: Persistencia de datos y Función de Impresión Real
+# VERSIÓN: Triple Seguridad (Estado + JS Directo + Persistencia)
 # =================================================================
 
 def render_adhesion(logo_url):
-    # 1. CSS de Alta Fidelidad para impresión
+    # 1. CSS de Alta Fidelidad y Control de Impresión
     st.markdown("""
         <style>
-        .stButton>button {
+        /* Estilo del botón de impresión en la web */
+        .btn-imprimir {
+            display: block;
             width: 100%;
-            border-radius: 10px !important;
-            font-weight: bold !important;
+            padding: 15px;
+            background-color: #2E7D32 !important;
+            color: white !important;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            border: none;
         }
+        
         @media print {
-            header, [data-testid="stSidebar"], .no-print, .stButton, footer {
+            header, [data-testid="stSidebar"], .no-print, .stButton, footer, [data-testid="stHeader"] {
                 display: none !important;
             }
-            .main .block-container { padding: 1cm !important; }
-            input { border: none !important; font-weight: bold !important; }
+            .main .block-container { padding: 0 !important; margin: 0 !important; }
+            body { color: black !important; background: white !important; }
+            div[data-testid="stForm"] { border: none !important; padding: 0 !important; }
         }
         </style>
     """, unsafe_allow_html=True)
 
+    # 2. Inicialización del Estado (Para que los botones no desaparezcan)
+    if 'form_confirmado' not in st.session_state:
+        st.session_state.form_confirmado = False
+
+    # Cabecera
     st.image(logo_url, width=150)
-    st.markdown("<h1 style='text-align: center;'>SOLICITUD DE INGRESO</h1>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center;'>SOLICITUD DE INGRESO</h2>", unsafe_allow_html=True)
 
-    # 2. Inicializar el estado para que los botones "funcionen"
-    if 'formulario_listo' not in st.session_state:
-        st.session_state.formulario_listo = False
-
-    # 3. Formulario de Captura
-    with st.form("ficha_adhesion"):
+    # 3. Formulario de Carga
+    with st.form("form_serrano_final"):
         col1, col2, col3, col4 = st.columns(4)
-        fecha = col1.date_input("Fecha", datetime.now())
-        cliente = col2.text_input("Cliente N°")
-        contrato = col3.text_input("Contrato")
-        lo = col4.text_input("% L.O.")
+        with col1: st.date_input("Fecha", datetime.now())
+        with col2: st.text_input("Cliente N°")
+        with col3: st.text_input("Contrato")
+        with col4: st.text_input("% L.O.")
 
         c_ins, c_anio = st.columns(2)
-        colegio = c_ins.text_input("Colegio / Instituto")
-        division = c_anio.text_input("Año y División")
+        with c_ins: st.text_input("Colegio / Instituto")
+        with c_anio: st.text_input("Año y División")
 
         st.markdown("---")
-        st.write("### DATOS DEL ALUMNO")
+        st.write("**DATOS DEL ALUMNO**")
         ca1, ca2 = st.columns(2)
-        apellido = ca1.text_input("Apellido")
-        nombre = ca2.text_input("Nombres")
-        dni = ca1.text_input("D.N.I. Nº")
-        venc_dni = ca2.date_input("Vencimiento D.N.I.")
-        f_nac = ca1.date_input("Fecha de Nacimiento", min_value=datetime(1990,1,1))
-        sexo = ca2.radio("Sexo", ["Masculino", "Femenino", "X"], horizontal=True)
+        with ca1:
+            st.text_input("Apellido")
+            st.text_input("D.N.I. Nº")
+            st.date_input("Fecha de Nacimiento", min_value=datetime(1990,1,1))
+        with ca2:
+            st.text_input("Nombres")
+            st.date_input("Vencimiento D.N.I.") 
+            st.radio("Sexo", ["Masculino", "Femenino", "X"], horizontal=True)
 
         st.markdown("---")
-        st.write("### DATOS DE LOS PADRES")
+        st.write("**DATOS DE LOS PADRES**")
         ct1, ct2 = st.columns(2)
-        padre1 = ct1.text_input("Madre / Padre / Tutor (1)")
-        dni1 = ct1.text_input("D.N.I. (1)")
-        padre2 = ct2.text_input("Madre / Padre / Tutor (2)")
-        dni2 = ct2.text_input("D.N.I. (2)")
+        with ct1: 
+            st.text_input("Madre / Padre / Tutor (1)")
+            st.text_input("D.N.I. (1)")
+        with ct2: 
+            st.text_input("Madre / Padre / Tutor (2)")
+            st.text_input("D.N.I. (2)")
         
-        email = st.text_input("E-mail de contacto")
-        
+        st.text_input("E-mail de contacto")
+        st.text_area("Observaciones")
+
         st.markdown("---")
-        plan_sel = st.pills("Seleccione Plan de Pago:", ["PLAN 1", "PLAN 2", "PLAN 3", "PLAN 4", "PLAN 5", "OTROS"])
+        st.pills("Plan de Pago:", options=["PLAN 1", "PLAN 2", "PLAN 3", "PLAN 4", "PLAN 5", "OTROS"])
         
         st.markdown(f"""
-            <div style="font-size: 0.9rem; text-align: justify; border: 1px solid #ccc; padding: 15px; color: black;">
+            <div style="font-size: 0.9rem; text-align: justify; border: 1px solid #ccc; padding: 15px; color: black; background: #fff;">
             Declaro bajo juramento que los datos aqui volcados son absolutamente exactos y acepto, para la cancelacion de los servicios 
             a prestar por <b>SERRANO TURISMO</b>, el plan de pagos que figura en la solicitud de reserva mencionada anteriormente.<br><br>
             Los planes contado deberan abonarse dentro de los 30 dias de haberse firmado el contrato.<br><br>
@@ -83,13 +102,18 @@ def render_adhesion(logo_url):
         fcol1.markdown("<hr style='border:1px solid black;'><p style='text-align:center;'>Firma</p>", unsafe_allow_html=True)
         fcol2.markdown("<hr style='border:1px solid black;'><p style='text-align:center;'>Aclaración y DNI</p>", unsafe_allow_html=True)
 
-        # BOTÓN DE VISTA PREVIA (Dentro del form)
-        submit = st.form_submit_button("🔍 GENERAR VISTA PREVIA")
-        if submit:
-            st.session_state.formulario_listo = True
+        # Botón de Confirmación
+        if st.form_submit_button("✅ 1. CONFIRMAR DATOS"):
+            st.session_state.form_confirmado = True
 
-    # 4. BOTÓN DE IMPRESIÓN (Solo aparece si se presionó Vista Previa)
-    if st.session_state.formulario_listo:
-        st.success("✅ Ficha generada correctamente. Ahora puede descargarla o imprimirla.")
-        if st.button("💾 DESCARGAR / IMPRIMIR PDF"):
-            st.write('<script>window.print();</script>', unsafe_allow_html=True)
+    # 4. Botón de Impresión (Solo se ve si confirmaron los datos)
+    if st.session_state.form_confirmado:
+        st.success("✅ Datos anclados. Presione el botón de abajo para imprimir o guardar como PDF.")
+        
+        # Botón con JavaScript inyectado directamente en el evento onClick
+        if st.button("🖨️ 2. CLIC AQUÍ PARA IMPRIMIR / DESCARGAR PDF"):
+            st.markdown("""
+                <script>
+                    window.print();
+                </script>
+            """, unsafe_allow_html=True)
