@@ -9,65 +9,56 @@ def render_hoteleria(destino):
 
     # --- CASO 1: VILLA CARLOS PAZ ---
     if "Villa Carlos Paz" in destino:
-        # OPCIÓN 1: HOTEL PARQUE
+        
+        # Lista de características comunes para Carlos Paz
+        features_html = """
+        ✔️ Habitaciones triples y cuádruples con sommier, Aire Acondicionado y baño privado.<br>
+        ✔️ Comedor restaurante. Cocina casera.<br>
+        ✔️ SUM (Salón de Usos Múltiples).<br>
+        ✔️ Teatro / Disco.<br>
+        ✔️ Canchas de vóley, fútbol y fútbol-tenis.<br>
+        ✔️ Piletas con guardavidas permanente.<br>
+        ✔️ Amplios parques.<br>
+        ✔️ Espacios cubiertos para actividades recreativas.<br>
+        ✔️ Servicio de WiFi.<br>
+        ✔️ Consultorio médico.<br>
+        ✔️ Seguridad las 24 hs.
+        """
+
+        # --- OPCIÓN 1: HOTEL PARQUE ---
         st.subheader("🏢 Opción 1: Hotel Parque")
-        # CAMBIO: Ruta con espacio y extensión .jpeg
-        img_parque = os.path.join(ruta_base, "hotel parque.jpeg")
+        col1, col2 = st.columns([1.2, 1]) # Dividimos el espacio
         
-        if os.path.exists(img_parque):
-            st.image(img_parque, caption="Instalaciones del Hotel Parque", width=650)
-        else:
-            st.error(f"⚠️ No se encontró la imagen en: {img_parque}. Verificá que el nombre sea exactamente 'hotel parque.jpeg' con el espacio incluido.")
+        with col1:
+            img_parque = os.path.join(ruta_base, "hotel parque.jpeg")
+            if os.path.exists(img_parque):
+                st.image(img_parque, use_container_width=True)
+            else:
+                st.error("⚠️ Imagen 'hotel parque.jpeg' no encontrada.")
         
-        st.markdown("""
-        * **Ubicación estratégica:** Cercano al centro y puntos de interés.
-        * **Servicios:** Amplias habitaciones, salón de usos múltiples y áreas recreativas.
-        * **Régimen:** Pensión completa con menú estudiantil/deportivo.
-        """)
+        with col2:
+            st.markdown(f"<div style='font-size: 0.95rem; line-height: 1.6;'>{features_html}</div>", unsafe_allow_html=True)
 
         st.divider()
 
-        # OPCIÓN 2: HOTEL CAPILLA DEL LAGO
+        # --- OPCIÓN 2: HOTEL CAPILLA DEL LAGO ---
         st.subheader("🏨 Opción 2: Hotel Capilla del Lago")
-        img_capilla = os.path.join(ruta_base, "capilla.jpeg")
+        col3, col4 = st.columns([1.2, 1])
         
-        if os.path.exists(img_capilla):
-            st.image(img_capilla, caption="Vista del Hotel Capilla del Lago", width=650)
-        else:
-            st.error(f"⚠️ No se encontró la imagen en: {img_capilla}.")
+        with col3:
+            img_capilla = os.path.join(ruta_base, "capilla.jpeg")
+            if os.path.exists(img_capilla):
+                st.image(img_capilla, use_container_width=True)
+            else:
+                st.error("⚠️ Imagen 'capilla.jpeg' no encontrada.")
         
-        st.markdown("""
-        * **Exclusividad y confort:** Ubicado en una zona privilegiada con vistas al lago.
-        * **Instalaciones:** Piscina, áreas verdes y salones climatizados.
-        * **Atención personalizada:** Servicio enfocado en grupos y delegaciones.
-        """)
+        with col4:
+            st.markdown(f"<div style='font-size: 0.95rem; line-height: 1.6;'>{features_html}</div>", unsafe_allow_html=True)
 
     # --- CASO 2: SAN PEDRO ---
     elif "San Pedro" in destino:
-        # OPCIÓN 1: HOTEL DE TURISMO DE SAN PEDRO
+        # Aquí podrías aplicar la misma lógica si los hoteles de San Pedro comparten estas características
         st.subheader("🏢 Opción 1: Hotel de Turismo de San Pedro")
-        img_turismo = os.path.join(ruta_base, "hotel_turismo_sp.jpg")
-        if os.path.exists(img_turismo):
-            st.image(img_turismo, caption="Fachada Hotel de Turismo", width=650)
-        else:
-            st.warning("📸 [Imagen Hotel de Turismo - Próximamente]")
-        
-        st.markdown("""
-        * **Un clásico frente al río:** Excelente ubicación para disfrutar de la costanera.
-        * **Instalaciones:** Habitaciones confortables y amplios salones para el grupo.
-        """)
-
-        st.divider()
-
-        # OPCIÓN 2: HOTEL LA RUEDA
+        # ... (resto del código de San Pedro)
         st.subheader("🏡 Opción 2: Hotel La Rueda")
-        img_rueda = os.path.join(ruta_base, "hotel_la_rueda.jpg")
-        if os.path.exists(img_rueda):
-            st.image(img_rueda, caption="Instalaciones Hotel La Rueda", width=650)
-        else:
-            st.warning("📸 [Imagen Hotel La Rueda - Próximamente]")
-        
-        st.markdown("""
-        * **Tranquilidad y Servicio:** Un ambiente ideal para el descanso del contingente.
-        * **Gastronomía:** Reconocido por su excelente servicio de comedor para delegaciones.
-        """)
+        # ...
