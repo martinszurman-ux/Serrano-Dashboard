@@ -4,11 +4,11 @@ import streamlit.components.v1 as components
 
 # =================================================================
 # 📋 MÓDULO: SOLICITUD DE ADHESIÓN (Serrano Turismo)
-# VERSIÓN: Carilla Única Garantizada con Teléfonos de Padres
+# VERSIÓN FINAL: Firmas ajustadas y Botón oculto en Impresión
 # =================================================================
 
 def render_adhesion(logo_url):
-    # CSS para eliminar márgenes superiores y forzar carilla única
+    # CSS para control de impresión y diseño
     st.markdown("""
         <style>
         /* Vista Web: Eliminar espacios en blanco arriba */
@@ -27,8 +27,12 @@ def render_adhesion(logo_url):
             html, body {
                 zoom: 92%; 
             }
-            header, [data-testid="stSidebar"], .no-print, .stButton, footer {
+            /* OCULTAR EL BOTÓN Y ELEMENTOS WEB EN EL PDF */
+            header, [data-testid="stSidebar"], .no-print, .stButton, footer, iframe {
                 display: none !important;
+                height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
             }
             .main .block-container { padding: 0 !important; margin: 0 !important; }
             
@@ -44,12 +48,16 @@ def render_adhesion(logo_url):
             }
             hr { margin: 5px 0 !important; }
             [data-testid="stVerticalBlock"] > div { margin-top: -8px !important; }
-            .stTextArea textarea { height: 40px !important; }
+            
+            /* BAJAR LAS FIRMAS UN POCO MÁS (Solo en impresión) */
+            .bloque-firmas {
+                margin-top: 50px !important;
+            }
         }
         </style>
     """, unsafe_allow_html=True)
 
-    # Cabecera Compacta (Logo achicado y margen superior eliminado)
+    # Cabecera Compacta
     st.image(logo_url, width=80)
     st.markdown("<h2 style='text-align: center; color: black; margin-top: -25px;'>SOLICITUD DE INGRESO</h2>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; font-weight: bold; margin-top: -5px;'>Ficha del Cliente / Pasajero</p>", unsafe_allow_html=True)
@@ -87,16 +95,14 @@ def render_adhesion(logo_url):
 
     st.markdown("---")
     
-    # --- DATOS DE LOS PADRES (CON TELÉFONOS AGREGADOS) ---
+    # --- DATOS DE LOS PADRES ---
     st.write("**DATOS DE LOS PADRES / TUTORES**")
     
-    # Padre/Madre 1
     cp1_a, cp1_b, cp1_c = st.columns([2, 1, 1])
     cp1_a.text_input("Madre / Padre / Tutor (1)")
     cp1_b.text_input("D.N.I. (1)")
     cp1_c.text_input("Teléfono (1)")
     
-    # Padre/Madre 2
     cp2_a, cp2_b, cp2_c = st.columns([2, 1, 1])
     cp2_a.text_input("Madre / Padre / Tutor (2)")
     cp2_b.text_input("D.N.I. (2)")
@@ -116,7 +122,7 @@ def render_adhesion(logo_url):
         label_visibility="collapsed"
     )
 
-    # TEXTO LEGAL COMPACTO
+    # TEXTO LEGAL
     st.markdown(f"""
         <div style="font-size: 0.8rem; text-align: justify; border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9; color: black; line-height: 1.1;">
         Declaro bajo juramento que los datos aqui volcados son absolutamente exactos y acepto, para la cancelacion de los servicios 
@@ -127,20 +133,22 @@ def render_adhesion(logo_url):
         </div>
     """, unsafe_allow_html=True)
 
-    # FIRMAS
+    # --- FIRMAS (Con clase CSS para bajarlas en el PDF) ---
+    st.markdown('<div class="bloque-firmas">', unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
     fcol1, fcol2 = st.columns(2)
     fcol1.markdown("<hr style='border:0.5px solid black; margin-bottom:0;'><p style='text-align:center; font-size:8pt;'>Firma del Responsable</p>", unsafe_allow_html=True)
     fcol2.markdown("<hr style='border:0.5px solid black; margin-bottom:0;'><p style='text-align:center; font-size:8pt;'>Aclaración y D.N.I.</p>", unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
-    # BOTÓN DE IMPRESIÓN
+    # --- BOTÓN DE IMPRESIÓN (Oculto automáticamente en el PDF) ---
     st.markdown("<div class='no-print'><br></div>", unsafe_allow_html=True)
     components.html(
         """
         <html>
             <body>
                 <button style="background-color: #2E7D32; color: white; padding: 12px; border: none; border-radius: 10px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold;" 
-                onclick="window.parent.print()">🖨️ GENERAR PDF (UNA SOLA CARILLA)</button>
+                onclick="window.parent.print()">🖨️ GENERAR PDF (CARILLA ÚNICA)</button>
             </body>
         </html>
         """,
