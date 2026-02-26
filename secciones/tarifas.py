@@ -136,7 +136,7 @@ def render_tarifas(destino):
                     <p style='color:#6c757d; font-size:0.8rem; font-weight:700;'>💎 PAGO CONTADO</p>
                     <p style='color:#2e7d32; font-size:2.5rem; font-weight:800; margin:0;'>${val_contado_base * 0.9:,.0f}</p>
                     <div class="promo-box-text">
-                        TODOS LOS PLANES EN CUOTAS ABONANDO<br>DEL 1 AL 10 EN LA OFICINA 10% DE DESCUENTO<br>QUE SE APLICA EN LA ULTIMA CUOTA
+                        Pagando todas las cuotas del 1 al 10 de cada mes, en efectivo en nuestras oficinas de Serrano, obtenés un 10% de descuento sobre el total del viaje, aplicado en la última cuota.
                     </div>
                 </div>
             """, unsafe_allow_html=True)
