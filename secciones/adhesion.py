@@ -3,64 +3,66 @@ from datetime import datetime
 import streamlit.components.v1 as components
 
 def render_adhesion(logo_url):
-    # CSS de Alta Compresión para A4
+    # CSS de Máxima Compresión para Carilla Única
     st.markdown("""
         <style>
-        /* Ajustes para la vista Web */
-        .main .block-container { padding-top: 1rem; padding-bottom: 1rem; }
+        /* Ajustes para la vista Web y eliminación de márgenes superiores */
+        .main .block-container { 
+            padding-top: 0rem !important; 
+            padding-bottom: 0rem !important; 
+        }
+        [data-testid="stHeader"] { display: none !important; }
         
         @media print {
             @page {
                 size: A4;
-                margin: 0.8cm;
+                margin: 0.5cm; /* Margen mínimo de seguridad */
             }
-            /* REDUCCIÓN DE ESCALA GENERAL */
+            /* ESCALADO DINÁMICO */
             html, body {
-                zoom: 92%; /* Escala el contenido para que entre en una carilla */
+                zoom: 90%; 
             }
-            header, [data-testid="stSidebar"], .no-print, .stButton, footer, [data-testid="stHeader"] {
+            header, [data-testid="stSidebar"], .no-print, .stButton, footer {
                 display: none !important;
             }
-            /* Eliminar espacios extra de Streamlit */
+            /* Eliminar espacios vacíos de Streamlit en PDF */
             .main .block-container { padding: 0 !important; margin: 0 !important; }
             
-            h2 { font-size: 1.4rem !important; margin-top: 0 !important; margin-bottom: 5px !important; }
-            p, div, label { font-size: 9.5pt !important; line-height: 1.1 !important; }
+            h2 { font-size: 1.3rem !important; margin-top: -10px !important; margin-bottom: 2px !important; }
+            p, div, label { font-size: 9pt !important; line-height: 1.0 !important; }
             
-            /* Ajuste de inputs para que no desperdicien espacio */
+            /* Inputs ultra compactos para el PDF */
             input { border: none !important; font-weight: bold !important; height: auto !important; padding: 0 !important; }
-            hr { margin: 8px 0 !important; }
-            .stTextArea textarea { height: 50px !important; }
+            hr { margin: 5px 0 !important; }
+            .stTextArea textarea { height: 40px !important; }
         }
         </style>
     """, unsafe_allow_html=True)
 
-    # Cabecera Muy Compacta
-    st.image(logo_url, width=110)
-    st.markdown("<h2 style='text-align: center; color: black;'>SOLICITUD DE INGRESO</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; font-weight: bold;'>Ficha del Cliente / Pasajero</p>", unsafe_allow_html=True)
+    # Cabecera Ultra Compacta
+    st.image(logo_url, width=90)
+    st.markdown("<h2 style='text-align: center; color: black; margin-top: -20px;'>SOLICITUD DE INGRESO</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; font-weight: bold; margin-top: -5px;'>Ficha del Cliente / Pasajero</p>", unsafe_allow_html=True)
 
-    # --- DATOS DE CONTROL (Fila 1) ---
+    # --- DATOS DE CONTROL ---
     col1, col2, col3, col4 = st.columns(4)
     col1.date_input("Fecha", datetime.now())
     col2.text_input("Cliente N°")
     col3.text_input("Contrato")
     col4.text_input("% L.O.")
 
-    # --- INSTITUCIÓN (Fila 2) ---
     c_ins, c_anio = st.columns([2, 1])
     c_ins.text_input("Colegio / Instituto")
     c_anio.text_input("Año y División")
 
     st.markdown("---")
     
-    # --- DATOS ALUMNO (Compactados) ---
+    # --- DATOS ALUMNO ---
     st.write("**DATOS DEL ALUMNO / PASAJERO**")
     ca1, ca2 = st.columns(2)
     ca1.text_input("Apellido")
     ca2.text_input("Nombres")
     
-    # DNI, Vencimiento y Nacimiento en 3 columnas para ahorrar altura
     cdni1, cdni2, cdni3 = st.columns(3)
     cdni1.text_input("D.N.I. Nº")
     cdni2.date_input("Vto. D.N.I.") 
@@ -83,7 +85,7 @@ def render_adhesion(logo_url):
     
     email_col, obs_col = st.columns([1, 1])
     email_col.text_input("E-mail de contacto")
-    obs_col.text_input("Observaciones breves")
+    obs_col.text_input("Observaciones")
 
     st.markdown("---")
     
@@ -91,9 +93,9 @@ def render_adhesion(logo_url):
     st.write("**Plan de Pago:**")
     plan_sel = st.pills("Planes", options=["PLAN 1", "PLAN 2", "PLAN 3", "PLAN 4", "PLAN 5", "OTROS"], default="PLAN 1", label_visibility="collapsed")
 
-    # TEXTO LEGAL (Reducido de tamaño)
+    # TEXTO LEGAL (Fuente pequeña para ganar espacio)
     st.markdown(f"""
-        <div style="font-size: 0.8rem; text-align: justify; border: 1px solid #ccc; padding: 8px; color: black; background: #f9f9f9; line-height: 1.1;">
+        <div style="font-size: 0.75rem; text-align: justify; border: 1px solid #ccc; padding: 8px; color: black; background: #f9f9f9; line-height: 1.0;">
         Declaro bajo juramento que los datos aqui volcados son absolutamente exactos y acepto, para la cancelacion de los servicios 
         a prestar por <b>SERRANO TURISMO</b>, el plan de pagos que figura en la solicitud de reserva mencionada anteriormente.<br>
         Los planes contado deberan abonarse dentro de los 30 dias de haberse firmado el contrato. 
@@ -102,7 +104,7 @@ def render_adhesion(logo_url):
         </div>
     """, unsafe_allow_html=True)
 
-    # FIRMAS (Subidas un poco más)
+    # FIRMAS
     st.markdown("<br>", unsafe_allow_html=True)
     fcol1, fcol2 = st.columns(2)
     fcol1.markdown("<hr style='border:0.5px solid black; margin-bottom:0;'><p style='text-align:center; font-size:8pt;'>Firma del Responsable</p>", unsafe_allow_html=True)
@@ -114,10 +116,10 @@ def render_adhesion(logo_url):
         """
         <html>
             <body>
-                <button style="background-color: #2E7D32; color: white; padding: 15px; border: none; border-radius: 12px; cursor: pointer; width: 100%; font-size: 18px; font-weight: bold;" 
-                onclick="window.parent.print()">🖨️ GENERAR PDF (AJUSTADO A UNA HOJA)</button>
+                <button style="background-color: #2E7D32; color: white; padding: 12px; border: none; border-radius: 10px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold;" 
+                onclick="window.parent.print()">🖨️ GENERAR PDF (UNA SOLA CARILLA)</button>
             </body>
         </html>
         """,
-        height=100,
+        height=80,
     )
