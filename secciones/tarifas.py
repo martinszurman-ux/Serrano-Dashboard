@@ -116,4 +116,22 @@ def render_tarifas(destino):
         val_cont = clean_val(v['Contado'])
 
         with col_monto:
-            st.markdown(f"""<div class="widget-3d-inner"><p style
+            st.markdown(f"""<div class="widget-3d-inner"><p style='color:#6c757d; font-size:0.85rem; font-weight:700; text-transform:uppercase;'>Monto {cuota_sel}</p><p style='color:#212529; font-size:2.2rem; font-weight:800; margin:0;'>${val_c:,.0f}</p></div>""", unsafe_allow_html=True)
+
+        with col_cash:
+            st.markdown(f"""<div class="widget-3d-inner"><p style='color:#6c757d; font-size:0.85rem; font-weight:700; text-transform:uppercase;'>💎 Efectivo (10% OFF)</p><p style='color:#495057; font-size:2.2rem; font-weight:800; margin:0;'>${val_cont * 0.9:,.0f}</p></div>""", unsafe_allow_html=True)
+
+        st.divider()
+        st.write("### 📊 Tabla Comparativa de Planes")
+        
+        df_format = df.copy()
+        df_format.columns = [c.replace('_', ' ') for c in df_format.columns]
+        
+        cols_numericas = df_format.columns.drop('Programa')
+        for col in cols_numericas:
+            df_format[col] = df_format[col].apply(clean_val)
+
+        st.table(df_format.set_index('Programa').style.format("$ {:,.0f}"))
+        
+    else:
+        st.error("Base de datos no encontrada.")
