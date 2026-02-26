@@ -10,7 +10,7 @@ def render_tarifas(destino):
     if session_key not in st.session_state:
         st.session_state[session_key] = 0
 
-    # 2. ESTILOS CSS (Ajustes de posición y diseño Hero)
+    # 2. ESTILOS CSS (Ajustes de color, posición y diseño Hero)
     st.markdown("""
         <style>
         /* Mover el contenido hacia arriba para que el header no sea invasivo */
@@ -19,22 +19,35 @@ def render_tarifas(destino):
             margin-bottom: -10px;
         }
         
+        /* Widgets Superiores con fondo #D9D9D9 */
         .plan-card-container {
-            border-radius: 15px; padding: 20px; background: white;
-            border: 1px solid #eee; text-align: center;
-            min-height: 140px; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; margin-bottom: 10px;
-            transition: transform 0.3s ease;
+            border-radius: 15px; 
+            padding: 20px; 
+            background: #D9D9D9; /* El color que pediste */
+            border: 1px solid #ccc; 
+            text-align: center;
+            min-height: 140px; 
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
         }
+        
+        /* Efecto cuando la tarjeta está seleccionada */
         .selected-plan { 
             border: 2px solid #d32f2f !important; 
-            background-color: #fffafb !important;
-            transform: scale(1.02);
+            background-color: #ffffff !important; /* Cambia a blanco al seleccionar para resaltar */
+            transform: scale(1.05);
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
         }
+        
         .day-number { color: #d32f2f; font-size: 2.8rem; font-weight: 900; line-height: 1; }
         .transport-icon { font-size: 1.6rem; margin-left: 8px; }
-        .day-text { color: #6c757d; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+        .day-text { color: #495057; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
 
+        /* MEGA WIDGET HERO */
         .hero-payment-card {
             background: linear-gradient(145deg, #ffffff, #f0f2f6);
             border-radius: 24px;
@@ -70,8 +83,7 @@ def render_tarifas(destino):
     # --- CARGA DEL HEADER (Centrado y más pequeño) ---
     header_path = f"data/{folder}/tarifas_y_formas_header.png"
     if os.path.exists(header_path):
-        # Usamos columnas para achicar la imagen (proporción 1:3:1 significa que la imagen ocupa el 60%)
-        _, col_img, _ = st.columns([1, 3, 1])
+        _, col_img, _ = st.columns([1.2, 3, 1.2])
         with col_img:
             st.image(header_path)
 
@@ -147,7 +159,7 @@ def render_tarifas(destino):
             </div>
         """, unsafe_allow_html=True)
 
-        # Caja de Beneficio
+        # Caja de Beneficio con el nuevo texto
         st.markdown("""
             <div style='max-width: 700px; margin: 30px auto; padding: 20px; background-color: #fdf2f2; border-radius: 12px; border: 1px dashed #d32f2f;'>
                 <p style='font-size: 1rem; color: #333333; text-align: center; margin: 0; font-weight: 500;'>
@@ -178,4 +190,15 @@ def render_tarifas(destino):
             st.markdown('</div>', unsafe_allow_html=True)
 
         st.write("#### 🛡️ Beneficios y Servicios Incluidos")
-        # ... (beneficios igual que antes)
+        beneficios = [
+            "Liberados para niños y acompañantes.", "Descuentos según formas de pago.", 
+            "Opciones de pago personalizadas.", "Ayudas complementarias incluidas.", 
+            "Fiesta de Egresados.", "Importantes descuentos en Camperas.", 
+            "DJ + Luces y sonido para evento privado."
+        ]
+        c1, c2 = st.columns(2)
+        for i, b in enumerate(beneficios):
+            with c1 if i % 2 == 0 else c2:
+                st.markdown(f'<div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #f1f1f1; color:#495057;"><span style="color:#2e7d32; font-weight:bold;">✓</span>{b}</div>', unsafe_allow_html=True)
+    else:
+        st.error("Archivo de datos no encontrado.")
