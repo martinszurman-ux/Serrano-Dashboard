@@ -4,14 +4,13 @@ import streamlit.components.v1 as components
 
 # =================================================================
 # 📋 MÓDULO: SOLICITUD DE ADHESIÓN (Serrano Turismo)
-# VERSIÓN FINAL: Firmas ajustadas y Botón oculto en Impresión
+# VERSIÓN: Bloqueo Estricto de Segunda Hoja
 # =================================================================
 
 def render_adhesion(logo_url):
-    # CSS para control de impresión y diseño
+    # CSS para forzar carilla única y eliminar la hoja fantasma
     st.markdown("""
         <style>
-        /* Vista Web: Eliminar espacios en blanco arriba */
         .main .block-container { 
             padding-top: 0rem !important; 
             padding-bottom: 0rem !important; 
@@ -21,43 +20,44 @@ def render_adhesion(logo_url):
         @media print {
             @page {
                 size: A4;
-                margin: 0.5cm;
+                margin: 0.4cm; /* Margen mínimo */
             }
-            /* ESCALADO DINÁMICO PARA UNA CARILLA */
             html, body {
                 zoom: 92%; 
+                height: 100%;
+                max-height: 100%;
+                overflow: hidden !important; /* Bloquea la creación de una 2da hoja */
             }
-            /* OCULTAR EL BOTÓN Y ELEMENTOS WEB EN EL PDF */
-            header, [data-testid="stSidebar"], .no-print, .stButton, footer, iframe {
+            /* Ocultar elementos web */
+            header, [data-testid="stSidebar"], .no-print, .stButton, footer, iframe, [data-testid="stHeader"] {
                 display: none !important;
+                visibility: hidden !important;
                 height: 0 !important;
-                margin: 0 !important;
-                padding: 0 !important;
             }
             .main .block-container { padding: 0 !important; margin: 0 !important; }
             
-            h2 { font-size: 1.3rem !important; margin-top: -15px !important; margin-bottom: 2px !important; }
+            h2 { font-size: 1.3rem !important; margin-top: -10px !important; margin-bottom: 2px !important; }
             p, div, label { font-size: 9pt !important; line-height: 1.0 !important; }
             
-            /* Inputs compactos para PDF */
+            /* Inputs compactos */
             input, textarea { 
                 border: none !important; 
                 background: transparent !important; 
                 font-weight: bold !important;
                 color: black !important;
             }
-            hr { margin: 5px 0 !important; }
-            [data-testid="stVerticalBlock"] > div { margin-top: -8px !important; }
+            hr { margin: 4px 0 !important; }
+            [data-testid="stVerticalBlock"] > div { margin-top: -9px !important; }
             
-            /* BAJAR LAS FIRMAS UN POCO MÁS (Solo en impresión) */
+            /* Bajar firmas con margen controlado */
             .bloque-firmas {
-                margin-top: 50px !important;
+                margin-top: 40px !important;
             }
         }
         </style>
     """, unsafe_allow_html=True)
 
-    # Cabecera Compacta
+    # Cabecera
     st.image(logo_url, width=80)
     st.markdown("<h2 style='text-align: center; color: black; margin-top: -25px;'>SOLICITUD DE INGRESO</h2>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; font-weight: bold; margin-top: -5px;'>Ficha del Cliente / Pasajero</p>", unsafe_allow_html=True)
@@ -115,12 +115,7 @@ def render_adhesion(logo_url):
     
     # --- PLANES ---
     st.write("**Seleccione su Plan de Pago:**")
-    plan_sel = st.pills(
-        "Planes", 
-        options=["PLAN 1", "PLAN 2", "PLAN 3", "PLAN 4", "PLAN 5", "OTROS"], 
-        default="PLAN 1", 
-        label_visibility="collapsed"
-    )
+    st.pills("Planes", options=["PLAN 1", "PLAN 2", "PLAN 3", "PLAN 4", "PLAN 5", "OTROS"], default="PLAN 1", label_visibility="collapsed")
 
     # TEXTO LEGAL
     st.markdown(f"""
@@ -133,7 +128,7 @@ def render_adhesion(logo_url):
         </div>
     """, unsafe_allow_html=True)
 
-    # --- FIRMAS (Con clase CSS para bajarlas en el PDF) ---
+    # --- FIRMAS ---
     st.markdown('<div class="bloque-firmas">', unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
     fcol1, fcol2 = st.columns(2)
@@ -141,7 +136,7 @@ def render_adhesion(logo_url):
     fcol2.markdown("<hr style='border:0.5px solid black; margin-bottom:0;'><p style='text-align:center; font-size:8pt;'>Aclaración y D.N.I.</p>", unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # --- BOTÓN DE IMPRESIÓN (Oculto automáticamente en el PDF) ---
+    # --- BOTÓN DE IMPRESIÓN ---
     st.markdown("<div class='no-print'><br></div>", unsafe_allow_html=True)
     components.html(
         """
