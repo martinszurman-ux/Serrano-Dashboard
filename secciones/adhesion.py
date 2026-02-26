@@ -3,56 +3,62 @@ from datetime import datetime
 
 # =================================================================
 # 📋 MÓDULO: SOLICITUD DE ADHESIÓN (Serrano Turismo)
-# VERSIÓN: Botones de Plan + Botón de PDF Permanente e Inmediato
+# VERSIÓN FINAL - NO MODIFICAR ESTRUCTURA
 # =================================================================
 
 def render_adhesion(logo_url):
-    # 1. CSS para fijar el estilo de botones y la limpieza del PDF
+    # CSS para ocultar la web al imprimir y que el PDF salga limpio
     st.markdown("""
         <style>
-        /* Estilo del botón de impresión siempre visible */
-        .stButton>button {
-            width: 100%;
-            padding: 18px !important;
+        /* Estilos en pantalla para el botón verde */
+        .boton-pdf {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             background-color: #2E7D32 !important;
             color: white !important;
-            font-weight: bold !important;
-            font-size: 1.2rem !important;
-            border-radius: 12px;
-            margin-top: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            width: 100%;
             border: none;
+            cursor: pointer;
         }
         
-        /* Estilos de Selección (Pills) */
-        [data-testid="stWidgetLabel"] { font-weight: bold; }
-
         @media print {
             header, [data-testid="stSidebar"], .no-print, .stButton, footer, [data-testid="stHeader"] {
                 display: none !important;
             }
             .main .block-container { padding: 1cm !important; margin: 0 !important; }
             body { color: black !important; background: white !important; }
-            input, textarea { border: none !important; font-weight: bold !important; background: transparent !important; }
+            /* Que los inputs se vean como texto negrita en el PDF */
+            input, textarea { 
+                border: none !important; 
+                font-weight: bold !important; 
+                background: transparent !important;
+                color: black !important;
+            }
         }
         </style>
     """, unsafe_allow_html=True)
 
-    # Cabecera Institucional
+    # Cabecera
     st.image(logo_url, width=150)
     st.markdown("<h2 style='text-align: center; color: black; margin-bottom: 0;'>SOLICITUD DE INGRESO</h2>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; font-weight: bold;'>Ficha del Cliente / Pasajero</p>", unsafe_allow_html=True)
 
-    # --- CAMPOS DE ENTRADA (Sin Formulario para que el botón no desaparezca) ---
-    
+    # --- CAMPOS DE ENTRADA (Sin Formulario para evitar bloqueos de script) ---
     col1, col2, col3, col4 = st.columns(4)
-    fecha = col1.date_input("Fecha", datetime.now())
-    cliente = col2.text_input("Cliente N°")
-    contrato = col3.text_input("Contrato")
-    lo = col4.text_input("% L.O.")
+    col1.date_input("Fecha", datetime.now())
+    col2.text_input("Cliente N°")
+    col3.text_input("Contrato")
+    col4.text_input("% L.O.")
 
     c_ins, c_anio = st.columns(2)
-    inst = c_ins.text_input("Colegio / Instituto")
-    div = c_anio.text_input("Año y División")
+    c_ins.text_input("Colegio / Instituto")
+    c_anio.text_input("Año y División")
 
     st.markdown("---")
     st.write("**DATOS DEL ALUMNO / PASAJERO**")
@@ -87,21 +93,18 @@ def render_adhesion(logo_url):
 
     st.markdown("---")
     
-    # --- VOLVEMOS A LOS BOTONES DE PLANES ---
+    # Planes con botones (Pills)
     st.write("**Seleccione su Plan de Pago:**")
-    col_p, col_o = st.columns([2, 1])
-    with col_p:
-        plan_sel = st.pills(
-            "Planes", 
-            options=["PLAN 1", "PLAN 2", "PLAN 3", "PLAN 4", "PLAN 5", "OTROS"], 
-            default="PLAN 1", 
-            label_visibility="collapsed"
-        )
-    with col_o:
-        if plan_sel == "OTROS":
-            st.text_input("Aclarar plan:", label_visibility="collapsed", placeholder="Escriba aquí...")
+    plan_sel = st.pills(
+        "Planes", 
+        options=["PLAN 1", "PLAN 2", "PLAN 3", "PLAN 4", "PLAN 5", "OTROS"], 
+        default="PLAN 1", 
+        label_visibility="collapsed"
+    )
+    if plan_sel == "OTROS":
+        st.text_input("Especifique plan:")
 
-    # TEXTO LEGAL EXACTO
+    # TEXTO LEGAL
     st.markdown(f"""
         <div style="font-size: 0.9rem; text-align: justify; border: 1px solid #ccc; padding: 15px; background-color: #f9f9f9; color: black; margin-top: 10px;">
         Declaro bajo juramento que los datos aqui volcados son absolutamente exactos y acepto, para la cancelacion de los servicios 
@@ -118,7 +121,13 @@ def render_adhesion(logo_url):
     fcol1.markdown("<hr style='border:1px solid black;'><p style='text-align:center;'>Firma del Padre/Madre/Tutor</p>", unsafe_allow_html=True)
     fcol2.markdown("<hr style='border:1px solid black;'><p style='text-align:center;'>Aclaración y D.N.I.</p>", unsafe_allow_html=True)
 
-    # --- BOTÓN DE IMPRESIÓN PERMANENTE ---
+    # --- BOTÓN DE IMPRESIÓN / GENERAR PDF ---
     st.divider()
-    if st.button("💾 GENERAR PDF / IMPRIMIR SOLICITUD"):
-        st.write('<script>window.print();</script>', unsafe_allow_html=True)
+    
+    # Usamos un botón de Streamlit con una inyección directa de JS
+    if st.button("💾 GENERAR PDF / IMPRIMIR SOLICITUD", type="primary"):
+        st.markdown("""
+            <script>
+                window.print();
+            </script>
+        """, unsafe_allow_html=True)
