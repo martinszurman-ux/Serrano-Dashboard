@@ -5,11 +5,9 @@ import os
 def render_tarifas(destino):
     folder = "vcp" if destino == "Villa Carlos Paz" else "san_pedro"
     
-    # Función de actualización de estado
     def seleccionar_plan(indice):
         st.session_state[f"sel_index_{folder}"] = indice
 
-    # Estilos CSS: Tabla minimalista, centralizada y negrita
     st.markdown("""
         <style>
         .plan-card-click {
@@ -32,14 +30,12 @@ def render_tarifas(destino):
             color: #495057; font-size: 0.85rem; font-weight: 700; 
             text-transform: uppercase; text-align: center;
         }
-        
         .stButton button {
             background-color: transparent !important; border: none !important;
             color: transparent !important; height: 140px !important;
             width: 100% !important; position: absolute; top: 0; left: 0;
             z-index: 10; cursor: pointer;
         }
-
         .widget-3d-inner {
             background: linear-gradient(145deg, #f0f0f0, #ffffff);
             border-radius: 15px; padding: 20px; text-align: center;
@@ -48,8 +44,6 @@ def render_tarifas(destino):
             min-height: 160px; display: flex; flex-direction: column; 
             justify-content: center; align-items: center;
         }
-
-        /* Formato de Tabla Contable */
         th {
             text-align: center !important;
             font-weight: bold !important;
@@ -57,9 +51,7 @@ def render_tarifas(destino):
             color: #333 !important;
             background-color: #f2f2f2 !important;
         }
-        td {
-            text-align: center !important;
-        }
+        td { text-align: center !important; }
         </style>
     """, unsafe_allow_html=True)
 
@@ -94,7 +86,7 @@ def render_tarifas(destino):
                         <div class="day-text-bottom">{resto}</div>
                     </div>
                 """, unsafe_allow_html=True)
-                st.button(f"Plan_{i}", key=f"btn_{folder}_{i}", on_click=seleccionar_plan, args=(i,))
+                st.button(f"P_{i}", key=f"b_{folder}_{i}", on_click=seleccionar_plan, args=(i,))
 
         v = df.iloc[st.session_state[session_key]]
         st.divider()
@@ -108,7 +100,7 @@ def render_tarifas(destino):
             st.markdown('<div class="widget-3d-inner">', unsafe_allow_html=True)
             st.markdown("<p style='color:#6c757d; font-size:0.85rem; font-weight:700; text-transform:uppercase;'>Opciones de Pago</p>", unsafe_allow_html=True)
             opciones_c = [c.replace('_', ' ') for c in df.columns if c not in ['Programa', 'Contado']]
-            cuota_sel = st.pills("Cuotas", options=opciones_c, default=opciones_c[0], label_visibility="collapsed", key=f"pills_val_{folder}")
+            cuota_sel = st.pills("C", options=opciones_c, default=opciones_c[0], label_visibility="collapsed", key=f"pi_{folder}")
             st.markdown('</div>', unsafe_allow_html=True)
 
         c_db = cuota_sel.replace(' ', '_')
@@ -123,15 +115,12 @@ def render_tarifas(destino):
 
         st.divider()
         st.write("### 📊 Tabla Comparativa de Planes")
-        
         df_format = df.copy()
         df_format.columns = [c.replace('_', ' ') for c in df_format.columns]
-        
-        cols_numericas = df_format.columns.drop('Programa')
-        for col in cols_numericas:
+        cols_num = df_format.columns.drop('Programa')
+        for col in cols_num:
             df_format[col] = df_format[col].apply(clean_val)
 
         st.table(df_format.set_index('Programa').style.format("$ {:,.0f}"))
-        
     else:
-        st.error("Base de datos no encontrada.")
+        st.error("Error: CSV no encontrado.")
