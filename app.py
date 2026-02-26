@@ -1,11 +1,14 @@
 import streamlit as st
+from secciones.adhesion import render_adhesion
 
-# Configuración de página y estilos laterales
-st.sidebar.image("TU_LOGO_URL", width=150) # Usar el mismo logo de la ficha
-st.sidebar.title("Menú de Navegación")
+# 1. Definir la URL o ruta del logo una sola vez para evitar errores
+LOGO_RECURSO = "https://tu-link-del-logo.com/logo.png" # <--- CAMBIÁ ESTO POR TU LINK REAL
+
+# 2. Configuración del Menú Lateral
+st.sidebar.image(LOGO_RECURSO, width=150)
+st.sidebar.title("Serrano Turismo")
 st.sidebar.divider()
 
-# Definición del Orden solicitado
 menu_opciones = [
     "🚌 TRANSPORTE",
     "🏨 HOTELERIA",
@@ -16,38 +19,29 @@ menu_opciones = [
     "📋 SOLICITUD DE ADHESION"
 ]
 
-seleccion = st.sidebar.radio("Seleccione una sección:", menu_opciones)
+seleccion = st.sidebar.radio("Navegación", menu_opciones)
 
-# --- Lógica de Navegación ---
-
+# 3. Lógica de pantallas
 if seleccion == "🚌 TRANSPORTE":
     st.title("🚌 Información de Transporte")
-    # Aquí irá el código o la función de Transporte
-    st.info("Sección en desarrollo: Datos de micros, choferes y rutas.")
+    st.info("Aquí cargaremos las unidades y choferes.")
 
 elif seleccion == "🏨 HOTELERIA":
-    st.title("🏨 Hotelería y Alojamiento")
-    # Aquí irá el código o la función de Hotelería
-    st.info("Sección en desarrollo: Detalle de hoteles y servicios.")
+    st.title("🏨 Hotelería")
+    st.info("Detalle de los hoteles confirmados.")
 
 elif seleccion == "☀️ EXCURSIONES DIURNAS":
     st.title("☀️ Excursiones Diurnas")
-    st.info("Sección en desarrollo: Cronograma de actividades de día.")
 
 elif seleccion == "🌙 ACTIVIDADES NOCTURNAS":
     st.title("🌙 Actividades Nocturnas")
-    st.info("Sección en desarrollo: Boliches, cenas y eventos.")
 
 elif seleccion == "🏥 SEGURO MEDICO":
-    st.title("🏥 Asistencia al Viajero y Seguro Médico")
-    st.info("Sección en desarrollo: Coberturas y prestadores.")
+    st.title("🏥 Seguro Médico")
 
 elif seleccion == "💰 TARIFAS Y FORMAS DE PAGO":
-    st.title("💰 Tarifas y Planes")
-    # Recordá que aquí mencionaremos cuotas y presupuestos personalizados
-    st.info("Sección en desarrollo: Cuadro de valores y medios de pago.")
+    st.title("💰 Tarifas y Formas de Pago")
 
 elif seleccion == "📋 SOLICITUD DE ADHESION":
-    # IMPORTANTE: Aquí llamamos a tu archivo que ya quedó perfecto
-    from secciones.adhesion import render_adhesion
-    render_adhesion("TU_LOGO_URL")
+    # Llamamos a la función que ya terminamos
+    render_adhesion(LOGO_RECURSO)
