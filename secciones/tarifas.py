@@ -84,9 +84,9 @@ def render_tarifas(destino):
                     st.rerun()
                 if es_activo: st.markdown('</div>', unsafe_allow_html=True)
 
-        # 3. LÓGICA DE CÁLCULO (Evita el KeyError si el índice es nulo)
+        # 3. LÓGICA DE CÁLCULO
         idx = st.session_state[session_key]
-        if idx >= len(df): idx = 0 # Seguridad adicional
+        if idx >= len(df): idx = 0 
         v = df.iloc[idx]
         
         st.divider()
@@ -112,14 +112,23 @@ def render_tarifas(destino):
         val_contado_base = clean_val(v['Contado'])
 
         with col_monto:
+            # Título constante para el widget
+            label = "MONTO CUOTAS"
+            
             if cuota_sel == "1 Pago":
-                m_display, label = "N/A", "CUOTAS"
+                m_display = "No aplica cuotas"
+                font_size = "1.5rem" # Tamaño ajustado para que el texto largo quepa
             else:
                 c_db = cuota_sel.replace(' ', '_')
                 m_display = f"${clean_val(v[c_db]):,.0f}"
-                label = f"MONTO {cuota_sel.upper()}"
+                font_size = "2.5rem"
 
-            st.markdown(f"""<div class="widget-3d-inner"><p style='color:#6c757d; font-size:0.8rem; font-weight:700;'>{label}</p><p style='color:#212529; font-size:2.5rem; font-weight:800; margin:0;'>{m_display}</p></div>""", unsafe_allow_html=True)
+            st.markdown(f"""
+                <div class="widget-3d-inner">
+                    <p style='color:#6c757d; font-size:0.8rem; font-weight:700;'>{label}</p>
+                    <p style='color:#212529; font-size:{font_size}; font-weight:800; margin:0;'>{m_display}</p>
+                </div>
+            """, unsafe_allow_html=True)
 
         with col_cash:
             st.markdown(f"""
@@ -132,15 +141,25 @@ def render_tarifas(destino):
                 </div>
             """, unsafe_allow_html=True)
 
-        # 4. TABLA Y BENEFICIOS (Bloqueados)
+        # 4. TABLA Y BENEFICIOS
         st.divider()
         df_format = df.copy()
         df_format.columns = [c.replace('_', ' ') for c in df_format.columns]
-        for col in df_format.columns.drop('Programa'): df_format[col] = df_format[col].apply(clean_val)
+        for col in df_format.columns.drop('Programa'): 
+            df_format[col] = df_format[col].apply(clean_val)
+        
         st.table(df_format.set_index('Programa').style.format("$ {:,.0f}"))
 
         st.write("#### 🛡️ Beneficios y Servicios Incluidos")
-        beneficios = ["Liberados para niños y acompañantes.", "Descuentos según formas de pago.", "Opciones de pago personalizadas.", "Ayudas complementarias incluidas.", "Fiesta de Egresados.", "Importantes descuentos en Camperas.", "DJ + Luces y sonido para evento privado."]
+        beneficios = [
+            "Liberados para niños y acompañantes.", 
+            "Descuentos según formas de pago.", 
+            "Opciones de pago personalizadas.", 
+            "Ayudas complementarias incluidas.", 
+            "Fiesta de Egresados.", 
+            "Importantes descuentos en Camperas.", 
+            "DJ + Luces y sonido para evento privado."
+        ]
         c1, c2 = st.columns(2)
         for i, b in enumerate(beneficios):
             with c1 if i % 2 == 0 else c2:
