@@ -26,19 +26,24 @@ def render_transporte(destino):
         st.image(img_micro_web, caption="Servicio exclusivo de Serrano Turismo", use_container_width=True)
         st.write(f"Traslados directos a {destino} con unidades habilitadas por la CNRT.")
 
-    # --- DETALLES DE SERVICIO ---
-    st.markdown("<br>", unsafe_allow_html=True)
-    with st.expander("🔍 Ver detalles del equipamiento"):
-        col1, col2 = st.columns(2)
-        with col1:
-            st.write("✅ **Seguridad:**")
-            st.write("- Doble chofer profesional")
-            st.write("- Seguimiento GPS en tiempo real")
-            st.write("- Cinturones de seguridad inerciales")
-        with col2:
-            st.write("🛋️ **Confort:**")
-            st.write("- Aire acondicionado y calefacción")
-            st.write("- Pantallas LED y sonido central")
-            st.write("- Toilette a bordo")
+    # --- DETALLES DE SERVICIO (SIEMPRE VISIBLES) ---
+    st.markdown("---")
+    st.markdown("### 🛠️ Equipamiento y Características")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("🔒 **Seguridad y Técnica**")
+        st.write("• Doble chofer profesional")
+        st.write("• Seguimiento GPS en tiempo real")
+        st.write("• Cinturones de seguridad inerciales")
+        st.write("• Control de velocidad reglamentado")
+        
+    with col2:
+        st.markdown("🛋️ **Confort a Bordo**")
+        st.write("• Aire acondicionado y calefacción")
+        st.write("• Pantallas LED y sonido central")
+        st.write("• Toilette a bordo")
+        st.write("• Butacas reclinables de alta gama")
 
-    st.info("💡 Todas nuestras unidades pasan por rigurosos controles técnicos antes de cada salida.")
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.info("💡 Todas nuestras unidades pasan por rigurosos controles técnicos antes de cada salida para garantizar un viaje seguro.")
