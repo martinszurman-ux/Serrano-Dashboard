@@ -20,14 +20,6 @@ def render_tarifas(destino):
         .day-number { color: #d32f2f; font-size: 3rem; font-weight: 900; line-height: 1; }
         .transport-icon { font-size: 1.8rem; margin-left: 8px; }
         .day-text { color: #6c757d; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
-        .widget-3d-inner {
-            background: linear-gradient(145deg, #f0f0f0, #ffffff);
-            border-radius: 15px; padding: 20px; text-align: center;
-            border: 1px solid #ddd;
-            box-shadow: inset 3px 3px 6px #d1d1d1, inset -3px -3px 6px #ffffff;
-            min-height: 180px; display: flex; flex-direction: column; 
-            justify-content: center; align-items: center;
-        }
         .benefit-item {
             display: flex; align-items: center; gap: 10px;
             padding: 8px 0; border-bottom: 1px solid #f1f1f1;
@@ -69,7 +61,8 @@ def render_tarifas(destino):
 
         v = df.iloc[st.session_state[session_key]]
         st.divider()
-
+        
+        # Widgets de Montos
         col_opc, col_monto, col_cash = st.columns(3)
 
         def clean_val(val):
@@ -90,9 +83,7 @@ def render_tarifas(destino):
                 <div class="widget-3d-inner">
                     <p style='color:#6c757d; font-size:0.8rem; font-weight:700;'>MONTO {cuota_sel.upper()}</p>
                     <p style='color:#212529; font-size:2.2rem; font-weight:800; margin:0;'>${val_c:,.0f}</p>
-                    <div class="promo-box-text">
-                        Abonando del 1 al 10 en oficina:<br>10% OFF en la última cuota
-                    </div>
+                    <div class="promo-box-text">Abonando del 1 al 10 en oficina:<br>10% OFF en la última cuota</div>
                 </div>
             """, unsafe_allow_html=True)
 
@@ -101,31 +92,31 @@ def render_tarifas(destino):
                 <div class="widget-3d-inner">
                     <p style='color:#6c757d; font-size:0.8rem; font-weight:700;'>💎 PAGO CONTADO</p>
                     <p style='color:#2e7d32; font-size:2.2rem; font-weight:800; margin:0;'>${val_cont * 0.9:,.0f}</p>
-                    <p style='font-size:0.7rem; color:#6c757d; margin-top:5px;'>Bonificación inmediata aplicada</p>
                 </div>
             """, unsafe_allow_html=True)
 
         st.divider()
+        st.write("### 📊 Tabla Comparativa")
         df_format = df.copy()
         df_format.columns = [c.replace('_', ' ') for c in df_format.columns]
         for col in df_format.columns.drop('Programa'):
             df_format[col] = df_format[col].apply(clean_val)
         st.table(df_format.set_index('Programa').style.format("$ {:,.0f}"))
 
+        # Beneficios
         st.write("#### 🛡️ Beneficios y Servicios Incluidos")
         beneficios = [
             "Liberados para niños y acompañantes.",
             "Descuentos según formas de pago.",
-            "Se pueden realizar otras opciones de pago según necesidad familiar.",
+            "Opciones de pago personalizadas.",
             "Ayudas complementarias incluidas.",
             "Fiesta de Egresados.",
-            "Importantes descuentos en Camperas de Egresados.",
-            "DJ + Luces y sonido para evento privado (recaudar fondos)."
+            "Descuentos en Camperas.",
+            "DJ + Luces para recaudar fondos."
         ]
-        
-        c_b1, c_b2 = st.columns(2)
+        c1, c2 = st.columns(2)
         for i, b in enumerate(beneficios):
-            with c_b1 if i % 2 == 0 else c_b2:
+            with c1 if i % 2 == 0 else c2:
                 st.markdown(f'<div class="benefit-item"><span class="benefit-icon">✓</span>{b}</div>', unsafe_allow_html=True)
     else:
         st.error("CSV no encontrado.")
