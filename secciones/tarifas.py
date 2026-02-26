@@ -5,30 +5,67 @@ import os
 def render_tarifas(destino):
     folder = "vcp" if destino == "Villa Carlos Paz" else "san_pedro"
     
-    # CSS Mejorado: Integración total y eliminación de botones visibles
+    # CSS Refinado: Disposición número-ícono y fix de selección
     st.markdown("""
         <style>
-        /* Widget de Selección de Plan (Días en Rojo) */
         .plan-card-click {
             border-radius: 15px;
-            padding: 20px;
-            text-align: center;
+            padding: 15px;
             background: white;
             border: 2px solid #eee;
             transition: all 0.3s ease;
             min-height: 140px;
+            position: relative;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            position: relative;
         }
-        .selected-plan { border: 3px solid #d32f2f !important; background-color: #fff5f5 !important; }
+        .selected-plan { 
+            border: 3px solid #d32f2f !important; 
+            background-color: #fff5f5 !important;
+            box-shadow: 0 4px 10px rgba(211, 47, 47, 0.1);
+        }
         
-        .day-number { color: #d32f2f; font-size: 3.5rem; font-weight: 900; line-height: 1; margin-bottom: 0; }
-        .day-text { color: #495057; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
+        /* Contenedor superior: Número e ícono alineados */
+        .card-top {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+        
+        .day-number { 
+            color: #d32f2f; 
+            font-size: 3.2rem; 
+            font-weight: 900; 
+            line-height: 1; 
+        }
+        .transport-icon-big { 
+            font-size: 2.5rem; 
+        }
+        
+        .day-text-bottom { 
+            color: #495057; 
+            font-size: 0.85rem; 
+            font-weight: 700; 
+            text-transform: uppercase;
+            text-align: center;
+        }
 
-        /* Widget 3D Hundido (Neumórfico) para montos y opciones */
+        /* Botón invisible que cubre toda la tarjeta */
+        .stButton button {
+            background-color: transparent !important;
+            border: none !important;
+            color: transparent !important;
+            height: 140px !important;
+            width: 100% !important;
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 10;
+            cursor: pointer;
+        }
+
         .widget-3d-inner {
             background: linear-gradient(145deg, #f0f0f0, #ffffff);
             border-radius: 15px;
@@ -41,26 +78,6 @@ def render_tarifas(destino):
             flex-direction: column;
             justify-content: center;
         }
-
-        /* Ocultar el texto de los botones de selección pero mantener su funcionalidad */
-        .stButton button {
-            background-color: transparent !important;
-            border: none !important;
-            color: transparent !important;
-            height: 140px !important;
-            width: 100% !important;
-            position: absolute;
-            top: 0; left: 0;
-            z-index: 10;
-        }
-        .stButton button:hover { background-color: rgba(0,0,0,0.02) !important; }
-        
-        /* Ajuste para que las Pills se vean bien dentro del widget */
-        div[data-testid="stPills"] {
-            background: transparent !important;
-            padding: 0 !important;
-            justify-content: center;
-        }
         </style>
     """, unsafe_allow_html=True)
 
@@ -69,86 +86,85 @@ def render_tarifas(destino):
     if os.path.exists(path_tarifas):
         df = pd.read_csv(path_tarifas)
         
+        # --- LÓGICA DE SELECCIÓN CORREGIDA ---
         st.write("### 📅 Seleccioná tu itinerario")
         
-        if f'sel_{folder}' not in st.session_state:
-            st.session_state[f'sel_{folder}'] = 0
+        # Clave única de sesión por destino para evitar conflictos
+        session_key = f"sel_index_{folder}"
+        if session_key not in st.session_state:
+            st.session_state[session_key] = 0
 
         planes = df['Programa'].tolist()
         cols_p = st.columns(len(planes))
 
         for i, plan in enumerate(planes):
-            # Extraer número y transporte (ej: "6 dias en bus")
-            # Basado en 
+            # Lógica de extracción de datos del PDF
+            # Basado en duración y transporte
             partes = plan.split(' ', 1)
             numero = partes[0]
             resto = partes[1] if len(partes) > 1 else "Días"
             icono = "🚌" if "bus" in plan.lower() else "✈️"
 
             with cols_p[i]:
-                es_activo = st.session_state[f'sel_{folder}'] == i
+                # Comprobar si este índice es el seleccionado
+                es_activo = st.session_state[session_key] == i
                 clase_activa = "selected-plan" if es_activo else ""
                 
-                # Capa visual
+                # Diseño visual solicitado: Número e ícono arriba, texto abajo
                 st.markdown(f"""
                     <div class="plan-card-click {clase_activa}">
-                        <div class="day-number">{numero}</div>
-                        <div class="day-text">{resto}</div>
-                        <div style="font-size: 1.2rem;">{icono}</div>
+                        <div class="card-top">
+                            <div class="day-number">{numero}</div>
+                            <div class="transport-icon-big">{icono}</div>
+                        </div>
+                        <div class="day-text-bottom">{resto}</div>
                     </div>
                 """, unsafe_allow_html=True)
                 
-                # El botón ahora es invisible y cubre toda la tarjeta
-                if st.button(f"Invisible_{i}", key=f"inv_{folder}_{i}"):
-                    st.session_state[f'sel_{folder}'] = i
+                # El botón invisible ahora actualiza correctamente el estado
+                if st.button(f"Select_{folder}_{i}", key=f"btn_nav_{folder}_{i}"):
+                    st.session_state[session_key] = i
                     st.rerun()
 
-        v = df.iloc[st.session_state[f'sel_{folder}']]
+        # Obtener datos del plan según la selección actual
+        v = df.iloc[st.session_state[session_key]]
         st.divider()
 
-        # --- SECCIÓN DE WIDGETS 3D NIVELADOS ---
+        # --- WIDGETS INFERIORES ---
         col_opc, col_monto, col_cash = st.columns(3)
 
-        def clean(val):
+        def clean_val(val):
             return float(str(val).replace('$', '').replace('.', '').replace(',', '').strip())
 
-        # Widget 1: OPCIONES DE PAGO INTEGRADAS
         with col_opc:
             st.markdown('<div class="widget-3d-inner">', unsafe_allow_html=True)
-            st.markdown("<p class='widget-title' style='margin-bottom:10px;'>Opciones de Pago</p>", unsafe_allow_html=True)
-            cols_cuponera = [c.replace('_', ' ') for c in df.columns if c not in ['Programa', 'Contado']]
-            cuota_sel = st.pills("Selector", options=cols_cuponera, default=cols_cuponera[0], label_visibility="collapsed", key=f"pill_{folder}")
+            st.markdown("<p class='widget-title'>Opciones de Pago</p>", unsafe_allow_html=True)
+            cols_c = [c.replace('_', ' ') for c in df.columns if c not in ['Programa', 'Contado']]
+            # Usar key dinámica para las pills también
+            cuota_sel = st.pills("Cuotas", options=cols_c, default=cols_c[0], label_visibility="collapsed", key=f"pills_val_{folder}")
             st.markdown('</div>', unsafe_allow_html=True)
 
         c_db = cuota_sel.replace(' ', '_')
-        val_cuota = clean(v[c_db])
-        val_contado = clean(v['Contado'])
+        val_c = clean_val(v[c_db])
+        val_cont = clean_val(v['Contado'])
 
-        # Widget 2: MONTO DINÁMICO
         with col_monto:
             st.markdown(f"""
                 <div class="widget-3d-inner">
                     <p class='widget-title'>Monto {cuota_sel}</p>
-                    <p class='widget-value'>${val_cuota:,.0f}</p>
-                    <p class='promo-subtitle'>Cuota fija en pesos</p>
+                    <p class='widget-value'>${val_c:,.0f}</p>
+                    <p class='promo-subtitle'>Cuota fija mensual</p>
                 </div>
             """, unsafe_allow_html=True)
 
-        # Widget 3: EFECTIVO (OFICINA)
         with col_cash:
             st.markdown(f"""
                 <div class="widget-3d-inner">
                     <p class='widget-title'>💎 Efectivo (Oficina)</p>
-                    <p class='widget-value' style='color: #495057;'>${val_contado * 0.9:,.0f}</p>
-                    <p class='promo-subtitle'>Bonificación 10% incluida</p>
+                    <p class='widget-value' style='color: #495057;'>${val_cont * 0.9:,.0f}</p>
+                    <p class='promo-subtitle'>Incluye beneficio 10% OFF</p>
                 </div>
             """, unsafe_allow_html=True)
 
         st.divider()
-        with st.expander("📊 Ver tarifario detallado"):
-            st.table(df.set_index('Programa'))
-        
-        # Nota sobre flexibilidad [cite: 120, 250, 391]
-        st.info("Nota: Se pueden pautar otros planes en base a lo que cada familia necesite.")
-    else:
-        st.error("Error: No se pudo cargar el archivo de tarifas.")
+        with st.expander("📊
