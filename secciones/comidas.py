@@ -16,7 +16,7 @@ def render_comidas(destino):
     ✔️ <b>Servicio en Ruta:</b> Desayuno y almuerzo en el viaje de ida. Almuerzo y merienda en el regreso en nuestros paradores exclusivos.<br><br>
     ✔️ <b>Estaciones Saludables:</b> Disponibles en excursiones y hotel.<br><br>
     ✔️ <b>Menú Diferenciado:</b> Atención especial en dietas médicas o celíacas.
-
+    """
 
     # --- LÓGICA DE IMÁGENES POR DESTINO ---
     if "Villa Carlos Paz" in destino:
