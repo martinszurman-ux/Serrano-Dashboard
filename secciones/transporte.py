@@ -1,44 +1,57 @@
 import streamlit as st
 
-def render_transporte(destino):
-    st.markdown(f"<h1 style='text-align: center; color: #1E3A8A;'>🚌 TRANSPORTE A {destino.upper()}</h1>", unsafe_allow_html=True)
-    st.markdown("---")
+# 1. CONFIGURACIÓN DE PÁGINA
+st.set_page_config(page_title="Serrano Turismo", layout="wide")
 
-    # Enlaces directos de la web para evitar errores de archivo
-    img_micro_web = "http://googleusercontent.com/image_collection/image_retrieval/3737429268457166555_0"
-    img_avion_web = "http://googleusercontent.com/image_collection/image_retrieval/12197398189739676714_0"
+# 2. IMPORTACIONES
+# Intentamos importar cada sección. Si falla, mostramos un aviso claro.
+try:
+    from secciones.tarifas import render_tarifas
+    from secciones.adhesion import render_adhesion
+    from secciones.transporte import render_transporte
+except ImportError as e:
+    st.error(f"Error de importación: {e}. Verificá que los archivos existan en la carpeta 'secciones'.")
+    st.stop()
 
-    # --- CASO 1: VILLA CARLOS PAZ (Avión + Micro) ---
-    if "Villa Carlos Paz" in destino:
-        st.subheader("✈️ Opción Aérea: Aerolíneas Argentinas")
-        st.image(img_avion_web, caption="Vuelos exclusivos para Serrano Turismo", use_container_width=True)
-        st.write("Optimizamos tu tiempo con cupos confirmados en nuestra aerolínea de bandera.")
-        
-        st.divider()
-        
-        st.subheader("🚍 Opción Terrestre")
-        st.image(img_micro_web, caption="Unidades de última generación", use_container_width=True)
-        st.write("Viajá con el máximo confort en unidades equipadas para largas distancias.")
+# URL del logo institucional
+LOGO_URL = "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png"
 
-    # --- CASO 2: SAN PEDRO (Solo Micro) ---
-    else:
-        st.subheader("🚍 Transporte Terrestre")
-        st.image(img_micro_web, caption="Servicio exclusivo de Serrano Turismo", use_container_width=True)
-        st.write(f"Traslados directos a {destino} con unidades habilitadas por la CNRT.")
+# 3. SIDEBAR (Navegación)
+with st.sidebar:
+    st.image(LOGO_URL, use_container_width=True)
+    st.divider()
+    
+    destino = st.selectbox("📍 Seleccioná el Destino", ["Villa Carlos Paz", "San Pedro"])
+    
+    # Menú con el orden solicitado
+    opcion = st.radio("📂 Navegación", [
+        "🚌 TRANSPORTE",
+        "🏨 HOTELERIA",
+        "☀️ EXCURSIONES DE DIA",
+        "🌙 ACTIVIDADES NOCTURNAS",
+        "🏥 SEGURO MEDICO",
+        "💰 TARIFAS Y FORMAS DE PAGO",
+        "📋 SOLICITUD DE ADHESION"
+    ])
 
-    # --- DETALLES DE SERVICIO ---
-    st.markdown("<br>", unsafe_allow_html=True)
-    with st.expander("🔍 Ver detalles del equipamiento"):
-        col1, col2 = st.columns(2)
-        with col1:
-            st.write("✅ **Seguridad:**")
-            st.write("- Doble chofer profesional")
-            st.write("- Seguimiento GPS en tiempo real")
-            st.write("- Cinturones de seguridad inerciales")
-        with col2:
-            st.write("🛋️ **Confort:**")
-            st.write("- Aire acondicionado y calefacción")
-            st.write("- Pantallas LED y sonido central")
-            st.write("- Toilette a bordo")
+# 4. LÓGICA DE VISUALIZACIÓN
+if opcion == "🚌 TRANSPORTE":
+    render_transporte(destino)
 
-    st.info("💡 Todas nuestras unidades pasan por rigurosos controles técnicos antes de cada salida.")
+elif opcion == "💰 TARIFAS Y FORMAS DE PAGO":
+    render_tarifas(destino)
+
+elif opcion == "📋 SOLICITUD DE ADHESION":
+    render_adhesion(LOGO_URL)
+
+elif opcion == "🏨 HOTELERIA":
+    st.title("🏨 Hotelería")
+    st.info(f"Próximamente: Detalles de alojamiento en {destino}.")
+
+elif opcion == "🏥 SEGURO MEDICO":
+    st.title("🏥 Seguro Médico")
+    st.info("Información sobre cobertura médica y asistencia al viajero.")
+
+else:
+    st.title(opcion)
+    st.info("Esta sección se encuentra en desarrollo.")
