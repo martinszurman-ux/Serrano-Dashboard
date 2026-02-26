@@ -55,7 +55,7 @@ def render_tarifas(destino):
         .plan-card-container {
             border-radius: 15px; 
             padding: 20px; 
-            background: #D9D9D9;
+            background: #E0E0E0; /* Tono plateado más claro y delicado */
             border: 1px solid #ccc; 
             text-align: center;
             min-height: 140px; 
@@ -68,13 +68,13 @@ def render_tarifas(destino):
         }
         
         .selected-plan { 
-            border: 2px solid #d32f2f !important; 
+            border: 2px solid #BDBDBD !important; /* Recuadro gris del tono del relleno al seleccionar */
             background-color: #ffffff !important;
             transform: scale(1.05);
             box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
         }
         
-        .day-number { color: #d32f2f; font-size: 2.8rem; font-weight: 900; line-height: 1; }
+        .day-number { color: #BDBDBD; font-size: 2.8rem; font-weight: 900; line-height: 1; } /* Número en gris al seleccionar */
         .transport-icon { font-size: 1.6rem; margin-left: 8px; }
         .day-text { color: #495057; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
 
@@ -110,7 +110,7 @@ def render_tarifas(destino):
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .hero-subtitle { color: #d32f2f; font-size: 1.2rem; font-weight: 600; margin-top: 10px; }
+        .hero-subtitle { color: #BDBDBD; font-size: 1.2rem; font-weight: 600; margin-top: 10px; } /* Subtítulo en gris */
 
         .styled-table th {
             background-color: #333333 !important;
@@ -207,8 +207,7 @@ def render_tarifas(destino):
         """, unsafe_allow_html=True)
 
         st.markdown("""
-            <div style='max-width: 700px; margin: 30px auto; padding: 20px; background-color: #fdf2f2; border-radius: 12px; border: 1px dashed #d32f2f;'>
-                <p style='font-size: 1rem; color: #333333; text-align: center; margin: 0; font-weight: 500;'>
+            <div style='max-width: 700px; margin: 30px auto; padding: 20px; background-color: #fdf2f2; border-radius: 12px; border: 1px dashed #BDBDBD;'> <p style='font-size: 1rem; color: #333333; text-align: center; margin: 0; font-weight: 500;'>
                     🎁 <b>¡Beneficio Exclusivo!</b> Pagando todas las cuotas del 1 al 10 de cada mes en efectivo en Serrano, 
                     obtenés un <b>10% de descuento</b> sobre el total del viaje (aplicado en la última cuota).
                 </p>
