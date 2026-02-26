@@ -4,9 +4,9 @@ def render_transporte(destino):
     st.markdown(f"<h1 style='text-align: center; color: #1E3A8A;'>🚌 TRANSPORTE A {destino.upper()}</h1>", unsafe_allow_html=True)
     st.markdown("---")
 
-    # Enlaces directos de la web para evitar errores de archivo
-    img_micro_web = "http://googleusercontent.com/image_collection/image_retrieval/3737429268457166555_0"
-    img_avion_web = "http://googleusercontent.com/image_collection/image_retrieval/12197398189739676714_0"
+    # Enlaces a las imágenes (Asegurate de que las rutas en tu repositorio sean correctas)
+    img_micro_web = "assets/micro_serrano_caratula.jpg"
+    img_avion_web = "https://raw.githubusercontent.com/AI-Hobbyist/serrano-dashboard/main/assets/image_1.png"
 
     # --- CASO 1: VILLA CARLOS PAZ (Avión + Micro) ---
     if "Villa Carlos Paz" in destino:
@@ -18,17 +18,30 @@ def render_transporte(destino):
         
         st.subheader("🚍 Opción Terrestre")
         st.image(img_micro_web, caption="Unidades de última generación", use_container_width=True)
-        st.write("Viajá con el máximo confort en unidades equipadas para largas distancias.")
+        
+        # Puntos clave solicitados
+        st.markdown("""
+        * **Buses de última generación.**
+        * **Empresas de transporte Charter.**
+        * **Mismo bus a disposición del grupo durante todos los días del viaje.**
+        """)
 
     # --- CASO 2: SAN PEDRO (Solo Micro) ---
     else:
         st.subheader("🚍 Transporte Terrestre")
         st.image(img_micro_web, caption="Servicio exclusivo de Serrano Turismo", use_container_width=True)
+        
+        # Puntos clave solicitados
+        st.markdown("""
+        * **Buses de última generación.**
+        * **Empresas de transporte Charter.**
+        * **Mismo bus a disposición del grupo durante todos los días del viaje.**
+        """)
         st.write(f"Traslados directos a {destino} con unidades habilitadas por la CNRT.")
 
     # --- DETALLES DE SERVICIO (SIEMPRE VISIBLES) ---
     st.markdown("---")
-    st.markdown("### 🛠️ Equipamiento y Características")
+    st.markdown("### 🛠️ Equipamiento y Características Técnicas")
     
     col1, col2 = st.columns(2)
     with col1:
