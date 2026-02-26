@@ -3,45 +3,61 @@ from datetime import datetime
 
 # =================================================================
 # 📋 MÓDULO: SOLICITUD DE ADHESIÓN (Serrano Turismo)
-# Versión: Botón de Impresión Permanente y Visible
+# FUNCIÓN: Generar Formulario y Descargar/Imprimir PDF
 # =================================================================
 
 def render_adhesion(logo_url):
-    # 1. Inyectamos el CSS para que la impresión sea limpia y el botón web se vea bien
+    # 1. CSS de alta fidelidad para que el PDF salga perfecto
     st.markdown("""
         <style>
-        /* Estilos para la web */
+        /* Estilos para el botón en la web */
         .stButton>button {
             width: 100%;
-            height: 3em;
             background-color: #1E3A8A !important;
             color: white !important;
-            font-weight: bold !important;
             border-radius: 10px !important;
+            height: 3.5em !important;
+            font-size: 1.2rem !important;
+            font-weight: bold !important;
+            border: none !important;
         }
-        
-        /* Estilos para la impresora */
+
+        /* CONFIGURACIÓN DE PDF / IMPRESIÓN */
         @media print {
-            header, [data-testid="stSidebar"], .stButton, .no-print, [data-testid="stHeader"], .reportview-container .main footer {
+            /* Ocultar todo lo que no es el formulario */
+            header, [data-testid="stSidebar"], .stButton, .no-print, [data-testid="stHeader"], footer {
                 display: none !important;
             }
+            /* Reset de márgenes para hoja A4 */
             .main .block-container {
-                padding: 0 !important;
+                padding: 1cm !important;
                 margin: 0 !important;
             }
-            body { color: black !important; background: white !important; }
-            div[data-testid="stForm"] { border: none !important; padding: 0 !important; }
+            body {
+                color: black !important;
+                background: white !important;
+            }
+            /* Hacer que los inputs parezcan texto plano en el PDF */
+            input, textarea {
+                border: none !important;
+                background: transparent !important;
+                color: black !important;
+                font-weight: bold !important;
+            }
+            div[data-testid="stForm"] {
+                border: 2px solid #000 !important;
+            }
         }
         </style>
     """, unsafe_allow_html=True)
 
-    # Cabecera de la ficha
+    # Encabezado del PDF
     st.image(logo_url, width=150)
-    st.markdown("<h2 style='text-align: center; color: black; margin-bottom: 0;'>SOLICITUD DE INGRESO</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; font-weight: bold;'>Ficha del Cliente / Pasajero</p>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center; color: black;'>SOLICITUD DE INGRESO</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; font-size: 1.2rem;'><b>Ficha del Cliente / Pasajero</b></p>", unsafe_allow_html=True)
 
-    # Formulario de entrada de datos
-    with st.form("ficha_adhesion_definitiva"):
+    # Formulario donde el cliente carga los datos
+    with st.form("ficha_para_pdf"):
         col1, col2, col3, col4 = st.columns(4)
         with col1: st.date_input("Fecha", datetime.now())
         with col2: st.text_input("Cliente N°")
@@ -53,7 +69,7 @@ def render_adhesion(logo_url):
         with c_anio: st.text_input("Año y División")
 
         st.markdown("---")
-        st.write("**DATOS DEL ALUMNO / PASAJERO**")
+        st.write("### DATOS DEL ALUMNO")
         
         ca1, ca2 = st.columns(2)
         with ca1:
@@ -71,7 +87,7 @@ def render_adhesion(logo_url):
         with cd3: st.text_input("Localidad")
 
         st.markdown("---")
-        st.write("**DATOS DE LOS PADRES / TUTORES**")
+        st.write("### DATOS DE LOS PADRES")
         ct1, ct2 = st.columns(2)
         with ct1: 
             st.text_input("Madre / Padre / Tutor (1)")
@@ -81,13 +97,14 @@ def render_adhesion(logo_url):
             st.text_input("D.N.I. (2)")
         
         st.text_input("E-mail de contacto:")
-        st.text_area("Observaciones:", height=100)
+        st.text_area("Observaciones:")
 
         st.markdown("---")
-        plan_sel = st.pills("Plan de Pago:", options=["PLAN 1", "PLAN 2", "PLAN 3", "PLAN 4", "PLAN 5", "OTROS"])
+        st.write("**PLAN DE PAGO ELEGIDO:**")
+        plan_sel = st.pills("Selección:", options=["PLAN 1", "PLAN 2", "PLAN 3", "PLAN 4", "PLAN 5", "OTROS"], label_visibility="collapsed")
         
         st.markdown(f"""
-            <div style="font-size: 0.9rem; text-align: justify; border: 1px solid #ccc; padding: 15px; background-color: #fcfcfc; color: black; margin-top: 10px;">
+            <div style="font-size: 0.95rem; text-align: justify; border: 2px solid black; padding: 15px; background-color: #f9f9f9; color: black; margin-top: 10px;">
             Declaro bajo juramento que los datos aqui volcados son absolutamente exactos y acepto, para la cancelacion de los servicios 
             a prestar por <b>SERRANO TURISMO</b>, el plan de pagos que figura en la solicitud de reserva mencionada anteriormente.<br><br>
             Los planes contado deberan abonarse dentro de los 30 dias de haberse firmado el contrato.<br><br>
@@ -96,26 +113,20 @@ def render_adhesion(logo_url):
             </div>
         """, unsafe_allow_html=True)
 
-        # Firmas
+        # Espacio para Firmas manuales
         st.markdown("<br><br><br>", unsafe_allow_html=True)
         fcol1, fcol2 = st.columns(2)
         with fcol1:
             st.markdown("<hr style='border: 1px solid black;'>", unsafe_allow_html=True)
-            st.caption("Firma del Padre/Madre/Tutor")
+            st.markdown("<p style='text-align:center;'>Firma del Responsable</p>", unsafe_allow_html=True)
         with fcol2:
             st.markdown("<hr style='border: 1px solid black;'>", unsafe_allow_html=True)
-            st.caption("Aclaración y D.N.I.")
+            st.markdown("<p style='text-align:center;'>Aclaración y D.N.I.</p>", unsafe_allow_html=True)
 
-        # Este botón es obligatorio para que Streamlit procese el formulario
-        st.form_submit_button("CONSOLIDAR DATOS")
+        # Botón para fijar los datos en el navegador
+        st.form_submit_button("✅ 1. GENERAR VISTA PREVIA")
 
-    # --- EL BOTÓN DE IMPRESIÓN FUERA DE TODO ---
-    st.write("### ⬇️ PASO FINAL")
-    if st.button("🖨️ CLIC AQUÍ PARA IMPRIMIR SOLICITUD"):
-        st.markdown("""
-            <script>
-                window.print();
-            </script>
-        """, unsafe_allow_html=True)
-        # En algunas versiones de Streamlit Cloud se prefiere este método:
+    # --- BOTÓN DE DESCARGA / IMPRESIÓN ---
+    st.markdown("### ⬇️ PASO FINAL")
+    if st.button("💾 DESCARGAR FORMULARIO COMPLETADO (PDF)"):
         st.write('<script>window.print();</script>', unsafe_allow_html=True)
