@@ -3,14 +3,14 @@ import pandas as pd
 import os
 
 def render_tarifas(destino):
-    # 1. INICIALIZACIÓN
+    # 1. INICIALIZACIÓN DE SESIÓN Y CARPETAS
     folder = "vcp" if destino == "Villa Carlos Paz" else "san_pedro"
     session_key = f"sel_index_{folder}"
     
     if session_key not in st.session_state:
         st.session_state[session_key] = 0
 
-    # 2. ESTILOS CSS
+    # 2. ESTILOS CSS (DISEÑO INTEGRAL)
     st.markdown("""
         <style>
         /* Ajuste de posición Header */
@@ -19,7 +19,7 @@ def render_tarifas(destino):
             margin-bottom: -10px;
         }
         
-        /* --- CONTENEDOR SELECTOR DE PAGO --- */
+        /* --- SELECTOR DE CUOTAS (PILLS) --- */
         .contenedor-selector-pago {
             display: flex;
             flex-direction: column;
@@ -49,11 +49,11 @@ def render_tarifas(destino):
             font-size: 1.1rem;
         }
 
-        /* --- WIDGETS DE ITINERARIO (Sencillos y Prolijos) --- */
+        /* --- WIDGETS DE ITINERARIO --- */
         .plan-card-container {
             border-radius: 15px; 
             padding: 20px; 
-            background: #E8E8E8; 
+            background: #E8E8E8; /* Plateado suave */
             border: 1px solid #d1d1d1; 
             text-align: center;
             min-height: 160px; 
@@ -62,20 +62,21 @@ def render_tarifas(destino):
             justify-content: center; 
             align-items: center; 
             margin-bottom: 10px;
-            transition: border 0.3s ease, background-color 0.3s ease; /* Sin flash/salto */
+            transition: all 0.3s ease;
         }
         
         .selected-plan { 
-            border: 2px solid #4A90E2 !important; 
+            border: 2px solid #4A90E2 !important; /* Azul Acero */
             background-color: #ffffff !important;
             box-shadow: 0px 4px 12px rgba(0,0,0,0.05);
         }
         
+        /* Contenedor para alinear Número e Icono al centro vertical */
         .header-content {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             width: 100%;
         }
 
@@ -101,14 +102,13 @@ def render_tarifas(destino):
             margin-top: 10px;
         }
 
-        /* --- EL GRAN WIDGET HERO (Efecto Genial Restaurado) --- */
+        /* --- WIDGET DE MONTO (EFECTO HERO) --- */
         .hero-payment-card {
             background: linear-gradient(145deg, #ffffff, #f0f2f6);
             border-radius: 24px;
             padding: 40px;
             text-align: center;
             border: 1px solid #e0e4e8;
-            /* Sombra inicial neumórfica */
             box-shadow: 15px 15px 40px #d9dbe0, -15px -15px 40px #ffffff;
             max-width: 500px;
             margin: 30px auto;
@@ -138,7 +138,7 @@ def render_tarifas(destino):
         
         .hero-subtitle { color: #4A90E2; font-size: 1.2rem; font-weight: 600; margin-top: 10px; }
 
-        /* Estilo para tabla comparativa */
+        /* TABLA COMPARATIVA */
         .styled-table th {
             background-color: #333333 !important;
             color: white !important; font-weight: bold !important; text-align: center !important;
@@ -147,7 +147,7 @@ def render_tarifas(destino):
         </style>
     """, unsafe_allow_html=True)
 
-    # --- HEADER ---
+    # --- 3. LOGICA DE CARGA DE DATOS ---
     header_path = f"data/{folder}/tarifas_y_formas_header.png"
     if os.path.exists(header_path):
         _, col_img, _ = st.columns([1.2, 3, 1.2])
@@ -161,7 +161,7 @@ def render_tarifas(destino):
         df.columns = df.columns.str.strip()
         
         def clean_val(val):
-            if pd.isna(val): return 0.0
+            if pd.isna(val) or val == '': return 0.0
             clean = str(val).replace('$', '').replace('.', '').replace(',', '').replace('s', '').strip()
             try: return float(clean)
             except: return 0.0
@@ -240,7 +240,7 @@ def render_tarifas(destino):
             </div>
         """, unsafe_allow_html=True)
 
-        # Beneficio (ajustado al azul acero)
+        # Bloque de beneficio exclusivo
         st.markdown("""
             <div style='max-width: 700px; margin: 30px auto; padding: 20px; background-color: #f0f7ff; border-radius: 12px; border: 1px dashed #4A90E2;'>
                 <p style='font-size: 1rem; color: #333333; text-align: center; margin: 0; font-weight: 500;'>
@@ -282,5 +282,4 @@ def render_tarifas(destino):
             with c1 if i % 2 == 0 else c2:
                 st.markdown(f'<div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #f1f1f1; color:#495057;"><span style="color:#4A90E2; font-weight:bold;">✓</span>{b}</div>', unsafe_allow_html=True)
     else:
-        st.error("Archivo de datos no encontrado.")
-            
+        st.error(f"Archivo de datos no encontrado en data/{folder}/")
