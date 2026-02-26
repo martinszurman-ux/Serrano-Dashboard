@@ -7,7 +7,7 @@ def render_comidas(destino):
 
     ruta_base = "assets/"
 
-    # --- TEXTO DETALLADO (Lado derecho) ---
+    # --- TEXTO LIMPIO (Termina en Menú Diferenciado) ---
     features_html = """
     ✔️ <b>Pensión completa:</b> desayuno, almuerzo, merienda, cena y quinta comida.<br><br>
     ✔️ <b>Menú buffet libre:</b> Variedad y calidad garantizada.<br><br>
@@ -20,44 +20,30 @@ def render_comidas(destino):
 
     # --- LÓGICA DE IMÁGENES POR DESTINO ---
     if "Villa Carlos Paz" in destino:
-        fotos = [
-            "desayuno.jpg",
-            "almuerzo.jpg",
-            "refrigerio.jpg",
-            "dietas.png"
-        ]
+        fotos = ["desayuno.jpg", "almuerzo.jpg", "refrigerio.jpg", "dietas.png"]
     else:  # SAN PEDRO
-        fotos = [
-            "desayuno san pedro.jpg",
-            "comida san pedro 1.jpeg",
-            "comida san pedro.jpeg",
-            "dietas.png"
-        ]
+        fotos = ["desayuno san pedro.jpg", "comida san pedro 1.jpeg", "comida san pedro.jpeg", "dietas.png"]
 
     # --- DISEÑO DE COLUMNAS ---
     col_izq, col_der = st.columns([1.2, 1])
 
     with col_izq:
-        # Mostramos las 4 fotos en una grilla de 2x2
+        # Grilla de 2x2 para las fotos
         c1, c2 = st.columns(2)
-        
-        # Foto 1 y 2
         with c1:
             img1 = os.path.join(ruta_base, fotos[0])
             if os.path.exists(img1): st.image(img1, use_container_width=True)
-            
             img3 = os.path.join(ruta_base, fotos[2])
             if os.path.exists(img3): st.image(img3, use_container_width=True)
             
-        # Foto 3 y 4
         with c2:
             img2 = os.path.join(ruta_base, fotos[1])
             if os.path.exists(img2): st.image(img2, use_container_width=True)
-            
             img4 = os.path.join(ruta_base, fotos[3])
             if os.path.exists(img4): st.image(img4, use_container_width=True)
 
     with col_der:
+        # Bloque de texto con estilo profesional
         st.markdown(f"""
             <div style='background-color: #f8f9fa; padding: 25px; border-radius: 15px; border-left: 5px solid #1E3A8A;'>
                 <div style='font-size: 1.0rem; line-height: 1.6; color: #333;'>
