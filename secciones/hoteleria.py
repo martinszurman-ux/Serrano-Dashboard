@@ -32,7 +32,7 @@ def render_hoteleria(destino):
             if os.path.exists(img_parque):
                 st.image(img_parque, use_container_width=True)
             else:
-                st.error("⚠️ Imagen 'hotel parque.jpeg' no encontrada.")
+                st.error(f"⚠️ No se encontró: {img_parque}")
         with col2:
             st.markdown(f"<div style='font-size: 0.9rem; line-height: 1.5;'>{features_html}</div>", unsafe_allow_html=True)
 
@@ -46,7 +46,7 @@ def render_hoteleria(destino):
             if os.path.exists(img_capilla):
                 st.image(img_capilla, use_container_width=True)
             else:
-                st.error("⚠️ Imagen 'capilla.jpeg' no encontrada.")
+                st.error(f"⚠️ No se encontró: {img_capilla}")
         with col4:
             st.markdown(f"<div style='font-size: 0.9rem; line-height: 1.5;'>{features_html}</div>", unsafe_allow_html=True)
 
@@ -56,11 +56,12 @@ def render_hoteleria(destino):
         st.subheader("🏢 Opción 1: Hotel de Turismo de San Pedro")
         col5, col6 = st.columns([1.2, 1])
         with col5:
-            img_turismo = os.path.join(ruta_base, "hotel_turismo_sp.jpg")
+            # CAMBIO: Ruta actualizada para Hotel Turismo
+            img_turismo = os.path.join(ruta_base, "hotel turismo.jpg")
             if os.path.exists(img_turismo):
                 st.image(img_turismo, use_container_width=True)
             else:
-                st.info("📸 [Imagen Hotel de Turismo - Próximamente]")
+                st.error(f"⚠️ No se encontró: {img_turismo}")
         with col6:
             st.markdown(f"<div style='font-size: 0.9rem; line-height: 1.5;'>{features_html}</div>", unsafe_allow_html=True)
 
@@ -70,10 +71,11 @@ def render_hoteleria(destino):
         st.subheader("🏡 Opción 2: Hotel La Rueda")
         col7, col8 = st.columns([1.2, 1])
         with col7:
-            img_rueda = os.path.join(ruta_base, "hotel_la_rueda.jpg")
+            # CAMBIO: Ruta actualizada para La Rueda
+            img_rueda = os.path.join(ruta_base, "la rueda.jpeg")
             if os.path.exists(img_rueda):
                 st.image(img_rueda, use_container_width=True)
             else:
-                st.info("📸 [Imagen Hotel La Rueda - Próximamente]")
+                st.error(f"⚠️ No se encontró: {img_rueda}")
         with col8:
             st.markdown(f"<div style='font-size: 0.9rem; line-height: 1.5;'>{features_html}</div>", unsafe_allow_html=True)
