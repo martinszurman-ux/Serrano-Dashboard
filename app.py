@@ -19,68 +19,65 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS PARA BOTONES PLATEADOS, ICONOS Y ANCHO UNIFICADO
+# 3. CSS: BOTONES GRIS OSCURO MATE, TEXTO BLANCO Y ANCHO TOTAL
 st.markdown("""
     <style>
-    /* Achicar el logo y subir el menú */
+    /* Logo compacto */
     [data-testid="stSidebar"] img {
         max-width: 140px !important;
         margin: 0 auto !important;
         display: block !important;
     }
     
-    /* Contenedor del sidebar más compacto */
-    [data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
-        gap: 0.4rem !important;
-        padding-top: 0.5rem !important;
+    /* Espaciado del sidebar */
+    [data-testid="stSidebarContent"] {
+        padding-top: 1rem !important;
     }
 
-    /* Estilo para los botones: Plateado Minimalista con Ancho Fijo */
+    /* ESTILO DE LOS BOTONES: GRIS OSCURO MATE */
     div.stButton > button {
-        background: linear-gradient(145deg, #e0e0e0, #f5f5f5) !important;
-        color: #333333 !important;
-        border: 1px solid #cccccc !important;
+        background: linear-gradient(145deg, #444444, #2c2c2c) !important;
+        color: white !important;
+        border: 1px solid #1a1a1a !important;
         border-radius: 8px !important;
-        padding: 8px 15px !important;
-        font-weight: 500 !important;
         
-        /* Forzamos el ancho para que todos sean iguales */
-        width: 100% !important; 
+        /* FUERZA EL MISMO ANCHO Y ALTO */
+        width: 100% !important;
         min-width: 100% !important;
+        height: 45px !important;
         
+        font-weight: 700 !important; /* Negrita */
         text-align: left !important;
-        transition: all 0.2s ease !important;
-        box-shadow: 1px 1px 3px rgba(0,0,0,0.05) !important;
         display: flex !important;
         align-items: center !important;
-        white-space: nowrap !important;
+        justify-content: flex-start !important;
+        padding-left: 20px !important;
+        
+        transition: all 0.2s ease-in-out !important;
+        margin-bottom: 5px !important;
     }
     
+    /* Efecto Hover */
     div.stButton > button:hover {
-        background: linear-gradient(145deg, #f5f5f5, #ffffff) !important;
-        border-color: #999999 !important;
-        box-shadow: 2px 2px 6px rgba(0,0,0,0.1) !important;
+        background: #1a1a1a !important;
+        border-color: #000000 !important;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3) !important;
+        transform: scale(1.02);
     }
 
-    /* Botón de ADHESIÓN (Gris Carbón Mate) */
-    .btn-adhesion > div.stButton > button {
-        background: linear-gradient(145deg, #444444, #222222) !important;
-        color: #ffffff !important;
-        border: 1px solid #111111 !important;
+    /* ESTILO ESPECIAL PARA FICHA DE ADHESIÓN (Más resaltado) */
+    .btn-adhesion div.stButton > button {
+        background: linear-gradient(145deg, #1a1a1a, #000000) !important;
+        border: 2px solid #d32f2f !important; /* Un borde sutil rojo para diferenciar */
         margin-top: 15px !important;
-        font-weight: 700 !important;
-        text-align: center !important;
         justify-content: center !important;
-    }
-    
-    .btn-adhesion > div.stButton > button:hover {
-        background: linear-gradient(145deg, #222222, #000000) !important;
-        color: #ffffff !important;
+        padding-left: 0px !important;
     }
 
-    /* Iconos originales sin filtro de escala de grises */
-    button p {
-        margin-bottom: 0px !important;
+    /* Ajuste para que los iconos no se peguen al texto */
+    div.stButton > button p {
+        margin: 0 !important;
+        font-size: 14px !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -94,8 +91,9 @@ with st.sidebar:
     st.divider()
     
     destino = st.selectbox("📍 Destino", ["Villa Carlos Paz", "San Pedro"])
-    
-    # Volvemos a los iconos anteriores y aseguramos el ancho 100%
+    st.write("") # Espacio pequeño
+
+    # Menú de botones unificados
     if st.button("🚌 1. Transporte"):
         st.session_state.seccion_activa = "Transporte"
     
@@ -114,9 +112,9 @@ with st.sidebar:
     if st.button("💰 6. Tarifas"):
         st.session_state.seccion_activa = "Tarifas"
 
-    # Botón de Adhesión (CTA Final)
+    # Botón de Adhesión (Diferenciado)
     st.markdown('<div class="btn-adhesion">', unsafe_allow_html=True)
-    if st.button("FICHA DE ADHESIÓN"):
+    if st.button("📝 FICHA DE ADHESIÓN"):
         st.session_state.seccion_activa = "Adhesión"
     st.markdown('</div>', unsafe_allow_html=True)
 
