@@ -13,9 +13,11 @@ def render_hoteleria(destino):
         st.subheader("🏢 Opción 1: Hotel Parque")
         img_parque = os.path.join(ruta_base, "hotel_parque.jpg")
         if os.path.exists(img_parque):
+            # Mantenemos el width=650 para consistencia visual con Transporte
             st.image(img_parque, caption="Instalaciones del Hotel Parque", width=650)
         else:
-            st.info("📸 [Imagen Hotel Parque - Próximamente]")
+            # Reemplazamos el texto temporal por la foto local
+            st.warning(f"📸 Imagen no encontrada en: {img_parque}")
         
         st.markdown("""
         * **Ubicación estratégica:** Cercano al centro y puntos de interés.
@@ -27,11 +29,14 @@ def render_hoteleria(destino):
 
         # OPCIÓN 2: HOTEL CAPILLA DEL LAGO
         st.subheader("🏨 Opción 2: Hotel Capilla del Lago")
-        img_capilla = os.path.join(ruta_base, "hotel_capilla.jpg")
+        # CAMBIO: Ahora busca la imagen que subiste
+        img_capilla = os.path.join(ruta_base, "capilla.jpeg")
+        
+        # Verificación de seguridad para la imagen
         if os.path.exists(img_capilla):
             st.image(img_capilla, caption="Vista del Hotel Capilla del Lago", width=650)
         else:
-            st.info("📸 [Imagen Hotel Capilla del Lago - Próximamente]")
+            st.error(f"⚠️ No se encontró la imagen en: {img_capilla}. Verificá que el archivo se llame exactamente 'capilla.jpeg' dentro de la carpeta 'assets'.")
         
         st.markdown("""
         * **Exclusividad y confort:** Ubicado en una zona privilegiada con vistas al lago.
@@ -47,7 +52,7 @@ def render_hoteleria(destino):
         if os.path.exists(img_turismo):
             st.image(img_turismo, caption="Fachada Hotel de Turismo", width=650)
         else:
-            st.info("📸 [Imagen Hotel de Turismo - Próximamente]")
+            st.warning(f"📸 Imagen no encontrada en: {img_turismo}")
         
         st.markdown("""
         * **Un clásico frente al río:** Excelente ubicación para disfrutar de la costanera.
@@ -62,7 +67,7 @@ def render_hoteleria(destino):
         if os.path.exists(img_rueda):
             st.image(img_rueda, caption="Instalaciones Hotel La Rueda", width=650)
         else:
-            st.info("📸 [Imagen Hotel La Rueda - Próximamente]")
+            st.warning(f"📸 Imagen no encontrada en: {img_rueda}")
         
         st.markdown("""
         * **Tranquilidad y Servicio:** Un ambiente ideal para el descanso del contingente.
