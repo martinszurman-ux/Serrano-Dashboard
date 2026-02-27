@@ -1,4 +1,6 @@
 import streamlit as st
+from datetime import datetime
+import streamlit.components.v1 as components
 
 # 1. CONFIGURACIÓN INICIAL
 st.set_page_config(
@@ -34,17 +36,17 @@ st.markdown("""
     }
     
     [data-testid="stSidebar"] {
-        background-color: #f0f2f6 !important; /* Gris muy clarito para el fondo del menú */
+        background-color: #f0f2f6 !important; 
     }
 
-    /* BOTONES MATE (FLAMA) - Forzamos el color para que no cambie en mobile */
+    /* BOTONES MATE - Forzamos el color para que no cambie en mobile */
     [data-testid="stSidebarContent"] [data-testid="stVerticalBlock"] > div {
         width: 100% !important;
     }
     
     div.stButton > button {
         background: linear-gradient(145deg, #444444, #2c2c2c) !important;
-        color: white !important; /* Letra blanca SIEMPRE */
+        color: white !important;
         border: 1px solid #1a1a1a !important;
         border-radius: 8px !important;
         height: 52px !important;
@@ -80,7 +82,7 @@ st.markdown("""
     }
     .logo-container img { max-width: 130px !important; }
 
-    /* CONTACTO ABAJO - Forzamos el gris para que no desaparezca en fondo negro */
+    /* CONTACTO ABAJO */
     .sidebar-footer { 
         color: #666666 !important; 
         font-size: 0.75rem; 
@@ -110,43 +112,17 @@ with st.sidebar:
     if st.button("🍽️ 3. Comidas"): st.session_state.seccion_activa = "Comidas"
     if st.button("🏞️ 4. Excursiones"): st.session_state.seccion_activa = "Excursiones"
     if st.button("🌙 5. Actividades Nocturnas"): st.session_state.seccion_activa = "Actividades"
-    if st.button("🏥 6. Seguro Médico"): st.session_state.seccion_activa = "Seguro"
+    # BOTÓN ACTUALIZADO
+    if st.button("🏥 6. Coordinación y Seguro Médico"): st.session_state.seccion_activa = "Seguro"
     if st.button("💰 7. Tarifas"): st.session_state.seccion_activa = "Tarifas"
 
     st.markdown('<div class="btn-adhesion">', unsafe_allow_html=True)
     if st.button("📝 FICHA DE ADHESIÓN"): st.session_state.seccion_activa = "Adhesión"
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # CONTACTO (Texto forzado en gris oscuro para legibilidad)
+    # CONTACTO
     st.markdown(f"""
         <div class="sidebar-footer">
             <div class="footer-item"><span>📍 Av. Rivadavia 4532 - Gal. Alefa (L. 10)</span></div>
             <div class="footer-item"><span>📍 Del Cimarrón 1846 - Ituzaingo</span></div>
-            <div class="footer-item"><span>📞 11 - 4847-6467</span></div>
-            <div class="footer-item">
-                <a href="https://wa.me/541156096283" target="_blank" style="display:flex; align-items:center; gap:5px;">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:16px;">
-                    <span>11 - 5609-6283 (Whatsapp)</span>
-                </a>
-            </div>
-            <div class="footer-item"><span>✉️ info@serranoturismo.com.ar</span></div>
-        </div>
-    """, unsafe_allow_html=True)
-
-# 5. RENDERIZADO
-if st.session_state.seccion_activa == "Transporte":
-    render_transporte(destino)
-elif st.session_state.seccion_activa == "Hotelería":
-    render_hoteleria(destino)
-elif st.session_state.seccion_activa == "Comidas":
-    render_comidas(destino)
-elif st.session_state.seccion_activa == "Excursiones":
-    render_excursiones(destino)
-elif st.session_state.seccion_activa == "Actividades":
-    render_nocturnas(destino)
-elif st.session_state.seccion_activa == "Seguro":
-    render_seguro(destino)
-elif st.session_state.seccion_activa == "Tarifas":
-    render_tarifas(destino)
-elif st.session_state.seccion_activa == "Adhesión":
-    render_adhesion(LOGO_URL)
+            <div class="
