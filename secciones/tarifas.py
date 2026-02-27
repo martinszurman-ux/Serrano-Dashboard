@@ -20,8 +20,13 @@ def render_tarifas(destino):
         # Usamos una key única por temporada para no mezclar los planes seleccionados
         suffix = "2026" if temporada == "Temporada 2026" else "2027"
         session_key = f"sel_index_{folder}_{suffix}"
+        
+        # DEFINICIÓN DEL ENCABEZADO PARA SAN PEDRO
+        header_path = f"data/{folder}/tarifariosanpedro.jpg"
     else:
         session_key = f"sel_index_{folder}"
+        # DEFINICIÓN DEL ENCABEZADO PARA VCP
+        header_path = f"data/{folder}/tarifas_y_formas_header.png"
     
     if session_key not in st.session_state:
         st.session_state[session_key] = 0
@@ -50,12 +55,13 @@ def render_tarifas(destino):
         </style>
     """, unsafe_allow_html=True)
 
-    # --- 3. LOGICA DE CARGA DE DATOS ---
-    header_path = f"data/{folder}/tarifas_y_formas_header.png"
+    # --- 3. LOGICA DE CARGA DE IMAGEN (ENCABEZADO) ---
     if os.path.exists(header_path):
         _, col_img, _ = st.columns([1.2, 3, 1.2])
-        with col_img: st.image(header_path)
+        with col_img: 
+            st.image(header_path)
 
+    # --- 4. LOGICA DE CARGA DE DATOS CSV ---
     path_tarifas = f"data/{folder}/{archivo_nombre}"
     
     if os.path.exists(path_tarifas):
@@ -125,7 +131,7 @@ def render_tarifas(destino):
             </div>
         """, unsafe_allow_html=True)
 
-        # Beneficio
+        # Beneficio Serrano
         st.markdown("""
             <div style='max-width: 700px; margin: 30px auto; padding: 20px; background-color: #f0f7ff; border-radius: 12px; border: 1px dashed #4A90E2;'>
                 <p style='font-size: 1rem; color: #333333; text-align: center; margin: 0; font-weight: 500;'>
@@ -158,4 +164,4 @@ def render_tarifas(destino):
             with c1 if i % 2 == 0 else c2:
                 st.markdown(f'<div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #f1f1f1; color:#495057;"><span style="color:#4A90E2; font-weight:bold;">✓</span>{b}</div>', unsafe_allow_html=True)
     else:
-        st.warning(f"Esperando carga de datos para {archivo_nombre}...")
+        st.warning(f"No se encontró el archivo: {archivo_nombre} en la carpeta data/{folder}/")
