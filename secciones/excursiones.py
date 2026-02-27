@@ -25,6 +25,11 @@ def render_excursiones(destino):
             st.warning("👑 **KING PARK**\n\nEntretenimiento de vanguardia y juegos mecánicos.")
             st.warning("🐒 **COCOGUANA**\n\nParque aéreo y tirolesas en un entorno natural único.")
 
+        # Video específico para Carlos Paz
+        st.markdown("---")
+        st.markdown("### 📽️ ¡Viví la Experiencia Serrano en la Villa!")
+        st.video("https://www.youtube.com/watch?v=ZG_3Bc8wkx8&t=53s")
+
     elif "San Pedro" in destino:
         st.markdown("### 🚣 Experiencias en la Naturaleza")
         st.write("Disfrutá de la historia, la aventura y la mejor gastronomía a orillas del Paraná.")
@@ -39,13 +44,13 @@ def render_excursiones(destino):
             st.warning("🌅 **SUNSET CATAMARÁN**\n\nPaseo exclusivo por el Río Paraná disfrutando del atardecer y la mejor música.")
             st.info("🏛️ **CITY TOUR**\n\nRecorrido por barrancas, Vía Crucis y compras de artículos regionales típicos.")
 
+        # Video específico para San Pedro
+        st.markdown("---")
+        st.markdown("### 📽️ ¡Serrano en San Pedro!")
+        st.video("https://www.youtube.com/watch?v=xBDqSrNB8Ro")
+
     else:
         st.info("Estamos terminando de coordinar las mejores actividades para este destino. ¡Próximamente!")
 
-    # Sección de Video Institucional
     st.markdown("---")
-    st.markdown("### 📽️ ¡Viví la Experiencia Serrano!")
-    video_url = "https://www.youtube.com/watch?v=ZG_3Bc8wkx8&t=53s"
-    st.video(video_url)
-    
     st.caption("⚠️ *El orden de las excursiones está sujeto a condiciones climáticas y logística de la coordinación.*")
