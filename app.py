@@ -26,7 +26,7 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO (Forzado para evitar modo oscuro y fijar botones)
+# 3. CSS MAESTRO (Botones Simétricos y Desktop/Mobile Ready)
 st.markdown("""
     <style>
     .stApp {
@@ -38,44 +38,51 @@ st.markdown("""
         background-color: #f0f2f6 !important; 
     }
 
-    div.stButton > button {
+    /* ESTILO UNIFICADO PARA TODOS LOS BOTONES DEL SIDEBAR */
+    [data-testid="stSidebarContent"] .stButton button {
+        width: 100% !important;
+        display: block !important;
         background: linear-gradient(145deg, #444444, #2c2c2c) !important;
         color: white !important;
         border: 1px solid #1a1a1a !important;
         border-radius: 8px !important;
-        height: 52px !important;
+        height: 50px !important;
         font-weight: 700 !important;
-        font-size: 15px !important;
+        font-size: 14px !important; /* Ajustado para que el botón 6 entre bien */
         text-align: left !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        width: 100% !important;
-        margin-bottom: -4px !important;
+        padding-left: 15px !important;
+        margin-bottom: 5px !important;
         white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
     }
     
-    div.stButton > button:hover {
+    [data-testid="stSidebarContent"] .stButton button:hover {
         background: #555555 !important;
         color: white !important;
+        border-color: white !important;
     }
 
-    .btn-adhesion div.stButton > button {
+    /* BOTÓN FICHA DE ADHESIÓN (Diferenciado por color pero mismo tamaño) */
+    .btn-adhesion .stButton button {
         background: linear-gradient(145deg, #1a1a1a, #000000) !important;
-        margin-top: 15px !important;
-        justify-content: center !important;
+        border: 1px solid #555555 !important;
+        margin-top: 10px !important;
+        text-align: center !important;
+        padding-left: 0px !important;
     }
 
     .logo-container {
         display: flex; justify-content: center; width: 100%;
-        margin-bottom: -10px !important;
+        margin-bottom: 5px !important;
     }
-    .logo-container img { max-width: 130px !important; }
+    .logo-container img { max-width: 120px !important; }
 
     .sidebar-footer { 
         color: #666666 !important; 
-        font-size: 0.75rem; 
+        font-size: 0.7rem; 
         margin-top: 15px; 
+        line-height: 1.2;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -88,9 +95,9 @@ with st.sidebar:
     st.markdown(f'<div class="logo-container"><img src="{LOGO_URL}"></div>', unsafe_allow_html=True)
     st.divider()
     
-    destino = st.selectbox("📍 Destino", ["Villa Carlos Paz", "San Pedro"])
+    destino = st.selectbox("📍 Seleccione Destino", ["Villa Carlos Paz", "San Pedro"])
     
-    # Menú de botones
+    # Menú de botones (Todos heredarán el ancho 100% del CSS)
     if st.button("🚌 1. Transporte"): st.session_state.seccion_activa = "Transporte"
     if st.button("🏨 2. Hotelería"): st.session_state.seccion_activa = "Hotelería"
     if st.button("🍽️ 3. Comidas"): st.session_state.seccion_activa = "Comidas"
@@ -103,7 +110,18 @@ with st.sidebar:
     if st.button("📝 FICHA DE ADHESIÓN"): st.session_state.seccion_activa = "Adhesion"
     st.markdown('</div>', unsafe_allow_html=True)
 
-# 5. RENDERIZADO (Conexión con módulos)
+    # CONTACTO
+    st.markdown(f"""
+        <div class="sidebar-footer">
+            <div>📍 Av. Rivadavia 4532 - Gal. Alefa (L. 10)</div>
+            <div>📍 Del Cimarrón 1846 - Ituzaingo</div>
+            <div>📞 11 - 4847-6467</div>
+            <div>📱 11 - 5609-6283 (Whatsapp)</div>
+            <div>✉️ info@serranoturismo.com.ar</div>
+        </div>
+    """, unsafe_allow_html=True)
+
+# 5. RENDERIZADO
 if st.session_state.seccion_activa == "Transporte":
     render_transporte(destino)
 elif st.session_state.seccion_activa == "Hotelería":
