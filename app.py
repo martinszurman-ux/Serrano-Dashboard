@@ -28,8 +28,8 @@ except ImportError as e:
 st.markdown("""
     <style>
     /* 1. OCULTAR ICONOS DE GITHUB Y FORK (Pero NO el botón de menú) */
-    .stAppToolbar { visibility: hidden !important; }
-    footer { visibility: hidden !important; }
+    /* .stAppToolbar { visibility: hidden !important; }
+    /* footer { visibility: hidden !important; }
     
     /* 2. ASEGURAR QUE EL BOTÓN DE MENÚ SEA VISIBLE Y GRIS OSCURO */
     [data-testid="stSidebarCollapsedControl"] {
@@ -146,3 +146,4 @@ elif st.session_state.seccion_activa == "Tarifas":
     render_tarifas(destino)
 elif st.session_state.seccion_activa == "Adhesión":
     render_adhesion(LOGO_URL)
+
