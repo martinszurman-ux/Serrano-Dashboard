@@ -25,7 +25,7 @@ def render_excursiones(destino):
             st.warning("👑 **KING PARK**\n\nEntretenimiento de vanguardia y juegos mecánicos.")
             st.warning("🐒 **COCOGUANA**\n\nParque aéreo y tirolesas en un entorno natural único.")
 
-        # Video específico para Carlos Paz
+        # Video para Carlos Paz
         st.markdown("---")
         st.markdown("### 📽️ ¡Viví la Experiencia Serrano en la Villa!")
         st.video("https://www.youtube.com/watch?v=ZG_3Bc8wkx8&t=53s")
@@ -44,7 +44,7 @@ def render_excursiones(destino):
             st.warning("🌅 **SUNSET CATAMARÁN**\n\nPaseo exclusivo por el Río Paraná disfrutando del atardecer y la mejor música.")
             st.info("🏛️ **CITY TOUR**\n\nRecorrido por barrancas, Vía Crucis y compras de artículos regionales típicos.")
 
-        # Video específico para San Pedro
+        # Video para San Pedro
         st.markdown("---")
         st.markdown("### 📽️ ¡Serrano en San Pedro!")
         st.video("https://www.youtube.com/watch?v=xBDqSrNB8Ro")
