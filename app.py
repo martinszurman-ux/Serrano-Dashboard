@@ -26,25 +26,19 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO (Fix definitivo de botones simétricos)
+# 3. CSS MAESTRO (Fix botones simétricos y sintaxis)
 st.markdown("""
-    <style>
-    .stApp {
-        background-color: white !important;
-        color: #31333F !important;
-    }
-    
-    [data-testid="stSidebar"] {
-        background-color: #f0f2f6 !important; 
-    }
+<style>
+    .stApp { background-color: white !important; color: #31333F !important; }
+    [data-testid="stSidebar"] { background-color: #f0f2f6 !important; }
 
-    /* FORZAR CONTENEDORES AL 100% */
-    [data-testid="stSidebarContent"] div.stButton {
+    /* FORZAR QUE LOS CONTENEDORES OCUPEN TODO EL ANCHO */
+    div[data-testid="stVerticalBlock"] div[data-testid="stVerticalBlock"] > div {
         width: 100% !important;
     }
 
-    /* ESTILO UNIFICADO DE BOTONES */
-    [data-testid="stSidebarContent"] button {
+    /* ESTILO DE BOTONES: Bloques idénticos */
+    .stButton > button {
         width: 100% !important;
         background: linear-gradient(145deg, #444444, #2c2c2c) !important;
         color: white !important;
@@ -57,64 +51,20 @@ st.markdown("""
         padding-left: 15px !important;
         display: block !important;
         white-space: nowrap !important;
-        margin-bottom: 2px !important;
     }
-    
-    [data-testid="stSidebarContent"] button:hover {
+
+    .stButton > button:hover {
         background: #555555 !important;
-        border-color: #ffffff !important;
+        border-color: white !important;
         color: white !important;
     }
 
-    /* BOTÓN ADHESIÓN (Mismo tamaño, distinto color) */
-    .btn-adhesion button {
+    /* BOTÓN ADHESIÓN: Negro total pero mismo tamaño */
+    .btn-adhesion .stButton > button {
         background: linear-gradient(145deg, #1a1a1a, #000000) !important;
         text-align: center !important;
-        padding-left: 0 !important;
-        margin-top: 15px !important;
+        padding-left: 0px !important;
+        margin-top: 10px !important;
     }
 
-    .logo-container {
-        display: flex; justify-content: center; width: 100%;
-        margin-bottom: 10px !important;
-    }
-    .logo-container img { max-width: 120px !important; }
-
-    .sidebar-footer { 
-        color: #666666 !important; 
-        font-size: 0.75rem; 
-        margin-top: 15px; 
-        line-height: 1.4; 
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# 4. LÓGICA DE NAVEGACIÓN
-if "seccion_activa" not in st.session_state:
-    st.session_state.seccion_activa = "Transporte"
-
-with st.sidebar:
-    st.markdown(f'<div class="logo-container"><img src="{LOGO_URL}"></div>', unsafe_allow_html=True)
-    st.divider()
-    
-    destino = st.selectbox("📍 Destino", ["Villa Carlos Paz", "San Pedro"])
-    
-    # Menú de botones (Ahora forzados al 100% de ancho)
-    if st.button("🚌 1. Transporte"): st.session_state.seccion_activa = "Transporte"
-    if st.button("🏨 2. Hotelería"): st.session_state.seccion_activa = "Hotelería"
-    if st.button("🍽️ 3. Comidas"): st.session_state.seccion_activa = "Comidas"
-    if st.button("🏞️ 4. Excursiones"): st.session_state.seccion_activa = "Excursiones"
-    if st.button("🌙 5. Actividades Nocturnas"): st.session_state.seccion_activa = "Actividades"
-    if st.button("🏥 6. Coordinación/Seguro Médico"): st.session_state.seccion_activa = "Seguro"
-    if st.button("💰 7. Tarifas"): st.session_state.seccion_activa = "Tarifas"
-
-    st.markdown('<div class="btn-adhesion">', unsafe_allow_html=True)
-    if st.button("📝 FICHA DE ADHESIÓN"): st.session_state.seccion_activa = "Adhesion"
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # CONTACTO
-    st.markdown("""
-        <div class="sidebar-footer">
-            <div>📍 Av. Rivadavia 4532 - Gal. Alefa (L. 10)</div>
-            <div>📍 Del Cimarrón 1846 - Ituzaingo</div>
-            <div>📞 1
+    .logo-container { display: flex;
