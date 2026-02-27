@@ -26,7 +26,7 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO (Forzado de colores para evitar el Modo Oscuro de Mobile)
+# 3. CSS MAESTRO (Forzado para evitar modo oscuro y fijar botones)
 st.markdown("""
     <style>
     .stApp {
@@ -38,10 +38,6 @@ st.markdown("""
         background-color: #f0f2f6 !important; 
     }
 
-    [data-testid="stSidebarContent"] [data-testid="stVerticalBlock"] > div {
-        width: 100% !important;
-    }
-    
     div.stButton > button {
         background: linear-gradient(145deg, #444444, #2c2c2c) !important;
         color: white !important;
@@ -49,24 +45,23 @@ st.markdown("""
         border-radius: 8px !important;
         height: 52px !important;
         font-weight: 700 !important;
-        font-size: 17px !important;
+        font-size: 15px !important;
         text-align: left !important;
         display: flex !important;
         align-items: center !important;
         justify-content: flex-start !important;
         width: 100% !important;
         margin-bottom: -4px !important;
+        white-space: nowrap !important;
     }
     
     div.stButton > button:hover {
         background: #555555 !important;
-        border-color: #ffffff !important;
         color: white !important;
     }
 
     .btn-adhesion div.stButton > button {
         background: linear-gradient(145deg, #1a1a1a, #000000) !important;
-        border: 1px solid #555555 !important;
         margin-top: 15px !important;
         justify-content: center !important;
     }
@@ -74,7 +69,6 @@ st.markdown("""
     .logo-container {
         display: flex; justify-content: center; width: 100%;
         margin-bottom: -10px !important;
-        margin-top: -10px !important;
     }
     .logo-container img { max-width: 130px !important; }
 
@@ -82,11 +76,6 @@ st.markdown("""
         color: #666666 !important; 
         font-size: 0.75rem; 
         margin-top: 15px; 
-        line-height: 1.4; 
-    }
-    .footer-item span, .footer-item a {
-        color: #666666 !important;
-        text-decoration: none !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -107,31 +96,14 @@ with st.sidebar:
     if st.button("🍽️ 3. Comidas"): st.session_state.seccion_activa = "Comidas"
     if st.button("🏞️ 4. Excursiones"): st.session_state.seccion_activa = "Excursiones"
     if st.button("🌙 5. Actividades Nocturnas"): st.session_state.seccion_activa = "Actividades"
-    # BOTÓN ACTUALIZADO
-    if st.button("🏥 6. Coordinación y Seguro Médico"): st.session_state.seccion_activa = "Seguro"
+    if st.button("🏥 6. Coordinación/Seguro Médico"): st.session_state.seccion_activa = "Seguro"
     if st.button("💰 7. Tarifas"): st.session_state.seccion_activa = "Tarifas"
 
     st.markdown('<div class="btn-adhesion">', unsafe_allow_html=True)
-    if st.button("📝 FICHA DE ADHESIÓN"): st.session_state.seccion_activa = "Adhesión"
+    if st.button("📝 FICHA DE ADHESIÓN"): st.session_state.seccion_activa = "Adhesion"
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # CONTACTO - BLOQUE CORREGIDO
-    st.markdown(f"""
-        <div class="sidebar-footer">
-            <div class="footer-item"><span>📍 Av. Rivadavia 4532 - Gal. Alefa (L. 10)</span></div>
-            <div class="footer-item"><span>📍 Del Cimarrón 1846 - Ituzaingo</span></div>
-            <div class="footer-item"><span>📞 11 - 4847-6467</span></div>
-            <div class="footer-item">
-                <a href="https://wa.me/541156096283" target="_blank" style="display:flex; align-items:center; gap:5px;">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:16px;">
-                    <span>11 - 5609-6283 (Whatsapp)</span>
-                </a>
-            </div>
-            <div class="footer-item"><span>✉️ info@serranoturismo.com.ar</span></div>
-        </div>
-    """, unsafe_allow_html=True)
-
-# 5. RENDERIZADO
+# 5. RENDERIZADO (Conexión con módulos)
 if st.session_state.seccion_activa == "Transporte":
     render_transporte(destino)
 elif st.session_state.seccion_activa == "Hotelería":
@@ -144,3 +116,7 @@ elif st.session_state.seccion_activa == "Actividades":
     render_nocturnas(destino)
 elif st.session_state.seccion_activa == "Seguro":
     render_seguro(destino)
+elif st.session_state.seccion_activa == "Tarifas":
+    render_tarifas(destino)
+elif st.session_state.seccion_activa == "Adhesion":
+    render_adhesion(LOGO_URL)
