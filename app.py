@@ -29,7 +29,6 @@ except ImportError as e:
 # 3. CSS MAESTRO (Forzado de colores para evitar el Modo Oscuro de Mobile)
 st.markdown("""
     <style>
-    /* FORZAR FONDO BLANCO EN EL CUERPO Y GRIS EN EL SIDEBAR (Evita modo dark) */
     .stApp {
         background-color: white !important;
         color: #31333F !important;
@@ -39,7 +38,6 @@ st.markdown("""
         background-color: #f0f2f6 !important; 
     }
 
-    /* BOTONES MATE - Forzamos el color para que no cambie en mobile */
     [data-testid="stSidebarContent"] [data-testid="stVerticalBlock"] > div {
         width: 100% !important;
     }
@@ -66,7 +64,6 @@ st.markdown("""
         color: white !important;
     }
 
-    /* BOTÓN ADHESIÓN */
     .btn-adhesion div.stButton > button {
         background: linear-gradient(145deg, #1a1a1a, #000000) !important;
         border: 1px solid #555555 !important;
@@ -74,7 +71,6 @@ st.markdown("""
         justify-content: center !important;
     }
 
-    /* LOGO CENTRADO */
     .logo-container {
         display: flex; justify-content: center; width: 100%;
         margin-bottom: -10px !important;
@@ -82,7 +78,6 @@ st.markdown("""
     }
     .logo-container img { max-width: 130px !important; }
 
-    /* CONTACTO ABAJO */
     .sidebar-footer { 
         color: #666666 !important; 
         font-size: 0.75rem; 
@@ -120,9 +115,32 @@ with st.sidebar:
     if st.button("📝 FICHA DE ADHESIÓN"): st.session_state.seccion_activa = "Adhesión"
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # CONTACTO
+    # CONTACTO - BLOQUE CORREGIDO
     st.markdown(f"""
         <div class="sidebar-footer">
             <div class="footer-item"><span>📍 Av. Rivadavia 4532 - Gal. Alefa (L. 10)</span></div>
             <div class="footer-item"><span>📍 Del Cimarrón 1846 - Ituzaingo</span></div>
-            <div class="
+            <div class="footer-item"><span>📞 11 - 4847-6467</span></div>
+            <div class="footer-item">
+                <a href="https://wa.me/541156096283" target="_blank" style="display:flex; align-items:center; gap:5px;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:16px;">
+                    <span>11 - 5609-6283 (Whatsapp)</span>
+                </a>
+            </div>
+            <div class="footer-item"><span>✉️ info@serranoturismo.com.ar</span></div>
+        </div>
+    """, unsafe_allow_html=True)
+
+# 5. RENDERIZADO
+if st.session_state.seccion_activa == "Transporte":
+    render_transporte(destino)
+elif st.session_state.seccion_activa == "Hotelería":
+    render_hoteleria(destino)
+elif st.session_state.seccion_activa == "Comidas":
+    render_comidas(destino)
+elif st.session_state.seccion_activa == "Excursiones":
+    render_excursiones(destino)
+elif st.session_state.seccion_activa == "Actividades":
+    render_nocturnas(destino)
+elif st.session_state.seccion_activa == "Seguro":
+    render_seguro(destino)
