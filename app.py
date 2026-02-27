@@ -97,28 +97,37 @@ st.markdown("""
     header {visibility: hidden;}
     .stAppToolbar { display: none !important; }
 
-    /* 7. HACK MENÚ HAMBURGUESA (3 LÍNEAS) MOBILE */
+    /* 7. HACK MENÚ HAMBURGUESA (3 LÍNEAS) MOBILE - CORREGIDO */
     [data-testid="stSidebarCollapsedControl"] {
         background-color: #2c2c2c !important;
         border-radius: 8px !important;
-        width: 45px !important;
-        height: 45px !important;
+        width: 50px !important;
+        height: 50px !important;
         top: 15px !important;
         left: 15px !important;
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
+        z-index: 999999 !important; /* PRIORIDAD MÁXIMA PARA QUE NO LO TAPEN */
+        box-shadow: 2px 2px 10px rgba(0,0,0,0.5) !important; /* SOMBRA PARA QUE RESALTE */
     }
+    
     [data-testid="stSidebarCollapsedControl"] svg {
-        display: none !important; /* Esconde la flecha */
+        display: none !important; 
     }
+    
     [data-testid="stSidebarCollapsedControl"]::before {
         content: "";
-        width: 22px;
+        width: 24px;
         height: 2px;
         background: white;
-        box-shadow: 0 7px 0 white, 0 -7px 0 white;
+        box-shadow: 0 8px 0 white, 0 -8px 0 white;
         display: block;
+    }
+
+    /* Evitar que el contenido principal tape el botón en mobile */
+    .main .block-container {
+        margin-top: 40px !important; /* Baja el contenido para dejar espacio al botón */
     }
 
     /* 8. AJUSTES RESPONSIVE */
@@ -196,3 +205,4 @@ elif st.session_state.seccion_activa == "Tarifas":
     render_tarifas(destino)
 elif st.session_state.seccion_activa == "Adhesión":
     render_adhesion(LOGO_URL)
+
