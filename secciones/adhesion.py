@@ -125,4 +125,24 @@ def render_adhesion(logo_url):
         Declaro bajo juramento que los datos aqui volcados son absolutamente exactos y acepto, para la cancelacion de los servicios a prestar por <b>SERRANO TURISMO</b>, el plan de pagos que figura en la solicitud de reserva mencionada anteriormente denominado.<br>
         Los planes al contado deberan abonarse dentro de los 30 dias de firmado el contrato.
         Ademas declaro conocer todas y cada uno de las condiciones del contrato suscripto por mi y/u otro representante del contingente de referencia.<br>
-        <b>NOTA: De
+        <b>NOTA: De no marcar ningun plan de pago, su chequera se emitira como PLAN CUOTAS (PLAN 4).</b>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # Firmas
+    st.markdown('<div style="margin-top: 20px;">', unsafe_allow_html=True)
+    f1, f2 = st.columns(2)
+    f1.markdown("<hr style='border:0.5px solid black; margin-bottom:0;'><p style='text-align:center; font-size:8pt; color:black;'>Firma Responsable</p>", unsafe_allow_html=True)
+    f2.markdown("<hr style='border:0.5px solid black; margin-bottom:0;'><p style='text-align:center; font-size:7pt; color:black;'>Aclaración y N° de C.U.I.L.</p>", unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # Botón de impresión
+    components.html(
+        """
+        <html><body>
+            <button style="background-color: #2E7D32; color: white; padding: 10px; border: none; border-radius: 8px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold;" 
+            onclick="window.parent.print()">🖨️ GENERAR COMPROBANTE PDF</button>
+        </body></html>
+        """,
+        height=70,
+    )
