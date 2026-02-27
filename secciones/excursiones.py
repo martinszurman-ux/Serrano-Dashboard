@@ -8,7 +8,6 @@ def render_excursiones(destino):
         st.markdown("### ✨ Nuestro Plan de Actividades Exclusivo")
         st.write("Combinamos aventura, relax y mucha diversión para que cada día sea inolvidable.")
         
-        # Diseño en 3 columnas para que entren todas de forma armónica
         col1, col2, col3 = st.columns(3)
 
         with col1:
@@ -26,10 +25,24 @@ def render_excursiones(destino):
             st.warning("👑 **KING PARK**\n\nEntretenimiento de vanguardia y juegos mecánicos.")
             st.warning("🐒 **COCOGUANA**\n\nParque aéreo y tirolesas en un entorno natural único.")
 
-    else:
-        # Espacio para las excursiones de San Pedro cuando las definamos
-        st.info("Estamos terminando de coordinar las mejores actividades para San Pedro. ¡Próximamente!")
+    elif "San Pedro" in destino:
+        st.markdown("### 🚣 Experiencias en la Naturaleza")
+        st.write("Disfrutá de la historia, la aventura y la mejor gastronomía a orillas del Paraná.")
 
-    # Nota al pie
+        # Organización en 2 columnas para San Pedro
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.error("🏰 **EL FUERTE DE OBLIGADO**\n\nTurismo aventura: palestra, péndulo, rappel, tirolesa y toboganes. Incluye almuerzo de asado criollo libre.")
+            st.info("🏖️ **BEACH DAY CON CANOTAJE**\n\nBalneario privado con actividades recreativas y bautismo de canotaje en sector seguro.")
+            st.success("🌿 **COMPLEJO LAS AMALIAS**\n\nLaberinto de ligustrinas, plaza húmeda, piletas, fútbol y vóley.")
+
+        with col2:
+            st.warning("🌅 **SUNSET CATAMARÁN**\n\nPaseo exclusivo por el Río Paraná disfrutando del atardecer y la mejor música.")
+            st.info("🏛️ **CITY TOUR**\n\nRecorrido por barrancas, Vía Crucis y compras de artículos regionales típicos.")
+
+    else:
+        st.info("Estamos terminando de coordinar las mejores actividades para este destino. ¡Próximamente!")
+
     st.markdown("---")
     st.caption("⚠️ *El orden de las excursiones está sujeto a condiciones climáticas y logística de la coordinación.*")
