@@ -8,6 +8,7 @@ def render_actividades_nocturnas(destino):
         st.markdown("### 🕺 Diversión y Eventos Exclusivos")
         st.write("Cada noche una temática diferente en los mejores complejos de la Villa.")
         
+        # Diseño original de 3 columnas para Carlos Paz
         col1, col2, col3 = st.columns(3)
 
         with col1:
@@ -26,17 +27,12 @@ def render_actividades_nocturnas(destino):
         st.markdown("### ✨ Noches de Integración y Magia")
         st.write("Momentos diseñados para fortalecer los lazos de amistad y la diversión compartida.")
 
+        # Organización para San Pedro: Fiesta Macoco, Juegos y el Fogón
         col1, col2 = st.columns(2)
 
         with col1:
-            st.error("🎉 **FIESTA DE BIENVENIDA (MACOCO)**\n\nFiesta de disfraces exclusiva para los chicos de Serrano en el Complejo Macoco. Incluye juegos, desfiles y concursos.")
-            st.success("🧩 **JUEGOS NOCTURNOS**\n\nBúsqueda del tesoro, fiestas temáticas y desafíos grupales en el marco del hotel.")
+            st.error("🎉 **FIESTA DE BIENVENIDA**\n\nRealizaremos una fiesta de disfraces en el complejo **Macoco** (exclusivo para los chicos de Serrano) con juegos, desfiles y concursos.")
+            st.success("🧩 **JUEGOS NOCTURNOS**\n\nEn el marco del hotel realizaremos actividades como fiesta de disfraces, búsqueda del tesoro y fiestas temáticas.")
 
         with col2:
-            st.warning("🔥 **CENA DE VELAS Y FOGÓN**\n\nUn momento de reflexión y libre expresión para afianzar los lazos de la primaria, cantando y compartiendo vivencias del viaje.")
-
-    else:
-        st.info("La agenda nocturna se confirmará según la disponibilidad de fechas. ¡Prepárate!")
-
-    st.markdown("---")
-    st.caption("✨ *Todas las actividades nocturnas cuentan con la supervisión de nuestro equipo de animación propia.*")
+            st.warning("🔥 **CENA DE VELAS Y FOGÓN**\n\nEl grupo se reúne para cerrar la noche con el Fogón y afianzar los la
