@@ -4,7 +4,7 @@ import streamlit.components.v1 as components
 
 # =================================================================
 # 📋 MÓDULO: SOLICITUD DE ADHESIÓN (Serrano Turismo)
-# VERSIÓN: Final Estructurada
+# VERSIÓN: Final Estructurada (Campos Extendidos)
 # =================================================================
 
 def render_adhesion(logo_url):
@@ -72,18 +72,4 @@ def render_adhesion(logo_url):
 
     st.markdown("<hr style='margin: 5px 0;'>", unsafe_allow_html=True)
     
-    # --- DATOS DEL PASAJERO ---
-    st.write("**DATOS DEL PASAJERO**")
-    ca1, ca2 = st.columns(2)
-    ca1.text_input("Apellido")
-    ca2.text_input("Nombres")
-    
-    cd1, cd2, cd3 = st.columns([1.2, 1.4, 1.4])
-    cd1.text_input("DNI/CUIL")
-    cd2.text_input("Fecha de Vencimiento DNI") 
-    cd3.date_input("Fecha de Nacimiento", min_value=datetime(1990,1,1))
-    
-    st.radio("Sexo", ["Masc", "Fem", "X"], horizontal=True)
-
-    dom1, dom2 = st.columns([2, 1])
-    dom1.
+    # ---
