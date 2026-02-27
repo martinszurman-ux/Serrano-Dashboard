@@ -4,7 +4,7 @@ import streamlit.components.v1 as components
 
 # =================================================================
 # 📋 MÓDULO: SOLICITUD DE ADHESIÓN (Serrano Turismo)
-# VERSIÓN: FINAL - TEXTO LEGAL ACTUALIZADO
+# VERSIÓN: DEFINITIVA - FIX SYNTAX & LEGAL TEXT
 # =================================================================
 
 def render_adhesion(logo_url):
@@ -65,4 +65,23 @@ def render_adhesion(logo_url):
     
     cd1, cd2, cd3 = st.columns([1, 1, 1])
     cd1.text_input("DNI / CUIL", key="pas_dni")
-    cd2.text_input("Fecha
+    cd2.text_input("Fecha de Vencimiento DNI", key="pas_vence") 
+    cd3.date_input("Fecha de Nacimiento", min_value=datetime(1990,1,1), key="pas_nace")
+    
+    st.radio("Sexo", ["Masculino", "Femenino", "X"], horizontal=True, key="pas_sexo")
+
+    dom1, dom2 = st.columns([2, 1])
+    dom1.text_input("Domicilio Particular", key="pas_dom")
+    dom2.text_input("Localidad / CP", key="pas_cp")
+
+    st.markdown("---")
+    
+    # --- DATOS DE LOS PADRES / TUTORES ---
+    st.markdown("### 👥 DATOS DE LOS PADRES / TUTORES")
+    
+    # Tutor 1
+    st.markdown("**DATOS TUTOR 1**")
+    t1_col1, t1_col2, t1_col3 = st.columns([2, 1, 1])
+    t1_col1.text_input("Nombre y Apellido", key="t1_nombre_full")
+    t1_col2.text_input("CUIL", key="t1_cuil_full")
+    t1_col3.text_input("Teléfono de Contacto", key="t
