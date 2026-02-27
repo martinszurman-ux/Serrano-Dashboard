@@ -4,7 +4,7 @@ import streamlit.components.v1 as components
 
 # =================================================================
 # 📋 MÓDULO: SOLICITUD DE ADHESIÓN (Serrano Turismo)
-# VERSIÓN: Ultra-Fix Mobile (Colores + Menú + Columnas)
+# VERSIÓN: Ultra-Fix Mobile (Nombres de Planes Corregidos)
 # =================================================================
 
 def render_adhesion(logo_url):
@@ -74,7 +74,6 @@ def render_adhesion(logo_url):
     """, unsafe_allow_html=True)
 
     # --- CABECERA ---
-    # Usamos columnas para que el logo no empuje todo hacia abajo en móvil
     head1, head2 = st.columns([1, 4])
     with head1:
         st.image(logo_url, width=60)
@@ -96,7 +95,7 @@ def render_adhesion(logo_url):
 
     st.markdown("<hr style='margin: 5px 0;'>", unsafe_allow_html=True)
     
-    # --- DATOS DEL ALUMNO ---
+    # --- DATOS DEL PASAJERO ---
     st.write("**DATOS DEL PASAJERO**")
     ca1, ca2 = st.columns(2)
     ca1.text_input("Apellido")
@@ -127,8 +126,8 @@ def render_adhesion(logo_url):
     
     st.text_input("E-mail:")
 
-    # --- PLANES ---
-    st.pills("Planes", options=["P1", "P2", "P3", "P4", "P5", "OTR"], default="P1")
+    # --- PLANES (ACTUALIZADO: Nombres completos) ---
+    st.pills("Planes", options=["PLAN 1", "PLAN 2", "PLAN 3", "PLAN 4", "PLAN 5", "OTRO"], default="PLAN 1")
 
     # --- TEXTO LEGAL ---
     st.markdown(f"""
