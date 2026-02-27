@@ -6,18 +6,19 @@ def render_nocturnas(destino):
 
     if "Villa Carlos Paz" in destino:
         st.markdown("### 🕺 Diversión y Eventos Exclusivos")
-        st.write("Cada noche una temática diferente en los mejores complejos de la Villa.")
+        st.write("Noches diseñadas para crear recuerdos inolvidables con la máxima seguridad.")
         
-        col1, col2, col3 = st.columns(3)
+        # Usamos 2 columnas para que las 5 actividades queden bien distribuidas
+        col1, col2 = st.columns(2)
+
         with col1:
-            st.info("🎭 **NOCHE DE DISFRACES**\n\nCreatividad y premios al mejor outfit del grupo.")
-            st.info("👕 **FIESTA DE LA REMERA**\n\nEl evento clásico para lucir el diseño del viaje.")
+            st.info("🧩 **JUEGOS NOCTURNOS**\n\nEn el marco del hotel realizaremos actividades como fiesta de disfraces, búsqueda del tesoro y fiestas temáticas.")
+            st.success("🎭 **MATINÉE SERRANO VIP**\n\nNoche de Fiesta Privada en la Disco **MOLINO ROJO**, contando con la exclusividad del lugar para nuestros pasajeros.")
+            st.warning("🔥 **FOGÓN**\n\nEl grupo se reúne para cerrar la noche y afianzar los lazos de amistad de la primaria, permitiendo la libre expresión y reflexión del viaje.")
+
         with col2:
-            st.success("🎪 **SHOW DE TALENTOS**\n\nMomento para que cada uno brille en el escenario.")
-            st.success("🎡 **PEKOS NOCTURNO**\n\nUna visita especial con juegos y sorpresas.")
-        with col3:
-            st.warning("🍔 **CENAS TEMÁTICAS**\n\nGastronomía variada con shows en vivo y animación.")
-            st.warning("💫 **DESPEDIDA**\n\nCierre emotivo para sellar la experiencia del grupo.")
+            st.error("🕯️ **CENA DE VELAS**\n\nNoche especial donde tendremos una cena a la luz de las velas llena de sorpresas y emociones.")
+            st.info("💦 **POOL PARTY**\n\nFiesta increíble en pileta climatizada con show de láser y luces en un marco de total diversión y seguridad.")
 
     elif "San Pedro" in destino:
         st.markdown("### ✨ Noches de Integración y Magia")
