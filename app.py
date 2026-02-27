@@ -1,6 +1,6 @@
 import streamlit as st
 
-# 1. CONFIGURACIÓN INICIAL (Forzamos que el sidebar inicie abierto)
+# 1. CONFIGURACIÓN INICIAL
 st.set_page_config(
     page_title="Serrano Turismo - Dashboard", 
     layout="wide", 
@@ -24,30 +24,27 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO (Garantiza visibilidad del menú y estética flama)
+# 3. CSS MAESTRO (Forzado de colores para evitar el Modo Oscuro de Mobile)
 st.markdown("""
     <style>
-    /* 1. OCULTAR ICONOS DE GITHUB Y FORK (Pero NO el botón de menú) */
-    /* .stAppToolbar { visibility: hidden !important; }
-    /* footer { visibility: hidden !important; }
+    /* FORZAR FONDO BLANCO EN EL CUERPO Y GRIS EN EL SIDEBAR (Evita modo dark) */
+    .stApp {
+        background-color: white !important;
+        color: #31333F !important;
+    }
     
-    /* 2. ASEGURAR QUE EL BOTÓN DE MENÚ SEA VISIBLE Y GRIS OSCURO */
-    [data-testid="stSidebarCollapsedControl"] {
-        background-color: #2c2c2c !important;
-        color: white !important;
-        border-radius: 8px !important;
-        left: 10px !important;
-        top: 10px !important;
+    [data-testid="stSidebar"] {
+        background-color: #f0f2f6 !important; /* Gris muy clarito para el fondo del menú */
     }
 
-    /* 3. BOTONES DEL MENÚ: ANCHO BLINDADO Y MATE */
+    /* BOTONES MATE (FLAMA) - Forzamos el color para que no cambie en mobile */
     [data-testid="stSidebarContent"] [data-testid="stVerticalBlock"] > div {
         width: 100% !important;
     }
     
     div.stButton > button {
         background: linear-gradient(145deg, #444444, #2c2c2c) !important;
-        color: white !important;
+        color: white !important; /* Letra blanca SIEMPRE */
         border: 1px solid #1a1a1a !important;
         border-radius: 8px !important;
         height: 52px !important;
@@ -57,18 +54,17 @@ st.markdown("""
         display: flex !important;
         align-items: center !important;
         justify-content: flex-start !important;
-        transition: all 0.2s ease !important;
-        margin-bottom: -4px !important;
         width: 100% !important;
+        margin-bottom: -4px !important;
     }
     
     div.stButton > button:hover {
         background: #555555 !important;
         border-color: #ffffff !important;
-        transform: translateX(4px) !important;
+        color: white !important;
     }
 
-    /* 4. BOTÓN ADHESIÓN */
+    /* BOTÓN ADHESIÓN */
     .btn-adhesion div.stButton > button {
         background: linear-gradient(145deg, #1a1a1a, #000000) !important;
         border: 1px solid #555555 !important;
@@ -76,7 +72,7 @@ st.markdown("""
         justify-content: center !important;
     }
 
-    /* 5. LOGO CENTRADO */
+    /* LOGO CENTRADO */
     .logo-container {
         display: flex; justify-content: center; width: 100%;
         margin-bottom: -10px !important;
@@ -84,9 +80,17 @@ st.markdown("""
     }
     .logo-container img { max-width: 130px !important; }
 
-    /* 6. CONTACTO ABAJO */
-    .sidebar-footer { color: #999999; font-size: 0.75rem; margin-top: 15px; line-height: 1.4; }
-    .footer-item { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    /* CONTACTO ABAJO - Forzamos el gris para que no desaparezca en fondo negro */
+    .sidebar-footer { 
+        color: #666666 !important; 
+        font-size: 0.75rem; 
+        margin-top: 15px; 
+        line-height: 1.4; 
+    }
+    .footer-item span, .footer-item a {
+        color: #666666 !important;
+        text-decoration: none !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -113,14 +117,14 @@ with st.sidebar:
     if st.button("📝 FICHA DE ADHESIÓN"): st.session_state.seccion_activa = "Adhesión"
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # CONTACTO
+    # CONTACTO (Texto forzado en gris oscuro para legibilidad)
     st.markdown(f"""
         <div class="sidebar-footer">
-            <div class="footer-item"><span>📍 Av. Rivadavia 4532 - Galería Alefa (local 10)</span></div>
+            <div class="footer-item"><span>📍 Av. Rivadavia 4532 - Gal. Alefa (L. 10)</span></div>
             <div class="footer-item"><span>📍 Del Cimarrón 1846 - Ituzaingo</span></div>
             <div class="footer-item"><span>📞 11 - 4847-6467</span></div>
             <div class="footer-item">
-                <a href="https://wa.me/541156096283" target="_blank" style="text-decoration:none; color:#999; display:flex; align-items:center; gap:5px;">
+                <a href="https://wa.me/541156096283" target="_blank" style="display:flex; align-items:center; gap:5px;">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:16px;">
                     <span>11 - 5609-6283 (Whatsapp)</span>
                 </a>
@@ -146,4 +150,3 @@ elif st.session_state.seccion_activa == "Tarifas":
     render_tarifas(destino)
 elif st.session_state.seccion_activa == "Adhesión":
     render_adhesion(LOGO_URL)
-
