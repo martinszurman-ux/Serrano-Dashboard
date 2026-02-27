@@ -4,7 +4,7 @@ import streamlit.components.v1 as components
 
 # =================================================================
 # 📋 MÓDULO: SOLICITUD DE ADHESIÓN (Serrano Turismo)
-# VERSIÓN: Optimizada para Mobile + Impresión A4
+# VERSIÓN: Texto legal completo + Fix Mobile Columns
 # =================================================================
 
 def render_adhesion(logo_url):
@@ -34,10 +34,10 @@ def render_adhesion(logo_url):
         @media print {
             @page {
                 size: A4;
-                margin: 0.5cm; 
+                margin: 0.4cm; 
             }
             html, body {
-                zoom: 90%; 
+                zoom: 88%; 
                 height: 100%;
                 overflow: hidden !important;
                 background-color: white !important;
@@ -124,12 +124,13 @@ def render_adhesion(logo_url):
     st.write("**Seleccione su Plan de Pago:**")
     st.pills("Planes", options=["PLAN 1", "PLAN 2", "PLAN 3", "PLAN 4", "PLAN 5", "OTROS"], default="PLAN 1", label_visibility="collapsed")
 
-    # TEXTO LEGAL
+    # --- TEXTO LEGAL COMPLETO ---
     st.markdown(f"""
-        <div style="font-size: 0.75rem; text-align: justify; border: 1px solid #ddd; padding: 8px; background-color: #f9f9f9; color: black; line-height: 1.1;">
-        Declaro bajo juramento que los datos volcados son exactos y acepto el plan de pagos de <b>SERRANO TURISMO</b>. 
-        Los planes contado vencen a los 30 días. Conozco las condiciones del contrato suscripto.
-        <br><b>NOTA: De no marcarse plan, su chequera se emitirá como PLAN 1.</b>
+        <div style="font-size: 0.78rem; text-align: justify; border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9; color: black; line-height: 1.2; border-radius: 5px;">
+        Declaro bajo juramento que los datos aqui volcados son absolutamente exactos y acepto, para la cancelacion de los servicios a prestar por <b>SERRANO TURISMO</b>, el plan de pagos que figura en la solicitud de reserva mencionada anteriormente.<br><br>
+        Los planes contado deberan abonarse dentro de los 30 dias de haberse firmado el contrato. 
+        Ademas declaro conocer todas y cada uno de las condiciones del contrato suscripto.<br><br>
+        <b>NOTA: de no marcarse plan, se emitira como PLAN 1.</b>
         </div>
     """, unsafe_allow_html=True)
 
