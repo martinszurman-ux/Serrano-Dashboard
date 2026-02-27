@@ -20,130 +20,85 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO (Botones, Mobile y Menú Hamburguesa)
+# 3. CSS MAESTRO CORREGIDO
 st.markdown("""
     <style>
-    /* 1. RESET Y ANCHOS BLINDADOS */
-    [data-testid="stSidebarContent"] [data-testid="stVerticalBlock"] > div {
-        width: 100% !important;
-        max-width: 100% !important;
-    }
+    /* 1. LIMPIEZA DE INTERFAZ (Sin matar el botón de menú) */
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    .stAppToolbar { display: none !important; }
     
-    .stButton, .stButton > button {
-        width: 100% !important;
-        min-width: 100% !important;
-        display: block !important;
+    /* 2. FORZAR VISIBILIDAD DEL CONTROL DEL SIDEBAR */
+    [data-testid="stSidebarCollapsedControl"] {
+        visibility: visible !important;
+        display: flex !important;
+        background-color: #2c2c2c !important;
+        border-radius: 8px !important;
+        width: 50px !important;
+        height: 50px !important;
+        position: fixed !important;
+        top: 15px !important;
+        left: 15px !important;
+        z-index: 999999 !important;
+        justify-content: center !important;
+        align-items: center !important;
+        box-shadow: 2px 2px 10px rgba(0,0,0,0.3) !important;
+        cursor: pointer !important;
     }
 
-    /* 2. BOTONES MATE (FLAMA) */
+    /* 3. DIBUJAR LAS 3 LÍNEAS (HAMBURGUESA) */
+    [data-testid="stSidebarCollapsedControl"] svg {
+        display: none !important; 
+    }
+    [data-testid="stSidebarCollapsedControl"]::before {
+        content: "";
+        width: 22px;
+        height: 2px;
+        background: white;
+        box-shadow: 0 7px 0 white, 0 -7px 0 white;
+        display: block;
+    }
+
+    /* 4. BOTONES DEL MENÚ (FLAMA) */
+    [data-testid="stSidebarContent"] [data-testid="stVerticalBlock"] > div {
+        width: 100% !important;
+    }
     div.stButton > button {
         background: linear-gradient(145deg, #444444, #2c2c2c) !important;
         color: white !important;
         border: 1px solid #1a1a1a !important;
         border-radius: 8px !important;
         height: 52px !important;
-        padding: 0px 20px !important;
         font-weight: 700 !important;
         font-size: 17px !important;
         text-align: left !important;
         display: flex !important;
         align-items: center !important;
         justify-content: flex-start !important;
-        transition: all 0.2s ease-in-out !important;
+        transition: all 0.2s ease !important;
         margin-bottom: -4px !important;
+        width: 100% !important;
     }
-    
     div.stButton > button:hover {
         background: #555555 !important;
         border-color: #ffffff !important;
         transform: translateX(4px) !important;
     }
 
-    /* 3. BOTÓN ADHESIÓN RESALTADO */
-    .btn-adhesion div.stButton > button {
-        background: linear-gradient(145deg, #1a1a1a, #000000) !important;
-        border: 1px solid #555555 !important;
-        margin-top: 15px !important;
-        justify-content: center !important;
-        font-size: 18px !important;
-    }
-
-    /* 4. LOGO CENTRADO */
+    /* 5. LOGO Y PIE DE PÁGINA */
     .logo-container {
         display: flex; justify-content: center; width: 100%;
         margin-bottom: -10px !important; margin-top: -10px !important;
     }
     .logo-container img { max-width: 130px !important; }
-
-    /* 5. FOOTER Y CONTACTO */
-    .sidebar-footer {
-        color: #999999;
-        font-size: 0.75rem;
-        margin-top: 15px;
-        line-height: 1.4;
-    }
+    .sidebar-footer { color: #999999; font-size: 0.75rem; margin-top: 15px; line-height: 1.4; }
     .footer-item { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-    .ws-link {
-        display: flex; align-items: center; gap: 6px;
-        text-decoration: none !important; color: #999999 !important;
-        transition: all 0.3s;
-    }
     .ws-link:hover { color: #ffffff !important; font-weight: bold !important; }
-    .ws-icon-img { width: 18px; height: 18px; border-radius: 3px; object-fit: cover; }
 
-    /* 6. OCULTAR ELEMENTOS DE STREAMLIT */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    .stAppToolbar { display: none !important; }
-
-    /* 7. HACK MENÚ HAMBURGUESA (3 LÍNEAS) MOBILE - CORREGIDO */
-    [data-testid="stSidebarCollapsedControl"] {
-        background-color: #2c2c2c !important;
-        border-radius: 8px !important;
-        width: 50px !important;
-        height: 50px !important;
-        top: 15px !important;
-        left: 15px !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        z-index: 999999 !important; /* PRIORIDAD MÁXIMA PARA QUE NO LO TAPEN */
-        box-shadow: 2px 2px 10px rgba(0,0,0,0.5) !important; /* SOMBRA PARA QUE RESALTE */
-    }
-    
-    [data-testid="stSidebarCollapsedControl"] svg {
-        display: none !important; 
-    }
-    
-    [data-testid="stSidebarCollapsedControl"]::before {
-        content: "";
-        width: 24px;
-        height: 2px;
-        background: white;
-        box-shadow: 0 8px 0 white, 0 -8px 0 white;
-        display: block;
-    }
-
-    /* Evitar que el contenido principal tape el botón en mobile */
-    .main .block-container {
-        margin-top: 40px !important; /* Baja el contenido para dejar espacio al botón */
-    }
-
-    /* 8. AJUSTES RESPONSIVE */
+    /* 6. AJUSTE PARA MOBILE */
     @media (max-width: 768px) {
-        .logo-container img { max-width: 110px !important; }
-        div.stButton > button {
-            height: 58px !important;
-            font-size: 16px !important;
-        }
         .main .block-container {
-            padding: 1rem !important;
-        }
-        button[kind="headerNoPadding"] {
-            background-color: #444444 !important;
-            color: white !important;
-            border-radius: 50% !important;
+            padding-top: 4rem !important; /* Espacio para que el contenido no tape la hamburguesa */
         }
     }
     </style>
@@ -159,7 +114,6 @@ with st.sidebar:
     
     destino = st.selectbox("📍 Destino", ["Villa Carlos Paz", "San Pedro"])
     
-    # Menú (Orden solicitado)
     if st.button("🚌 1. Transporte"): st.session_state.seccion_activa = "Transporte"
     if st.button("🏨 2. Hotelería"): st.session_state.seccion_activa = "Hotelería"
     if st.button("🍽️ 3. Comidas"): st.session_state.seccion_activa = "Comidas"
@@ -168,7 +122,7 @@ with st.sidebar:
     if st.button("🏥 6. Seguro Médico"): st.session_state.seccion_activa = "Seguro"
     if st.button("💰 7. Tarifas"): st.session_state.seccion_activa = "Tarifas"
 
-    st.markdown('<div class="btn-adhesion">', unsafe_allow_html=True)
+    st.markdown('<div class="btn-adhesion" style="width:100%;">', unsafe_allow_html=True)
     if st.button("📝 FICHA DE ADHESIÓN"): st.session_state.seccion_activa = "Adhesión"
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -179,12 +133,12 @@ with st.sidebar:
             <div class="footer-item"><span>📍 Del Cimarrón 1846 - Ituzaingo</span></div>
             <div class="footer-item"><span>📞 11 - 4847-6467</span></div>
             <div class="footer-item">
-                <a href="https://wa.me/541156096283" target="_blank" class="ws-link">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" class="ws-icon-img">
+                <a href="https://wa.me/541156096283" target="_blank" style="text-decoration:none; color:#999; display:flex; align-items:center; gap:5px;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:16px;">
                     <span>11 - 5609-6283 (Whatsapp)</span>
                 </a>
             </div>
-            <div class="footer-item"><span>✉️ <a href="mailto:info@serranoturismo.com.ar" style="text-decoration:none; color:inherit;">info@serranoturismo.com.ar</a></span></div>
+            <div class="footer-item"><span>✉️ info@serranoturismo.com.ar</span></div>
         </div>
     """, unsafe_allow_html=True)
 
@@ -205,4 +159,3 @@ elif st.session_state.seccion_activa == "Tarifas":
     render_tarifas(destino)
 elif st.session_state.seccion_activa == "Adhesión":
     render_adhesion(LOGO_URL)
-
