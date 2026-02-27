@@ -97,6 +97,42 @@ st.markdown("""
         display: none !important;
     }
 
+
+
+/* AJUSTES PARA MÓVILES (Media Queries) */
+@media (max-width: 768px) {
+    /* Hacer que el logo sea un poco más pequeño en mobile */
+    .logo-container img {
+        max-width: 100px !important;
+    }
+
+    /* Ajustar el tamaño de los botones para que sean más fáciles de tocar con el dedo */
+    div.stButton > button {
+        height: 58px !important; /* Más altos para pantallas táctiles */
+        font-size: 16px !important;
+        padding-left: 15px !important;
+    }
+
+    /* Asegurar que el contacto abajo no se amontone */
+    .sidebar-footer {
+        font-size: 0.8rem !important;
+        padding-bottom: 20px;
+    }
+
+    /* Forzar que el contenedor principal no tenga márgenes laterales gigantes */
+    .main .block-container {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+}
+
+/* ESTÉTICA DEL BOTÓN DE CIERRE EN MOBILE */
+/* Esto ayuda a que el botón de 'X' para cerrar el menú sea más visible */
+button[kind="headerNoPadding"] {
+    background-color: #444444 !important;
+    color: white !important;
+    border-radius: 50% !important;
+}
     
     </style>
 """, unsafe_allow_html=True)
@@ -157,4 +193,5 @@ elif st.session_state.seccion_activa == "Tarifas":
     render_tarifas(destino)
 elif st.session_state.seccion_activa == "Adhesión":
     render_adhesion(LOGO_URL)
+
 
