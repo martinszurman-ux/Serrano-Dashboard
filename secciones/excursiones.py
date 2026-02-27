@@ -8,7 +8,6 @@ def render_excursiones(destino):
         st.markdown("### ✨ Nuestro Plan de Actividades Exclusivo")
         st.write("Combinamos aventura, relax y mucha diversión para que cada día sea inolvidable.")
         
-        # Diseño en 3 columnas para organizar las 9 excursiones de Carlos Paz
         col1, col2, col3 = st.columns(3)
 
         with col1:
@@ -43,5 +42,10 @@ def render_excursiones(destino):
     else:
         st.info("Estamos terminando de coordinar las mejores actividades para este destino. ¡Próximamente!")
 
+    # Sección de Video Institucional
     st.markdown("---")
+    st.markdown("### 📽️ ¡Viví la Experiencia Serrano!")
+    video_url = "https://www.youtube.com/watch?v=ZG_3Bc8wkx8&t=53s"
+    st.video(video_url)
+    
     st.caption("⚠️ *El orden de las excursiones está sujeto a condiciones climáticas y logística de la coordinación.*")
