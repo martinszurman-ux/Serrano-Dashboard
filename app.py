@@ -25,77 +25,77 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO
+# 3. CSS MAESTRO (Compactación y Reordenamiento)
 st.markdown("""
     <style>
-    /* FORZAR FONDO BLANCO Y GRIS (Evita modo dark) */
+    /* FORZAR COLORES LIGHT */
     .stApp { background-color: white !important; color: #31333F !important; }
     [data-testid="stSidebar"] { background-color: #f0f2f6 !important; }
 
-    /* BOTONES MATE (FLAMA) */
-    [data-testid="stSidebarContent"] [data-testid="stVerticalBlock"] > div {
-        width: 100% !important;
+    /* COMPACTAR SIDEBAR: Menos espacio arriba y entre elementos */
+    [data-testid="stSidebarContent"] {
+        padding-top: 0.2rem !important; 
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
     }
+    [data-testid="stSidebar"] hr { margin: 0.5rem 0 !important; }
+
+    /* BOTONES MATE (FLAMA) - Un toque más chicos */
     div.stButton > button {
         background: linear-gradient(145deg, #444444, #2c2c2c) !important;
         color: white !important;
         border: 1px solid #1a1a1a !important;
         border-radius: 8px !important;
-        height: 52px !important;
+        height: 45px !important; /* ACHICADO de 52px a 45px */
         font-weight: 700 !important;
-        font-size: 17px !important;
+        font-size: 15px !important; /* Letra sutilmente más chica */
         text-align: left !important;
         display: flex !important;
         align-items: center !important;
-        justify-content: flex-start !important;
         width: 100% !important;
-        margin-bottom: -4px !important;
+        margin-bottom: -8px !important; /* Más pegados entre sí */
+        transition: all 0.2s ease !important;
     }
     div.stButton > button:hover {
         background: #555555 !important;
         border-color: #ffffff !important;
-        color: white !important;
+        transform: translateX(4px) !important;
     }
 
     /* BOTÓN ADHESIÓN */
     .btn-adhesion div.stButton > button {
         background: linear-gradient(145deg, #1a1a1a, #000000) !important;
-        border: 1px solid #555555 !important;
-        margin-top: 15px !important;
+        margin-top: 5px !important;
         justify-content: center !important;
+        height: 48px !important;
     }
 
-    /* LOGO CENTRADO */
+    /* LOGO SUBIDO AL MÁXIMO */
     .logo-container {
         display: flex; justify-content: center; width: 100%;
-        margin-bottom: -10px !important; margin-top: -10px !important;
+        margin-top: -20px !important;
+        margin-bottom: -15px !important;
     }
-    .logo-container img { max-width: 130px !important; }
+    .logo-container img { max-width: 120px !important; }
 
-    /* CONTACTO ABAJO */
-    .sidebar-footer { 
-        color: #666666 !important; 
-        font-size: 0.75rem; 
-        margin-top: 15px; 
-        line-height: 1.4; 
-    }
-    .footer-item span { color: #666666 !important; }
-
-    /* CONTENEDOR WHATSAPP GRANDE */
-    .ws-container {
+    /* WHATSAPP ARRIBA DE LAS DIRECCIONES */
+    .ws-top-container {
         display: flex;
         justify-content: center;
-        align-items: center;
-        margin-top: 25px;
-        padding-bottom: 20px;
+        margin: 10px 0;
     }
-    .ws-icon-big {
-        width: 55px !important;
+    .ws-icon-small {
+        width: 45px !important;
         transition: transform 0.3s ease;
-        filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
     }
-    .ws-icon-big:hover {
-        transform: scale(1.15); /* Crece un poquito al pasar el mouse */
+    .ws-icon-small:hover { transform: scale(1.1); }
+
+    /* CONTACTO FINAL MUY COMPACTO */
+    .sidebar-footer { 
+        color: #666666 !important; 
+        font-size: 0.7rem; 
+        line-height: 1.2; 
+        text-align: center;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -105,12 +105,13 @@ if "seccion_activa" not in st.session_state:
     st.session_state.seccion_activa = "Transporte"
 
 with st.sidebar:
+    # Logo
     st.markdown(f'<div class="logo-container"><img src="{LOGO_URL}"></div>', unsafe_allow_html=True)
     st.divider()
     
     destino = st.selectbox("📍 Destino", ["Villa Carlos Paz", "San Pedro"])
     
-    # Menú de botones
+    # Botones
     if st.button("🚌 1. Transporte"): st.session_state.seccion_activa = "Transporte"
     if st.button("🏨 2. Hotelería"): st.session_state.seccion_activa = "Hotelería"
     if st.button("🍽️ 3. Comidas"): st.session_state.seccion_activa = "Comidas"
@@ -123,19 +124,18 @@ with st.sidebar:
     if st.button("📝 FICHA DE ADHESIÓN"): st.session_state.seccion_activa = "Adhesión"
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # CONTACTO (Sin el link de texto de WhatsApp)
+    # WHATSAPP ARRIBA DEL TEXTO
     st.markdown(f"""
-        <div class="sidebar-footer">
-            <div class="footer-item"><span>📍 Av. Rivadavia 4532 - Gal. Alefa (L. 10)</span></div>
-            <div class="footer-item"><span>📍 Del Cimarrón 1846 - Ituzaingo</span></div>
-            <div class="footer-item"><span>📞 11 - 4847-6467</span></div>
-            <div class="footer-item"><span>✉️ info@serranoturismo.com.ar</span></div>
-        </div>
-        
-        <div class="ws-container">
+        <div class="ws-top-container">
             <a href="https://wa.me/541156096283" target="_blank">
-                <img src="{WS_ICON_URL}" class="ws-icon-img ws-icon-big" alt="WhatsApp">
+                <img src="{WS_ICON_URL}" class="ws-icon-small" alt="WhatsApp">
             </a>
+        </div>
+        <div class="sidebar-footer">
+            📍 Rivadavia 4532 (L. 10) - CABA<br>
+            📍 Del Cimarrón 1846 - Ituzaingo<br>
+            📞 11 - 4847-6467<br>
+            ✉️ info@serranoturismo.com.ar
         </div>
     """, unsafe_allow_html=True)
 
