@@ -8,10 +8,11 @@ def render_excursiones(destino):
         st.markdown("### ✨ Nuestro Plan de Actividades Exclusivo")
         st.write("Combinamos aventura, relax y mucha diversión para que cada día sea inolvidable.")
         
+        # Diseño en 3 columnas para organizar las 9 excursiones de Carlos Paz
         col1, col2, col3 = st.columns(3)
 
         with col1:
-            st.info("🥾 **MOUNTAIN TREKKING**\n\nExploración por los senderos serranos con las mejores vistas.")
+            st.info("🥾 **MOUNTAIN TREKK**\n\nExploración por los senderos serranos con las mejores vistas.")
             st.info("🚗 **CITY TOUR**\n\nRecorrido por los puntos emblemáticos y la costanera.")
             st.info("🍩 **FÁBRICA DE ALFAJORES**\n\nVisita técnica y degustación de los clásicos regionales.")
 
@@ -29,9 +30,7 @@ def render_excursiones(destino):
         st.markdown("### 🚣 Experiencias en la Naturaleza")
         st.write("Disfrutá de la historia, la aventura y la mejor gastronomía a orillas del Paraná.")
 
-        # Organización en 2 columnas para San Pedro
         col1, col2 = st.columns(2)
-
         with col1:
             st.error("🏰 **EL FUERTE DE OBLIGADO**\n\nTurismo aventura: palestra, péndulo, rappel, tirolesa y toboganes. Incluye almuerzo de asado criollo libre.")
             st.info("🏖️ **BEACH DAY CON CANOTAJE**\n\nBalneario privado con actividades recreativas y bautismo de canotaje en sector seguro.")
