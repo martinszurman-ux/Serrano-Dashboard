@@ -25,7 +25,7 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO - FIX TOTAL DE BOTONES
+# 3. CSS MAESTRO - FIX TOTAL DE SINTAXIS Y BOTONES
 st.markdown("""
     <style>
     .stApp { background-color: white !important; color: #31333F !important; }
@@ -46,12 +46,4 @@ st.markdown("""
         height: 52px !important;
         font-weight: 700 !important;
         font-size: 14px !important;
-        text-align: left !important;
-        padding-left: 15px !important;
-        display: block !important;
-        margin-bottom: 0px !important;
-        white-space: nowrap !important;
-    }
-
-    .stButton > button:hover {
-        background
+        text-align
