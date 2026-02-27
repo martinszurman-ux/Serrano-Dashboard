@@ -7,8 +7,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# URL DEL LOGO
+# URL DEL LOGO Y WHATSAPP
 LOGO_URL = "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png"
+WS_ICON_URL = "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
 
 # 2. IMPORTACIÓN DE MÓDULOS
 try:
@@ -24,27 +25,20 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO (Forzado de colores para evitar el Modo Oscuro de Mobile)
+# 3. CSS MAESTRO
 st.markdown("""
     <style>
-    /* FORZAR FONDO BLANCO EN EL CUERPO Y GRIS EN EL SIDEBAR (Evita modo dark) */
-    .stApp {
-        background-color: white !important;
-        color: #31333F !important;
-    }
-    
-    [data-testid="stSidebar"] {
-        background-color: #f0f2f6 !important; /* Gris muy clarito para el fondo del menú */
-    }
+    /* FORZAR FONDO BLANCO Y GRIS (Evita modo dark) */
+    .stApp { background-color: white !important; color: #31333F !important; }
+    [data-testid="stSidebar"] { background-color: #f0f2f6 !important; }
 
-    /* BOTONES MATE (FLAMA) - Forzamos el color para que no cambie en mobile */
+    /* BOTONES MATE (FLAMA) */
     [data-testid="stSidebarContent"] [data-testid="stVerticalBlock"] > div {
         width: 100% !important;
     }
-    
     div.stButton > button {
         background: linear-gradient(145deg, #444444, #2c2c2c) !important;
-        color: white !important; /* Letra blanca SIEMPRE */
+        color: white !important;
         border: 1px solid #1a1a1a !important;
         border-radius: 8px !important;
         height: 52px !important;
@@ -57,7 +51,6 @@ st.markdown("""
         width: 100% !important;
         margin-bottom: -4px !important;
     }
-    
     div.stButton > button:hover {
         background: #555555 !important;
         border-color: #ffffff !important;
@@ -75,21 +68,34 @@ st.markdown("""
     /* LOGO CENTRADO */
     .logo-container {
         display: flex; justify-content: center; width: 100%;
-        margin-bottom: -10px !important;
-        margin-top: -10px !important;
+        margin-bottom: -10px !important; margin-top: -10px !important;
     }
     .logo-container img { max-width: 130px !important; }
 
-    /* CONTACTO ABAJO - Forzamos el gris para que no desaparezca en fondo negro */
+    /* CONTACTO ABAJO */
     .sidebar-footer { 
         color: #666666 !important; 
         font-size: 0.75rem; 
         margin-top: 15px; 
         line-height: 1.4; 
     }
-    .footer-item span, .footer-item a {
-        color: #666666 !important;
-        text-decoration: none !important;
+    .footer-item span { color: #666666 !important; }
+
+    /* CONTENEDOR WHATSAPP GRANDE */
+    .ws-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 25px;
+        padding-bottom: 20px;
+    }
+    .ws-icon-big {
+        width: 55px !important;
+        transition: transform 0.3s ease;
+        filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
+    }
+    .ws-icon-big:hover {
+        transform: scale(1.15); /* Crece un poquito al pasar el mouse */
     }
     </style>
 """, unsafe_allow_html=True)
@@ -117,19 +123,19 @@ with st.sidebar:
     if st.button("📝 FICHA DE ADHESIÓN"): st.session_state.seccion_activa = "Adhesión"
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # CONTACTO (Texto forzado en gris oscuro para legibilidad)
+    # CONTACTO (Sin el link de texto de WhatsApp)
     st.markdown(f"""
         <div class="sidebar-footer">
             <div class="footer-item"><span>📍 Av. Rivadavia 4532 - Gal. Alefa (L. 10)</span></div>
             <div class="footer-item"><span>📍 Del Cimarrón 1846 - Ituzaingo</span></div>
             <div class="footer-item"><span>📞 11 - 4847-6467</span></div>
-            <div class="footer-item">
-                <a href="https://wa.me/541156096283" target="_blank" style="display:flex; align-items:center; gap:5px;">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:16px;">
-                    <span>11 - 5609-6283 (Whatsapp)</span>
-                </a>
-            </div>
             <div class="footer-item"><span>✉️ info@serranoturismo.com.ar</span></div>
+        </div>
+        
+        <div class="ws-container">
+            <a href="https://wa.me/541156096283" target="_blank">
+                <img src="{WS_ICON_URL}" class="ws-icon-img ws-icon-big" alt="WhatsApp">
+            </a>
         </div>
     """, unsafe_allow_html=True)
 
