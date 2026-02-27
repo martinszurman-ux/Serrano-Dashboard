@@ -1,7 +1,7 @@
 import streamlit as st
 
 # 1. CONFIGURACIÓN INICIAL
-st.set_page_config(page_title="Serrano Turismo - Dashboard", layout="wide")
+st.set_page_config(page_title="Serrano Turismo - Dashboard", layout="wide", initial_sidebar_state="expanded")
 
 # URL DEL LOGO
 LOGO_URL = "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png"
@@ -20,46 +20,21 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO CORREGIDO
+# 3. CSS MAESTRO (Menú Fijo y Limpio)
 st.markdown("""
     <style>
-    /* 1. LIMPIEZA DE INTERFAZ (Sin matar el botón de menú) */
+    /* 1. ELIMINAR BASURA DE STREAMLIT (Fork, GitHub, etc.) */
+    #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
-    header {visibility: hidden;}
     .stAppToolbar { display: none !important; }
     
-    /* 2. FORZAR VISIBILIDAD DEL CONTROL DEL SIDEBAR */
+    /* 2. FORZAR QUE EL SIDEBAR NO SE PUEDA CERRAR (OPCIONAL) */
+    /* Si prefieres que el usuario NO pueda cerrarlo en web, usamos esto: */
     [data-testid="stSidebarCollapsedControl"] {
-        visibility: visible !important;
-        display: flex !important;
-        background-color: #2c2c2c !important;
-        border-radius: 8px !important;
-        width: 50px !important;
-        height: 50px !important;
-        position: fixed !important;
-        top: 15px !important;
-        left: 15px !important;
-        z-index: 999999 !important;
-        justify-content: center !important;
-        align-items: center !important;
-        box-shadow: 2px 2px 10px rgba(0,0,0,0.3) !important;
-        cursor: pointer !important;
+        display: none !important;
     }
 
-    /* 3. DIBUJAR LAS 3 LÍNEAS (HAMBURGUESA) */
-    [data-testid="stSidebarCollapsedControl"] svg {
-        display: none !important; 
-    }
-    [data-testid="stSidebarCollapsedControl"]::before {
-        content: "";
-        width: 22px;
-        height: 2px;
-        background: white;
-        box-shadow: 0 7px 0 white, 0 -7px 0 white;
-        display: block;
-    }
-
-    /* 4. BOTONES DEL MENÚ (FLAMA) */
+    /* 3. BOTONES MATE (FLAMA) - ANCHO BLINDADO */
     [data-testid="stSidebarContent"] [data-testid="stVerticalBlock"] > div {
         width: 100% !important;
     }
@@ -85,22 +60,26 @@ st.markdown("""
         transform: translateX(4px) !important;
     }
 
-    /* 5. LOGO Y PIE DE PÁGINA */
+    /* 4. BOTÓN ADHESIÓN */
+    .btn-adhesion div.stButton > button {
+        background: linear-gradient(145deg, #1a1a1a, #000000) !important;
+        border: 1px solid #555555 !important;
+        margin-top: 15px !important;
+        justify-content: center !important;
+    }
+
+    /* 5. LOGO CENTRADO Y SUBIDO */
+    [data-testid="stSidebarContent"] { padding-top: 1rem !important; }
     .logo-container {
         display: flex; justify-content: center; width: 100%;
         margin-bottom: -10px !important; margin-top: -10px !important;
     }
     .logo-container img { max-width: 130px !important; }
+
+    /* 6. CONTACTO ABAJO */
     .sidebar-footer { color: #999999; font-size: 0.75rem; margin-top: 15px; line-height: 1.4; }
     .footer-item { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
     .ws-link:hover { color: #ffffff !important; font-weight: bold !important; }
-
-    /* 6. AJUSTE PARA MOBILE */
-    @media (max-width: 768px) {
-        .main .block-container {
-            padding-top: 4rem !important; /* Espacio para que el contenido no tape la hamburguesa */
-        }
-    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -114,6 +93,7 @@ with st.sidebar:
     
     destino = st.selectbox("📍 Destino", ["Villa Carlos Paz", "San Pedro"])
     
+    # Menú de botones
     if st.button("🚌 1. Transporte"): st.session_state.seccion_activa = "Transporte"
     if st.button("🏨 2. Hotelería"): st.session_state.seccion_activa = "Hotelería"
     if st.button("🍽️ 3. Comidas"): st.session_state.seccion_activa = "Comidas"
@@ -122,7 +102,7 @@ with st.sidebar:
     if st.button("🏥 6. Seguro Médico"): st.session_state.seccion_activa = "Seguro"
     if st.button("💰 7. Tarifas"): st.session_state.seccion_activa = "Tarifas"
 
-    st.markdown('<div class="btn-adhesion" style="width:100%;">', unsafe_allow_html=True)
+    st.markdown('<div class="btn-adhesion">', unsafe_allow_html=True)
     if st.button("📝 FICHA DE ADHESIÓN"): st.session_state.seccion_activa = "Adhesión"
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -133,7 +113,7 @@ with st.sidebar:
             <div class="footer-item"><span>📍 Del Cimarrón 1846 - Ituzaingo</span></div>
             <div class="footer-item"><span>📞 11 - 4847-6467</span></div>
             <div class="footer-item">
-                <a href="https://wa.me/541156096283" target="_blank" style="text-decoration:none; color:#999; display:flex; align-items:center; gap:5px;">
+                <a href="https://wa.me/541156096283" target="_blank" style="text-decoration:none; color:#999; display:flex; align-items:center; gap:5px;" class="ws-link">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:16px;">
                     <span>11 - 5609-6283 (Whatsapp)</span>
                 </a>
