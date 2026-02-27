@@ -26,7 +26,7 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO (Fix de botones simétricos y colores)
+# 3. CSS MAESTRO (Fix definitivo de botones simétricos)
 st.markdown("""
     <style>
     .stApp {
@@ -38,8 +38,13 @@ st.markdown("""
         background-color: #f0f2f6 !important; 
     }
 
-    /* Forzar que el contenedor del botón ocupe todo el ancho */
-    div[data-testid="stSidebarContent"] .stButton button {
+    /* FORZAR CONTENEDORES AL 100% */
+    [data-testid="stSidebarContent"] div.stButton {
+        width: 100% !important;
+    }
+
+    /* ESTILO UNIFICADO DE BOTONES */
+    [data-testid="stSidebarContent"] button {
         width: 100% !important;
         background: linear-gradient(145deg, #444444, #2c2c2c) !important;
         color: white !important;
@@ -47,7 +52,7 @@ st.markdown("""
         border-radius: 8px !important;
         height: 52px !important;
         font-weight: 700 !important;
-        font-size: 14px !important; /* Ajustado para que entre en una línea */
+        font-size: 14px !important;
         text-align: left !important;
         padding-left: 15px !important;
         display: block !important;
@@ -55,29 +60,26 @@ st.markdown("""
         margin-bottom: 2px !important;
     }
     
-    div.stButton > button:hover {
+    [data-testid="stSidebarContent"] button:hover {
         background: #555555 !important;
         border-color: #ffffff !important;
         color: white !important;
     }
 
-    /* BOTÓN ADHESIÓN */
-    .btn-adhesion div.stButton > button {
+    /* BOTÓN ADHESIÓN (Mismo tamaño, distinto color) */
+    .btn-adhesion button {
         background: linear-gradient(145deg, #1a1a1a, #000000) !important;
-        border: 1px solid #555555 !important;
-        margin-top: 15px !important;
         text-align: center !important;
         padding-left: 0 !important;
+        margin-top: 15px !important;
     }
 
-    /* LOGO CENTRADO */
     .logo-container {
         display: flex; justify-content: center; width: 100%;
         margin-bottom: 10px !important;
     }
     .logo-container img { max-width: 120px !important; }
 
-    /* CONTACTO ABAJO */
     .sidebar-footer { 
         color: #666666 !important; 
         font-size: 0.75rem; 
@@ -97,13 +99,12 @@ with st.sidebar:
     
     destino = st.selectbox("📍 Destino", ["Villa Carlos Paz", "San Pedro"])
     
-    # Menú de botones
+    # Menú de botones (Ahora forzados al 100% de ancho)
     if st.button("🚌 1. Transporte"): st.session_state.seccion_activa = "Transporte"
     if st.button("🏨 2. Hotelería"): st.session_state.seccion_activa = "Hotelería"
     if st.button("🍽️ 3. Comidas"): st.session_state.seccion_activa = "Comidas"
     if st.button("🏞️ 4. Excursiones"): st.session_state.seccion_activa = "Excursiones"
     if st.button("🌙 5. Actividades Nocturnas"): st.session_state.seccion_activa = "Actividades"
-    # BOTÓN ACTUALIZADO EN UNA LÍNEA
     if st.button("🏥 6. Coordinación/Seguro Médico"): st.session_state.seccion_activa = "Seguro"
     if st.button("💰 7. Tarifas"): st.session_state.seccion_activa = "Tarifas"
 
@@ -114,28 +115,6 @@ with st.sidebar:
     # CONTACTO
     st.markdown("""
         <div class="sidebar-footer">
-            <div class="footer-item"><span>📍 Av. Rivadavia 4532 - Gal. Alefa (L. 10)</span></div>
-            <div class="footer-item"><span>📍 Del Cimarrón 1846 - Ituzaingo</span></div>
-            <div class="footer-item"><span>📞 11 - 4847-6467</span></div>
-            <div class="footer-item"><span>📱 11 - 5609-6283 (Whatsapp)</span></div>
-            <div class="footer-item"><span>✉️ info@serranoturismo.com.ar</span></div>
-        </div>
-    """, unsafe_allow_html=True)
-
-# 5. RENDERIZADO
-if st.session_state.seccion_activa == "Transporte":
-    render_transporte(destino)
-elif st.session_state.seccion_activa == "Hotelería":
-    render_hoteleria(destino)
-elif st.session_state.seccion_activa == "Comidas":
-    render_comidas(destino)
-elif st.session_state.seccion_activa == "Excursiones":
-    render_excursiones(destino)
-elif st.session_state.seccion_activa == "Actividades":
-    render_nocturnas(destino)
-elif st.session_state.seccion_activa == "Seguro":
-    render_seguro(destino)
-elif st.session_state.seccion_activa == "Tarifas":
-    render_tarifas(destino)
-elif st.session_state.seccion_activa == "Adhesion":
-    render_adhesion(LOGO_URL)
+            <div>📍 Av. Rivadavia 4532 - Gal. Alefa (L. 10)</div>
+            <div>📍 Del Cimarrón 1846 - Ituzaingo</div>
+            <div>📞 1
