@@ -75,30 +75,4 @@ def render_adhesion(logo_url):
     cd2.text_input("Vence") 
     cd3.date_input("Nace", min_value=datetime(1990,1,1))
     
-    st.radio("Sexo", ["Masc", "Fem", "X"], horizontal=True)
-
-    dom1, dom2 = st.columns([2, 1])
-    dom1.text_input("Domicilio")
-    dom2.text_input("Loc/CP")
-
-    st.markdown("<hr style='margin: 5px 0;'>", unsafe_allow_html=True)
-    
-    # --- DATOS DE TUTORES ---
-    st.write("**DATOS DE TUTORES**")
-    cp1_a, cp1_c = st.columns([2, 1])
-    cp1_a.text_input("Tutor 1")
-    cp1_c.text_input("Tel 1")
-    
-    cp2_a, cp2_c = st.columns([2, 1])
-    cp2_a.text_input("Tutor 2")
-    cp2_c.text_input("Tel 2")
-    
-    st.text_input("E-mail:")
-
-    # --- PLANES ---
-    st.pills("Planes de Pago", options=["PLAN 1", "PLAN 2", "PLAN 3", "PLAN 4", "PLAN 5", "OTRO"], default="PLAN 1")
-
-    # --- LEGAL ---
-    st.markdown("""
-        <div style="font-size: 0.7rem; text-align: justify; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9; color: black; border-radius: 5px;">
-        Declaro bajo juramento que los datos aqui volcados son exactos y acepto
+    st.radio("Sexo",
