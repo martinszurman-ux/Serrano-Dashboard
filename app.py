@@ -20,9 +20,10 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO (Ancho blindado, letra grande y hover blanco)
+# 3. CSS MAESTRO (Botones, Mobile y Menú Hamburguesa)
 st.markdown("""
     <style>
+    /* 1. RESET Y ANCHOS BLINDADOS */
     [data-testid="stSidebarContent"] [data-testid="stVerticalBlock"] > div {
         width: 100% !important;
         max-width: 100% !important;
@@ -34,6 +35,7 @@ st.markdown("""
         display: block !important;
     }
 
+    /* 2. BOTONES MATE (FLAMA) */
     div.stButton > button {
         background: linear-gradient(145deg, #444444, #2c2c2c) !important;
         color: white !important;
@@ -57,6 +59,7 @@ st.markdown("""
         transform: translateX(4px) !important;
     }
 
+    /* 3. BOTÓN ADHESIÓN RESALTADO */
     .btn-adhesion div.stButton > button {
         background: linear-gradient(145deg, #1a1a1a, #000000) !important;
         border: 1px solid #555555 !important;
@@ -65,12 +68,14 @@ st.markdown("""
         font-size: 18px !important;
     }
 
+    /* 4. LOGO CENTRADO */
     .logo-container {
         display: flex; justify-content: center; width: 100%;
         margin-bottom: -10px !important; margin-top: -10px !important;
     }
     .logo-container img { max-width: 130px !important; }
 
+    /* 5. FOOTER Y CONTACTO */
     .sidebar-footer {
         color: #999999;
         font-size: 0.75rem;
@@ -78,7 +83,6 @@ st.markdown("""
         line-height: 1.4;
     }
     .footer-item { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-    
     .ws-link {
         display: flex; align-items: center; gap: 6px;
         text-decoration: none !important; color: #999999 !important;
@@ -87,53 +91,52 @@ st.markdown("""
     .ws-link:hover { color: #ffffff !important; font-weight: bold !important; }
     .ws-icon-img { width: 18px; height: 18px; border-radius: 3px; object-fit: cover; }
 
-/* Ocultar el botón de Fork, el icono de GitHub y el menú de Streamlit */
+    /* 6. OCULTAR ELEMENTOS DE STREAMLIT */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
-    
-    /* Bloqueo específico para el toolbar de la esquina superior derecha */
-    .stAppToolbar {
-        display: none !important;
+    .stAppToolbar { display: none !important; }
+
+    /* 7. HACK MENÚ HAMBURGUESA (3 LÍNEAS) MOBILE */
+    [data-testid="stSidebarCollapsedControl"] {
+        background-color: #2c2c2c !important;
+        border-radius: 8px !important;
+        width: 45px !important;
+        height: 45px !important;
+        top: 15px !important;
+        left: 15px !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+    [data-testid="stSidebarCollapsedControl"] svg {
+        display: none !important; /* Esconde la flecha */
+    }
+    [data-testid="stSidebarCollapsedControl"]::before {
+        content: "";
+        width: 22px;
+        height: 2px;
+        background: white;
+        box-shadow: 0 7px 0 white, 0 -7px 0 white;
+        display: block;
     }
 
-
-
-/* AJUSTES PARA MÓVILES (Media Queries) */
-@media (max-width: 768px) {
-    /* Hacer que el logo sea un poco más pequeño en mobile */
-    .logo-container img {
-        max-width: 100px !important;
+    /* 8. AJUSTES RESPONSIVE */
+    @media (max-width: 768px) {
+        .logo-container img { max-width: 110px !important; }
+        div.stButton > button {
+            height: 58px !important;
+            font-size: 16px !important;
+        }
+        .main .block-container {
+            padding: 1rem !important;
+        }
+        button[kind="headerNoPadding"] {
+            background-color: #444444 !important;
+            color: white !important;
+            border-radius: 50% !important;
+        }
     }
-
-    /* Ajustar el tamaño de los botones para que sean más fáciles de tocar con el dedo */
-    div.stButton > button {
-        height: 58px !important; /* Más altos para pantallas táctiles */
-        font-size: 16px !important;
-        padding-left: 15px !important;
-    }
-
-    /* Asegurar que el contacto abajo no se amontone */
-    .sidebar-footer {
-        font-size: 0.8rem !important;
-        padding-bottom: 20px;
-    }
-
-    /* Forzar que el contenedor principal no tenga márgenes laterales gigantes */
-    .main .block-container {
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
-    }
-}
-
-/* ESTÉTICA DEL BOTÓN DE CIERRE EN MOBILE */
-/* Esto ayuda a que el botón de 'X' para cerrar el menú sea más visible */
-button[kind="headerNoPadding"] {
-    background-color: #444444 !important;
-    color: white !important;
-    border-radius: 50% !important;
-}
-    
     </style>
 """, unsafe_allow_html=True)
 
@@ -147,7 +150,7 @@ with st.sidebar:
     
     destino = st.selectbox("📍 Destino", ["Villa Carlos Paz", "San Pedro"])
     
-    # Menú Actualizado (Orden solicitado)
+    # Menú (Orden solicitado)
     if st.button("🚌 1. Transporte"): st.session_state.seccion_activa = "Transporte"
     if st.button("🏨 2. Hotelería"): st.session_state.seccion_activa = "Hotelería"
     if st.button("🍽️ 3. Comidas"): st.session_state.seccion_activa = "Comidas"
@@ -193,5 +196,3 @@ elif st.session_state.seccion_activa == "Tarifas":
     render_tarifas(destino)
 elif st.session_state.seccion_activa == "Adhesión":
     render_adhesion(LOGO_URL)
-
-
