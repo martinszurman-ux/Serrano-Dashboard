@@ -22,11 +22,12 @@ try:
     from secciones.seguro import render_seguro
     from secciones.tarifas import render_tarifas
     from secciones.adhesion import render_adhesion
+    from secciones.admin import render_admin  # <-- SECCIÓN ADMIN
 except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO (Botones Slim y Espaciado de Contacto)
+# 3. CSS MAESTRO (Botones Slim, Animaciones y Forzado Light)
 st.markdown("""
     <style>
     /* FORZAR COLORES LIGHT */
@@ -41,10 +42,10 @@ st.markdown("""
     }
     .logo-container img { max-width: 110px !important; }
 
-    /* BOTONES SLIM (Más chicos en alto y ancho) */
+    /* BOTONES SLIM */
     [data-testid="stSidebarContent"] [data-testid="stVerticalBlock"] > div {
         width: 100% !important;
-        padding-left: 10px !important;  /* Margen horizontal para achicar el botón */
+        padding-left: 10px !important;
         padding-right: 10px !important;
     }
     
@@ -53,15 +54,15 @@ st.markdown("""
         color: white !important;
         border: 1px solid #1a1a1a !important;
         border-radius: 6px !important;
-        height: 38px !important; /* MÁS BAJOS (era 44px) */
+        height: 38px !important;
         font-weight: 600 !important;
-        font-size: 14px !important; /* Letra más pequeña */
+        font-size: 14px !important;
         text-align: left !important;
         display: flex !important;
         align-items: center !important;
         justify-content: flex-start !important;
         width: 100% !important;
-        margin-bottom: -12px !important; /* Más pegados verticalmente */
+        margin-bottom: -12px !important;
         transition: all 0.3s ease !important;
     }
     
@@ -71,8 +72,8 @@ st.markdown("""
         transform: translateX(3px) !important;
     }
 
-    /* BOTÓN ADHESIÓN SLIM */
-    .btn-adhesion div.stButton > button {
+    /* BOTÓN ADHESIÓN Y ADMIN */
+    .btn-adhesion div.stButton > button, .btn-admin div.stButton > button {
         background: linear-gradient(145deg, #1a1a1a, #000000) !important;
         justify-content: center !important;
         margin-top: 5px !important;
@@ -84,7 +85,7 @@ st.markdown("""
         display: flex;
         justify-content: center;
         margin-top: 15px;
-        margin-bottom: 20px; /* Espacio extra entre icono y texto */
+        margin-bottom: 20px;
     }
     .ws-icon-animated {
         width: 55px !important;
@@ -94,14 +95,14 @@ st.markdown("""
         transform: scale(1.15) rotate(8deg);
     }
 
-    /* CONTACTO COMPACTO CON ESPACIADO SUPERIOR */
+    /* CONTACTO */
     .sidebar-footer { 
         color: #666666 !important; 
         font-size: 0.7rem; 
         line-height: 1.3; 
         text-align: center;
-        padding-top: 10px; /* Refuerzo del espacio */
-        border-top: 1px solid #e0e0e0; /* Opcional: línea divisoria sutil */
+        padding-top: 10px;
+        border-top: 1px solid #e0e0e0;
         margin: 0 15px;
     }
     </style>
@@ -117,7 +118,7 @@ with st.sidebar:
     
     destino = st.selectbox("📍 Destino", ["Villa Carlos Paz", "San Pedro"])
     
-    # Menú de botones "Slim"
+    # Menú de navegación
     if st.button("🚌 1. Transporte"): st.session_state.seccion_activa = "Transporte"
     if st.button("🏨 2. Hotelería"): st.session_state.seccion_activa = "Hotelería"
     if st.button("🍽️ 3. Comidas"): st.session_state.seccion_activa = "Comidas"
@@ -130,7 +131,12 @@ with st.sidebar:
     if st.button("📝 FICHA DE ADHESIÓN"): st.session_state.seccion_activa = "Adhesión"
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # WHATSAPP CON ESPACIADO Y DIRECCIONES
+    # Botón de Administración (Separado)
+    st.markdown('<div class="btn-admin">', unsafe_allow_html=True)
+    if st.button("⚙️ Configuración"): st.session_state.seccion_activa = "Admin"
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # WHATSAPP Y CONTACTO
     st.markdown(f"""
         <div class="ws-container">
             <a href="https://wa.me/541156096283" target="_blank">
@@ -144,7 +150,7 @@ with st.sidebar:
         </div>
     """, unsafe_allow_html=True)
 
-# 5. RENDERIZADO
+# 5. RENDERIZADO DE SECCIONES
 if st.session_state.seccion_activa == "Landing":
     render_landing()
 elif st.session_state.seccion_activa == "Transporte":
@@ -163,3 +169,5 @@ elif st.session_state.seccion_activa == "Tarifas":
     render_tarifas(destino)
 elif st.session_state.seccion_activa == "Adhesión":
     render_adhesion(LOGO_URL)
+elif st.session_state.seccion_activa == "Admin":
+    render_admin()
