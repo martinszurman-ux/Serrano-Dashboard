@@ -26,24 +26,29 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO
+# 3. CSS MAESTRO (Compactación y Animación Pro)
 st.markdown("""
     <style>
     /* FORZAR COLORES LIGHT */
     .stApp { background-color: white !important; color: #31333F !important; }
     [data-testid="stSidebar"] { background-color: #f0f2f6 !important; }
 
-    /* CONTENEDOR DEL LOGO (Sin botones) */
+    /* COMPACTAR TODO EL SIDEBAR HACIA ARRIBA */
+    [data-testid="stSidebarContent"] {
+        padding-top: 0rem !important; 
+    }
+    
+    /* LOGO SUBIDO AL MÁXIMO */
     .logo-container {
         display: flex; 
         justify-content: center; 
         width: 100%;
-        margin-top: -10px !important;
-        margin-bottom: -10px !important;
+        margin-top: -30px !important; /* Subimos el logo */
+        margin-bottom: -15px !important;
     }
-    .logo-container img { max-width: 130px !important; }
+    .logo-container img { max-width: 115px !important; }
 
-    /* BOTONES MATE (FLAMA) */
+    /* BOTONES MATE (MÁS CHICOS) */
     [data-testid="stSidebarContent"] [data-testid="stVerticalBlock"] > div {
         width: 100% !important;
     }
@@ -51,57 +56,76 @@ st.markdown("""
         background: linear-gradient(145deg, #444444, #2c2c2c) !important;
         color: white !important;
         border: 1px solid #1a1a1a !important;
-        border-radius: 8px !important;
-        height: 52px !important;
-        font-weight: 700 !important;
-        font-size: 17px !important;
+        border-radius: 6px !important;
+        height: 44px !important; /* ACHICADO de 52px a 44px */
+        font-weight: 600 !important;
+        font-size: 15px !important; /* Letra más chica */
         text-align: left !important;
         display: flex !important;
         align-items: center !important;
         justify-content: flex-start !important;
         width: 100% !important;
-        margin-bottom: -4px !important;
-        transition: all 0.2s ease !important;
+        margin-bottom: -10px !important; /* Más pegados */
+        transition: all 0.3s ease !important;
     }
     div.stButton > button:hover {
         background: #555555 !important;
         border-color: #ffffff !important;
+        transform: translateX(3px) !important;
     }
 
-    /* BOTÓN ADHESIÓN */
+    /* BOTÓN ADHESIÓN COMPACTO */
     .btn-adhesion div.stButton > button {
         background: linear-gradient(145deg, #1a1a1a, #000000) !important;
         justify-content: center !important;
-        margin-top: 15px !important;
+        margin-top: 5px !important;
+        height: 46px !important;
     }
 
-    /* CONTACTO Y WHATSAPP */
-    .sidebar-footer { color: #666666 !important; font-size: 0.75rem; margin-top: 10px; line-height: 1.4; }
-    .ws-container { display: flex; justify-content: center; margin-top: 20px; }
-    .ws-icon-big { width: 50px !important; transition: transform 0.3s ease; }
-    .ws-icon-big:hover { transform: scale(1.1); }
+    /* WHATSAPP: GRANDE Y CON ANIMACIÓN */
+    .ws-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 15px;
+        margin-bottom: 5px;
+    }
+    .ws-icon-animated {
+        width: 60px !important; /* MÁS GRANDE */
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.2));
+    }
+    .ws-icon-animated:hover {
+        transform: scale(1.2) rotate(8deg); /* Pulso y rotación */
+        filter: drop-shadow(0px 8px 15px rgba(37, 211, 102, 0.5));
+    }
+
+    /* CONTACTO COMPACTO */
+    .sidebar-footer { 
+        color: #666666 !important; 
+        font-size: 0.7rem; 
+        line-height: 1.2; 
+        text-align: center;
+    }
     </style>
 """, unsafe_allow_html=True)
 
 # 4. LÓGICA DE NAVEGACIÓN
-# El usuario siempre cae en Landing la primera vez
 if "seccion_activa" not in st.session_state:
     st.session_state.seccion_activa = "Landing"
 
 with st.sidebar:
-    # LOGO ESTÁTICO (Sin botones arriba ni funcionalidad de clic)
+    # Logo
     st.markdown(f'<div class="logo-container"><img src="{LOGO_URL}"></div>', unsafe_allow_html=True)
-    
     st.divider()
     
     destino = st.selectbox("📍 Destino", ["Villa Carlos Paz", "San Pedro"])
     
-    # Menú de botones
+    # Menú de botones compactos
     if st.button("🚌 1. Transporte"): st.session_state.seccion_activa = "Transporte"
     if st.button("🏨 2. Hotelería"): st.session_state.seccion_activa = "Hotelería"
     if st.button("🍽️ 3. Comidas"): st.session_state.seccion_activa = "Comidas"
     if st.button("🏞️ 4. Excursiones"): st.session_state.seccion_activa = "Excursiones"
-    if st.button("🌙 5. Actividades Nocturnas"): st.session_state.seccion_activa = "Actividades"
+    if st.button("🌙 5. Actividades"): st.session_state.seccion_activa = "Actividades"
     if st.button("🏥 6. Seguro Médico"): st.session_state.seccion_activa = "Seguro"
     if st.button("💰 7. Tarifas"): st.session_state.seccion_activa = "Tarifas"
 
@@ -109,18 +133,17 @@ with st.sidebar:
     if st.button("📝 FICHA DE ADHESIÓN"): st.session_state.seccion_activa = "Adhesión"
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # WHATSAPP Y CONTACTO ABAJO
+    # WHATSAPP ANIMADO Y CONTACTO
     st.markdown(f"""
         <div class="ws-container">
             <a href="https://wa.me/541156096283" target="_blank">
-                <img src="{WS_ICON_URL}" class="ws-icon-big" alt="WhatsApp">
+                <img src="{WS_ICON_URL}" class="ws-icon-animated" alt="WhatsApp">
             </a>
         </div>
         <div class="sidebar-footer">
-            <div class="footer-item"><span>📍 Av. Rivadavia 4532 - Gal. Alefa (L. 10)</span></div>
-            <div class="footer-item"><span>📍 Del Cimarrón 1846 - Ituzaingo</span></div>
-            <div class="footer-item"><span>📞 11 - 4847-6467</span></div>
-            <div class="footer-item"><span>✉️ info@serranoturismo.com.ar</span></div>
+            📍 Rivadavia 4532 (L. 10) - CABA<br>
+            📍 Del Cimarrón 1846 - Ituzaingo<br>
+            📞 11 - 4847-6467 | ✉️ info@serranoturismo.com.ar
         </div>
     """, unsafe_allow_html=True)
 
