@@ -1,0 +1,12 @@
+{
+  "Villa Carlos Paz": {
+    "transporte": "Bus Mix - Semicama arriba / Cama abajo",
+    "hotel": "Hotel Portal del Lago",
+    "tarifa_base": 155000
+  },
+  "San Pedro": {
+    "transporte": "Minibús Charter de Turismo",
+    "hotel": "Hotel Howard Johnson",
+    "tarifa_base": 85000
+  }
+}
