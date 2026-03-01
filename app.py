@@ -13,6 +13,7 @@ WS_ICON_URL = "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
 
 # 2. IMPORTACIÓN DE MÓDULOS
 try:
+    from secciones.landing import render_landing  # <-- NUEVA IMPORTACIÓN
     from secciones.transporte import render_transporte
     from secciones.hoteleria import render_hoteleria
     from secciones.comidas import render_comidas
@@ -25,14 +26,28 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO (Versión estable con WhatsApp reubicado)
+# 3. CSS MAESTRO
 st.markdown("""
     <style>
-    /* FORZAR COLORES LIGHT */
     .stApp { background-color: white !important; color: #31333F !important; }
     [data-testid="stSidebar"] { background-color: #f0f2f6 !important; }
 
-    /* BOTONES MATE (FLAMA) - Ancho Blindado */
+    /* Estilo para que el botón del logo sea invisible pero funcional */
+    .logo-button-container .stButton > button {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 auto !important;
+        display: block !important;
+    }
+    .logo-button-container img {
+        max-width: 130px !important;
+        transition: transform 0.2s;
+    }
+    .logo-button-container img:hover {
+        transform: scale(1.05);
+    }
+
     [data-testid="stSidebarContent"] [data-testid="stVerticalBlock"] > div {
         width: 100% !important;
     }
@@ -46,7 +61,7 @@ st.markdown("""
         font-size: 17px !important;
         text-align: left !important;
         display: flex !important;
-        align-items: center !important;
+        align-items: center;
         justify-content: flex-start !important;
         width: 100% !important;
         margin-bottom: -4px !important;
@@ -55,54 +70,40 @@ st.markdown("""
     div.stButton > button:hover {
         background: #555555 !important;
         border-color: #ffffff !important;
-        color: white !important;
-        transform: translateX(4px) !important;
     }
 
-    /* BOTÓN ADHESIÓN */
     .btn-adhesion div.stButton > button {
         background: linear-gradient(145deg, #1a1a1a, #000000) !important;
-        border: 1px solid #555555 !important;
-        margin-top: 15px !important;
         justify-content: center !important;
+        margin-top: 15px !important;
     }
 
-    /* LOGO CENTRADO */
-    .logo-container {
-        display: flex; justify-content: center; width: 100%;
-        margin-bottom: -10px !important; margin-top: -10px !important;
-    }
-    .logo-container img { max-width: 130px !important; }
-
-    /* CONTACTO ABAJO */
     .sidebar-footer { 
         color: #666666 !important; 
         font-size: 0.75rem; 
         margin-top: 10px; 
         line-height: 1.4; 
     }
-    .footer-item span { color: #666666 !important; }
-
-    /* CONTENEDOR WHATSAPP */
-    .ws-container {
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
-    }
-    .ws-icon-big {
-        width: 50px !important;
-        transition: transform 0.3s ease;
-    }
+    .ws-container { display: flex; justify-content: center; margin-top: 20px; }
+    .ws-icon-big { width: 50px !important; transition: transform 0.3s ease; }
     .ws-icon-big:hover { transform: scale(1.1); }
     </style>
 """, unsafe_allow_html=True)
 
 # 4. LÓGICA DE NAVEGACIÓN
+# Seteamos Landing como página por defecto
 if "seccion_activa" not in st.session_state:
-    st.session_state.seccion_activa = "Transporte"
+    st.session_state.seccion_activa = "Landing"
 
 with st.sidebar:
-    st.markdown(f'<div class="logo-container"><img src="{LOGO_URL}"></div>', unsafe_allow_html=True)
+    # LOGO COMO BOTÓN VOLVER AL INICIO
+    st.markdown('<div class="logo-button-container">', unsafe_allow_html=True)
+    if st.button("🏠", key="logo_home", help="Volver al inicio"):
+        st.session_state.seccion_activa = "Landing"
+    # Insertamos la imagen visualmente sobre el botón (o simulando el clic)
+    st.image(LOGO_URL) 
+    st.markdown('</div>', unsafe_allow_html=True)
+    
     st.divider()
     
     destino = st.selectbox("📍 Destino", ["Villa Carlos Paz", "San Pedro"])
@@ -120,7 +121,7 @@ with st.sidebar:
     if st.button("📝 FICHA DE ADHESIÓN"): st.session_state.seccion_activa = "Adhesión"
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # WHATSAPP REUBICADO ARRIBA DEL TEXTO
+    # WHATSAPP Y CONTACTO
     st.markdown(f"""
         <div class="ws-container">
             <a href="https://wa.me/541156096283" target="_blank">
@@ -135,8 +136,10 @@ with st.sidebar:
         </div>
     """, unsafe_allow_html=True)
 
-# 5. RENDERIZADO
-if st.session_state.seccion_activa == "Transporte":
+# 5. RENDERIZADO (Incluye la Landing)
+if st.session_state.seccion_activa == "Landing":
+    render_landing()
+elif st.session_state.seccion_activa == "Transporte":
     render_transporte(destino)
 elif st.session_state.seccion_activa == "Hotelería":
     render_hoteleria(destino)
