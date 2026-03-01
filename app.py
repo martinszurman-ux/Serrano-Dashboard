@@ -26,85 +26,83 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO (Compactación y Animación Pro)
+# 3. CSS MAESTRO (Botones Slim y Espaciado de Contacto)
 st.markdown("""
     <style>
     /* FORZAR COLORES LIGHT */
     .stApp { background-color: white !important; color: #31333F !important; }
     [data-testid="stSidebar"] { background-color: #f0f2f6 !important; }
 
-    /* COMPACTAR TODO EL SIDEBAR HACIA ARRIBA */
-    [data-testid="stSidebarContent"] {
-        padding-top: 0rem !important; 
-    }
-    
-    /* LOGO SUBIDO AL MÁXIMO */
+    /* LOGO SUBIDO */
     .logo-container {
-        display: flex; 
-        justify-content: center; 
-        width: 100%;
-        margin-top: -30px !important; /* Subimos el logo */
+        display: flex; justify-content: center; width: 100%;
+        margin-top: -35px !important;
         margin-bottom: -15px !important;
     }
-    .logo-container img { max-width: 115px !important; }
+    .logo-container img { max-width: 110px !important; }
 
-    /* BOTONES MATE (MÁS CHICOS) */
+    /* BOTONES SLIM (Más chicos en alto y ancho) */
     [data-testid="stSidebarContent"] [data-testid="stVerticalBlock"] > div {
         width: 100% !important;
+        padding-left: 10px !important;  /* Margen horizontal para achicar el botón */
+        padding-right: 10px !important;
     }
+    
     div.stButton > button {
         background: linear-gradient(145deg, #444444, #2c2c2c) !important;
         color: white !important;
         border: 1px solid #1a1a1a !important;
         border-radius: 6px !important;
-        height: 44px !important; /* ACHICADO de 52px a 44px */
+        height: 38px !important; /* MÁS BAJOS (era 44px) */
         font-weight: 600 !important;
-        font-size: 15px !important; /* Letra más chica */
+        font-size: 14px !important; /* Letra más pequeña */
         text-align: left !important;
         display: flex !important;
         align-items: center !important;
         justify-content: flex-start !important;
         width: 100% !important;
-        margin-bottom: -10px !important; /* Más pegados */
+        margin-bottom: -12px !important; /* Más pegados verticalmente */
         transition: all 0.3s ease !important;
     }
+    
     div.stButton > button:hover {
         background: #555555 !important;
         border-color: #ffffff !important;
         transform: translateX(3px) !important;
     }
 
-    /* BOTÓN ADHESIÓN COMPACTO */
+    /* BOTÓN ADHESIÓN SLIM */
     .btn-adhesion div.stButton > button {
         background: linear-gradient(145deg, #1a1a1a, #000000) !important;
         justify-content: center !important;
         margin-top: 5px !important;
-        height: 46px !important;
+        height: 42px !important;
     }
 
-    /* WHATSAPP: GRANDE Y CON ANIMACIÓN */
+    /* WHATSAPP ANIMADO */
     .ws-container {
         display: flex;
         justify-content: center;
         margin-top: 15px;
-        margin-bottom: 5px;
+        margin-bottom: 20px; /* Espacio extra entre icono y texto */
     }
     .ws-icon-animated {
-        width: 60px !important; /* MÁS GRANDE */
+        width: 55px !important;
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.2));
     }
     .ws-icon-animated:hover {
-        transform: scale(1.2) rotate(8deg); /* Pulso y rotación */
-        filter: drop-shadow(0px 8px 15px rgba(37, 211, 102, 0.5));
+        transform: scale(1.15) rotate(8deg);
     }
 
-    /* CONTACTO COMPACTO */
+    /* CONTACTO COMPACTO CON ESPACIADO SUPERIOR */
     .sidebar-footer { 
         color: #666666 !important; 
         font-size: 0.7rem; 
-        line-height: 1.2; 
+        line-height: 1.3; 
         text-align: center;
+        padding-top: 10px; /* Refuerzo del espacio */
+        border-top: 1px solid #e0e0e0; /* Opcional: línea divisoria sutil */
+        margin: 0 15px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -114,13 +112,12 @@ if "seccion_activa" not in st.session_state:
     st.session_state.seccion_activa = "Landing"
 
 with st.sidebar:
-    # Logo
     st.markdown(f'<div class="logo-container"><img src="{LOGO_URL}"></div>', unsafe_allow_html=True)
     st.divider()
     
     destino = st.selectbox("📍 Destino", ["Villa Carlos Paz", "San Pedro"])
     
-    # Menú de botones compactos
+    # Menú de botones "Slim"
     if st.button("🚌 1. Transporte"): st.session_state.seccion_activa = "Transporte"
     if st.button("🏨 2. Hotelería"): st.session_state.seccion_activa = "Hotelería"
     if st.button("🍽️ 3. Comidas"): st.session_state.seccion_activa = "Comidas"
@@ -133,7 +130,7 @@ with st.sidebar:
     if st.button("📝 FICHA DE ADHESIÓN"): st.session_state.seccion_activa = "Adhesión"
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # WHATSAPP ANIMADO Y CONTACTO
+    # WHATSAPP CON ESPACIADO Y DIRECCIONES
     st.markdown(f"""
         <div class="ws-container">
             <a href="https://wa.me/541156096283" target="_blank">
