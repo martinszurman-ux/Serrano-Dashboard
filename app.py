@@ -22,12 +22,12 @@ try:
     from secciones.seguro import render_seguro
     from secciones.tarifas import render_tarifas
     from secciones.adhesion import render_adhesion
-    from secciones.admin import render_admin  # <-- SECCIÓN ADMIN
+    from secciones.admin import render_admin
 except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO (Botones Slim, Animaciones y Forzado Light)
+# 3. CSS MAESTRO (Slim Fit, Animaciones y Forzado Light)
 st.markdown("""
     <style>
     /* FORZAR COLORES LIGHT */
@@ -36,7 +36,7 @@ st.markdown("""
 
     /* LOGO SUBIDO */
     .logo-container {
-        display: flex; justify-content: center; width: 100%;
+        display: flex; justify(content: center; width: 100%;
         margin-top: -35px !important;
         margin-bottom: -15px !important;
     }
@@ -95,7 +95,7 @@ st.markdown("""
         transform: scale(1.15) rotate(8deg);
     }
 
-    /* CONTACTO */
+    /* CONTACTO COMPACTO */
     .sidebar-footer { 
         color: #666666 !important; 
         font-size: 0.7rem; 
@@ -131,10 +131,13 @@ with st.sidebar:
     if st.button("📝 FICHA DE ADHESIÓN"): st.session_state.seccion_activa = "Adhesión"
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # Botón de Administración (Separado)
-    st.markdown('<div class="btn-admin">', unsafe_allow_html=True)
-    if st.button("⚙️ Configuración"): st.session_state.seccion_activa = "Admin"
-    st.markdown('</div>', unsafe_allow_html=True)
+    # --- LÓGICA DE BOTÓN ADMIN OCULTO ---
+    # Captura parámetros de la URL: ?admin=true
+    if st.query_params.get("admin") == "true":
+        st.markdown('<div class="btn-admin">', unsafe_allow_html=True)
+        if st.button("⚙️ Configuración"): 
+            st.session_state.seccion_activa = "Admin"
+        st.markdown('</div>', unsafe_allow_html=True)
 
     # WHATSAPP Y CONTACTO
     st.markdown(f"""
@@ -150,7 +153,7 @@ with st.sidebar:
         </div>
     """, unsafe_allow_html=True)
 
-# 5. RENDERIZADO DE SECCIONES
+# 5. RENDERIZADO
 if st.session_state.seccion_activa == "Landing":
     render_landing()
 elif st.session_state.seccion_activa == "Transporte":
