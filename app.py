@@ -27,22 +27,22 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO (Slim Fit, Animaciones y Forzado Light)
+# 3. CSS MAESTRO (Restauración del Look & Feel Slim)
 st.markdown("""
     <style>
     /* FORZAR COLORES LIGHT */
     .stApp { background-color: white !important; color: #31333F !important; }
     [data-testid="stSidebar"] { background-color: #f0f2f6 !important; }
 
-    /* LOGO SUBIDO */
+    /* LOGO SUBIDO AL MÁXIMO */
     .logo-container {
-        display: flex; justify(content: center; width: 100%;
+        display: flex; justify-content: center; width: 100%;
         margin-top: -35px !important;
         margin-bottom: -15px !important;
     }
     .logo-container img { max-width: 110px !important; }
 
-    /* BOTONES SLIM */
+    /* BOTONES SLIM (Achicados horizontal y verticalmente) */
     [data-testid="stSidebarContent"] [data-testid="stVerticalBlock"] > div {
         width: 100% !important;
         padding-left: 10px !important;
@@ -72,7 +72,7 @@ st.markdown("""
         transform: translateX(3px) !important;
     }
 
-    /* BOTÓN ADHESIÓN Y ADMIN */
+    /* BOTÓN ADHESIÓN Y ADMIN (Estilo especial) */
     .btn-adhesion div.stButton > button, .btn-admin div.stButton > button {
         background: linear-gradient(145deg, #1a1a1a, #000000) !important;
         justify-content: center !important;
@@ -113,6 +113,7 @@ if "seccion_activa" not in st.session_state:
     st.session_state.seccion_activa = "Landing"
 
 with st.sidebar:
+    # Logo
     st.markdown(f'<div class="logo-container"><img src="{LOGO_URL}"></div>', unsafe_allow_html=True)
     st.divider()
     
@@ -127,19 +128,19 @@ with st.sidebar:
     if st.button("🏥 6. Seguro Médico"): st.session_state.seccion_activa = "Seguro"
     if st.button("💰 7. Tarifas"): st.session_state.seccion_activa = "Tarifas"
 
+    # Botón Ficha de Adhesión
     st.markdown('<div class="btn-adhesion">', unsafe_allow_html=True)
     if st.button("📝 FICHA DE ADHESIÓN"): st.session_state.seccion_activa = "Adhesión"
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # --- LÓGICA DE BOTÓN ADMIN OCULTO ---
-    # Captura parámetros de la URL: ?admin=true
+    # Lógica de Botón Admin Oculto (Acceso via URL ?admin=true)
     if st.query_params.get("admin") == "true":
         st.markdown('<div class="btn-admin">', unsafe_allow_html=True)
         if st.button("⚙️ Configuración"): 
             st.session_state.seccion_activa = "Admin"
         st.markdown('</div>', unsafe_allow_html=True)
 
-    # WHATSAPP Y CONTACTO
+    # WhatsApp y Contacto
     st.markdown(f"""
         <div class="ws-container">
             <a href="https://wa.me/541156096283" target="_blank">
