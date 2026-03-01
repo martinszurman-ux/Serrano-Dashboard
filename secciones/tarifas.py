@@ -9,59 +9,61 @@ def render_tarifas(destino):
     # Lógica para San Pedro: Selección de año
     archivo_nombre = "tarifas_y_formas_de_pago.csv"
     if destino == "San Pedro":
-        st.markdown("### 🗓️ Seleccioná la temporada del viaje")
+        st.markdown("<h4 style='margin-bottom:0px;'>🗓️ Temporada del viaje</h4>", unsafe_allow_html=True)
         temporada = st.segmented_control(
             "Temporada", 
             options=["Temporada 2026", "Temporada 2027"], 
-            default="Temporada 2026"
+            default="Temporada 2026",
+            label_visibility="collapsed"
         )
-        # Ajustamos el nombre del archivo según la temporada
         archivo_nombre = "tarifas_2026.csv" if temporada == "Temporada 2026" else "tarifas_2027.csv"
-        # Usamos una key única por temporada para no mezclar los planes seleccionados
         suffix = "2026" if temporada == "Temporada 2026" else "2027"
         session_key = f"sel_index_{folder}_{suffix}"
-        
-        # DEFINICIÓN DEL ENCABEZADO PARA SAN PEDRO
         header_path = f"data/{folder}/tarifariosanpedro.jpg"
     else:
         session_key = f"sel_index_{folder}"
-        # DEFINICIÓN DEL ENCABEZADO PARA VCP
         header_path = f"data/{folder}/tarifas_y_formas_header.png"
     
     if session_key not in st.session_state:
         st.session_state[session_key] = 0
 
-    # 2. ESTILOS CSS
+    # 2. ESTILOS CSS (VERSION COMPACTA)
     st.markdown("""
         <style>
-        [data-testid="stImage"] { margin-top: -45px; margin-bottom: -10px; }
-        .contenedor-selector-pago { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; margin: 20px 0; }
-        div[data-testid="stPills"] { display: flex; justify-content: center; width: 100%; }
-        div[data-testid="stPills"] > div { justify-content: center !important; display: flex !important; gap: 8px; }
-        .instruccion-pago { text-align: center; font-weight: 700; color: #495057; margin-bottom: 15px; font-size: 1.1rem; }
-        .plan-card-container { border-radius: 15px; padding: 20px; background: #E8E8E8; border: 1px solid #d1d1d1; text-align: center; min-height: 160px; display: flex; flex-direction: column; justify-content: center; align-items: center; margin-bottom: 10px; transition: all 0.3s ease; }
-        .selected-plan { border: 2px solid #4A90E2 !important; background-color: #ffffff !important; box-shadow: 0px 4px 12px rgba(0,0,0,0.05); }
-        .header-content { display: flex; justify-content: center; align-items: center; gap: 12px; width: 100%; }
-        .day-number { color: #4A90E2; font-size: 3.5rem; font-weight: 900; line-height: 1; margin: 0; }
-        .transport-icon { font-size: 2.2rem; line-height: 1; margin: 0; }
-        .day-text { color: #495057; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; margin-top: 10px; }
-        .hero-payment-card { background: linear-gradient(145deg, #ffffff, #f0f2f6); border-radius: 24px; padding: 40px; text-align: center; border: 1px solid #e0e4e8; box-shadow: 15px 15px 40px #d9dbe0, -15px -15px 40px #ffffff; max-width: 500px; margin: 30px auto; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: default; }
-        .hero-payment-card:hover { transform: translateY(-12px) scale(1.03); box-shadow: 25px 25px 60px #c0c2c7, -15px -15px 40px #ffffff; background: linear-gradient(145deg, #ffffff, #e6e9ef); }
-        .hero-label { color: #6c757d; font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
-        .hero-value { color: #1a1c1e; font-size: 4rem; font-weight: 900; margin: 0; line-height: 1; background: -webkit-linear-gradient(#1a1c1e, #4A90E2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero-subtitle { color: #4A90E2; font-size: 1.2rem; font-weight: 600; margin-top: 10px; }
-        .styled-table th { background-color: #333333 !important; color: white !important; font-weight: bold !important; text-align: center !important; }
-        .styled-table td { text-align: center !important; }
+        [data-testid="stImage"] { margin-top: -55px; margin-bottom: -20px; }
+        .contenedor-selector-pago { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; margin: 10px 0; }
+        div[data-testid="stPills"] > div { justify-content: center !important; display: flex !important; gap: 6px; }
+        .instruccion-pago { text-align: center; font-weight: 700; color: #495057; margin-bottom: 8px; font-size: 0.95rem; }
+        
+        /* Itinerarios más chicos */
+        .plan-card-container { border-radius: 12px; padding: 10px; background: #E8E8E8; border: 1px solid #d1d1d1; text-align: center; min-height: 110px; display: flex; flex-direction: column; justify-content: center; align-items: center; margin-bottom: 5px; transition: all 0.3s ease; }
+        .selected-plan { border: 2px solid #4A90E2 !important; background-color: #ffffff !important; box-shadow: 0px 2px 8px rgba(0,0,0,0.05); }
+        .header-content { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; }
+        .day-number { color: #4A90E2; font-size: 2.2rem; font-weight: 900; line-height: 1; margin: 0; }
+        .transport-icon { font-size: 1.5rem; line-height: 1; margin: 0; }
+        .day-text { color: #495057; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-top: 5px; }
+        
+        /* Hero Widget más compacto */
+        .hero-payment-card { background: linear-gradient(145deg, #ffffff, #f0f2f6); border-radius: 20px; padding: 20px 30px; text-align: center; border: 1px solid #e0e4e8; box-shadow: 10px 10px 30px #d9dbe0; max-width: 400px; margin: 15px auto; transition: all 0.5s ease; cursor: default; }
+        .hero-payment-card:hover { transform: translateY(-5px); }
+        .hero-label { color: #6c757d; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; }
+        .hero-value { color: #1a1c1e; font-size: 2.8rem; font-weight: 900; margin: 0; line-height: 1; background: -webkit-linear-gradient(#1a1c1e, #4A90E2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-subtitle { color: #4A90E2; font-size: 1rem; font-weight: 600; margin-top: 5px; }
+        
+        /* Beneficio más discreto */
+        .beneficio-box { max-width: 600px; margin: 15px auto; padding: 12px; background-color: #f0f7ff; border-radius: 10px; border: 1px dashed #4A90E2; }
+        
+        .styled-table th { background-color: #333333 !important; color: white !important; font-size: 0.8rem; padding: 5px !important; }
+        .styled-table td { font-size: 0.8rem; padding: 5px !important; }
         </style>
     """, unsafe_allow_html=True)
 
-    # --- 3. LOGICA DE CARGA DE IMAGEN (ENCABEZADO) ---
+    # --- 3. CARGA DE IMAGEN ---
     if os.path.exists(header_path):
-        _, col_img, _ = st.columns([1.2, 3, 1.2])
-        with col_img: 
-            st.image(header_path)
+        _, col_img, _ = st.columns([1.5, 3, 1.5])
+        with col_img: st.image(header_path)
 
-    # --- 4. LOGICA DE CARGA DE DATOS CSV ---
+    # --- 4. CARGA DE DATOS ---
     path_tarifas = f"data/{folder}/{archivo_nombre}"
     
     if os.path.exists(path_tarifas):
@@ -75,7 +77,7 @@ def render_tarifas(destino):
             except: return 0.0
 
         # --- SECCIÓN 1: ITINERARIO ---
-        st.write("### 📅 Seleccioná tu itinerario")
+        st.markdown("<h4 style='margin-bottom:10px;'>📅 Itinerario</h4>", unsafe_allow_html=True)
         planes = df['Programa'].tolist()
         cols_p = st.columns(len(planes))
         
@@ -95,7 +97,7 @@ def render_tarifas(destino):
                 </div>
                 """
                 st.markdown(card_html, unsafe_allow_html=True)
-                if st.button("Seleccionar", key=f"btn_{folder}_{i}_{archivo_nombre}", use_container_width=True):
+                if st.button("Elegir", key=f"btn_{folder}_{i}_{archivo_nombre}", use_container_width=True):
                     st.session_state[session_key] = i
                     st.rerun()
 
@@ -104,12 +106,12 @@ def render_tarifas(destino):
         v = df.iloc[idx]
 
         # --- SECCIÓN 2: OPCIONES DE PAGO ---
-        excluir_botones = ['Programa', 'Contado', 'Valor del Viaje', 'Costo Total', 'Valor del viaje']
-        opciones_cuotas = [c.replace('_', ' ') for c in df.columns if c not in excluir_botones]
+        excluir = ['Programa', 'Contado', 'Valor del Viaje', 'Costo Total', 'Valor del viaje']
+        opciones_cuotas = [c.replace('_', ' ') for c in df.columns if c not in excluir]
         opciones_finales = ["1 Pago"] + opciones_cuotas
 
         st.markdown('<div class="contenedor-selector-pago">', unsafe_allow_html=True)
-        st.markdown('<p class="instruccion-pago">Elegí tu plan de pago:</p>', unsafe_allow_html=True)
+        st.markdown('<p class="instruccion-pago">Plan de pago:</p>', unsafe_allow_html=True)
         cuota_sel = st.pills("Cuotas", options=opciones_finales, default=opciones_finales[1] if len(opciones_finales) > 1 else opciones_finales[0], label_visibility="collapsed", key=f"pills_{folder}_{archivo_nombre}")
         if not cuota_sel: cuota_sel = opciones_finales[1]
         st.markdown('</div>', unsafe_allow_html=True)
@@ -121,47 +123,42 @@ def render_tarifas(destino):
         else:
             c_db = cuota_sel.replace(' ', '_')
             m_display = f"${clean_val(v[c_db]):,.0f}"
-            label_cuota = f"Por Cuota ({cuota_sel})"
+            label_cuota = f"Cuota ({cuota_sel})"
 
         st.markdown(f"""
             <div class="hero-payment-card">
-                <p class="hero-label">Monto a abonar</p>
+                <p class="hero-label">A abonar</p>
                 <p class="hero-value">{m_display}</p>
-                <p class="hero-subtitle">💳 Plan {label_cuota}</p>
+                <p class="hero-subtitle">💳 {label_cuota}</p>
             </div>
         """, unsafe_allow_html=True)
 
-        # Beneficio Serrano
-        st.markdown("""
-            <div style='max-width: 700px; margin: 30px auto; padding: 20px; background-color: #f0f7ff; border-radius: 12px; border: 1px dashed #4A90E2;'>
-                <p style='font-size: 1rem; color: #333333; text-align: center; margin: 0; font-weight: 500;'>
-                    🎁 <b>¡Beneficio Exclusivo!</b> Pagando todas las cuotas del 1 al 10 de cada mes en efectivo en Serrano, 
-                    obtenés un <b>10% de descuento</b> sobre el total del viaje (aplicado en la última cuota).
+        # Beneficio Serrano Compacto
+        st.markdown(f"""
+            <div class='beneficio-box'>
+                <p style='font-size: 0.85rem; color: #333; text-align: center; margin: 0;'>
+                    🎁 <b>¡10% OFF Serrano!</b> Pagando del 1 al 10 en efectivo (aplicado en última cuota).
                 </p>
             </div>
         """, unsafe_allow_html=True)
 
-        # --- SECCIÓN 4: TABLA ---
-        st.divider()
-        with st.expander("Ver tabla comparativa de todas las tarifas"):
+        # --- SECCIÓN 4: TABLA Y BENEFICIOS ---
+        with st.expander("Comparativa de tarifas"):
             df_format = df.copy()
-            cols_a_borrar = [c for c in df_format.columns if 'valor del viaje' in c.lower() or 'costo total' in c.lower()]
+            cols_a_borrar = [c for c in df_format.columns if 'valor del' in c.lower() or 'costo total' in c.lower()]
             df_format = df_format.drop(columns=cols_a_borrar)
-            if 'Contado' in df_format.columns: df_format = df_format.rename(columns={'Contado': 'Valor 1 Pago'})
+            if 'Contado' in df_format.columns: df_format = df_format.rename(columns={'Contado': '1 Pago'})
             df_format.columns = [c.replace('_', ' ') for c in df_format.columns]
             for col in df_format.columns.drop('Programa'): df_format[col] = df_format[col].apply(clean_val)
             st.markdown('<div class="styled-table">', unsafe_allow_html=True)
-            st.table(df_format.set_index('Programa').style.format("$ {:,.0f}").set_table_styles([
-                {'selector': 'th', 'props': [('background-color', '#333333'), ('color', 'white'), ('font-weight', 'bold'), ('text-align', 'center !important')]},
-                {'selector': 'td', 'props': [('text-align', 'center !important')]}
-            ]))
+            st.table(df_format.set_index('Programa').style.format("$ {:,.0f}"))
             st.markdown('</div>', unsafe_allow_html=True)
 
-        st.write("#### 🛡️ Beneficios y Servicios Incluidos")
-        beneficios = ["Liberados para niños y acompañantes.", "Descuentos según formas de pago.", "Opciones de pago personalizadas.", "Ayudas complementarias incluidas.", "Fiesta de Egresados.", "Importantes descuentos en Camperas.", "DJ + Luces y sonido para evento privado."]
+        st.markdown("<h5 style='margin-bottom:5px;'>🛡️ Servicios Incluidos</h5>", unsafe_allow_html=True)
+        beneficios = ["Liberados para niños.", "Descuentos por pago.", "Opciones personalizadas.", "Ayudas incluidas.", "Fiesta de Egresados.", "Descuentos Camperas."]
         c1, c2 = st.columns(2)
         for i, b in enumerate(beneficios):
             with c1 if i % 2 == 0 else c2:
-                st.markdown(f'<div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #f1f1f1; color:#495057;"><span style="color:#4A90E2; font-weight:bold;">✓</span>{b}</div>', unsafe_allow_html=True)
+                st.markdown(f'<p style="font-size:0.8rem; margin-bottom:2px; color:#495057;">✓ {b}</p>', unsafe_allow_html=True)
     else:
-        st.warning(f"No se encontró el archivo: {archivo_nombre} en la carpeta data/{folder}/")
+        st.warning(f"No se encontró el archivo en data/{folder}/")
