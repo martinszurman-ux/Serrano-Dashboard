@@ -14,7 +14,7 @@ def render_tarifas(destino):
             "Temporada", 
             options=["Temporada 2026", "Temporada 2027"], 
             default="Temporada 2026",
-            label_visibility="collapsed"
+            # label_visibility="collapsed" # Comentado para compatibilidad si da error
         )
         archivo_nombre = "tarifas_2026.csv" if temporada == "Temporada 2026" else "tarifas_2027.csv"
         suffix = "2026" if temporada == "Temporada 2026" else "2027"
@@ -85,7 +85,12 @@ def render_tarifas(destino):
             partes = plan.split(' ', 1)
             numero = partes[0]
             resto = partes[1] if len(partes) > 1 else ""
-            icono = "🚌" if "bus" in plan.lower() else "✈️"
+            
+            # CAMBIO: Si el destino es San Pedro, forzamos icono de micro.
+            if destino == "San Pedro" or "bus" in plan.lower():
+                icono = "🚌"
+            else:
+                icono = "✈️"
             
             with cols_p[i]:
                 es_activo = st.session_state[session_key] == i
@@ -136,7 +141,7 @@ def render_tarifas(destino):
         # Beneficio Serrano Compacto
         st.markdown(f"""
             <div class='beneficio-box'>
-                <p style='font-size: 0.85rem; color: #333; text-align: center; margin: 0;'>
+                <p style='font-size: 0.85rem; color: #33; text-align: center; margin: 0;'>
                     🎁 <b>¡10% OFF Serrano!</b> Pagando del 1 al 10 en efectivo (aplicado en última cuota).
                 </p>
             </div>
