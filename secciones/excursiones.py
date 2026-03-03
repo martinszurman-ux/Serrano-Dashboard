@@ -41,67 +41,66 @@ def render_excursiones(destino):
             </style>
         """, unsafe_allow_html=True)
 
-    # 1. ENCABEZADO (Archivo: encabezado.jpg)
-    # Probamos con .jpg y .png por las dudas
-    if os.path.exists("assets/encabezado.jpg"):
-        st.image("assets/encabezado.jpg", caption="¡Viví la experiencia Serrano!")
-    elif os.path.exists("assets/encabezado.png"):
-        st.image("assets/encabezado.png")
+        # 1. ENCABEZADO (Archivo: encabezado.jpg)
+        if os.path.exists("assets/encabezado.jpg"):
+            st.image("assets/encabezado.jpg", caption="¡Viví la experiencia Serrano!")
+        elif os.path.exists("assets/encabezado.png"):
+            st.image("assets/encabezado.png")
 
-    st.markdown("## 🏞️ Experiencias en Carlos Paz")
+        st.markdown("## 🏞️ Experiencias en Carlos Paz")
 
-    # 2. PEKOS (Archivo: pekos.jpg)
-    st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
-    if os.path.exists("assets/pekos.jpg"):
-        st.image("assets/pekos.jpg")
-    elif os.path.exists("assets/pekos.png"):
-        st.image("assets/pekos.png")
-    st.markdown("""
-        <div class="excursion-content">
-            <div class="excursion-title">🚌 1. Pekos Multiparque</div>
-            <div class="excursion-desc">Un mundo de sensaciones con shows de lobos marinos, cine 5D, laberintos y adrenalina. Un clásico de Serrano Turismo para disfrutar al máximo.</div>
-            <div class="excursion-tag">Full Day • Entretenimiento</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # 3. WAVE ZONE & AQUAVENTURE (Archivo: aqua.jpg)
-    st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
-    if os.path.exists("assets/aqua.jpg"):
-        st.image("assets/aqua.jpg")
-    elif os.path.exists("assets/aqua.png"):
-        st.image("assets/aqua.png")
-    st.markdown("""
-        <div class="excursion-content">
-            <div class="excursion-title">🚌 2. Wave Zone & Aquaventure</div>
-            <div class="excursion-desc">Piletas de olas, toboganes gigantes y complejos diseñados para pasar un día de agua inolvidable con todo el grupo.</div>
-            <div class="excursion-tag">Agua • Adrenalina</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # 4. CRAZY DONKEY
-    st.markdown("""
-        <div class="excursion-card">
+        # 2. PEKOS (Archivo: pekos.jpg) - DESCRIPCIÓN ACTUALIZADA
+        st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
+        if os.path.exists("assets/pekos.jpg"):
+            st.image("assets/pekos.jpg")
+        elif os.path.exists("assets/pekos.png"):
+            st.image("assets/pekos.png")
+        st.markdown("""
             <div class="excursion-content">
-                <div class="excursion-title">🚌 3. Crazy Donkey</div>
-                <div class="excursion-desc">Aventura extrema en las sierras con tirolesas, desafíos físicos y recreación en un entorno natural increíble.</div>
-                <div class="excursion-tag">Aventura • Naturaleza</div>
+                <div class="excursion-title">🚌 1. Pekos Multiparque</div>
+                <div class="excursion-desc">Un mundo de sensaciones con cine 5D, laberintos, jardín botánico y mucha adrenalina. Un complejo recreativo ideal para disfrutar con todo el grupo y la seguridad de Serrano Turismo.</div>
+                <div class="excursion-tag">Full Day • Entretenimiento</div>
             </div>
         </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
-    # 5. CITY TOUR
-    st.markdown("""
-        <div class="excursion-card">
+        # 3. WAVE ZONE & AQUAVENTURE (Archivo: aqua.jpg)
+        st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
+        if os.path.exists("assets/aqua.jpg"):
+            st.image("assets/aqua.jpg")
+        elif os.path.exists("assets/aqua.png"):
+            st.image("assets/aqua.png")
+        st.markdown("""
             <div class="excursion-content">
-                <div class="excursion-title">🏙️ 4. City Tour Serrano</div>
-                <div class="excursion-desc">Visitamos el Reloj Cucú, fábricas de alfajores y puntos panorámicos. La mejor forma de conocer la esencia de la Villa.</div>
-                <div class="excursion-tag">Cultura • Tradición</div>
+                <div class="excursion-title">🚌 2. Wave Zone & Aquaventure</div>
+                <div class="excursion-desc">Piletas de olas, toboganes gigantes y complejos diseñados para pasar un día de agua inolvidable con todo el grupo.</div>
+                <div class="excursion-tag">Agua • Adrenalina</div>
             </div>
         </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
-    # Caso San Pedro o error
-    if destino == "San Pedro":
+        # 4. CRAZY DONKEY
+        st.markdown("""
+            <div class="excursion-card">
+                <div class="excursion-content">
+                    <div class="excursion-title">🚌 3. Crazy Donkey</div>
+                    <div class="excursion-desc">Aventura extrema en las sierras con tirolesas, desafíos físicos y recreación en un entorno natural increíble.</div>
+                    <div class="excursion-tag">Aventura • Naturaleza</div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+
+        # 5. CITY TOUR
+        st.markdown("""
+            <div class="excursion-card">
+                <div class="excursion-content">
+                    <div class="excursion-title">🏙️ 4. City Tour Serrano</div>
+                    <div class="excursion-desc">Visitamos el Reloj Cucú, fábricas de alfajores y puntos panorámicos. La mejor forma de conocer la esencia de la Villa.</div>
+                    <div class="excursion-tag">Cultura • Tradición</div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+
+    else:
+        st.markdown("## 🏞️ Excursiones San Pedro")
         st.info("Estamos preparando las mejores actividades para San Pedro.")
