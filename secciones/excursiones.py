@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 
 def render_excursiones(destino):
     if destino == "Villa Carlos Paz":
@@ -37,62 +38,63 @@ def render_excursiones(destino):
                 margin-top: 10px;
                 text-transform: uppercase;
             }
-            .img-container img {
-                width: 100%;
-                height: 200px;
-                object-fit: cover;
-            }
             </style>
         """, unsafe_allow_html=True)
 
-    # Encabezado con foto grupal
-    st.image("https://raw.githubusercontent.com/TuUsuario/TuRepo/main/data/vcp/Imagen3.jpg", 
-             caption="¡Diversión garantizada con el equipo de Serrano!")
+        # 1. ENCABEZADO GRUPAL (Imagen 3)
+        if os.path.exists("assets/Imagen3.jpg"):
+            st.image("assets/Imagen3.jpg", caption="¡El equipo de Serrano disfrutando en las sierras!")
 
-    st.markdown("## 🏞️ Experiencias en Carlos Paz")
+        st.markdown("## 🏞️ Experiencias en Carlos Paz")
 
-    # 1. PEKOS (Con Imagen 2)
-    st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
-    st.image("https://raw.githubusercontent.com/TuUsuario/TuRepo/main/data/vcp/Imagen2.jpg")
-    st.markdown("""
-        <div class="excursion-content">
-            <div class="excursion-title">🎢 Pekos Multiparque</div>
-            <div class="excursion-desc">El parque temático número uno. Shows de lobos marinos, cine 5D, laberintos y adrenalina pura en un entorno seguro para todo el grupo.</div>
-            <div class="excursion-tag">Full Day • Clásico Imperdible</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # 2. WAVE ZONE / AQUAVENTURE (Con Imagen 1)
-    st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
-    st.image("https://raw.githubusercontent.com/TuUsuario/TuRepo/main/data/vcp/Imagen1.jpg")
-    st.markdown("""
-        <div class="excursion-content">
-            <div class="excursion-title">🌊 Wave Zone & Aquaventure</div>
-            <div class="excursion-desc">Los mejores parques acuáticos de las sierras. Piletas de olas, toboganes gigantes y complejos diseñados para pasar un día de agua inolvidable.</div>
-            <div class="excursion-tag">Agua • Adrenalina • Sol</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # 3. CRAZY DONKEY
-    st.markdown("""
-        <div class="excursion-card">
+        # 2. PEKOS (Imagen 2)
+        st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
+        if os.path.exists("assets/Imagen2.jpg"):
+            st.image("assets/Imagen2.jpg")
+        st.markdown("""
             <div class="excursion-content">
-                <div class="excursion-title">🐴 Crazy Donkey</div>
-                <div class="excursion-desc">Multiespacio de aventura: tirolesas, desafíos físicos y mucha recreación en contacto directo con la naturaleza serrana.</div>
-                <div class="excursion-tag">Aventura • Team Building</div>
+                <div class="excursion-title">🎢 Pekos Multiparque</div>
+                <div class="excursion-desc">Un clásico que nunca falla. Disfrutamos de shows exclusivos, laberintos, cine 5D y mucha diversión temática con la seguridad que caracteriza a Serrano.</div>
+                <div class="excursion-tag">Full Day • Entretenimiento</div>
             </div>
         </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
-    # 4. CITY TOUR
-    st.markdown("""
-        <div class="excursion-card">
+        # 3. WAVE ZONE & AQUAVENTURE (Imagen 1)
+        st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
+        if os.path.exists("assets/Imagen1.jpg"):
+            st.image("assets/Imagen1.jpg")
+        st.markdown("""
             <div class="excursion-content">
-                <div class="excursion-title">🏙️ City Tour Serrano</div>
-                <div class="excursion-desc">Visita al Reloj Cucú, fábricas de alfajores tradicionales y los puntos panorámicos más lindos de la Villa.</div>
-                <div class="excursion-tag">Cultura • Regional</div>
+                <div class="excursion-title">🌊 Wave Zone & Aquaventure</div>
+                <div class="excursion-desc">Adrenalina en el agua: piletas de olas, toboganes gigantes y complejos de primer nivel para vivir un día de sol y pura acción serrana.</div>
+                <div class="excursion-tag">Agua • Adrenalina</div>
             </div>
         </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
+
+        # 4. CRAZY DONKEY
+        st.markdown("""
+            <div class="excursion-card">
+                <div class="excursion-content">
+                    <div class="excursion-title">🐴 Crazy Donkey</div>
+                    <div class="excursion-desc">Aventura extrema en las sierras: tirolesas, arquería y desafíos grupales en un complejo diseñado para el trabajo en equipo y la diversión.</div>
+                    <div class="excursion-tag">Aventura • Naturaleza</div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+
+        # 5. CITY TOUR
+        st.markdown("""
+            <div class="excursion-card">
+                <div class="excursion-content">
+                    <div class="excursion-title">🏙️ City Tour Serrano</div>
+                    <div class="excursion-desc">Visitamos el Reloj Cucú, las mejores fábricas de alfajores y los puntos panorámicos más emblemáticos para llevarte el mejor recuerdo de la Villa.</div>
+                    <div class="excursion-tag">City Tour • Tradición</div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+
+    else:
+        st.markdown("## 🏞️ Excursiones San Pedro")
+        st.info("Estamos preparando las mejores actividades para San Pedro.")
