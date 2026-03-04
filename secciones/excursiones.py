@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+from utilidades.footer import render_footer
 
 def render_excursiones(destino):
     # --- 1. ESTILOS CSS ---
@@ -63,3 +64,8 @@ def render_excursiones(destino):
         st.markdown('<div class="excursion-card"><div class="excursion-content"><div class="excursion-title">🚌 3. Complejo Las Amalias</div><div class="excursion-desc">Laberinto de ligustrinas y deportes recreativos.</div><div class="excursion-tag">Recreación</div></div></div>', unsafe_allow_html=True)
         st.markdown('<div class="excursion-card"><div class="excursion-content"><div class="excursion-title">🚢 4. Sunset Catamarán</div><div class="excursion-desc">Navegación por el Paraná con música al atardecer.</div><div class="excursion-tag">Navegación</div></div></div>', unsafe_allow_html=True)
         st.markdown('<div class="excursion-card"><div class="excursion-content"><div class="excursion-title">🏙️ 5. City Tour</div><div class="excursion-desc">Recorrido por barrancas y compras regionales.</div><div class="excursion-tag">Cultura</div></div></div>', unsafe_allow_html=True)
+
+
+ # --- 5. FOOTER INSTITUCIONAL ---
+    # Invocamos la función del archivo utilidades/footer.py
+    render_footer()
