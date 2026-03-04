@@ -9,14 +9,14 @@ if "nav" not in st.session_state:
 if "destino" not in st.session_state:
     st.session_state.destino = None
 
-# Sincronizar parámetros de URL
 params = st.query_params
 if "nav" in params: st.session_state.nav = params["nav"]
 if "destino" in params: st.session_state.destino = params["destino"]
 
-# 3. IMPORTACIONES (Asegúrate de tener estos archivos en /secciones)
+# 3. IMPORTACIONES
 try:
     from secciones.landing import render_landing
+    from secciones.landing_SanPedro import render_landing_sp # <-- NUEVA SECCIÓN
     from secciones.transporte import render_transporte
     from secciones.hoteleria import render_hoteleria
     from secciones.comidas import render_comidas
@@ -29,14 +29,13 @@ except ImportError as e:
     st.error(f"Error: {e}")
     st.stop()
 
-# 4. CSS MAESTRO (Ajuste de Logo y Menú Negro)
+# 4. CSS MAESTRO (Corrección de Hover y Logo)
 st.markdown("""
     <style>
     [data-testid="stHeader"], [data-testid="stSidebar"] { display: none !important; }
     .main .block-container { padding-top: 0rem !important; }
     .stApp { background-color: white !important; }
 
-    /* Barra de Navegación */
     .navbar {
         display: flex; justify-content: space-between; align-items: center;
         padding: 0 60px; height: 80px; background-color: white;
@@ -44,44 +43,41 @@ st.markdown("""
         top: 0; left: 0; right: 0; z-index: 9999;
     }
 
-    /* Contenedor de Logo para que no sobresalga */
-    .logo-box {
-        display: flex; align-items: center; height: 100%;
-    }
-    .logo-box img {
-        max-height: 65px; /* Controla que no sobresalga */
-        width: auto;
-    }
-
+    .logo-box img { max-height: 65px; width: auto; }
     .nav-links { display: flex; align-items: center; gap: 35px; }
 
-    /* Estilo de los Destinos: Negro, sin subrayado, sin íconos */
     .nav-item {
-        color: black !important; 
-        text-decoration: none !important; 
-        font-size: 14px;
-        font-weight: 700;
-        text-transform: uppercase;
+        color: black !important; text-decoration: none !important; 
+        font-size: 14px; font-weight: 700; text-transform: uppercase;
         letter-spacing: 1px;
-        transition: 0.3s;
     }
-    .nav-item:hover { color: #555 !important; }
 
-    /* Dropdown Estilo Wireframe */
+    /* DROPDOWN CORREGIDO */
     .dropdown { position: relative; display: inline-block; }
+    
     .dropbtn {
         color: black !important; font-size: 14px; font-weight: 700;
         text-decoration: none !important; border: none; background: none;
         cursor: pointer; text-transform: uppercase;
+        padding: 30px 0; /* Aumentamos el área de click vertical */
     }
+
     .dropdown-content {
         display: none; position: absolute; background-color: white;
         min-width: 240px; box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
-        z-index: 1; border-radius: 8px; border: 1px solid #f0f0f0; top: 50px;
+        z-index: 1; border-radius: 8px; border: 1px solid #f0f0f0;
+        top: 70px; /* Ajustado para que no haya 'hueco' de aire */
     }
+
+    /* El 'puente' para que no se cierre el menú al bajar el mouse */
+    .dropdown::after {
+        content: ""; position: absolute; top: 100%; left: 0;
+        width: 100%; height: 20px;
+    }
+
     .dropdown-content a {
         color: #444; padding: 12px 20px; text-decoration: none;
-        display: block; font-size: 13px; text-transform: none;
+        display: block; font-size: 13px;
     }
     .dropdown-content a:hover { background-color: #f8f9fa; color: #000; }
     .dropdown:hover .dropdown-content { display: block; }
@@ -101,12 +97,9 @@ dest = st.session_state.destino
 sigla = "CP" if dest == "Villa Carlos Paz" else "SP" if dest == "San Pedro" else ""
 
 if not dest:
-    # MENÚ INICIAL: Logo y Destinos en Negro
     nav_html = f"""
     <div class="navbar">
-        <div class="logo-box">
-            <a href="/?nav=Home" target="_self"><img src="{logo_url}"></a>
-        </div>
+        <div class="logo-box"><a href="/?nav=Home" target="_self"><img src="{logo_url}"></a></div>
         <div class="nav-links">
             <a href="/?nav=Home&destino=San+Pedro" class="nav-item" target="_self">SAN PEDRO</a>
             <a href="/?nav=Home&destino=Villa+Carlos+Paz" class="nav-item" target="_self">CARLOS PAZ</a>
@@ -115,12 +108,9 @@ if not dest:
     </div>
     """
 else:
-    # MENÚ POST-SELECCIÓN
     nav_html = f"""
     <div class="navbar">
-        <div class="logo-box">
-            <a href="/?nav=Home" target="_self"><img src="{logo_url}"></a>
-        </div>
+        <div class="logo-box"><a href="/?nav=Home" target="_self"><img src="{logo_url}"></a></div>
         <div class="nav-links">
             <a href="/?nav=Home" class="nav-item" target="_self">HOME</a>
             <div class="dropdown">
@@ -149,10 +139,16 @@ else:
 
 st.markdown(nav_html, unsafe_allow_html=True)
 
-# 6. CONTENIDO
+# 6. LÓGICA DE RENDERIZADO DINÁMICO
 st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 n = st.session_state.nav
-if n == "Home": render_landing()
+
+if n == "Home":
+    # Si eligió San Pedro, mostramos su landing especial, sino la general
+    if dest == "San Pedro":
+        render_landing_sp()
+    else:
+        render_landing()
 elif n == "Transporte": render_transporte(dest)
 elif n == "Hoteleria": render_hoteleria(dest)
 elif n == "Comidas": render_comidas(dest)
@@ -162,5 +158,3 @@ elif n == "Seguro": render_seguro(dest)
 elif n == "Tarifas": render_tarifas(dest)
 elif n == "Adhesion": render_adhesion(logo_url)
 st.markdown('</div>', unsafe_allow_html=True)
-
-
