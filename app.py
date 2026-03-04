@@ -1,14 +1,19 @@
 import streamlit as st
 
-# 1. CONFIGURACIÓN DE PÁGINA
-st.set_page_config(page_title="Serrano Turismo", layout="wide", initial_sidebar_state="collapsed")
+# 1. CONFIGURACIÓN DE PÁGINA (Debe ser lo primero)
+st.set_page_config(
+    page_title="Serrano Turismo", 
+    layout="wide", 
+    initial_sidebar_state="collapsed"
+)
 
-# 2. LÓGICA DE NAVEGACIÓN DESDE URL
+# 2. LÓGICA DE NAVEGACIÓN (Lectura de la URL)
+# Esto define qué pantalla se muestra según lo que diga la barra de direcciones
 query_params = st.query_params
 nav_actual = query_params.get("nav", "Home")
 dest_actual = query_params.get("destino", None)
 
-# Sincronizamos con el estado de la sesión
+# Sincronizamos con la sesión interna de Streamlit
 st.session_state.nav = nav_actual
 st.session_state.destino = dest_actual
 
@@ -16,7 +21,7 @@ st.session_state.destino = dest_actual
 try:
     from secciones.landing import render_landing
     from secciones.landing_sanpedro import render_landing_sp
-    from secciones.landing_carlospaz import render_landing_cp  # <--- CORREGIDO: PUNTO EN VEZ DE BARRA
+    from secciones.landing_carlospaz import render_landing_cp
     from secciones.transporte import render_transporte
     from secciones.hoteleria import render_hoteleria
     from secciones.comidas import render_comidas
@@ -27,27 +32,35 @@ try:
     from secciones.adhesion import render_adhesion
 except ImportError as e:
     st.error(f"⚠️ Error de importación: {e}")
-    st.info("Asegúrate de que los nombres de archivo en /secciones coincidan exactamente y usen puntos en el import.")
     st.stop()
 
-# 4. CSS (Mantenemos el estilo de la barra superior)
+# 4. CSS MAESTRO (Menú Superior, Logo y Dropdowns)
 st.markdown("""
     <style>
+    /* Reset de Streamlit */
     [data-testid="stHeader"], [data-testid="stSidebar"] { display: none !important; }
     .main .block-container { padding-top: 0rem !important; }
     .stApp { background-color: white !important; }
+
+    /* Navbar Fija */
     .navbar {
         display: flex; justify-content: space-between; align-items: center;
         padding: 0 60px; height: 80px; background-color: white;
         border-bottom: 1px solid #f0f0f0; position: fixed;
         top: 0; left: 0; right: 0; z-index: 9999;
     }
+
     .logo-box img { max-height: 60px; width: auto; }
     .nav-links { display: flex; align-items: center; gap: 35px; }
+
+    /* Estilo de los links de texto */
     .nav-item {
         color: black !important; text-decoration: none !important; 
         font-size: 14px; font-weight: 700; text-transform: uppercase;
+        letter-spacing: 1px;
     }
+
+    /* DROPDOWN (Hover) */
     .dropdown { position: relative; display: inline-block; }
     .dropbtn {
         color: black !important; font-size: 14px; font-weight: 700;
@@ -57,31 +70,37 @@ st.markdown("""
     .dropdown-content {
         display: none; position: absolute; background-color: white;
         min-width: 240px; box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
-        z-index: 1000; border-radius: 8px; border: 1px solid #f0f0f0; top: 70px;
+        z-index: 1000; border-radius: 8px; border: 1px solid #f0f0f0; top: 75px;
     }
     .dropdown:hover .dropdown-content { display: block; }
     .dropdown-content a {
         color: #444; padding: 12px 20px; text-decoration: none;
-        display: block; font-size: 13px;
+        display: block; font-size: 13px; transition: 0.2s;
     }
+    .dropdown-content a:hover { background-color: #f8f9fa; color: #000 !important; padding-left: 25px; }
+
+    /* Sigla CP / SP */
     .sigla-badge {
         background: #000; color: #fff; padding: 4px 10px;
         border-radius: 4px; font-weight: bold; font-size: 12px;
     }
+
     .content-wrapper { margin-top: 100px; padding: 0 5%; }
     </style>
 """, unsafe_allow_html=True)
 
-# 5. CONSTRUCCIÓN DEL NAVBAR
+# 5. CONSTRUCCIÓN DEL NAVBAR DINÁMICO
 logo_url = "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png"
 sigla = "SP" if dest_actual == "San Pedro" else "CP" if dest_actual == "Villa Carlos Paz" else ""
 
 if not dest_actual:
+    # Caso A: No hay destino (Menú para elegir)
     links_html = f"""
         <a href="/?nav=Home&destino=San+Pedro" class="nav-item" target="_self">SAN PEDRO</a>
         <a href="/?nav=Home&destino=Villa+Carlos+Paz" class="nav-item" target="_self">CARLOS PAZ</a>
     """
 else:
+    # Caso B: Destino elegido (Menú completo)
     links_html = f"""
         <a href="/?nav=Home" class="nav-item" target="_self">HOME</a>
         <div class="dropdown">
@@ -105,6 +124,7 @@ else:
         <div class="sigla-badge">{sigla}</div>
     """
 
+# Inyectamos la barra de navegación
 st.markdown(f"""
     <div class="navbar">
         <div class="logo-box"><a href="/?nav=Home" target="_self"><img src="{logo_url}"></a></div>
@@ -113,7 +133,7 @@ st.markdown(f"""
     </div>
 """, unsafe_allow_html=True)
 
-# 6. RENDERIZADO DE CONTENIDO
+# 6. RENDERIZADO DE CONTENIDO SEGÚN LA NAVEGACIÓN
 st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 
 if nav_actual == "Home":
@@ -134,5 +154,3 @@ elif nav_actual == "Tarifas": render_tarifas(dest_actual)
 elif nav_actual == "Adhesion": render_adhesion(logo_url)
 
 st.markdown('</div>', unsafe_allow_html=True)
-
-
