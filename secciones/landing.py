@@ -82,28 +82,15 @@ def render_landing():
     col_text, col_img = st.columns([1, 1], gap="large")
 
     with col_text:
-        st.markdown('<div style="margin-top:30px;">', unsafe_allow_html=True)
+        st.markdown('<div style="margin-top:60px;">', unsafe_allow_html=True)
         st.markdown('<h1 class="hero-title">Serrano <br>Turismo</h1>', unsafe_allow_html=True)
-        st.markdown('<p class="hero-subtitle">Tu aventura de egresados empieza acá.<br>Elegí tu destino para conocer más:</p>', unsafe_allow_html=True)
-        
-        # Botones de Acción: Actualizan Session State y Rerunean la App
-        btn_col1, btn_col2, _ = st.columns([1, 1, 0.5])
-        with btn_col1:
-            if st.button("📍 Carlos Paz", use_container_width=True, key="btn_cp"):
-                st.session_state.destino = "Villa Carlos Paz"
-                st.session_state.nav = "Transporte"
-                st.rerun()
-        with btn_col2:
-            if st.button("📍 San Pedro", use_container_width=True, key="btn_sp"):
-                st.session_state.destino = "San Pedro"
-                st.session_state.nav = "Transporte"
-                st.rerun()
+        st.markdown('<p class="hero-subtitle">Tu aventura de egresados empieza acá.<br>28 años creando recuerdos inolvidables para el nivel primario.</p>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
     with col_img:
         st.markdown(f'<img src="{LANDING_IMG}" class="img-hero-style">', unsafe_allow_html=True)
 
-    # 2. SECCIÓN EXPERIENCIAS (Burbujas del Wireframe)
+    # 2. SECCIÓN EXPERIENCIAS
     st.markdown('<h2 class="section-title">Experiencias Inolvidables</h2>', unsafe_allow_html=True)
     
     e1, e2, e3 = st.columns(3)
