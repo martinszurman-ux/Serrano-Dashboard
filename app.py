@@ -1,22 +1,27 @@
 import streamlit as st
 
-# 1. CONFIGURACIÓN
-st.set_page_config(page_title="Serrano Turismo", layout="wide", initial_sidebar_state="collapsed")
+# 1. CONFIGURACIÓN DE PÁGINA
+st.set_page_config(
+    page_title="Serrano Turismo", 
+    layout="wide", 
+    initial_sidebar_state="collapsed"
+)
 
-# 2. ESTADO
-if "nav" not in st.session_state:
-    st.session_state.nav = "Home"
-if "destino" not in st.session_state:
-    st.session_state.destino = None
-
+# 2. LÓGICA DE ESTADO Y PARÁMETROS
 params = st.query_params
-if "nav" in params: st.session_state.nav = params["nav"]
-if "destino" in params: st.session_state.destino = params["destino"]
+if "nav" in params:
+    st.session_state.nav = params["nav"]
+if "destino" in params:
+    st.session_state.destino = params["destino"]
 
-# 3. IMPORTACIONES
+# Inicialización por defecto
+if "nav" not in st.session_state: st.session_state.nav = "Home"
+if "destino" not in st.session_state: st.session_state.destino = None
+
+# 3. IMPORTACIÓN DE SECCIONES
 try:
     from secciones.landing import render_landing
-    from secciones.landing_SanPedro import render_landing_sp # <-- NUEVA SECCIÓN
+    from secciones.landing_sanpedro import render_landing_sp  # Importación corregida
     from secciones.transporte import render_transporte
     from secciones.hoteleria import render_hoteleria
     from secciones.comidas import render_comidas
@@ -26,16 +31,17 @@ try:
     from secciones.tarifas import render_tarifas
     from secciones.adhesion import render_adhesion
 except ImportError as e:
-    st.error(f"Error: {e}")
+    st.error(f"Error de importación: {e}")
     st.stop()
 
-# 4. CSS MAESTRO (Corrección de Hover y Logo)
+# 4. CSS MAESTRO (Solución al parpadeo del menú y logo)
 st.markdown("""
     <style>
     [data-testid="stHeader"], [data-testid="stSidebar"] { display: none !important; }
     .main .block-container { padding-top: 0rem !important; }
     .stApp { background-color: white !important; }
 
+    /* Navbar */
     .navbar {
         display: flex; justify-content: space-between; align-items: center;
         padding: 0 60px; height: 80px; background-color: white;
@@ -43,7 +49,7 @@ st.markdown("""
         top: 0; left: 0; right: 0; z-index: 9999;
     }
 
-    .logo-box img { max-height: 65px; width: auto; }
+    .logo-box img { max-height: 60px; width: auto; }
     .nav-links { display: flex; align-items: center; gap: 35px; }
 
     .nav-item {
@@ -52,35 +58,37 @@ st.markdown("""
         letter-spacing: 1px;
     }
 
-    /* DROPDOWN CORREGIDO */
+    /* DROPDOWN ESTABLE */
     .dropdown { position: relative; display: inline-block; }
     
     .dropbtn {
         color: black !important; font-size: 14px; font-weight: 700;
         text-decoration: none !important; border: none; background: none;
         cursor: pointer; text-transform: uppercase;
-        padding: 30px 0; /* Aumentamos el área de click vertical */
+        padding: 30px 0; /* Área de contacto ampliada verticalmente */
     }
 
     .dropdown-content {
         display: none; position: absolute; background-color: white;
         min-width: 240px; box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
-        z-index: 1; border-radius: 8px; border: 1px solid #f0f0f0;
-        top: 70px; /* Ajustado para que no haya 'hueco' de aire */
+        z-index: 1000; border-radius: 8px; border: 1px solid #f0f0f0;
+        top: 75px; /* Pegado al área de contacto del botón */
     }
 
-    /* El 'puente' para que no se cierre el menú al bajar el mouse */
-    .dropdown::after {
-        content: ""; position: absolute; top: 100%; left: 0;
-        width: 100%; height: 20px;
+    /* El 'puente' invisible para evitar que el menú se cierre al mover el mouse hacia abajo */
+    .dropdown:hover .dropdown-content { 
+        display: block; 
     }
 
     .dropdown-content a {
         color: #444; padding: 12px 20px; text-decoration: none;
-        display: block; font-size: 13px;
+        display: block; font-size: 13px; transition: 0.2s;
     }
-    .dropdown-content a:hover { background-color: #f8f9fa; color: #000; }
-    .dropdown:hover .dropdown-content { display: block; }
+    .dropdown-content a:hover { 
+        background-color: #f8f9fa; 
+        color: #000 !important; 
+        padding-left: 25px;
+    }
 
     .sigla-badge {
         background: #000; color: #fff; padding: 4px 10px;
@@ -91,12 +99,13 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 5. RENDERIZADO DEL NAVBAR
+# 5. RENDERIZADO DEL NAVBAR DINÁMICO
 logo_url = "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png"
 dest = st.session_state.destino
 sigla = "CP" if dest == "Villa Carlos Paz" else "SP" if dest == "San Pedro" else ""
 
 if not dest:
+    # Menú sin destino seleccionado
     nav_html = f"""
     <div class="navbar">
         <div class="logo-box"><a href="/?nav=Home" target="_self"><img src="{logo_url}"></a></div>
@@ -108,11 +117,12 @@ if not dest:
     </div>
     """
 else:
+    # Menú con destino seleccionado
     nav_html = f"""
     <div class="navbar">
         <div class="logo-box"><a href="/?nav=Home" target="_self"><img src="{logo_url}"></a></div>
         <div class="nav-links">
-            <a href="/?nav=Home" class="nav-item" target="_self">HOME</a>
+            <a href="/?nav=Home&destino={dest}" class="nav-item" target="_self">HOME</a>
             <div class="dropdown">
                 <button class="dropbtn">CONOCÉ TU VIAJE DE EGRESADOS ▼</button>
                 <div class="dropdown-content">
@@ -139,12 +149,11 @@ else:
 
 st.markdown(nav_html, unsafe_allow_html=True)
 
-# 6. LÓGICA DE RENDERIZADO DINÁMICO
+# 6. LÓGICA DE RENDERIZADO
 st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 n = st.session_state.nav
 
 if n == "Home":
-    # Si eligió San Pedro, mostramos su landing especial, sino la general
     if dest == "San Pedro":
         render_landing_sp()
     else:
@@ -157,4 +166,5 @@ elif n == "Actividades": render_nocturnas(dest)
 elif n == "Seguro": render_seguro(dest)
 elif n == "Tarifas": render_tarifas(dest)
 elif n == "Adhesion": render_adhesion(logo_url)
+
 st.markdown('</div>', unsafe_allow_html=True)
