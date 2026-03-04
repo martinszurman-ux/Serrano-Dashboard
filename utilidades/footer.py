@@ -1,4 +1,4 @@
-# utils.py
+# utilidades/footer.py
 import streamlit as st
 
 def render_footer():
@@ -7,6 +7,7 @@ def render_footer():
         <style>
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
         
+        /* Ajuste para que el footer ocupe todo el ancho real */
         .footer-full {
             background-color: #1a1a1a;
             color: white;
@@ -22,15 +23,23 @@ def render_footer():
             flex-wrap: wrap;
             gap: 40px;
             margin-bottom: -100px !important;
+            z-index: 99;
         }
         
-        /* WhatsApp a la izquierda */
         .whatsapp-btn {
-            position: fixed; bottom: 30px; left: 30px; 
-            background-color: #25d366; color: white !important;
-            width: 60px; height: 60px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 32px; z-index: 9999;
+            position: fixed; 
+            bottom: 30px; 
+            left: 30px; 
+            background-color: #25d366; 
+            color: white !important;
+            width: 60px; 
+            height: 60px; 
+            border-radius: 50%;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            font-size: 32px; 
+            z-index: 99999; /* Aumentado para que siempre esté arriba */
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             text-decoration: none !important;
             animation: pulse-green 2s infinite;
@@ -41,20 +50,31 @@ def render_footer():
             70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
         }
+
+        /* Quitar subrayado de links en redes */
+        .footer-full a {
+            text-decoration: none !important;
+        }
         </style>
         
         <div class="footer-full">
             <div style="flex:1; min-width:280px;">
                 <h4 style="margin-bottom:20px; font-weight:700; color:white;">SERRANO TURISMO</h4>
                 <p style="color:#aaa; font-size:0.9rem;">29 años de trayectoria impecable.</p>
+                <p style="color:#666; font-size:0.75rem; margin-top:20px;">© 2026 Todos los derechos reservados.</p>
             </div>
             <div style="flex:1; min-width:280px;">
                 <h4 style="margin-bottom:20px; font-weight:700; color:white;">CONTACTO</h4>
-                <p style="color:#aaa; font-size:0.9rem;">📍 CABA: Av. Rivadavia 4532<br>📍 Ituzaingó: Parque Leloir<br>📞 11-4847-6467</p>
+                <p style="color:#aaa; font-size:0.9rem;">
+                    📍 CABA: Av. Rivadavia 4532<br>
+                    📍 Ituzaingó: Parque Leloir<br>
+                    📍 San Pedro: Costanera<br>
+                    📞 11-4847-6467
+                </p>
             </div>
             <div style="flex:1; min-width:200px;">
                 <h4 style="margin-bottom:20px; font-weight:700; color:white;">REDES</h4>
-                <div style="display:flex; gap:20px;">
+                <div style="display:flex; gap:25px;">
                     <a href="https://instagram.com/serrano_turismo" target="_blank" style="color:white; font-size:1.8rem;"><i class="fab fa-instagram"></i></a>
                     <a href="https://facebook.com/serranoturismo" target="_blank" style="color:white; font-size:1.8rem;"><i class="fab fa-facebook-f"></i></a>
                 </div>
