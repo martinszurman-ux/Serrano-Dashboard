@@ -1,70 +1,77 @@
 import streamlit as st
 
 def render_footer():
-    """Renderiza el footer con direcciones centradas y WhatsApp flotante real"""
+    """Renderiza el footer con direcciones centradas, marca en gris oscuro y WhatsApp flotante"""
     
-    # Inyectamos TODO vía markdown para evitar que el iframe bloquee el botón de WhatsApp
+    # Inyectamos todo en un único bloque de Markdown
     st.markdown("""
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <style>
-            /* 1. Limpieza de márgenes de Streamlit */
+            /* 1. Reset de Streamlit para eliminar espacios blancos al final */
             .main .block-container { padding-bottom: 2rem !important; }
             footer { display: none !important; }
 
-            /* 2. Contenedor del Footer */
+            /* 2. Contenedor Principal */
             .custom-footer {
                 background-color: #ffffff;
-                border-top: 1px solid #eeeeee;
-                padding: 30px 5%;
+                border-top: 1px solid #f0f2f6;
+                padding: 30px 40px;
+                margin-top: 40px;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 flex-wrap: wrap;
-                gap: 20px;
-                margin-top: 50px;
+                width: 100%;
+                box-sizing: border-box;
             }
 
-            .footer-col { flex: 1; min-width: 200px; }
+            /* 3. Columnas */
+            .f-col {
+                flex: 1;
+                min-width: 250px;
+                margin: 10px 0;
+            }
 
-            /* 3. Estilo de Marca (Gris Oscuro) */
-            .brand-name {
+            /* Marca - Gris Oscuro */
+            .f-brand h4 {
                 color: #333333 !important;
                 font-weight: 800 !important;
                 font-size: 1.1rem !important;
                 margin: 0 !important;
                 text-transform: uppercase;
+                letter-spacing: 0.5px;
             }
-            .brand-sub { color: #888; font-size: 0.85rem; margin-top: 5px; }
+            .f-brand p { color: #888; font-size: 0.85rem; margin-top: 5px; }
 
-            /* 4. DIRECCIONES CENTRADAS (Corrección definitiva) */
-            .address-center {
+            /* DIRECCIONES CENTRADAS */
+            .f-address {
                 flex: 2;
                 text-align: center;
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
                 align-items: center;
+                justify-content: center;
             }
-            .address-center p {
-                margin: 4px 0 !important;
+            .f-address p {
                 color: #555 !important;
                 font-size: 0.9rem !important;
-                line-height: 1.4;
+                margin: 4px 0 !important;
+                line-height: 1.2 !important;
             }
-            .icon-red { color: #d9534f; margin-right: 8px; }
+            .f-address i { color: #d9534f; margin-right: 8px; }
 
-            /* 5. Redes Sociales */
-            .social-right { text-align: right; }
-            .social-right a {
+            /* Redes Sociales */
+            .f-social { text-align: right; }
+            .f-social a {
                 color: #333 !important;
-                font-size: 1.5rem;
+                font-size: 1.6rem;
                 margin-left: 20px;
                 text-decoration: none !important;
-                transition: transform 0.3s;
+                transition: 0.3s;
             }
-            .social-right a:hover { transform: scale(1.2); }
+            .f-social a:hover { color: #E1306C !important; }
 
-            /* 6. WHATSAPP FLOTANTE CON ANIMACIÓN */
+            /* 4. WHATSAPP FLOTANTE (Fixed real) */
             .wa-float {
                 position: fixed;
                 bottom: 30px;
@@ -79,42 +86,42 @@ def render_footer():
                 justify-content: center;
                 font-size: 30px;
                 z-index: 999999;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                box-shadow: 0 4px 15px rgba(0,0,0,0.25);
                 text-decoration: none !important;
-                animation: slideLeft 0.8s ease-out, pulseGreen 2s infinite;
+                animation: slideFromLeft 0.8s ease-out, pulseWa 2s infinite;
             }
 
-            @keyframes slideLeft {
-                from { opacity: 0; transform: translateX(-50px); }
+            @keyframes slideFromLeft {
+                from { opacity: 0; transform: translateX(-60px); }
                 to { opacity: 1; transform: translateX(0); }
             }
-            @keyframes pulseGreen {
+            @keyframes pulseWa {
                 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
                 70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
                 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
             }
 
-            /* Responsive */
+            /* Mobile */
             @media (max-width: 768px) {
                 .custom-footer { flex-direction: column; text-align: center; }
-                .address-center, .social-right { text-align: center; }
-                .social-right a { margin: 0 10px; }
+                .f-social, .f-address { text-align: center; }
+                .f-social a { margin: 10px; }
             }
         </style>
 
         <div class="custom-footer">
-            <div class="footer-col">
-                <h4 class="brand-name">SERRANO TURISMO</h4>
-                <p class="brand-sub">29 años de trayectoria. © 2026</p>
+            <div class="f-col f-brand">
+                <h4>SERRANO TURISMO</h4>
+                <p>29 años de trayectoria. © 2026</p>
             </div>
 
-            <div class="footer-col address-center">
-                <p><i class="fas fa-map-marker-alt icon-red"></i> Av. Rivadavia 4532 - Galería Alefa (Local 10) - CABA</p>
-                <p><i class="fas fa-map-marker-alt icon-red"></i> Del Cimarrón 1846 - 1er Piso (Of. 4) - Parque Leloir</p>
-                <p><i class="fas fa-phone-alt"></i> 11-4847-6467</p>
+            <div class="f-col f-address">
+                <p><i class="fas fa-map-marker-alt"></i> Av. Rivadavia 4532 - Galería Alefa (Local 10) - CABA</p>
+                <p><i class="fas fa-map-marker-alt"></i> Del Cimarrón 1846 - 1er Piso (Of. 4) - Parque Leloir</p>
+                <p><i class="fas fa-phone-alt" style="color:#555"></i> 11-4847-6467</p>
             </div>
 
-            <div class="footer-col social-right">
+            <div class="f-col f-social">
                 <a href="https://instagram.com/serrano_turismo" target="_blank"><i class="fab fa-instagram"></i></a>
                 <a href="https://facebook.com/serranoturismo" target="_blank"><i class="fab fa-facebook-f"></i></a>
             </div>
