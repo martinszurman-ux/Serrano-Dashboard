@@ -2,105 +2,62 @@ import streamlit as st
 import os
 
 def render_excursiones(destino):
+    # --- 1. ESTILOS CSS (Slim, Mobile & TV Frame) ---
+    st.markdown("""
+        <style>
+        .excursion-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 0px;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.05);
+        }
+        .excursion-content { padding: 15px; }
+        .excursion-title {
+            color: #1a1c1e;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .excursion-desc {
+            color: #495057;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        .excursion-tag {
+            display: inline-block;
+            background: #e1edff;
+            color: #4A90E2;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .tv-frame {
+            background: #222;
+            border: 10px solid #333;
+            border-radius: 20px;
+            padding: 10px;
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.3);
+            margin: 20px auto;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # --- 2. LÓGICA VILLA CARLOS PAZ ---
     if destino == "Villa Carlos Paz":
-        # --- ESTILOS CSS ---
-        st.markdown("""
-            <style>
-            .excursion-card {
-                background: #ffffff;
-                border-radius: 12px;
-                padding: 0px;
-                border: 1px solid #e0e0e0;
-                margin-bottom: 20px;
-                overflow: hidden;
-                box-shadow: 0px 4px 10px rgba(0,0,0,0.05);
-            }
-            .excursion-content { padding: 15px; }
-            .excursion-title {
-                color: #1a1c1e;
-                font-size: 1.15rem;
-                font-weight: 700;
-                margin-bottom: 5px;
-            }
-            .excursion-desc {
-                color: #495057;
-                font-size: 0.85rem;
-                line-height: 1.4;
-            }
-            .excursion-tag {
-                display: inline-block;
-                background: #e1edff;
-                color: #4A90E2;
-                font-size: 0.7rem;
-                font-weight: 700;
-                padding: 3px 10px;
-                border-radius: 5px;
-                margin-top: 10px;
-                text-transform: uppercase;
-            }
-            </style>
-        """, unsafe_allow_html=True)
-
-        # 1. ENCABEZADO (Archivo: encabezado.jpg)
         if os.path.exists("assets/encabezado.jpg"):
-            st.image("assets/encabezado.jpg", caption="¡Viví la experiencia Serrano!")
-        elif os.path.exists("assets/encabezado.png"):
-            st.image("assets/encabezado.png")
-
+            st.image("assets/encabezado.jpg", use_container_width=True)
+        
         st.markdown("## 🏞️ Experiencias en Carlos Paz")
 
-        # 2. PEKOS (Archivo: pekos.jpg) - DESCRIPCIÓN ACTUALIZADA
+        # 1. Pekos
         st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
         if os.path.exists("assets/pekos.jpg"):
             st.image("assets/pekos.jpg")
-        elif os.path.exists("assets/pekos.png"):
-            st.image("assets/pekos.png")
         st.markdown("""
             <div class="excursion-content">
-                <div class="excursion-title">🚌 1. Pekos Multiparque</div>
-                <div class="excursion-desc">Un mundo de sensaciones con cine 5D, laberintos, jardín botánico y mucha adrenalina. Un complejo recreativo ideal para disfrutar con todo el grupo y la seguridad de Serrano Turismo.</div>
-                <div class="excursion-tag">Full Day • Entretenimiento</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-        # 3. WAVE ZONE & AQUAVENTURE (Archivo: aqua.jpg)
-        st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
-        if os.path.exists("assets/aqua.jpg"):
-            st.image("assets/aqua.jpg")
-        elif os.path.exists("assets/aqua.png"):
-            st.image("assets/aqua.png")
-        st.markdown("""
-            <div class="excursion-content">
-                <div class="excursion-title">🚌 2. Wave Zone & Aquaventure</div>
-                <div class="excursion-desc">Piletas de olas, toboganes gigantes y complejos diseñados para pasar un día de agua inolvidable con todo el grupo.</div>
-                <div class="excursion-tag">Agua • Adrenalina</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-        # 4. CRAZY DONKEY
-        st.markdown("""
-            <div class="excursion-card">
-                <div class="excursion-content">
-                    <div class="excursion-title">🚌 3. Crazy Donkey</div>
-                    <div class="excursion-desc">Aventura extrema en las sierras con tirolesas, desafíos físicos y recreación en un entorno natural increíble.</div>
-                    <div class="excursion-tag">Aventura • Naturaleza</div>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-
-        # 5. CITY TOUR
-        st.markdown("""
-            <div class="excursion-card">
-                <div class="excursion-content">
-                    <div class="excursion-title">🏙️ 4. City Tour Serrano</div>
-                    <div class="excursion-desc">Visitamos el Reloj Cucú, fábricas de alfajores y puntos panorámicos. La mejor forma de conocer la esencia de la Villa.</div>
-                    <div class="excursion-tag">Cultura • Tradición</div>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-
-    else:
-        st.markdown("## 🏞️ Excursiones San Pedro")
-        st.info("Estamos preparando las mejores actividades para San Pedro.")
