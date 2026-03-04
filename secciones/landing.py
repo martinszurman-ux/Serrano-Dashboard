@@ -4,12 +4,17 @@ def render_landing():
     # URL de la imagen en tu GitHub
     LANDING_IMG = "https://raw.githubusercontent.com/martinszurman-ux/Serrano-Dashboard/dc30c61e09bc3c22068eb77157a6e63893dd1f63/assets/Landing_image.jpeg"
 
-    # CSS TOTAL ACTUALIZADO
+    # CSS TOTAL - MÁXIMA COMPRESIÓN SUPERIOR
     st.markdown("""
         <style>
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
         
-        /* 1. RESET ESTRUCTURAL - ELIMINA ESPACIO ENTRE HEADER Y CONTENIDO */
+        /* 1. OCULTAR ELEMENTOS NATIVOS DE STREAMLIT QUE OCUPAN ESPACIO */
+        header {visibility: hidden;}
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        
+        /* 2. RESET ESTRUCTURAL - SUBIDA TOTAL */
         .main .block-container {
             padding-top: 0rem !important;
             padding-bottom: 0rem !important;
@@ -18,14 +23,14 @@ def render_landing():
             max-width: 100% !important;
         }
         
-        /* Ajuste específico para subir Serrano Turismo & Imagen */
+        /* Forzar que el primer bloque suba drásticamente */
         [data-testid="stVerticalBlock"] > div:first-child {
-            margin-top: -50px !important;
+            margin-top: -100px !important; /* Subida más agresiva */
         }
 
-        /* 2. HERO SECTION */
+        /* 3. HERO SECTION - AJUSTE DE PADDING */
         .hero-container {
-            padding: 10px 8% 30px 8%; /* Reducido padding superior */
+            padding: 0px 8% 20px 8%; 
             background-color: white;
             display: flex;
             align-items: center;
@@ -40,7 +45,7 @@ def render_landing():
         .hero-subtitle {
             font-size: 1.25rem;
             color: #555;
-            margin-top: 15px;
+            margin-top: 10px;
             line-height: 1.4;
         }
         .img-hero-style {
@@ -50,7 +55,7 @@ def render_landing():
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
-        /* 3. SECCIÓN EXPERIENCIAS (Gris Full Width) */
+        /* 4. SECCIÓN EXPERIENCIAS (Gris Full Width) */
         .experiences-outer {
             background-color: #d1d5db;
             width: 100vw;
@@ -59,8 +64,8 @@ def render_landing():
             right: 50%;
             margin-left: -50vw;
             margin-right: -50vw;
-            padding: 70px 0;
-            margin-top: 30px;
+            padding: 60px 0;
+            margin-top: 20px;
         }
         
         .experiences-inner {
@@ -77,38 +82,11 @@ def render_landing():
             color: #1a1a1a;
         }
 
-        .exp-grid {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
-        }
-
-        .exp-card-grey {
-            flex: 1;
-            min-width: 250px;
-            max-width: 350px;
-            text-align: center;
-        }
-
-        .exp-icon-circle {
-            width: 110px;
-            height: 110px;
-            background: white;
-            border-radius: 50%;
-            margin: 0 auto 20px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.8rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-
-        /* 4. FOOTER */
+        /* 5. FOOTER */
         .footer-full {
             background-color: #1a1a1a;
             color: white;
-            padding: 50px 8%;
+            padding: 40px 8%;
             width: 100vw;
             position: relative;
             left: 50%;
@@ -135,39 +113,38 @@ def render_landing():
 
     # --- CONTENIDO ---
 
-    # 1. HERO SECTION (Subida al máximo)
+    # 1. HERO SECTION
     st.markdown('<div class="hero-container">', unsafe_allow_html=True)
     c1, c2 = st.columns([1, 1])
     with c1:
-        st.markdown('<div style="margin-top:20px;">', unsafe_allow_html=True)
+        st.markdown('<div style="margin-top:0px;">', unsafe_allow_html=True)
         st.markdown('<h1 class="hero-title">Serrano <br>Turismo</h1>', unsafe_allow_html=True)
-        # TEXTO ACTUALIZADO CON 29 AÑOS
         st.markdown('<p class="hero-subtitle">Tu aventura de egresados empieza acá.<br>Luego de 29 años de trayectoria y confianza.</p>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
     with c2:
         st.markdown(f'<div style="text-align:right;"><img src="{LANDING_IMG}" class="img-hero-style"></div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # 2. SECCIÓN EXPERIENCIAS (Fondo Gris)
+    # 2. SECCIÓN EXPERIENCIAS
     st.markdown("""
         <div class="experiences-outer">
             <div class="experiences-inner">
                 <h2 class="section-title-grey">Experiencias Inolvidables</h2>
-                <div class="exp-grid">
-                    <div class="exp-card-grey">
-                        <div class="exp-icon-circle">🚌</div>
+                <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 250px; text-align: center;">
+                        <div style="width: 100px; height: 100px; background: white; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">🚌</div>
                         <h4 style="font-weight:700;">Transporte Premium</h4>
-                        <p style="color:#4b5563;">Unidades modernas de última generación para un viaje seguro.</p>
+                        <p style="color:#4b5563; font-size: 0.9rem;">Unidades modernas de última generación.</p>
                     </div>
-                    <div class="exp-card-grey">
-                        <div class="exp-icon-circle">🏨</div>
+                    <div style="flex: 1; min-width: 250px; text-align: center;">
+                        <div style="width: 100px; height: 100px; background: white; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">🏨</div>
                         <h4 style="font-weight:700;">Hoteles Propios</h4>
-                        <p style="color:#4b5563;">Exclusividad y seguridad en los mejores destinos del país.</p>
+                        <p style="color:#4b5563; font-size: 0.9rem;">Exclusividad y seguridad en los mejores destinos.</p>
                     </div>
-                    <div class="exp-card-grey">
-                        <div class="exp-icon-circle">🛡️</div>
+                    <div style="flex: 1; min-width: 250px; text-align: center;">
+                        <div style="width: 100px; height: 100px; background: white; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">🛡️</div>
                         <h4 style="font-weight:700;">Seguridad 24/7</h4>
-                        <p style="color:#4b5563;">Coordinación permanente y asistencia médica integral.</p>
+                        <p style="color:#4b5563; font-size: 0.9rem;">Coordinación permanente y asistencia médica.</p>
                     </div>
                 </div>
             </div>
@@ -179,14 +156,14 @@ def render_landing():
         <div class="footer-full">
             <div style="flex:1; min-width:250px;">
                 <h4 style="margin-bottom:15px; font-weight:700;">SERRANO TURISMO</h4>
-                <p style="color:#999; font-size:0.85rem;">Expertos en viajes estudiantiles con casi tres décadas de trayectoria impecable.</p>
+                <p style="color:#999; font-size:0.85rem;">28 años de trayectoria impecable.</p>
             </div>
             <div style="flex:1; min-width:250px;">
                 <h4 style="margin-bottom:15px; font-weight:700;">CONTACTO</h4>
-                <p style="color:#999; font-size:0.85rem;">📍 CABA: Av. Rivadavia 4532<br>📍 Ituzaingó: Parque Leloir<br>📞 11-4847-6467</p>
+                <p style="color:#999; font-size:0.85rem;">📍 CABA: Av. Rivadavia 4532<br>📞 11-4847-6467</p>
             </div>
             <div style="flex:1; min-width:200px;">
-                <h4 style="margin-bottom:15px; font-weight:700;">REDES SOCIALES</h4>
+                <h4 style="margin-bottom:15px; font-weight:700;">REDES</h4>
                 <div style="display:flex; gap:15px;">
                     <a href="https://instagram.com/serrano_turismo" target="_blank" style="color:white; font-size:1.5rem;"><i class="fab fa-instagram"></i></a>
                     <a href="https://facebook.com/serranoturismo" target="_blank" style="color:white; font-size:1.5rem;"><i class="fab fa-facebook-f"></i></a>
