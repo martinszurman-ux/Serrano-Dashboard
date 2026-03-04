@@ -1,19 +1,23 @@
 import streamlit as st
 
 def render_landing():
-    # Link directo de la imagen en tu GitHub
+    # URL de la imagen en tu GitHub
     LANDING_IMG = "https://raw.githubusercontent.com/martinszurman-ux/Serrano-Dashboard/dc30c61e09bc3c22068eb77157a6e63893dd1f63/assets/Landing_image.jpeg"
 
-    # CSS para diseño, redes y WhatsApp
+    # CSS TOTAL: Control de Layout, Hero, Experiencias, Footer Full Width y WhatsApp
     st.markdown("""
         <style>
-        /* Importar iconos */
+        /* 1. Reset de Streamlit para permitir elementos de ancho completo */
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
-
-        /* Ajuste para eliminar espacios en blanco de Streamlit */
+        
         .main .block-container {
-            padding-bottom: 0rem;
-            max-width: 100%;
+            padding: 0px !important;
+            max-width: 100% !important;
+        }
+
+        /* Contenedor para elementos que SI deben tener margen (Hero y Experiencias) */
+        .content-wrapper {
+            padding: 0 5%;
         }
 
         /* HERO SECTION */
@@ -41,41 +45,42 @@ def render_landing():
             text-align: center;
             font-size: 2.8rem;
             font-weight: 700;
-            margin: 80px 0 50px 0;
+            margin: 60px 0 40px 0;
             color: #1a1a1a;
         }
         .exp-card { text-align: center; padding: 20px; }
         .exp-circle {
-            width: 140px; height: 140px; background-color: #fcfcfc;
-            border-radius: 50%; margin: 0 auto 25px auto;
+            width: 120px; height: 120px; background-color: #f8f9fa;
+            border-radius: 50%; margin: 0 auto 20px auto;
             display: flex; align-items: center; justify-content: center;
-            font-size: 3.5rem; border: 1px solid #f0f0f0;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.02);
+            font-size: 3rem; border: 1px solid #eee;
         }
 
-        /* FOOTER FULL WIDTH */
+        /* FOOTER FULL WIDTH (CORREGIDO) */
         .footer-full {
             background-color: #1a1a1a;
             color: white;
-            padding: 80px 8% 60px 8%;
-            margin-top: 100px;
-            width: 100%;
+            padding: 60px 8%;
+            margin-top: 80px;
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 40px;
         }
         .footer-col { flex: 1; min-width: 280px; }
-        .footer-col h4 { color: #ffffff; margin-bottom: 25px; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px; }
-        .footer-col p { color: #bbbbbb; font-size: 0.95rem; line-height: 1.8; }
+        .footer-col h4 { color: white; margin-bottom: 20px; font-size: 1.1rem; letter-spacing: 1px; font-weight: 700; }
+        .footer-col p { color: #aaa; font-size: 0.9rem; line-height: 1.7; }
         
         /* Redes Sociales */
-        .social-links { display: flex; gap: 20px; margin-top: 25px; }
-        .social-links a { 
-            color: #ffffff; font-size: 1.8rem; transition: 0.3s; 
-            text-decoration: none !important;
-        }
-        .social-links a:hover { color: #25d366; transform: translateY(-5px); }
+        .social-icons-container { display: flex; gap: 20px; margin-top: 15px; }
+        .social-icons-container a { color: white; font-size: 1.6rem; transition: 0.3s; text-decoration: none; }
+        .social-icons-container a:hover { color: #25d366; transform: scale(1.2); }
 
         /* WHATSAPP FLOTANTE ANIMADO */
         .whatsapp-btn {
@@ -84,13 +89,13 @@ def render_landing():
             right: 30px;
             background-color: #25d366;
             color: white !important;
-            width: 65px;
-            height: 65px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 35px;
+            font-size: 32px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             z-index: 9999;
             text-decoration: none !important;
@@ -98,18 +103,19 @@ def render_landing():
         }
         @keyframes pulse-wa {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
         }
         </style>
     """, unsafe_allow_html=True)
 
-    # 1. HERO SECTION
+    # 1. HERO SECTION (Envuelto en content-wrapper para tener márgenes)
+    st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
     col_txt, col_img = st.columns([1.1, 1], gap="large")
     with col_txt:
-        st.markdown('<div style="margin-top:100px;">', unsafe_allow_html=True)
+        st.markdown('<div style="margin-top:80px;">', unsafe_allow_html=True)
         st.markdown('<h1 class="hero-title">Serrano <br>Turismo</h1>', unsafe_allow_html=True)
-        st.markdown('<p class="hero-subtitle">Tu aventura de egresados empieza acá.<br>Más de 28 años acompañando a grupos escolares con seguridad y pasión.</p>', unsafe_allow_html=True)
+        st.markdown('<p class="hero-subtitle">Tu aventura de egresados empieza acá.<br>28 años brindando servicio de excelencia en viajes de egresados y educativos.</p>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
     with col_img:
         st.markdown(f'<img src="{LANDING_IMG}" class="img-hero-style">', unsafe_allow_html=True)
@@ -118,40 +124,41 @@ def render_landing():
     st.markdown('<h2 class="section-title">Experiencias Inolvidables</h2>', unsafe_allow_html=True)
     e1, e2, e3 = st.columns(3)
     with e1:
-        st.markdown('<div class="exp-card"><div class="exp-circle">🚌</div><h4>Transporte Premium</h4><p>Unidades de última generación con todo el confort para la ruta.</p></div>', unsafe_allow_html=True)
+        st.markdown('<div class="exp-card"><div class="exp-circle">🚌</div><h4>Transporte Premium</h4><p>Unidades modernas con el máximo confort para un viaje seguro.</p></div>', unsafe_allow_html=True)
     with e2:
-        st.markdown('<div class="exp-card"><div class="exp-circle">🏨</div><h4>Hoteles Propios</h4><p>Exclusividad y seguridad en los mejores destinos del país.</p></div>', unsafe_allow_html=True)
+        st.markdown('<div class="exp-card"><div class="exp-circle">🏨</div><h4>Hoteles Propios</h4><p>Alojamiento exclusivo con servicios pensados para egresados.</p></div>', unsafe_allow_html=True)
     with e3:
-        st.markdown('<div class="exp-card"><div class="exp-circle">🛡️</div><h4>Seguridad 24/7</h4><p>Coordinación permanente y asistencia médica integral para tu tranquilidad.</p></div>', unsafe_allow_html=True)
+        st.markdown('<div class="exp-card"><div class="exp-circle">🛡️</div><h4>Seguridad 24/7</h4><p>Atención médica y coordinación permanente en todo el viaje.</p></div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True) # Cierre de content-wrapper
 
-    # 3. FOOTER
+    # 3. FOOTER (Fuera del wrapper para ser Full Width)
     st.markdown("""
         <div class="footer-full">
             <div class="footer-col">
-                <h4>Serrano Turismo</h4>
-                <p>Expertos en viajes de egresados primarios y turismo educativo. Brindamos experiencias seguras y divertidas desde hace casi tres décadas.</p>
+                <h4>SERRANO TURISMO</h4>
+                <p>Expertos en viajes estudiantiles con más de 28 años de trayectoria impecable. Garantizamos seguridad, diversión y aprendizaje en cada destino.</p>
             </div>
             <div class="footer-col">
-                <h4>Contacto</h4>
+                <h4>CONTACTO</h4>
                 <p>📍 CABA: Av. Rivadavia 4532</p>
                 <p>📍 Ituzaingó: Del Cimarrón 1846</p>
                 <p>📞 Tel: 11-4847-6467</p>
             </div>
             <div class="footer-col">
-                <h4>Redes Sociales</h4>
-                <p>Seguí de cerca nuestras aventuras:</p>
-                <div class="social-links">
-                    <a href="https://instagram.com/serrano_turismo" target="_blank"><i class="fab fa-instagram"></i></a>
-                    <a href="https://facebook.com/serranoturismo" target="_blank"><i class="fab fa-facebook"></i></a>
+                <h4>REDES SOCIALES</h4>
+                <p>Seguí nuestras aventuras diarias:</p>
+                <div class="social-icons-container">
+                    <a href="https://www.instagram.com/serrano_turismo/" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/serranoturismo/" target="_blank"><i class="fab fa-facebook-f"></i></a>
                 </div>
             </div>
         </div>
     """, unsafe_allow_html=True)
 
-    # 4. WHATSAPP FLOTANTE
-    # Número de Serrano Turismo: 5491156096283
+    # 4. BOTÓN WHATSAPP FLOTANTE
     st.markdown("""
-        <a href="https://wa.me/5491156096283" class="whatsapp-btn" target="_blank">
+        <a href="https://wa.me/5491156096283?text=Hola!%20Quería%20consultar%20por%20un%20viaje..." class="whatsapp-btn" target="_blank">
             <i class="fab fa-whatsapp"></i>
         </a>
     """, unsafe_allow_html=True)
+    
