@@ -4,29 +4,29 @@ def render_landing():
     # URL de la imagen en tu GitHub
     LANDING_IMG = "https://raw.githubusercontent.com/martinszurman-ux/Serrano-Dashboard/dc30c61e09bc3c22068eb77157a6e63893dd1f63/assets/Landing_image.jpeg"
 
-    # CSS TOTAL - LIMPIEZA FINAL Y ESTRUCTURA
+    # CSS TOTAL - SIMETRÍA Y LIMPIEZA
     st.markdown("""
         <style>
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
         
-        /* 1. RESET PARA ELIMINAR ESPACIO BLANCO AL FINAL */
+        /* 1. RESET ESTRUCTURAL */
         header {visibility: hidden;}
         .main .block-container {
             padding-top: 0rem !important;
-            padding-bottom: 0rem !important; /* Vital para eliminar el hueco final */
+            padding-bottom: 0rem !important;
             padding-left: 0rem !important;
             padding-right: 0rem !important;
             max-width: 100% !important;
         }
         
-        /* Subir contenido inicial */
+        /* Subida de contenido inicial */
         [data-testid="stVerticalBlock"] > div:first-child {
             margin-top: -100px !important;
         }
 
         /* 2. HERO SECTION */
         .hero-container {
-            padding: 0px 8% 40px 8%; 
+            padding: 0px 8% 0px 8%; /* Sin padding inferior para controlar el blanco con el spacer */
             background-color: white;
             display: flex;
             align-items: center;
@@ -63,10 +63,10 @@ def render_landing():
             padding: 0 20px;
         }
 
-        /* 4. SECCIÓN BLANCA DE TRANSICIÓN (Para separar gris de negro) */
-        .white-spacer {
+        /* 4. SPACERS SIMÉTRICOS (Blanco antes y después) */
+        .simetric-spacer {
             background-color: white;
-            height: 80px; /* Tamaño de la franja blanca */
+            height: 80px; /* Alto idéntico para ambos */
             width: 100vw;
             position: relative;
             left: 50%;
@@ -75,7 +75,7 @@ def render_landing():
             margin-right: -50vw;
         }
 
-        /* 5. FOOTER FINAL (Sin espacio abajo) */
+        /* 5. FOOTER FINAL */
         .footer-full {
             background-color: #1a1a1a;
             color: white;
@@ -90,7 +90,6 @@ def render_landing():
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 30px;
-            margin-bottom: 0px !important;
         }
 
         /* WHATSAPP */
@@ -109,17 +108,28 @@ def render_landing():
 
     # 1. HERO SECTION
     st.markdown('<div class="hero-container">', unsafe_allow_html=True)
-    c1, c2 = st.columns([1, 1])
+    c1, c2 = st.columns([1.2, 0.8]) # Un poco más de espacio al texto
     with c1:
-        st.markdown('<div style="margin-top:20px;">', unsafe_allow_html=True)
+        st.markdown('<div style="margin-top:20px; padding-right: 20px;">', unsafe_allow_html=True)
         st.markdown('<h1 class="hero-title">Serrano <br>Turismo</h1>', unsafe_allow_html=True)
-        st.markdown('<p style="font-size:1.25rem; color:#555; margin-top:15px;">Tu aventura de egresados empieza acá.<br>Más de 100.000 egresados de Buenos Aires ya confiaron en nosotros. Con 29 años de experiencia, Serrano Turismo es sinónimo de transparencia y cumplimiento, transformando cada viaje en una experiencia inolvidable con la seriedad que tu familia busca</p>', unsafe_allow_html=True)
+        # NUEVO TEXTO ACTUALIZADO
+        st.markdown("""
+            <p style="font-size:1.15rem; color:#444; margin-top:20px; line-height:1.6; text-align: justify;">
+                Tu aventura de egresados empieza acá.<br>
+                Más de 100.000 egresados de Buenos Aires ya confiaron en nosotros. 
+                Con 29 años de experiencia, Serrano Turismo es sinónimo de transparencia y cumplimiento, 
+                transformando cada viaje en una experiencia inolvidable con la seriedad que tu familia busca.
+            </p>
+        """, unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
     with c2:
         st.markdown(f'<div style="text-align:right;"><img src="{LANDING_IMG}" class="img-hero-style"></div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # 2. SECCIÓN EXPERIENCIAS (Fondo Gris)
+    # 2. FRANJA BLANCA ANTES (SIMÉTRICA)
+    st.markdown('<div class="simetric-spacer"></div>', unsafe_allow_html=True)
+
+    # 3. SECCIÓN EXPERIENCIAS (Fondo Gris)
     st.markdown("""
         <div class="experiences-outer">
             <div class="experiences-inner">
@@ -145,10 +155,10 @@ def render_landing():
         </div>
     """, unsafe_allow_html=True)
 
-    # 3. FRANJA BLANCA DE SEPARACIÓN
-    st.markdown('<div class="white-spacer"></div>', unsafe_allow_html=True)
+    # 4. FRANJA BLANCA DESPUÉS (SIMÉTRICA)
+    st.markdown('<div class="simetric-spacer"></div>', unsafe_allow_html=True)
 
-    # 4. FOOTER FINAL
+    # 5. FOOTER FINAL
     st.markdown("""
         <div class="footer-full">
             <div style="flex:1; min-width:250px;">
@@ -157,7 +167,7 @@ def render_landing():
             </div>
             <div style="flex:1; min-width:250px;">
                 <h4 style="margin-bottom:15px; font-weight:700; color:white;">CONTACTO</h4>
-                <p style="color:#999; font-size:0.85rem;">📍 CABA: Av. Rivadavia 4532<br>📞 11-4847-6467</p>
+                <p style="color:#999; font-size:0.85rem;">📍 CABA: Av. Rivadavia 4532<br>📍 Ituzaingó: Del Cimarrón 1846<br>📞 11-4847-6467</p>
             </div>
             <div style="flex:1; min-width:200px;">
                 <h4 style="margin-bottom:15px; font-weight:700; color:white;">REDES</h4>
@@ -169,5 +179,5 @@ def render_landing():
         </div>
     """, unsafe_allow_html=True)
 
-    # 5. WHATSAPP
+    # 6. WHATSAPP
     st.markdown('<a href="https://wa.me/5491156096283" class="whatsapp-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>', unsafe_allow_html=True)
