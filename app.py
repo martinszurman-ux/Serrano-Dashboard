@@ -1,54 +1,136 @@
 import streamlit as st
-from secciones import landing_sanpedro, landing_carlospaz
 
-# 1. Configuración de la página (esto debe ir PRIMERO)
-st.set_page_config(
-    page_title="Portal Turístico: San Pedro & Carlos Paz",
-    page_icon="📍",
-    layout="wide"
-)
+# 1. CONFIGURACIÓN DE PÁGINA
+st.set_page_config(page_title="Serrano Turismo", layout="wide", initial_sidebar_state="collapsed")
 
-# 2. Estilos personalizados (opcional, para darle onda)
+# 2. LÓGICA DE NAVEGACIÓN DESDE URL
+query_params = st.query_params
+nav_actual = query_params.get("nav", "Home")
+dest_actual = query_params.get("destino", None)
+
+# Sincronizamos con el estado de la sesión
+st.session_state.nav = nav_actual
+st.session_state.destino = dest_actual
+
+# 3. IMPORTACIÓN DE SECCIONES
+try:
+    from secciones.landing import render_landing
+    from secciones.landing_sanpedro import render_landing_sp
+    from secciones.landing_carlospaz import render_landing_cp  # <--- NUEVA IMPORTACIÓN
+    from secciones.transporte import render_transporte
+    from secciones.hoteleria import render_hoteleria
+    from secciones.comidas import render_comidas
+    from secciones.excursiones import render_excursiones
+    from secciones.actividades_nocturnas import render_nocturnas
+    from secciones.seguro import render_seguro
+    from secciones.tarifas import render_tarifas
+    from secciones.adhesion import render_adhesion
+except ImportError as e:
+    st.error(f"⚠️ Error de importación: {e}")
+    st.info("Asegúrate de que los nombres de archivo en /secciones coincidan exactamente.")
+    st.stop()
+
+# 4. CSS (Mantenemos el estilo de la barra superior)
 st.markdown("""
     <style>
-    .main {
-        background-color: #f5f7f9;
+    [data-testid="stHeader"], [data-testid="stSidebar"] { display: none !important; }
+    .main .block-container { padding-top: 0rem !important; }
+    .stApp { background-color: white !important; }
+    .navbar {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 0 60px; height: 80px; background-color: white;
+        border-bottom: 1px solid #f0f0f0; position: fixed;
+        top: 0; left: 0; right: 0; z-index: 9999;
     }
-    .stButton>button {
-        width: 100%;
-        border-radius: 5px;
-        height: 3em;
-        background-color: #ff4b4b;
-        color: white;
+    .logo-box img { max-height: 60px; width: auto; }
+    .nav-links { display: flex; align-items: center; gap: 35px; }
+    .nav-item {
+        color: black !important; text-decoration: none !important; 
+        font-size: 14px; font-weight: 700; text-transform: uppercase;
     }
+    .dropdown { position: relative; display: inline-block; }
+    .dropbtn {
+        color: black !important; font-size: 14px; font-weight: 700;
+        text-decoration: none !important; border: none; background: none;
+        cursor: pointer; text-transform: uppercase; padding: 30px 0;
+    }
+    .dropdown-content {
+        display: none; position: absolute; background-color: white;
+        min-width: 240px; box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
+        z-index: 1000; border-radius: 8px; border: 1px solid #f0f0f0; top: 70px;
+    }
+    .dropdown:hover .dropdown-content { display: block; }
+    .dropdown-content a {
+        color: #444; padding: 12px 20px; text-decoration: none;
+        display: block; font-size: 13px;
+    }
+    .sigla-badge {
+        background: #000; color: #fff; padding: 4px 10px;
+        border-radius: 4px; font-weight: bold; font-size: 12px;
+    }
+    .content-wrapper { margin-top: 100px; padding: 0 5%; }
     </style>
-    """, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
-# 3. Sidebar para Navegación
-st.sidebar.image("https://www.gstatic.com/images/branding/product/2x/maps_96in128dp.png", width=100)
-st.sidebar.title("📍 Guía de Destinos")
-st.sidebar.markdown("Seleccioná la ciudad que querés explorar:")
+# 5. CONSTRUCCIÓN DEL NAVBAR
+logo_url = "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png"
+sigla = "SP" if dest_actual == "San Pedro" else "CP" if dest_actual == "Villa Carlos Paz" else ""
 
-# Diccionario de rutas para mantener el código limpio
-PAGINAS = {
-    "Carlos Paz ☀️": landing_carlospaz,
-    "San Pedro 🍊": landing_sanpedro
-}
+if not dest_actual:
+    links_html = f"""
+        <a href="/?nav=Home&destino=San+Pedro" class="nav-item" target="_self">SAN PEDRO</a>
+        <a href="/?nav=Home&destino=Villa+Carlos+Paz" class="nav-item" target="_self">CARLOS PAZ</a>
+    """
+else:
+    links_html = f"""
+        <a href="/?nav=Home" class="nav-item" target="_self">HOME</a>
+        <div class="dropdown">
+            <button class="dropbtn">CONOCÉ TU VIAJE ▼</button>
+            <div class="dropdown-content">
+                <a href="/?nav=Transporte&destino={dest_actual}" target="_self">Transporte</a>
+                <a href="/?nav=Hoteleria&destino={dest_actual}" target="_self">Hotelería</a>
+                <a href="/?nav=Comidas&destino={dest_actual}" target="_self">Comidas</a>
+                <a href="/?nav=Excursiones&destino={dest_actual}" target="_self">Excursiones</a>
+                <a href="/?nav=Actividades&destino={dest_actual}" target="_self">Actividades</a>
+                <a href="/?nav=Seguro&destino={dest_actual}" target="_self">Seguro/Coordinación</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">ARMÁ TU VIAJE ▼</button>
+            <div class="dropdown-content">
+                <a href="/?nav=Tarifas&destino={dest_actual}" target="_self">Tarifas</a>
+                <a href="/?nav=Adhesion&destino={dest_actual}" target="_self">Ficha de Adhesión</a>
+            </div>
+        </div>
+        <div class="sigla-badge">{sigla}</div>
+    """
 
-# Selector de radio en el sidebar
-seleccion = st.sidebar.radio("Navegar a:", list(PAGINAS.keys()))
+st.markdown(f"""
+    <div class="navbar">
+        <div class="logo-box"><a href="/?nav=Home" target="_self"><img src="{logo_url}"></a></div>
+        <div class="nav-links">{links_html}</div>
+        <div style="width:110px;"></div>
+    </div>
+""", unsafe_allow_html=True)
 
-# 4. Renderizado dinámico
-st.sidebar.divider()
-st.sidebar.caption("Proyecto Landing Pages 2026")
+# 6. RENDERIZADO DE CONTENIDO
+st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 
-# Ejecutamos la función render() del archivo seleccionado
-if seleccion in PAGINAS:
-    PAGINAS[seleccion].render()
+if nav_actual == "Home":
+    if dest_actual == "San Pedro":
+        render_landing_sp()
+    elif dest_actual == "Villa Carlos Paz":
+        render_landing_cp()
+    else:
+        render_landing()
 
-# 5. Footer simple
-st.divider()
-st.center = st.markdown(
-    "<p style='text-align: center; color: grey;'>© 2026 - Todos los derechos reservados</p>", 
-    unsafe_allow_html=True
-)
+elif nav_actual == "Transporte": render_transporte(dest_actual)
+elif nav_actual == "Hoteleria": render_hoteleria(dest_actual)
+elif nav_actual == "Comidas": render_comidas(dest_actual)
+elif nav_actual == "Excursiones": render_excursiones(dest_actual)
+elif nav_actual == "Actividades": render_nocturnas(dest_actual)
+elif nav_actual == "Seguro": render_seguro(dest_actual)
+elif nav_actual == "Tarifas": render_tarifas(dest_actual)
+elif nav_actual == "Adhesion": render_adhesion(logo_url)
+
+st.markdown('</div>', unsafe_allow_html=True)
