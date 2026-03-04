@@ -1,4 +1,4 @@
-import streamlit as st
+import 
 
 def render_landing():
     # URL de la imagen en tu GitHub
@@ -118,3 +118,4 @@ def render_landing():
 
     # 5. WHATSAPP
     st.markdown('<a href="https://wa.me/5491156096283" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>', unsafe_allow_html=True)
+
