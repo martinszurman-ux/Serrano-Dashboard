@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+from utilidades.footer import render_footer
 
 def render_comidas(destino):
     st.markdown(f"<h1 style='text-align: center; color: #1E3A8A;'>🍽️ RÉGIMEN DE COMIDAS - {destino.upper()}</h1>", unsafe_allow_html=True)
@@ -33,3 +34,7 @@ def render_comidas(destino):
     with col_der:
         # Renderizado directo sin espacios extra
         st.markdown(f"<div style='background-color:#f8f9fa; padding:25px; border-radius:15px; border-left:5px solid #1E3A8A; color:#333; font-size:1.05rem; line-height:1.2;'>{features_html}</div>", unsafe_allow_html=True) #
+
+ # --- 5. FOOTER INSTITUCIONAL ---
+    # Invocamos la función del archivo utilidades/footer.py
+    render_footer()
