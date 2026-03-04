@@ -2,60 +2,81 @@ import streamlit as st
 import os
 
 def render_excursiones(destino):
-    # --- 1. ESTILOS CSS (Slim, Mobile & TV Frame) ---
+    # 1. ESTILOS CSS
     st.markdown("""
         <style>
         .excursion-card {
-            background: #ffffff;
+            background: white;
             border-radius: 12px;
-            padding: 0px;
+            padding: 15px;
             border: 1px solid #e0e0e0;
-            margin-bottom: 20px;
-            overflow: hidden;
-            box-shadow: 0px 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
         }
-        .excursion-content { padding: 15px; }
-        .excursion-title {
-            color: #1a1c1e;
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        .excursion-desc {
-            color: #495057;
-            font-size: 0.85rem;
-            line-height: 1.4;
-        }
-        .excursion-tag {
-            display: inline-block;
-            background: #e1edff;
-            color: #4A90E2;
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 3px 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            text-transform: uppercase;
-        }
-        /* ESTILO TV FRAME PARA EL VIDEO */
-        .video-tv-frame {
-            background: #1a1a1a;
-            padding: 12px;
+        .excursion-title { color: #1a1c1e; font-weight: 700; margin-bottom: 5px; }
+        .excursion-desc { color: #495057; font-size: 0.85rem; }
+        .tv-frame {
+            background: #222;
+            border: 10px solid #333;
             border-radius: 20px;
-            border: 6px solid #333;
-            box-shadow: 0px 10px 30px rgba(0,0,0,0.3);
-            margin: 20px auto;
+            padding: 10px;
+            margin: 20px 0;
         }
         </style>
     """, unsafe_allow_html=True)
 
-    # --- 2. VILLA CARLOS PAZ ---
     if destino == "Villa Carlos Paz":
         if os.path.exists("assets/encabezado.jpg"):
-            st.image("assets/encabezado.jpg", use_container_width=True)
+            st.image("assets/encabezado.jpg")
+        st.header("🏞️ Excursiones Carlos Paz")
         
-        st.markdown("## 🏞️ Experiencias en Carlos Paz")
-
         # Pekos
-        st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
-        if os.path
+        st.subheader("🚌 1. Pekos Multiparque")
+        if os.path.exists("assets/pekos.jpg"):
+            st.image("assets/pekos.jpg")
+        st.write("Cine 5D, laberintos y adrenalina en un complejo único.")
+
+        # Aqua
+        st.subheader("🚌 2. Wave Zone & Aquaventure")
+        if os.path.exists("assets/aqua.jpg"):
+            st.image("assets/aqua.jpg")
+        st.write("Piletas de olas y toboganes gigantes.")
+
+    elif destino == "San Pedro":
+        # Encabezado San Pedro
+        if os.path.exists("assets/sanpedroexc.jpg"):
+            st.image("assets/sanpedroexc.jpg")
+        
+        st.header("🏞️ Excursiones San Pedro")
+
+        # Fuerte de Obligado
+        st.subheader("🚌 1. El Fuerte de Obligado")
+        if os.path.exists("assets/sanpedroexc2.jpg"):
+            st.image("assets/sanpedroexc2.jpg")
+        st.write("Aventura con palestra, rappel y tirolesa. Almuerzo de asado criollo.")
+
+        # Otros San Pedro
+        st.markdown("""
+            <div class="excursion-card">
+                <div class="excursion-title">🚌 2. Beach Day con Canotaje</div>
+                <div class="excursion-desc">Día de playa exclusivo con bautismo de canotaje seguro.</div>
+            </div>
+            <div class="excursion-card">
+                <div class="excursion-title">🚌 3. Complejo Las Amalias</div>
+                <div class="excursion-desc">Laberinto de ligustrinas, piletas y deportes recreativos.</div>
+            </div>
+            <div class="excursion-card">
+                <div class="excursion-title">🚢 4. Sunset Catamarán</div>
+                <div class="excursion-desc">Navegación por el Paraná con música al atardecer.</div>
+            </div>
+            <div class="excursion-card">
+                <div class="excursion-title">🏙️ 5. City Tour</div>
+                <div class="excursion-desc">Recorrido por barrancas y compras regionales.</div>
+            </div>
+        """, unsafe_allow_html=True)
+
+        # Video San Pedro con Marco de TV
+        st.divider()
+        st.subheader("🎥 Mirá la Experiencia San Pedro")
+        st.markdown('<div class="tv-frame">', unsafe_allow_html=True)
+        st.video("https://www.youtube.com/watch?v=xBDqSrNB8Ro")
+        st.markdown('</div>', unsafe_allow_html=True)
