@@ -1,17 +1,16 @@
 import streamlit as st
 
-# 1. CONFIGURACIÓN INICIAL
+# 1. CONFIGURACIÓN DE PÁGINA
 st.set_page_config(
-    page_title="Serrano Turismo - Dashboard", 
+    page_title="Serrano Turismo", 
     layout="wide", 
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed" # Ocultamos el sidebar nativo
 )
 
-# URL DEL LOGO Y WHATSAPP
+# URLs DE RECURSOS (Reemplaza con tus links de GitHub cuando los tengas)
 LOGO_URL = "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png"
-WS_ICON_URL = "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
 
-# 2. IMPORTACIÓN DE MÓDULOS
+# 2. IMPORTACIÓN DE SECCIONES
 try:
     from secciones.landing import render_landing
     from secciones.transporte import render_transporte
@@ -22,148 +21,112 @@ try:
     from secciones.seguro import render_seguro
     from secciones.tarifas import render_tarifas
     from secciones.adhesion import render_adhesion
-    from secciones.admin import render_admin
 except ImportError as e:
-    st.error(f"Error crítico de importación: {e}")
+    st.error(f"Error de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO (Look & Feel Slim Optimizado para Mobile)
+# 3. CSS PARA EL NAVBAR SUPERIOR (Wireframe style)
 st.markdown("""
     <style>
-    /* FORZAR COLORES LIGHT */
-    .stApp { background-color: white !important; color: #31333F !important; }
-    [data-testid="stSidebar"] { background-color: #f0f2f6 !important; }
+    /* Ocultar elementos nativos */
+    [data-testid="stHeader"], [data-testid="stSidebar"] { display: none !important; }
+    .main .block-container { padding-top: 0rem !important; }
 
-    /* LOGO SUBIDO AL MÁXIMO */
-    .logo-container {
-        display: flex; justify-content: center; width: 100%;
-        margin-top: -35px !important;
-        margin-bottom: -15px !important;
-    }
-    .logo-container img { max-width: 110px !important; }
-
-    /* BOTONES SLIM OPTIMIZADOS PARA DEDO Y PANTALLA CHICA */
-    [data-testid="stSidebarContent"] [data-testid="stVerticalBlock"] > div {
-        width: 100% !important;
-        padding-left: 8px !important;
-        padding-right: 8px !important;
-    }
-    
-    div.stButton > button {
-        background: linear-gradient(145deg, #444444, #2c2c2c) !important;
-        color: white !important;
-        border: 1px solid #1a1a1a !important;
-        border-radius: 6px !important;
-        height: 40px !important; /* Altura optimizada */
-        font-weight: 600 !important;
-        font-size: 13px !important; /* Fuente para evitar saltos de línea */
-        text-align: left !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        width: 100% !important;
-        margin-bottom: -10px !important;
-        white-space: nowrap !important; /* Fuerza una sola línea */
-        overflow: hidden !important;
-        transition: all 0.3s ease !important;
-    }
-    
-    div.stButton > button:hover {
-        background: #555555 !important;
-        border-color: #ffffff !important;
-        transform: translateX(3px) !important;
-    }
-
-    /* BOTÓN ADHESIÓN Y ADMIN (Estilo especial) */
-    .btn-adhesion div.stButton > button, .btn-admin div.stButton > button {
-        background: linear-gradient(145deg, #1a1a1a, #000000) !important;
-        justify-content: center !important;
-        margin-top: 5px !important;
-        height: 44px !important;
-        border: 1px solid #4A90E2 !important;
-    }
-
-    /* WHATSAPP ANIMADO */
-    .ws-container {
+    /* Estilo del Navbar */
+    .navbar {
         display: flex;
-        justify-content: center;
-        margin-top: 15px;
-        margin-bottom: 20px;
-    }
-    .ws-icon-animated {
-        width: 55px !important;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .ws-icon-animated:hover {
-        transform: scale(1.15) rotate(8deg);
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 5rem;
+        background-color: white;
+        border-bottom: 1px solid #e0e0e0;
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 9999;
     }
 
-    /* CONTACTO COMPACTO */
-    .sidebar-footer { 
-        color: #666666 !important; 
-        font-size: 0.65rem; 
-        line-height: 1.3; 
-        text-align: center;
-        padding-top: 10px;
-        border-top: 1px solid #e0e0e0;
-        margin: 0 15px;
+    .nav-links { display: flex; gap: 40px; }
+
+    /* Dropdown Logic */
+    .dropdown { position: relative; display: inline-block; }
+    .dropbtn {
+        font-size: 16px; border: none; outline: none;
+        color: #333; padding: 14px 16px; background: inherit;
+        font-family: inherit; margin: 0; cursor: pointer;
+        font-weight: 500;
     }
+    .dropdown-content {
+        display: none; position: absolute; background-color: #f9f9f9;
+        min-width: 200px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1; border-radius: 4px;
+    }
+    .dropdown-content a {
+        color: black; padding: 12px 16px; text-decoration: none;
+        display: block; text-align: left; font-size: 14px;
+    }
+    .dropdown-content a:hover { background-color: #f1f1f1; }
+    .dropdown:hover .dropdown-content { display: block; }
+    .dropdown:hover .dropbtn { color: #007bff; }
+
+    /* Ajuste de contenido para que no quede debajo del navbar */
+    .content-wrapper { margin-top: 100px; }
     </style>
 """, unsafe_allow_html=True)
 
-# 4. LÓGICA DE NAVEGACIÓN
+# 4. LÓGICA DE NAVEGACIÓN (Session State)
 if "seccion_activa" not in st.session_state:
-    st.session_state.seccion_activa = "Landing"
+    st.session_state.seccion_activa = "Home"
 
-with st.sidebar:
-    # Logo
-    st.markdown(f'<div class="logo-container"><img src="{LOGO_URL}"></div>', unsafe_allow_html=True)
-    st.divider()
-    
-    destino = st.selectbox("📍 Destino", ["Villa Carlos Paz", "San Pedro"])
-    
-    # Menú de navegación
-    if st.button("🚌 1. Transporte"): st.session_state.seccion_activa = "Transporte"
-    if st.button("🏨 2. Hotelería"): st.session_state.seccion_activa = "Hotelería"
-    if st.button("🍽️ 3. Comidas"): st.session_state.seccion_activa = "Comidas"
-    if st.button("🏞️ 4. Excursiones"): st.session_state.seccion_activa = "Excursiones"
-    if st.button("🌙 5. Actividades"): st.session_state.seccion_activa = "Actividades"
-    # BOTÓN ACTUALIZADO
-    if st.button("🏥 6. Coordinación/Seguro"): st.session_state.seccion_activa = "Seguro"
-    if st.button("💰 7. Tarifas"): st.session_state.seccion_activa = "Tarifas"
+# 5. RENDERIZADO DEL NAVBAR (HTML + Botones invisibles para Streamlit)
+# Nota: Streamlit no detecta clics en enlaces <a> fácilmente para cambiar el estado interno,
+# por lo que usaremos una combinación de botones o links con parámetros.
 
-    # Botón Ficha de Adhesión
-    st.markdown('<div class="btn-adhesion">', unsafe_allow_html=True)
-    if st.button("📝 FICHA DE ADHESIÓN"): st.session_state.seccion_activa = "Adhesión"
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # Lógica de Botón Admin Oculto
-    if st.query_params.get("admin") == "true":
-        st.markdown('<div class="btn-admin">', unsafe_allow_html=True)
-        if st.button("⚙️ Configuración"): 
-            st.session_state.seccion_activa = "Admin"
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    # WhatsApp y Contacto
+with st.container():
     st.markdown(f"""
-        <div class="ws-container">
-            <a href="https://wa.me/541156096283" target="_blank">
-                <img src="{WS_ICON_URL}" class="ws-icon-animated" alt="WhatsApp">
-            </a>
-        </div>
-        <div class="sidebar-footer">
-            📍 Rivadavia 4532 (L. 10) - CABA<br>
-            📍 Del Cimarrón 1846 - Ituzaingo<br>
-            📞 11 - 4847-6467 | ✉️ info@serranoturismo.com.ar
-        </div>
+        <div class="navbar">
+            <img src="{LOGO_URL}" width="100">
+            <div class="nav-links">
+                <div class="dropdown">
+                    <button class="dropbtn" onclick="window.location.href='/?nav=Home'">Home</button>
+                </div>
+                <div class="dropdown">
+                    <button class="dropbtn">Conoce tu gira ▼</button>
+                    <div class="dropdown-content">
+                        <a href="/?nav=Transporte">🚌 Transporte</a>
+                        <a href="/?nav=Hoteleria">🏨 Hotelería</a>
+                        <a href="/?nav=Comidas">🍽️ Comidas</a>
+                        <a href="/?nav=Excursiones">🏞️ Excursiones</a>
+                        <a href="/?nav=Actividades">🌙 Actividades</a>
+                        <a href="/?nav=Seguro">🏥 Seguro/Coordinación</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="dropbtn">Arma tu gira ▼</button>
+                    <div class="dropdown-content">
+                        <a href="/?nav=Tarifas">💰 Tarifas</a>
+                        <a href="/?nav=Adhesion">📝 Ficha de Adhesión</a>
+                    </div>
+                </div>
+            </div>
+            <div></div> </div>
     """, unsafe_allow_html=True)
 
-# 5. RENDERIZADO
-if st.session_state.seccion_activa == "Landing":
+# Capturar navegación desde URL (truco para que los links del Navbar funcionen)
+query_nav = st.query_params.get("nav", "Home")
+st.session_state.seccion_activa = query_nav
+
+# 6. RENDERIZADO DE CONTENIDO
+st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
+
+# Selector de destino (Global para las secciones que lo necesiten)
+# Podríamos ponerlo en el navbar o dentro de las secciones.
+destino = "Villa Carlos Paz" # Por defecto
+
+if st.session_state.seccion_activa == "Home":
     render_landing()
 elif st.session_state.seccion_activa == "Transporte":
     render_transporte(destino)
-elif st.session_state.seccion_activa == "Hotelería":
+elif st.session_state.seccion_activa == "Hoteleria":
     render_hoteleria(destino)
 elif st.session_state.seccion_activa == "Comidas":
     render_comidas(destino)
@@ -175,7 +138,7 @@ elif st.session_state.seccion_activa == "Seguro":
     render_seguro(destino)
 elif st.session_state.seccion_activa == "Tarifas":
     render_tarifas(destino)
-elif st.session_state.seccion_activa == "Adhesión":
+elif st.session_state.seccion_activa == "Adhesion":
     render_adhesion(LOGO_URL)
-elif st.session_state.seccion_activa == "Admin":
-    render_admin()
+
+st.markdown('</div>', unsafe_allow_html=True)
