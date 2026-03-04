@@ -64,29 +64,3 @@ def render_excursiones(destino):
                 <div class="excursion-title">🚌 1. Pekos Multiparque</div>
                 <div class="excursion-desc">Cine 5D, laberintos y adrenalina en un complejo recreativo único diseñado para el disfrute de todo el grupo.</div>
                 <div class="excursion-tag">Full Day • Diversión</div>
-            </div>
-        </div>""", unsafe_allow_html=True)
-
-        # Aqua
-        st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
-        if os.path.exists("assets/aqua.jpg"):
-            st.image("assets/aqua.jpg")
-        st.markdown("""
-            <div class="excursion-content">
-                <div class="excursion-title">🚌 2. Wave Zone & Aquaventure</div>
-                <div class="excursion-desc">Piletas de olas y toboganes gigantes para vivir un día de sol y pura acción en las sierras.</div>
-                <div class="excursion-tag">Agua • Adrenalina</div>
-            </div>
-        </div>""", unsafe_allow_html=True)
-
-        # Crazy Donkey & City
-        st.markdown("""
-            <div class="excursion-card"><div class="excursion-content">
-                <div class="excursion-title">🚌 3. Crazy Donkey</div>
-                <div class="excursion-desc">Aventura extrema con tirolesas y desafíos naturales.</div>
-            </div></div>
-            <div class="excursion-card"><div class="excursion-content">
-                <div class="excursion-title">🏙️ 4. City Tour</div>
-                <div class="excursion-desc">Reloj Cucú y las mejores fábricas de alfajores.</div>
-            </div></div>
-        """,
