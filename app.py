@@ -7,12 +7,11 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 2. LÓGICA DE NAVEGACIÓN (Lectura de la URL)
+# 2. LÓGICA DE NAVEGACIÓN
 query_params = st.query_params
 nav_actual = query_params.get("nav", "Home")
 dest_actual = query_params.get("destino", None)
 
-# Sincronizamos con la sesión interna
 st.session_state.nav = nav_actual
 st.session_state.destino = dest_actual
 
@@ -36,10 +35,8 @@ except ImportError as e:
 # 4. CSS MAESTRO
 st.markdown("""
     <style>
-    /* Reset de Streamlit */
     [data-testid="stHeader"], [data-testid="stSidebar"] { display: none !important; }
     
-    /* 1. ELIMINAR FRANJA BLANCA FINAL Y AJUSTE DE CONTENEDOR */
     .main .block-container { 
         padding-top: 0rem !important; 
         padding-bottom: 0rem !important; 
@@ -47,7 +44,6 @@ st.markdown("""
     }
     .stApp { background-color: white !important; }
 
-    /* Navbar Fija */
     .navbar {
         display: flex; justify-content: space-between; align-items: center;
         padding: 0 60px; height: 80px; background-color: white;
@@ -56,7 +52,16 @@ st.markdown("""
     }
 
     .logo-box img { max-height: 55px; width: auto; }
-    .nav-links { display: flex; align-items: center; gap: 35px; }
+    
+    /* Contenedor de links y la imagen de "Elegí tu destino" */
+    .nav-links { display: flex; align-items: center; gap: 30px; }
+
+    /* Estilo para la imagen del header_elije_destino */
+    .header-img-instruccion {
+        max-height: 25px; /* Ajustado para que no sea más grande que el texto previo */
+        width: auto;
+        margin-right: 5px;
+    }
 
     .nav-item {
         color: black !important; text-decoration: none !important; 
@@ -65,7 +70,6 @@ st.markdown("""
     }
     .nav-item:hover { color: #555 !important; }
 
-    /* DROPDOWN */
     .dropdown { position: relative; display: inline-block; }
     .dropbtn {
         color: black !important; font-size: 13px; font-weight: 700;
@@ -80,20 +84,16 @@ st.markdown("""
     .dropdown:hover .dropdown-content { display: block; }
     .dropdown-content a {
         color: #444; padding: 12px 20px; text-decoration: none;
-        display: block; font-size: 13px; transition: 0.2s;
+        display: block; font-size: 13px;
     }
-    .dropdown-content a:hover { background-color: #f8f9fa; color: #000 !important; padding-left: 25px; }
 
-    /* Sigla */
     .sigla-badge {
         background: #000; color: #fff; padding: 4px 10px;
         border-radius: 4px; font-weight: bold; font-size: 11px;
     }
 
-    /* Subimos el contenido reduciendo el margin-top (antes 100px) */
     .content-wrapper { margin-top: 85px; padding: 0 5%; }
 
-    /* 2. FOOTER PROPORCIONADO */
     .footer-container {
         background-color: #1a1a1a;
         color: #888;
@@ -112,14 +112,16 @@ st.markdown("""
 
 # 5. CONSTRUCCIÓN DEL NAVBAR DINÁMICO
 logo_url = "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png"
+# URL de la imagen de instrucción (asegurate que la ruta sea accesible desde la web o GitHub)
+# Si la tenés local en Streamlit Cloud, recordá que a veces es mejor usar la URL de GitHub Raw
+instruccion_url = "https://raw.githubusercontent.com/martinszurman-ux/Serrano-Dashboard/main/assets/header_elije_destino.png"
+
 sigla = "SP" if dest_actual == "San Pedro" else "CP" if dest_actual == "Villa Carlos Paz" else ""
 
 if not dest_actual:
-    # Caso A: No hay destino (Menú de Selección)
+    # Caso A: No hay destino (Menú de Selección con Imagen)
     links_html = f"""
-        <span style="color: #888; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-right: 15px;">
-            Elegí tu destino:
-        </span>
+        <img src="{instruccion_url}" class="header-img-instruccion">
         <a href="./?nav=Home&destino=San+Pedro" class="nav-item" target="_self">SAN PEDRO</a>
         <a href="./?nav=Home&destino=Villa+Carlos+Paz" class="nav-item" target="_self">CARLOS PAZ</a>
     """
