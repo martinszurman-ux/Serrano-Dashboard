@@ -2,119 +2,112 @@
 import streamlit as st
 
 def render_footer():
-    """Renderiza el footer institucional de Serrano Turismo con look moderno en blanco"""
+    """Renderiza el footer minimalista blanco compatible con todas las secciones"""
     st.markdown("""
         <style>
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
         
-        /* Contenedor Principal del Footer */
-        .footer-container {
-            background-color: #ffffff;
-            color: #444;
-            padding: 40px 0px;
-            margin-top: 50px;
-            border-top: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 30px;
-            font-family: 'Source Sans Pro', sans-serif;
-        }
-        
-        /* Columnas */
-        .footer-col {
-            flex: 1;
-            min-width: 250px;
-        }
-        
-        .footer-col h4 {
-            color: #1a1a1a !important;
-            font-weight: 800 !important;
-            font-size: 1.1rem !important;
-            margin-bottom: 20px !important;
-            letter-spacing: 0.5px;
-        }
-        
-        .footer-col p {
-            color: #666 !important;
-            font-size: 0.95rem !important;
-            line-height: 1.6;
+        /* Forzamos que el contenedor de Streamlit no corte el footer */
+        .main .block-container {
+            padding-bottom: 0px !important;
         }
 
-        /* Iconos de Redes */
-        .social-links {
+        .custom-footer {
+            background-color: #ffffff;
+            border-top: 1px solid #f0f2f6;
+            padding: 40px 20px;
+            margin-top: 50px;
             display: flex;
-            gap: 20px;
-            margin-top: 10px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 30px;
+            width: 100%;
         }
-        
-        .social-links a {
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            color: #666666;
+            font-family: sans-serif;
+        }
+
+        .footer-section h4 {
+            color: #1a1a1a !important;
+            font-weight: 700 !important;
+            margin-bottom: 15px !important;
+            font-size: 1rem !important;
+            text-transform: uppercase;
+        }
+
+        .footer-section p {
+            font-size: 0.9rem !important;
+            line-height: 1.5 !important;
+            margin-bottom: 8px !important;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icons a {
             color: #444 !important;
-            font-size: 1.5rem;
-            transition: color 0.3s ease;
+            font-size: 1.4rem;
             text-decoration: none !important;
+            transition: 0.3s;
         }
-        
-        .social-links a:hover {
-            color: #007bff !important; /* Un toque de color al pasar el mouse */
+
+        .social-icons a:hover {
+            color: #e4405f !important; /* Color Instagram */
         }
 
         /* Botón WhatsApp */
-        .whatsapp-btn {
-            position: fixed; 
-            bottom: 30px; 
-            right: 30px; /* Movido a la derecha, suele ser más estándar */
-            background-color: #25d366; 
+        .wa-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #25d366;
             color: white !important;
-            width: 60px; 
-            height: 60px; 
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            display: flex; 
-            align-items: center; 
+            display: flex;
+            align-items: center;
             justify-content: center;
-            font-size: 32px; 
-            z-index: 99999;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            font-size: 30px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+            z-index: 9999;
             text-decoration: none !important;
-            animation: pulse-green 2s infinite;
-        }
-
-        @keyframes pulse-green {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
         }
         </style>
-        
-        <div class="footer-container">
-            <div class="footer-col">
-                <h4>SERRANO TURISMO</h4>
+
+        <div class="custom-footer">
+            <div class="footer-section">
+                <h4>Serrano Turismo</h4>
                 <p>29 años de trayectoria impecable brindando experiencias inolvidables.</p>
-                <p style="font-size:0.8rem !important; margin-top:20px; color:#999 !important;">
+                <p style="color: #999 !important; font-size: 0.8rem !important; margin-top: 20px;">
                     © 2026 Todos los derechos reservados.
                 </p>
             </div>
-            
-            <div class="footer-col">
-                <h4>CONTACTO</h4>
-                <p>
-                    📍 <b>CABA:</b> Av. Rivadavia 4532<br>
-                    📍 <b>Ituzaingó:</b> Parque Leloir<br>
-                    📍 <b>San Pedro:</b> Costanera<br>
-                    📞 11-4847-6467
-                </p>
+
+            <div class="footer-section">
+                <h4>Contacto</h4>
+                <p>📍 <b>CABA:</b> Av. Rivadavia 4532</p>
+                <p>📍 <b>Ituzaingó:</b> Parque Leloir</p>
+                <p>📍 <b>San Pedro:</b> Costanera</p>
+                <p>📞 11-4847-6467</p>
             </div>
-            
-            <div class="footer-col">
-                <h4>SEGUINOS</h4>
-                <div class="social-links">
+
+            <div class="footer-section">
+                <h4>Seguinos</h4>
+                <div class="social-icons">
                     <a href="https://instagram.com/serrano_turismo" target="_blank"><i class="fab fa-instagram"></i></a>
                     <a href="https://facebook.com/serranoturismo" target="_blank"><i class="fab fa-facebook-f"></i></a>
                 </div>
             </div>
         </div>
-        
-        <a href="https://wa.me/5491156096283" class="whatsapp-btn" target="_blank">
+
+        <a href="https://wa.me/5491156096283" class="wa-float" target="_blank">
             <i class="fab fa-whatsapp"></i>
         </a>
     """, unsafe_allow_html=True)
