@@ -2,34 +2,68 @@
 import streamlit as st
 
 def render_footer():
-    """Renderiza el footer institucional de Serrano Turismo"""
+    """Renderiza el footer institucional de Serrano Turismo con look moderno en blanco"""
     st.markdown("""
         <style>
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
         
-        /* Ajuste para que el footer ocupe todo el ancho real */
-        .footer-full {
-            background-color: #1a1a1a;
-            color: white;
-            padding: 60px 8% 80px 8%;
-            width: 100vw;
-            position: relative;
-            left: 50%;
-            right: 50%;
-            margin-left: -50vw;
-            margin-right: -50vw;
+        /* Contenedor Principal del Footer */
+        .footer-container {
+            background-color: #ffffff;
+            color: #444;
+            padding: 40px 0px;
+            margin-top: 50px;
+            border-top: 1px solid #eee;
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 40px;
-            margin-bottom: -100px !important;
-            z-index: 99;
+            gap: 30px;
+            font-family: 'Source Sans Pro', sans-serif;
         }
         
+        /* Columnas */
+        .footer-col {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-col h4 {
+            color: #1a1a1a !important;
+            font-weight: 800 !important;
+            font-size: 1.1rem !important;
+            margin-bottom: 20px !important;
+            letter-spacing: 0.5px;
+        }
+        
+        .footer-col p {
+            color: #666 !important;
+            font-size: 0.95rem !important;
+            line-height: 1.6;
+        }
+
+        /* Iconos de Redes */
+        .social-links {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        
+        .social-links a {
+            color: #444 !important;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+            text-decoration: none !important;
+        }
+        
+        .social-links a:hover {
+            color: #007bff !important; /* Un toque de color al pasar el mouse */
+        }
+
+        /* Botón WhatsApp */
         .whatsapp-btn {
             position: fixed; 
             bottom: 30px; 
-            left: 30px; 
+            right: 30px; /* Movido a la derecha, suele ser más estándar */
             background-color: #25d366; 
             color: white !important;
             width: 60px; 
@@ -39,44 +73,43 @@ def render_footer():
             align-items: center; 
             justify-content: center;
             font-size: 32px; 
-            z-index: 99999; /* Aumentado para que siempre esté arriba */
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            z-index: 99999;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
             text-decoration: none !important;
             animation: pulse-green 2s infinite;
         }
 
         @keyframes pulse-green {
             0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-        }
-
-        /* Quitar subrayado de links en redes */
-        .footer-full a {
-            text-decoration: none !important;
         }
         </style>
         
-        <div class="footer-full">
-            <div style="flex:1; min-width:280px;">
-                <h4 style="margin-bottom:20px; font-weight:700; color:white;">SERRANO TURISMO</h4>
-                <p style="color:#aaa; font-size:0.9rem;">29 años de trayectoria impecable.</p>
-                <p style="color:#666; font-size:0.75rem; margin-top:20px;">© 2026 Todos los derechos reservados.</p>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4>SERRANO TURISMO</h4>
+                <p>29 años de trayectoria impecable brindando experiencias inolvidables.</p>
+                <p style="font-size:0.8rem !important; margin-top:20px; color:#999 !important;">
+                    © 2026 Todos los derechos reservados.
+                </p>
             </div>
-            <div style="flex:1; min-width:280px;">
-                <h4 style="margin-bottom:20px; font-weight:700; color:white;">CONTACTO</h4>
-                <p style="color:#aaa; font-size:0.9rem;">
-                    📍 CABA: Av. Rivadavia 4532<br>
-                    📍 Ituzaingó: Parque Leloir<br>
-                    📍 San Pedro: Costanera<br>
+            
+            <div class="footer-col">
+                <h4>CONTACTO</h4>
+                <p>
+                    📍 <b>CABA:</b> Av. Rivadavia 4532<br>
+                    📍 <b>Ituzaingó:</b> Parque Leloir<br>
+                    📍 <b>San Pedro:</b> Costanera<br>
                     📞 11-4847-6467
                 </p>
             </div>
-            <div style="flex:1; min-width:200px;">
-                <h4 style="margin-bottom:20px; font-weight:700; color:white;">REDES</h4>
-                <div style="display:flex; gap:25px;">
-                    <a href="https://instagram.com/serrano_turismo" target="_blank" style="color:white; font-size:1.8rem;"><i class="fab fa-instagram"></i></a>
-                    <a href="https://facebook.com/serranoturismo" target="_blank" style="color:white; font-size:1.8rem;"><i class="fab fa-facebook-f"></i></a>
+            
+            <div class="footer-col">
+                <h4>SEGUINOS</h4>
+                <div class="social-links">
+                    <a href="https://instagram.com/serrano_turismo" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://facebook.com/serranoturismo" target="_blank"><i class="fab fa-facebook-f"></i></a>
                 </div>
             </div>
         </div>
