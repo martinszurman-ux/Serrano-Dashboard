@@ -1,16 +1,15 @@
 import streamlit as st
 
-# 1. CONFIGURACIÓN DE PÁGINA
+# 1. CONFIGURACIÓN
 st.set_page_config(
     page_title="Serrano Turismo", 
     layout="wide", 
     initial_sidebar_state="collapsed"
 )
 
-# URL DEL LOGO
 LOGO_URL = "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png"
 
-# 2. IMPORTACIÓN DE SECCIONES
+# 2. IMPORTACIONES
 try:
     from secciones.landing import render_landing
     from secciones.transporte import render_transporte
@@ -26,11 +25,14 @@ except ImportError as e:
     st.error(f"Error de importación: {e}")
     st.stop()
 
-# 3. CAPTURAR ESTADO DE NAVEGACIÓN
-# Usamos st.query_params directamente
+# 3. LÓGICA DE ESTADO
 params = st.query_params
 seccion_activa = params.get("nav", "Home")
 destino_elegido = params.get("destino", None)
+
+# Si el usuario hace clic en el logo o Home, reseteamos el flujo
+if seccion_activa == "Home":
+    destino_elegido = None
 
 # 4. CSS MAESTRO
 st.markdown("""
@@ -43,84 +45,61 @@ st.markdown("""
         display: flex; 
         justify-content: space-between; 
         align-items: center;
-        padding: 0.5rem 5rem; 
+        padding: 0 5rem; 
         background-color: white; 
         border-bottom: 1px solid #eeeeee;
         position: fixed; top: 0; left: 0; right: 0; 
         z-index: 999999; 
+        height: 80px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        height: 70px;
     }
     
     .nav-links { 
         display: flex; 
-        gap: 10px; 
+        gap: 15px; 
         align-items: center;
         justify-content: center;
-        flex-grow: 1;
+        flex: 1; /* Esto centra el contenido */
     }
 
     .dest-badge {
-        background-color: #2c2c2c; 
-        color: white; 
-        padding: 4px 10px;
-        border-radius: 4px; 
-        font-weight: 800; 
-        font-size: 14px; 
-        margin-left: 15px;
+        background-color: #333; color: white; 
+        padding: 5px 12px; border-radius: 6px; 
+        font-weight: 800; font-size: 14px; margin-left: 10px;
     }
 
-    .dropdown { position: relative; display: inline-block; }
-    
     .dropbtn {
-        background: transparent; 
-        color: #333; 
-        padding: 10px 15px;
-        font-size: 14px; 
-        font-weight: 600; 
-        border: none; 
-        cursor: pointer;
-        text-decoration: none;
-        display: inline-block;
+        background: none; color: #333; padding: 10px 15px;
+        font-size: 15px; font-weight: 600; border: none; 
+        cursor: pointer; text-decoration: none;
     }
     
+    .dropdown { position: relative; display: inline-block; }
     .dropdown-content {
-        display: none; 
-        position: absolute; 
-        background-color: white;
-        min-width: 220px; 
-        box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
-        z-index: 100; 
-        border-radius: 8px; 
-        border: 1px solid #f0f0f0;
+        display: none; position: absolute; background-color: white;
+        min-width: 220px; box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
+        z-index: 1000; border-radius: 8px; border: 1px solid #f0f0f0;
     }
-    
     .dropdown-content a {
-        color: #444; 
-        padding: 12px 16px; 
-        text-decoration: none; 
-        display: block; 
-        font-size: 13px;
+        color: #444; padding: 12px 16px; text-decoration: none; 
+        display: block; font-size: 14px;
     }
-    
     .dropdown-content a:hover { background-color: #f8f9fa; color: #007bff; }
     .dropdown:hover .dropdown-content { display: block; }
+    .dropbtn:hover { color: #007bff; }
 
-    .content-wrapper { margin-top: 90px; padding: 0 5%; }
+    .content-wrapper { margin-top: 100px; padding: 0 5%; }
     </style>
 """, unsafe_allow_html=True)
 
-# 5. LÓGICA DEL NAVBAR
-# Definimos las siglas
-sigla = ""
-if destino_elegido == "Villa Carlos Paz": sigla = "CP"
-elif destino_elegido == "San Pedro": sigla = "SP"
+# 5. NAVBAR DINÁMICO
+sigla = "CP" if destino_elegido == "Villa Carlos Paz" else "SP" if destino_elegido == "San Pedro" else ""
 
-# Construimos el menú dinámico
-menu_html = f'<a href="/?nav=Home" class="dropbtn">Home</a>'
+# Construcción de la parte central del menú
+nav_center_html = f'<a href="/?nav=Home" class="dropbtn">Home</a>'
 
 if destino_elegido:
-    menu_html += f"""
+    nav_center_html += f"""
     <div class="dropdown">
         <button class="dropbtn">Conocé tu viaje de egresados ▼</button>
         <div class="dropdown-content">
@@ -142,21 +121,24 @@ if destino_elegido:
     <div class="dest-badge">{sigla}</div>
     """
 
-# Renderizado final del Navbar
-admin_dot = ""
+# Parte derecha (Admin secreto)
+admin_link = ""
 if params.get("admin") == "true":
-    admin_dot = '<a href="/?nav=Admin&admin=true" style="text-decoration:none; color:#eee; font-size:10px;">.</a>'
+    admin_link = '<a href="/?nav=Admin&admin=true" style="text-decoration:none; color:#eee; font-size:10px;">.</a>'
 
+# Render final del Navbar
 st.markdown(f"""
     <div class="navbar">
         <div style="width:150px;">
-            <a href="/?nav=Home" target="_self"><img src="{LOGO_URL}" width="100"></a>
+            <a href="/?nav=Home" target="_self">
+                <img src="{LOGO_URL}" width="100">
+            </a>
         </div>
         <div class="nav-links">
-            {menu_html}
+            {nav_center_html}
         </div>
         <div style="width:150px; text-align:right;">
-            {admin_dot}
+            {admin_link}
         </div>
     </div>
 """, unsafe_allow_html=True)
@@ -164,7 +146,6 @@ st.markdown(f"""
 # 6. RENDERIZADO DE CONTENIDO
 st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 
-# Lógica de renderizado según sección
 if seccion_activa == "Home" or not destino_elegido:
     render_landing()
 elif seccion_activa == "Transporte":
