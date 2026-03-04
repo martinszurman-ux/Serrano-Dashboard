@@ -5,56 +5,21 @@ def render_excursiones(destino):
     # --- 1. ESTILOS CSS ---
     st.markdown("""
         <style>
-        .excursion-card {
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 0px;
-            border: 1px solid #e0e0e0;
-            margin-bottom: 20px;
-            overflow: hidden;
-            box-shadow: 0px 4px 10px rgba(0,0,0,0.05);
-        }
+        .excursion-card { background: white; border-radius: 12px; border: 1px solid #e0e0e0; margin-bottom: 20px; overflow: hidden; box-shadow: 0px 4px 10px rgba(0,0,0,0.05); }
         .excursion-content { padding: 15px; }
-        .excursion-title {
-            color: #1a1c1e;
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        .excursion-desc {
-            color: #495057;
-            font-size: 0.85rem;
-            line-height: 1.4;
-        }
-        .excursion-tag {
-            display: inline-block;
-            background: #e1edff;
-            color: #4A90E2;
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 3px 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            text-transform: uppercase;
-        }
-        .tv-container {
-            background: #1a1a1a;
-            padding: 15px;
-            border-radius: 20px;
-            border: 8px solid #333;
-            box-shadow: 0px 10px 30px rgba(0,0,0,0.3);
-            margin-bottom: 25px;
-        }
+        .excursion-title { color: #1a1c1e; font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; }
+        .excursion-desc { color: #495057; font-size: 0.85rem; line-height: 1.4; }
+        .excursion-tag { display: inline-block; background: #e1edff; color: #4A90E2; font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 5px; margin-top: 10px; text-transform: uppercase; }
+        .tv-container { background: #1a1a1a; padding: 15px; border-radius: 20px; border: 8px solid #333; box-shadow: 0px 10px 30px rgba(0,0,0,0.3); margin-bottom: 25px; }
         </style>
     """, unsafe_allow_html=True)
 
-    # --- 2. LÓGICA VILLA CARLOS PAZ ---
+    # --- 2. VILLA CARLOS PAZ ---
     if destino == "Villa Carlos Paz":
         if os.path.exists("assets/encabezado.jpg"):
             st.image("assets/encabezado.jpg", use_container_width=True)
-        
         st.markdown("## 🏞️ Experiencias en Carlos Paz")
-
+        
         # Video VCP
         st.markdown('<div class="tv-container">', unsafe_allow_html=True)
         st.video("https://www.youtube.com/watch?v=D-YV7S6Oatc")
@@ -72,15 +37,14 @@ def render_excursiones(destino):
             st.image("assets/aqua.jpg", use_container_width=True)
         st.markdown('<div class="excursion-content"><div class="excursion-title">🚌 2. Wave Zone & Aquaventure</div><div class="excursion-desc">Piletas de olas y toboganes gigantes para vivir un día de sol.</div><div class="excursion-tag">Agua</div></div></div>', unsafe_allow_html=True)
 
-        # Otras VCP
+        # Otros VCP
         st.markdown('<div class="excursion-card"><div class="excursion-content"><div class="excursion-title">🚌 3. Crazy Donkey</div><div class="excursion-desc">Aventura: tirolesas y desafíos físicos en la naturaleza.</div><div class="excursion-tag">Aventura</div></div></div>', unsafe_allow_html=True)
         st.markdown('<div class="excursion-card"><div class="excursion-content"><div class="excursion-title">🏙️ 4. City Tour Serrano</div><div class="excursion-desc">Reloj Cucú y fábricas de alfajores tradicionales.</div><div class="excursion-tag">Cultura</div></div></div>', unsafe_allow_html=True)
 
-    # --- 3. LÓGICA SAN PEDRO ---
+    # --- 3. SAN PEDRO ---
     elif destino == "San Pedro":
         if os.path.exists("assets/sanpedroexc.jpg"):
             st.image("assets/sanpedroexc.jpg", use_container_width=True)
-        
         st.markdown("## 🏞️ Excursiones San Pedro")
 
         # Video San Pedro
