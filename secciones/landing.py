@@ -4,49 +4,46 @@ def render_landing():
     # URL de la imagen en tu GitHub
     LANDING_IMG = "https://raw.githubusercontent.com/martinszurman-ux/Serrano-Dashboard/dc30c61e09bc3c22068eb77157a6e63893dd1f63/assets/Landing_image.jpeg"
 
-    # CSS TOTAL - WHATSAPP A LA IZQUIERDA Y ANIMADO
+    # CSS TOTAL REFORMULADO
     st.markdown("""
         <style>
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
         
-        /* 1. RESET ESTRUCTURAL AGRESIVO */
-        header {visibility: hidden;}
+        /* 1. RESET ESTRUCTURAL - SIN CORTAR CONTENIDO */
+        header {visibility: hidden; height: 0px;}
         footer {display: none !important;}
         
         .main .block-container {
-            padding-top: 0rem !important;
+            padding-top: 1rem !important; /* Un poco de aire para que no se corte arriba */
             padding-bottom: 0rem !important;
             padding-left: 0rem !important;
             padding-right: 0rem !important;
             max-width: 100% !important;
         }
 
-        [data-testid="stVerticalBlock"] {
-            gap: 0px !important;
-        }
-
-        [data-testid="stVerticalBlock"] > div:first-child {
-            margin-top: -100px !important;
-        }
-
         /* 2. HERO SECTION */
         .hero-container {
-            padding: 0px 8% 0px 8%; 
+            padding: 20px 8% 0px 8%; 
             background-color: white;
-            display: flex;
-            align-items: center;
         }
         .hero-title {
-            font-size: 4rem !important;
+            font-size: 4.2rem !important;
             font-weight: 800;
             color: #1a1a1a;
-            line-height: 1;
+            line-height: 1.1;
+            margin-bottom: 25px;
+        }
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: #444;
+            line-height: 1.6;
+            text-align: justify;
         }
         .img-hero-style {
             width: 100%;
-            max-width: 450px;
+            max-width: 500px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
         }
 
         /* 3. SECCIÓN EXPERIENCIAS (Gris Full Width) */
@@ -68,7 +65,7 @@ def render_landing():
             padding: 0 20px;
         }
 
-        /* 4. SPACERS SIMÉTRICOS */
+        /* 4. SPACERS SIMÉTRICOS BLANCOS */
         .simetric-spacer {
             background-color: white;
             height: 80px; 
@@ -80,11 +77,11 @@ def render_landing():
             margin-right: -50vw;
         }
 
-        /* 5. FOOTER FINAL */
+        /* 5. FOOTER FINAL (Sin espacio blanco abajo) */
         .footer-full {
             background-color: #1a1a1a;
             color: white;
-            padding: 60px 8% 60px 8%;
+            padding: 60px 8% 80px 8%; /* Más padding abajo para cubrir el final */
             width: 100vw;
             position: relative;
             left: 50%;
@@ -94,15 +91,15 @@ def render_landing():
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 30px;
-            margin-bottom: -50px !important;
+            gap: 40px;
+            margin-bottom: -100px !important;
         }
 
-        /* 6. WHATSAPP FLOTANTE - LADO IZQUIERDO CON ANIMACIÓN */
+        /* 6. WHATSAPP IZQUIERDA CON PULSO */
         .whatsapp-btn {
             position: fixed; 
-            bottom: 25px; 
-            left: 25px; /* CAMBIADO A LA IZQUIERDA */
+            bottom: 30px; 
+            left: 30px; 
             background-color: #25d366; 
             color: white !important;
             width: 60px; 
@@ -115,20 +112,13 @@ def render_landing():
             z-index: 9999;
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             text-decoration: none !important;
-            
-            /* Animación de pulso */
             animation: pulse-green 2s infinite;
         }
 
         @keyframes pulse-green {
             0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-        }
-
-        .whatsapp-btn:hover {
-            transform: scale(1.1);
-            background-color: #128c7e;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -137,71 +127,70 @@ def render_landing():
 
     # 1. HERO SECTION
     st.markdown('<div class="hero-container">', unsafe_allow_html=True)
-    c1, c2 = st.columns([1.2, 0.8])
+    c1, c2 = st.columns([1.2, 0.8], gap="large")
     with c1:
-        st.markdown('<div style="margin-top:20px; padding-right: 20px;">', unsafe_allow_html=True)
         st.markdown('<h1 class="hero-title">Serrano <br>Turismo</h1>', unsafe_allow_html=True)
+        # TEXTO ACTUALIZADO SEGÚN TU PEDIDO
         st.markdown("""
-            <p style="font-size:1.15rem; color:#444; margin-top:20px; line-height:1.6; text-align: justify;">
+            <p class="hero-subtitle">
                 Tu aventura de egresados empieza acá.<br>
-                Más de 100.000 egresados de Buenos Aires ya confiaron en nosotros. 
+                Más de 100.000 egresados de Buenos Aires ya confiaron en nosotros.<br>
                 Con 29 años de experiencia, Serrano Turismo es sinónimo de transparencia y cumplimiento, 
                 transformando cada viaje en una experiencia inolvidable con la seriedad que tu familia busca.
             </p>
         """, unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
     with c2:
         st.markdown(f'<div style="text-align:right;"><img src="{LANDING_IMG}" class="img-hero-style"></div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # 2. SPACER ANTES
+    # 2. ESPACIO BLANCO ARRIBA DEL GRIS
     st.markdown('<div class="simetric-spacer"></div>', unsafe_allow_html=True)
 
-    # 3. SECCIÓN EXPERIENCIAS
+    # 3. SECCIÓN EXPERIENCIAS (FONDO GRIS)
     st.markdown("""
         <div class="experiences-outer">
             <div class="experiences-inner">
-                <h2 style="font-size:2.5rem; font-weight:700; margin-bottom:50px; color:#1a1a1a;">Experiencias Inolvidables</h2>
-                <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
-                    <div style="flex:1; min-width:250px; text-align:center;">
-                        <div style="width:110px; height:110px; background:white; border-radius:50%; margin:0 auto 20px; display:flex; align-items:center; justify-content:center; font-size:2.8rem; box-shadow:0 4px 15px rgba(0,0,0,0.05);">🚌</div>
-                        <h4 style="font-weight:700;">Transporte Premium</h4>
-                        <p style="color:#4b5563; font-size:0.9rem;">Unidades modernas de última generación.</p>
+                <h2 style="font-size:2.8rem; font-weight:700; margin-bottom:60px; color:#1a1a1a;">Experiencias Inolvidables</h2>
+                <div style="display: flex; justify-content: center; gap: 50px; flex-wrap: wrap;">
+                    <div style="flex:1; min-width:280px; text-align:center;">
+                        <div style="width:120px; height:120px; background:white; border-radius:50%; margin:0 auto 25px; display:flex; align-items:center; justify-content:center; font-size:3.2rem; box-shadow:0 8px 20px rgba(0,0,0,0.06);">🚌</div>
+                        <h4 style="font-weight:800; font-size:1.3rem;">Transporte Premium</h4>
+                        <p style="color:#4b5563; line-height:1.5;">Unidades modernas de última generación con todo el confort para la ruta.</p>
                     </div>
-                    <div style="flex:1; min-width:250px; text-align:center;">
-                        <div style="width:110px; height:110px; background:white; border-radius:50%; margin:0 auto 20px; display:flex; align-items:center; justify-content:center; font-size:2.8rem; box-shadow:0 4px 15px rgba(0,0,0,0.05);">🏨</div>
-                        <h4 style="font-weight:700;">Hoteles Propios</h4>
-                        <p style="color:#4b5563; font-size:0.9rem;">Exclusividad y seguridad en los destinos.</p>
+                    <div style="flex:1; min-width:280px; text-align:center;">
+                        <div style="width:120px; height:120px; background:white; border-radius:50%; margin:0 auto 25px; display:flex; align-items:center; justify-content:center; font-size:3.2rem; box-shadow:0 8px 20px rgba(0,0,0,0.06);">🏨</div>
+                        <h4 style="font-weight:800; font-size:1.3rem;">Hoteles Propios</h4>
+                        <p style="color:#4b5563; line-height:1.5;">Exclusividad y seguridad en los mejores destinos del país.</p>
                     </div>
-                    <div style="flex:1; min-width:250px; text-align:center;">
-                        <div style="width:110px; height:110px; background:white; border-radius:50%; margin:0 auto 20px; display:flex; align-items:center; justify-content:center; font-size:2.8rem; box-shadow:0 4px 15px rgba(0,0,0,0.05);">🛡️</div>
-                        <h4 style="font-weight:700;">Seguridad 24/7</h4>
-                        <p style="color:#4b5563; font-size:0.9rem;">Coordinación y asistencia médica integral.</p>
+                    <div style="flex:1; min-width:280px; text-align:center;">
+                        <div style="width:120px; height:120px; background:white; border-radius:50%; margin:0 auto 25px; display:flex; align-items:center; justify-content:center; font-size:3.2rem; box-shadow:0 8px 20px rgba(0,0,0,0.06);">🛡️</div>
+                        <h4 style="font-weight:800; font-size:1.3rem;">Seguridad 24/7</h4>
+                        <p style="color:#4b5563; line-height:1.5;">Coordinación permanente y asistencia médica integral para tu tranquilidad.</p>
                     </div>
                 </div>
             </div>
         </div>
     """, unsafe_allow_html=True)
 
-    # 4. SPACER DESPUÉS
+    # 4. ESPACIO BLANCO ABAJO DEL GRIS
     st.markdown('<div class="simetric-spacer"></div>', unsafe_allow_html=True)
 
-    # 5. FOOTER FINAL
+    # 5. FOOTER FINAL NEGRO
     st.markdown("""
         <div class="footer-full">
-            <div style="flex:1; min-width:250px;">
-                <h4 style="margin-bottom:15px; font-weight:700; color:white;">SERRANO TURISMO</h4>
-                <p style="color:#999; font-size:0.85rem;">29 años de trayectoria impecable.</p>
+            <div style="flex:1; min-width:280px;">
+                <h4 style="margin-bottom:20px; font-weight:700; color:white; letter-spacing:1px;">SERRANO TURISMO</h4>
+                <p style="color:#aaa; font-size:0.9rem; line-height:1.7;">Expertos en viajes de egresados y turismo educativo. 29 años de compromiso ininterrumpido con las familias.</p>
             </div>
-            <div style="flex:1; min-width:250px;">
-                <h4 style="margin-bottom:15px; font-weight:700; color:white;">CONTACTO</h4>
-                <p style="color:#999; font-size:0.85rem;">📍 CABA: Av. Rivadavia 4532<br>📍 Ituzaingó: Del Cimarrón 1846<br>📞 11-4847-6467</p>
+            <div style="flex:1; min-width:280px;">
+                <h4 style="margin-bottom:20px; font-weight:700; color:white; letter-spacing:1px;">CONTACTO</h4>
+                <p style="color:#aaa; font-size:0.9rem; line-height:1.7;">📍 CABA: Av. Rivadavia 4532<br>📍 Ituzaingó: Parque Leloir<br>📞 11-4847-6467</p>
             </div>
             <div style="flex:1; min-width:200px;">
-                <h4 style="margin-bottom:15px; font-weight:700; color:white;">REDES</h4>
-                <div style="display:flex; gap:15px;">
-                    <a href="https://instagram.com/serrano_turismo" target="_blank" style="color:white; font-size:1.5rem;"><i class="fab fa-instagram"></i></a>
-                    <a href="https://facebook.com/serranoturismo" target="_blank" style="color:white; font-size:1.5rem;"><i class="fab fa-facebook-f"></i></a>
+                <h4 style="margin-bottom:20px; font-weight:700; color:white; letter-spacing:1px;">REDES</h4>
+                <div style="display:flex; gap:20px;">
+                    <a href="https://instagram.com/serrano_turismo" target="_blank" style="color:white; font-size:1.8rem;"><i class="fab fa-instagram"></i></a>
+                    <a href="https://facebook.com/serranoturismo" target="_blank" style="color:white; font-size:1.8rem;"><i class="fab fa-facebook-f"></i></a>
                 </div>
             </div>
         </div>
