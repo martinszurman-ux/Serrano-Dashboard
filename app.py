@@ -8,12 +8,12 @@ st.set_page_config(
 )
 
 # 2. LÓGICA DE NAVEGACIÓN (Lectura de la URL)
-# Esto define qué pantalla se muestra según lo que diga la barra de direcciones
+# Usamos query_params para que la navegación sea sólida al refrescar
 query_params = st.query_params
 nav_actual = query_params.get("nav", "Home")
 dest_actual = query_params.get("destino", None)
 
-# Sincronizamos con la sesión interna de Streamlit
+# Sincronizamos con la sesión interna
 st.session_state.nav = nav_actual
 st.session_state.destino = dest_actual
 
@@ -34,7 +34,7 @@ except ImportError as e:
     st.error(f"⚠️ Error de importación: {e}")
     st.stop()
 
-# 4. CSS MAESTRO (Menú Superior, Logo y Dropdowns)
+# 4. CSS MAESTRO (Ajustes de Logo, Menú Negro y Hover Estable)
 st.markdown("""
     <style>
     /* Reset de Streamlit */
@@ -50,39 +50,41 @@ st.markdown("""
         top: 0; left: 0; right: 0; z-index: 9999;
     }
 
-    .logo-box img { max-height: 60px; width: auto; }
+    .logo-box img { max-height: 55px; width: auto; }
     .nav-links { display: flex; align-items: center; gap: 35px; }
 
-    /* Estilo de los links de texto */
+    /* Estilo de los links de texto: Negro, sin subrayado, Negrita */
     .nav-item {
         color: black !important; text-decoration: none !important; 
-        font-size: 14px; font-weight: 700; text-transform: uppercase;
-        letter-spacing: 1px;
+        font-size: 13px; font-weight: 700; text-transform: uppercase;
+        letter-spacing: 0.5px; transition: 0.2s;
     }
+    .nav-item:hover { color: #555 !important; }
 
     /* DROPDOWN (Hover) */
     .dropdown { position: relative; display: inline-block; }
     .dropbtn {
-        color: black !important; font-size: 14px; font-weight: 700;
+        color: black !important; font-size: 13px; font-weight: 700;
         text-decoration: none !important; border: none; background: none;
         cursor: pointer; text-transform: uppercase; padding: 30px 0;
     }
     .dropdown-content {
         display: none; position: absolute; background-color: white;
-        min-width: 240px; box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
+        min-width: 240px; box-shadow: 0px 8px 16px rgba(0,0,0,0.08);
         z-index: 1000; border-radius: 8px; border: 1px solid #f0f0f0; top: 75px;
     }
     .dropdown:hover .dropdown-content { display: block; }
+    
     .dropdown-content a {
         color: #444; padding: 12px 20px; text-decoration: none;
         display: block; font-size: 13px; transition: 0.2s;
     }
     .dropdown-content a:hover { background-color: #f8f9fa; color: #000 !important; padding-left: 25px; }
 
-    /* Sigla CP / SP */
+    /* Sigla del destino activo */
     .sigla-badge {
         background: #000; color: #fff; padding: 4px 10px;
-        border-radius: 4px; font-weight: bold; font-size: 12px;
+        border-radius: 4px; font-weight: bold; font-size: 11px;
     }
 
     .content-wrapper { margin-top: 100px; padding: 0 5%; }
@@ -94,40 +96,44 @@ logo_url = "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png
 sigla = "SP" if dest_actual == "San Pedro" else "CP" if dest_actual == "Villa Carlos Paz" else ""
 
 if not dest_actual:
-    # Caso A: No hay destino (Menú para elegir)
+    # Caso A: No hay destino (Menú de Selección)
     links_html = f"""
-        <a href="/?nav=Home&destino=San+Pedro" class="nav-item" target="_self">SAN PEDRO</a>
-        <a href="/?nav=Home&destino=Villa+Carlos+Paz" class="nav-item" target="_self">CARLOS PAZ</a>
+        <a href="./?nav=Home&destino=San+Pedro" class="nav-item" target="_self">SAN PEDRO</a>
+        <a href="./?nav=Home&destino=Villa+Carlos+Paz" class="nav-item" target="_self">CARLOS PAZ</a>
     """
 else:
-    # Caso B: Destino elegido (Menú completo)
+    # Caso B: Destino elegido (Menú Completo)
     links_html = f"""
-        <a href="/?nav=Home" class="nav-item" target="_self">HOME</a>
+        <a href="./?nav=Home" class="nav-item" target="_self">HOME</a>
         <div class="dropdown">
             <button class="dropbtn">CONOCÉ TU VIAJE ▼</button>
             <div class="dropdown-content">
-                <a href="/?nav=Transporte&destino={dest_actual}" target="_self">Transporte</a>
-                <a href="/?nav=Hoteleria&destino={dest_actual}" target="_self">Hotelería</a>
-                <a href="/?nav=Comidas&destino={dest_actual}" target="_self">Comidas</a>
-                <a href="/?nav=Excursiones&destino={dest_actual}" target="_self">Excursiones</a>
-                <a href="/?nav=Actividades&destino={dest_actual}" target="_self">Actividades</a>
-                <a href="/?nav=Seguro&destino={dest_actual}" target="_self">Seguro/Coordinación</a>
+                <a href="./?nav=Transporte&destino={dest_actual}" target="_self">Transporte</a>
+                <a href="./?nav=Hoteleria&destino={dest_actual}" target="_self">Hotelería</a>
+                <a href="./?nav=Comidas&destino={dest_actual}" target="_self">Comidas</a>
+                <a href="./?nav=Excursiones&destino={dest_actual}" target="_self">Excursiones</a>
+                <a href="./?nav=Actividades&destino={dest_actual}" target="_self">Actividades</a>
+                <a href="./?nav=Seguro&destino={dest_actual}" target="_self">Seguro / Coordinación</a>
             </div>
         </div>
         <div class="dropdown">
             <button class="dropbtn">ARMÁ TU VIAJE ▼</button>
             <div class="dropdown-content">
-                <a href="/?nav=Tarifas&destino={dest_actual}" target="_self">Tarifas</a>
-                <a href="/?nav=Adhesion&destino={dest_actual}" target="_self">Ficha de Adhesión</a>
+                <a href="./?nav=Tarifas&destino={dest_actual}" target="_self">Tarifas</a>
+                <a href="./?nav=Adhesion&destino={dest_actual}" target="_self">Ficha de Adhesión</a>
             </div>
         </div>
         <div class="sigla-badge">{sigla}</div>
     """
 
-# Inyectamos la barra de navegación
+# Inyección del Navbar
 st.markdown(f"""
     <div class="navbar">
-        <div class="logo-box"><a href="/?nav=Home" target="_self"><img src="{logo_url}"></a></div>
+        <div class="logo-box">
+            <a href="./?nav=Home" target="_self">
+                <img src="{logo_url}">
+            </a>
+        </div>
         <div class="nav-links">{links_html}</div>
         <div style="width:110px;"></div>
     </div>
