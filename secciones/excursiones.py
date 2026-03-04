@@ -2,7 +2,7 @@ import streamlit as st
 import os
 
 def render_excursiones(destino):
-    # --- ESTILOS CSS (Slim, Mobile & TV Frame) ---
+    # --- ESTILOS CSS (Slim, Mobile & TV Frame Real) ---
     st.markdown("""
         <style>
         .excursion-card {
@@ -37,23 +37,22 @@ def render_excursiones(destino):
             margin-top: 10px;
             text-transform: uppercase;
         }
-        /* ESTILO TV FRAME PARA EL VIDEO */
-        .video-tv-frame {
-            background: #1a1a1a;
-            padding: 15px;
+        /* MARCO DE TV MEJORADO */
+        .tv-frame {
+            background: #222;
+            border: 12px solid #333;
             border-radius: 25px;
-            border: 8px solid #333;
-            box-shadow: 0px 10px 30px rgba(0,0,0,0.3);
+            padding: 10px;
+            box-shadow: 0px 15px 35px rgba(0,0,0,0.4);
             margin: 20px auto;
-            max-width: 800px;
         }
         </style>
     """, unsafe_allow_html=True)
 
     if destino == "Villa Carlos Paz":
-        # Mantenemos tu código de Carlos Paz aquí...
+        # (Aquí va tu bloque de VCP que ya tenías)
         st.markdown("## 🏞️ Experiencias en Carlos Paz")
-        # (Resto del código de VCP)
+        # ...
 
     elif destino == "San Pedro":
         # 1. ENCABEZADO (Archivo: assets/sanpedroexc.jpg)
@@ -62,10 +61,10 @@ def render_excursiones(destino):
         
         st.markdown("## 🏞️ Excursiones San Pedro")
 
-        # 2. EL FUERTE DE OBLIGADO (Archivo: assets/2.jpg)
+        # 1. EL FUERTE DE OBLIGADO (Archivo: assets/sanpedroexc2.jpg)
         st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
-        if os.path.exists("assets/2.jpg"):
-            st.image("assets/2.jpg")
+        if os.path.exists("assets/sanpedroexc2.jpg"):
+            st.image("assets/sanpedroexc2.jpg")
         st.markdown("""
             <div class="excursion-content">
                 <div class="excursion-title">🚌 1. El Fuerte de Obligado</div>
@@ -75,7 +74,7 @@ def render_excursiones(destino):
         </div>
         """, unsafe_allow_html=True)
 
-        # 3. BEACH DAY CON CANOTAJE
+        # 2. BEACH DAY CON CANOTAJE
         st.markdown("""
             <div class="excursion-card">
                 <div class="excursion-content">
@@ -86,42 +85,6 @@ def render_excursiones(destino):
             </div>
         """, unsafe_allow_html=True)
 
-        # 4. COMPLEJO LAS AMALIAS
+        # 3. COMPLEJO LAS AMALIAS
         st.markdown("""
-            <div class="excursion-card">
-                <div class="excursion-content">
-                    <div class="excursion-title">🚌 3. Complejo Las Amalias</div>
-                    <div class="excursion-desc">Laberinto de ligustrinas, plaza húmeda, piletas y deportes. Un predio gigante para la recreación del grupo.</div>
-                    <div class="excursion-tag">Recreación • Aire Libre</div>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-
-        # 5. SUNSET CATAMARÁN
-        st.markdown("""
-            <div class="excursion-card">
-                <div class="excursion-content">
-                    <div class="excursion-title">🚢 4. Sunset Catamarán</div>
-                    <div class="excursion-desc">Navegación por el Paraná al atardecer con música exclusiva. Una experiencia mágica para cerrar el día.</div>
-                    <div class="excursion-tag">Navegación • Música</div>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-
-        # 6. CITY TOUR
-        st.markdown("""
-            <div class="excursion-card">
-                <div class="excursion-content">
-                    <div class="excursion-title">🏙️ 5. City Tour</div>
-                    <div class="excursion-desc">Recorrido por barrancas, Vía Crucis y centros históricos, con tiempo para compras de productos regionales.</div>
-                    <div class="excursion-tag">Cultura • Regalos</div>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-
-        # 7. VIDEO INSTITUCIONAL AL FINAL (Con Marco de TV)
-        st.markdown("---")
-        st.markdown("### 🎥 Mirá cómo vivimos San Pedro")
-        st.markdown('<div class="video-tv-frame">', unsafe_allow_html=True)
-        st.video("https://www.youtube.com/watch?v=xBDqSrNB8Ro")
-        st.markdown('</div>', unsafe_allow_html=True)
+            <div class
