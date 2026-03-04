@@ -1,4 +1,5 @@
 import streamlit as st
+from utilidades.footer import render_footer
 
 def render_nocturnas(destino):
     st.markdown(f"<h1 style='text-align: center; color: #1E3A8A;'>🌙 ACTIVIDADES NOCTURNAS EN {destino.upper()}</h1>", unsafe_allow_html=True)
@@ -36,3 +37,7 @@ def render_nocturnas(destino):
 
     st.markdown("---")
     st.caption("✨ *Todas las actividades nocturnas cuentan con la supervisión de nuestro equipo de animación propia y seguridad.*")
+
+ # --- 5. FOOTER INSTITUCIONAL ---
+    # Invocamos la función del archivo utilidades/footer.py
+    render_footer()
