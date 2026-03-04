@@ -98,7 +98,8 @@ def render_footer():
             <p>29 años de trayectoria. © 2026</p>
         </div>
         <div class="col">
-            <p>📍 CABA | Leloir | San Pedro</p>
+            <p>📍 Av. Rivadavia 4532 - Galería Alefa (local 10) C1042AAP - C.A.B.A.
+            <p>📍 Del Cimarrón 1846 - 1er Piso - Of. 4 C.P.: 1714 - Parque Leloir Ituzaingo   
             <p>📞 11-4847-6467</p>
         </div>
         <div class="col">
