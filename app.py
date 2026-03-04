@@ -1,6 +1,6 @@
 import streamlit as st
 
-# 1. CONFIGURACIÓN DE PÁGINA (Debe ser lo primero)
+# 1. CONFIGURACIÓN DE PÁGINA
 st.set_page_config(
     page_title="Serrano Turismo", 
     layout="wide", 
@@ -8,7 +8,6 @@ st.set_page_config(
 )
 
 # 2. LÓGICA DE NAVEGACIÓN (Lectura de la URL)
-# Usamos query_params para que la navegación sea sólida al refrescar
 query_params = st.query_params
 nav_actual = query_params.get("nav", "Home")
 dest_actual = query_params.get("destino", None)
@@ -34,16 +33,16 @@ except ImportError as e:
     st.error(f"⚠️ Error de importación: {e}")
     st.stop()
 
-# 4. CSS MAESTRO (Ajustes de Logo, Menú, Hover y Footer de lado a lado)
+# 4. CSS MAESTRO
 st.markdown("""
     <style>
     /* Reset de Streamlit */
     [data-testid="stHeader"], [data-testid="stSidebar"] { display: none !important; }
     
-    /* 1. ELIMINAR FRANJA BLANCA FINAL */
+    /* 1. ELIMINAR FRANJA BLANCA FINAL Y AJUSTE DE CONTENEDOR */
     .main .block-container { 
         padding-top: 0rem !important; 
-        padding-bottom: 0rem !important; /* Quitamos el espacio de abajo */
+        padding-bottom: 0rem !important; 
         max-width: 100% !important;
     }
     .stApp { background-color: white !important; }
@@ -83,6 +82,7 @@ st.markdown("""
         color: #444; padding: 12px 20px; text-decoration: none;
         display: block; font-size: 13px; transition: 0.2s;
     }
+    .dropdown-content a:hover { background-color: #f8f9fa; color: #000 !important; padding-left: 25px; }
 
     /* Sigla */
     .sigla-badge {
@@ -90,16 +90,17 @@ st.markdown("""
         border-radius: 4px; font-weight: bold; font-size: 11px;
     }
 
-    .content-wrapper { margin-top: 100px; padding: 0 5%; }
+    /* Subimos el contenido reduciendo el margin-top (antes 100px) */
+    .content-wrapper { margin-top: 85px; padding: 0 5%; }
 
-    /* 2. FOOTER PROPORCIONADO Y DE LADO A LADO */
+    /* 2. FOOTER PROPORCIONADO */
     .footer-container {
         background-color: #1a1a1a;
         color: #888;
-        padding: 30px 10% !important; /* Padding reducido para que no sea tan ancho */
+        padding: 30px 10% !important;
         margin-left: -10vw !important;
         margin-right: -10vw !important;
-        margin-bottom: -5rem !important; /* Empuja el footer hacia el final absoluto */
+        margin-bottom: -5rem !important;
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
@@ -115,9 +116,8 @@ sigla = "SP" if dest_actual == "San Pedro" else "CP" if dest_actual == "Villa Ca
 
 if not dest_actual:
     # Caso A: No hay destino (Menú de Selección)
-    # Agregamos el texto a la izquierda con un estilo similar a los nav-items pero sin hover
     links_html = f"""
-        <span style="color: #888; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-right: 10px;">
+        <span style="color: #888; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-right: 15px;">
             Elegí tu destino:
         </span>
         <a href="./?nav=Home&destino=San+Pedro" class="nav-item" target="_self">SAN PEDRO</a>
@@ -133,7 +133,7 @@ else:
                 <a href="./?nav=Transporte&destino={dest_actual}" target="_self">Transporte</a>
                 <a href="./?nav=Hoteleria&destino={dest_actual}" target="_self">Hotelería</a>
                 <a href="./?nav=Comidas&destino={dest_actual}" target="_self">Comidas</a>
-                <a href="/?nav=Excursiones&destino={dest_actual}" target="_self">Excursiones</a>
+                <a href="./?nav=Excursiones&destino={dest_actual}" target="_self">Excursiones</a>
                 <a href="./?nav=Actividades&destino={dest_actual}" target="_self">Actividades</a>
                 <a href="./?nav=Seguro&destino={dest_actual}" target="_self">Seguro / Coordinación</a>
             </div>
@@ -148,7 +148,20 @@ else:
         <div class="sigla-badge">{sigla}</div>
     """
 
-# 6. RENDERIZADO DE CONTENIDO SEGÚN LA NAVEGACIÓN
+# Inyección del Navbar
+st.markdown(f"""
+    <div class="navbar">
+        <div class="logo-box">
+            <a href="./?nav=Home" target="_self">
+                <img src="{logo_url}">
+            </a>
+        </div>
+        <div class="nav-links">{links_html}</div>
+        <div style="width:110px;"></div>
+    </div>
+""", unsafe_allow_html=True)
+
+# 6. RENDERIZADO DE CONTENIDO
 st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 
 if nav_actual == "Home":
@@ -169,5 +182,3 @@ elif nav_actual == "Tarifas": render_tarifas(dest_actual)
 elif nav_actual == "Adhesion": render_adhesion(logo_url)
 
 st.markdown('</div>', unsafe_allow_html=True)
-
-
