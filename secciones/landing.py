@@ -4,29 +4,35 @@ def render_landing():
     # URL de la imagen en tu GitHub
     LANDING_IMG = "https://raw.githubusercontent.com/martinszurman-ux/Serrano-Dashboard/dc30c61e09bc3c22068eb77157a6e63893dd1f63/assets/Landing_image.jpeg"
 
-    # CSS TOTAL - SIMETRÍA Y LIMPIEZA
+    # CSS TOTAL - AJUSTADO PARA ELIMINAR ESPACIO FINAL
     st.markdown("""
         <style>
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
         
-        /* 1. RESET ESTRUCTURAL */
+        /* 1. RESET ESTRUCTURAL AGRESIVO */
         header {visibility: hidden;}
+        footer {display: none !important;} /* Elimina el footer nativo de Streamlit */
+        
         .main .block-container {
             padding-top: 0rem !important;
-            padding-bottom: 0rem !important;
+            padding-bottom: 0rem !important; /* Elimina espacio al final */
             padding-left: 0rem !important;
             padding-right: 0rem !important;
             max-width: 100% !important;
         }
-        
-        /* Subida de contenido inicial */
+
+        /* Fuerza al contenedor de la aplicación a no tener scroll extra */
+        [data-testid="stVerticalBlock"] {
+            gap: 0px !important;
+        }
+
         [data-testid="stVerticalBlock"] > div:first-child {
             margin-top: -100px !important;
         }
 
         /* 2. HERO SECTION */
         .hero-container {
-            padding: 0px 8% 0px 8%; /* Sin padding inferior para controlar el blanco con el spacer */
+            padding: 0px 8% 0px 8%; 
             background-color: white;
             display: flex;
             align-items: center;
@@ -66,7 +72,7 @@ def render_landing():
         /* 4. SPACERS SIMÉTRICOS (Blanco antes y después) */
         .simetric-spacer {
             background-color: white;
-            height: 80px; /* Alto idéntico para ambos */
+            height: 80px; 
             width: 100vw;
             position: relative;
             left: 50%;
@@ -75,11 +81,11 @@ def render_landing():
             margin-right: -50vw;
         }
 
-        /* 5. FOOTER FINAL */
+        /* 5. FOOTER FINAL (Ajuste para que sea el fin absoluto) */
         .footer-full {
             background-color: #1a1a1a;
             color: white;
-            padding: 60px 8% 40px 8%;
+            padding: 60px 8% 60px 8%;
             width: 100vw;
             position: relative;
             left: 50%;
@@ -90,6 +96,7 @@ def render_landing():
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 30px;
+            margin-bottom: -50px !important; /* "Pisa" el posible margen final */
         }
 
         /* WHATSAPP */
@@ -108,11 +115,10 @@ def render_landing():
 
     # 1. HERO SECTION
     st.markdown('<div class="hero-container">', unsafe_allow_html=True)
-    c1, c2 = st.columns([1.2, 0.8]) # Un poco más de espacio al texto
+    c1, c2 = st.columns([1.2, 0.8])
     with c1:
         st.markdown('<div style="margin-top:20px; padding-right: 20px;">', unsafe_allow_html=True)
         st.markdown('<h1 class="hero-title">Serrano <br>Turismo</h1>', unsafe_allow_html=True)
-        # NUEVO TEXTO ACTUALIZADO
         st.markdown("""
             <p style="font-size:1.15rem; color:#444; margin-top:20px; line-height:1.6; text-align: justify;">
                 Tu aventura de egresados empieza acá.<br>
@@ -126,10 +132,10 @@ def render_landing():
         st.markdown(f'<div style="text-align:right;"><img src="{LANDING_IMG}" class="img-hero-style"></div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # 2. FRANJA BLANCA ANTES (SIMÉTRICA)
+    # 2. SPACER ANTES
     st.markdown('<div class="simetric-spacer"></div>', unsafe_allow_html=True)
 
-    # 3. SECCIÓN EXPERIENCIAS (Fondo Gris)
+    # 3. SECCIÓN EXPERIENCIAS
     st.markdown("""
         <div class="experiences-outer">
             <div class="experiences-inner">
@@ -155,10 +161,10 @@ def render_landing():
         </div>
     """, unsafe_allow_html=True)
 
-    # 4. FRANJA BLANCA DESPUÉS (SIMÉTRICA)
+    # 4. SPACER DESPUÉS
     st.markdown('<div class="simetric-spacer"></div>', unsafe_allow_html=True)
 
-    # 5. FOOTER FINAL
+    # 5. FOOTER FINAL (Sin espacio blanco después)
     st.markdown("""
         <div class="footer-full">
             <div style="flex:1; min-width:250px;">
