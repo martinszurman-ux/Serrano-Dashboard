@@ -7,17 +7,25 @@ def render_landing():
     # CSS TOTAL: Control de Layout, Hero, Experiencias, Footer Full Width y WhatsApp
     st.markdown("""
         <style>
-        /* 1. Reset de Streamlit para permitir elementos de ancho completo */
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
         
+        /* 1. ELIMINAR ESPACIO BLANCO INFERIOR Y LATERAL */
         .main .block-container {
-            padding: 0px !important;
+            padding-top: 2rem !important;
+            padding-bottom: 0px !important; /* Elimina el espacio abajo */
+            padding-left: 0px !important;
+            padding-right: 0px !important;
             max-width: 100% !important;
         }
 
-        /* Contenedor para elementos que SI deben tener margen (Hero y Experiencias) */
+        /* Forzar que el último bloque no tenga margen inferior */
+        [data-testid="stVerticalBlock"] {
+            gap: 0px !important;
+        }
+
+        /* Contenedor para elementos con margen (Hero y Experiencias) */
         .content-wrapper {
-            padding: 0 5%;
+            padding: 0 7%;
         }
 
         /* HERO SECTION */
@@ -56,11 +64,11 @@ def render_landing():
             font-size: 3rem; border: 1px solid #eee;
         }
 
-        /* FOOTER FULL WIDTH (CORREGIDO) */
+        /* FOOTER FULL WIDTH SIN ESPACIO ABAJO */
         .footer-full {
             background-color: #1a1a1a;
             color: white;
-            padding: 60px 8%;
+            padding: 80px 8% 60px 8%;
             margin-top: 80px;
             width: 100vw;
             position: relative;
@@ -72,17 +80,19 @@ def render_landing():
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 40px;
+            margin-bottom: -100px; /* Truco para "comerse" el espacio extra de Streamlit */
+            padding-bottom: 120px; /* Compensa el margen negativo */
         }
+        
         .footer-col { flex: 1; min-width: 280px; }
-        .footer-col h4 { color: white; margin-bottom: 20px; font-size: 1.1rem; letter-spacing: 1px; font-weight: 700; }
+        .footer-col h4 { color: white; margin-bottom: 25px; font-size: 1.1rem; letter-spacing: 1px; font-weight: 700; }
         .footer-col p { color: #aaa; font-size: 0.9rem; line-height: 1.7; }
         
-        /* Redes Sociales */
         .social-icons-container { display: flex; gap: 20px; margin-top: 15px; }
         .social-icons-container a { color: white; font-size: 1.6rem; transition: 0.3s; text-decoration: none; }
         .social-icons-container a:hover { color: #25d366; transform: scale(1.2); }
 
-        /* WHATSAPP FLOTANTE ANIMADO */
+        /* WHATSAPP */
         .whatsapp-btn {
             position: fixed;
             bottom: 30px;
@@ -109,7 +119,7 @@ def render_landing():
         </style>
     """, unsafe_allow_html=True)
 
-    # 1. HERO SECTION (Envuelto en content-wrapper para tener márgenes)
+    # 1. HERO SECTION
     st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
     col_txt, col_img = st.columns([1.1, 1], gap="large")
     with col_txt:
@@ -124,19 +134,19 @@ def render_landing():
     st.markdown('<h2 class="section-title">Experiencias Inolvidables</h2>', unsafe_allow_html=True)
     e1, e2, e3 = st.columns(3)
     with e1:
-        st.markdown('<div class="exp-card"><div class="exp-circle">🚌</div><h4>Transporte Premium</h4><p>Unidades modernas con el máximo confort para un viaje seguro.</p></div>', unsafe_allow_html=True)
+        st.markdown('<div class="exp-card"><div class="exp-circle">🚌</div><h4>Transporte Premium</h4><p>Unidades modernas para un viaje seguro.</p></div>', unsafe_allow_html=True)
     with e2:
-        st.markdown('<div class="exp-card"><div class="exp-circle">🏨</div><h4>Hoteles Propios</h4><p>Alojamiento exclusivo con servicios pensados para egresados.</p></div>', unsafe_allow_html=True)
+        st.markdown('<div class="exp-card"><div class="exp-circle">🏨</div><h4>Hoteles Propios</h4><p>Exclusividad pensada para egresados.</p></div>', unsafe_allow_html=True)
     with e3:
-        st.markdown('<div class="exp-card"><div class="exp-circle">🛡️</div><h4>Seguridad 24/7</h4><p>Atención médica y coordinación permanente en todo el viaje.</p></div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True) # Cierre de content-wrapper
+        st.markdown('<div class="exp-card"><div class="exp-circle">🛡️</div><h4>Seguridad 24/7</h4><p>Atención médica y coordinación permanente.</p></div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True) 
 
-    # 3. FOOTER (Fuera del wrapper para ser Full Width)
+    # 3. FOOTER (Con truco de margen negativo para eliminar el blanco inferior)
     st.markdown("""
         <div class="footer-full">
             <div class="footer-col">
                 <h4>SERRANO TURISMO</h4>
-                <p>Expertos en viajes estudiantiles con más de 28 años de trayectoria impecable. Garantizamos seguridad, diversión y aprendizaje en cada destino.</p>
+                <p>Expertos en viajes estudiantiles con más de 28 años de trayectoria impecable. Garantizamos seguridad y diversión.</p>
             </div>
             <div class="footer-col">
                 <h4>CONTACTO</h4>
@@ -146,7 +156,6 @@ def render_landing():
             </div>
             <div class="footer-col">
                 <h4>REDES SOCIALES</h4>
-                <p>Seguí nuestras aventuras diarias:</p>
                 <div class="social-icons-container">
                     <a href="https://www.instagram.com/serrano_turismo/" target="_blank"><i class="fab fa-instagram"></i></a>
                     <a href="https://www.facebook.com/serranoturismo/" target="_blank"><i class="fab fa-facebook-f"></i></a>
@@ -155,10 +164,9 @@ def render_landing():
         </div>
     """, unsafe_allow_html=True)
 
-    # 4. BOTÓN WHATSAPP FLOTANTE
+    # 4. BOTÓN WHATSAPP
     st.markdown("""
-        <a href="https://wa.me/5491156096283?text=Hola!%20Quería%20consultar%20por%20un%20viaje..." class="whatsapp-btn" target="_blank">
+        <a href="https://wa.me/5491156096283" class="whatsapp-btn" target="_blank">
             <i class="fab fa-whatsapp"></i>
         </a>
     """, unsafe_allow_html=True)
-    
