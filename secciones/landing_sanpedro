@@ -1,10 +1,9 @@
-
 import streamlit as st
 
-# Configuración de la página
+# 1. Configuración de la página (Debe ser lo primero)
 st.set_page_config(page_title="Descubrí San Pedro", page_icon="📍", layout="wide")
 
-# Aplicar un poco de estilo personalizado (CSS)
+# 2. Estilo CSS
 st.markdown("""
     <style>
     .main {
@@ -15,11 +14,14 @@ st.markdown("""
         border-radius: 20px;
         background-color: #2e7d32;
         color: white;
+        height: 3em;
+        font-weight: bold;
     }
     .hero-text {
         font-size: 50px;
         font-weight: bold;
         color: #1b5e20;
+        line-height: 1.2;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -38,13 +40,13 @@ with col1:
         st.balloons()
 
 with col2:
-    # Cargando tu imagen desde la ruta que mencionaste
+    # Ruta de la imagen (asegurate de que incluya la extensión si la tiene, ej .jpg)
     try:
         st.image("assets/landing_sanPedro_imagen", use_container_width=True, caption="Atardecer en la Costanera")
-    except:
-        st.warning("⚠️ No se encontró la imagen en 'assets/landing_sanPedro_imagen'. Verificá la extensión (ej: .jpg o .png).")
+    except Exception:
+        st.warning("⚠️ No se encontró la imagen en 'assets/landing_sanPedro_imagen'.")
 
----
+st.divider() # <--- FORMA CORRECTA DE HACER LA LÍNEA
 
 # --- SECCIÓN DETALLES ---
 st.header("¿Qué hacer en San Pedro?")
@@ -59,10 +61,10 @@ with c2:
     st.write("La cuna de la ensaimada mallorquina y los mejores asados.")
 
 with c3:
-    st.subheader("歷史 Historia")
+    st.subheader("🏛️ Historia") # Corregí el emoji/texto aquí
     st.write("Visitá la Vuelta de Obligado y recorré nuestro casco histórico.")
 
----
+st.divider() # <--- FORMA CORRECTA DE HACER LA LÍNEA
 
 # --- FORMULARIO DE CONTACTO ---
 st.write("## Recibí info sobre paquetes exclusivos")
@@ -73,4 +75,7 @@ with st.form("contacto"):
     enviado = st.form_submit_button("Enviar consulta")
     
     if enviado:
-        st.success(f"¡Gracias {nombre}! Te contactaremos pronto a {email}.")
+        if nombre and email:
+            st.success(f"¡Gracias {nombre}! Te contactaremos pronto a {email}.")
+        else:
+            st.error("Por favor, completa los campos obligatorios.")
