@@ -50,17 +50,6 @@ def render_landing_sp():
             border-left: 5px solid #2e7d32;
             height: 100%;
         }
-        
-        /* Sección de Trayectoria */
-        .trayectoria-box {
-            background-color: #f8f9fa;
-            border-left: 5px solid #1b5e20;
-            padding: 20px 30px;
-            border-radius: 10px;
-            margin: 30px 0;
-            font-size: 18px;
-            color: #333;
-        }
 
         /* Marco de TV para el Video */
         .tv-wrapper {
@@ -124,7 +113,6 @@ def render_landing_sp():
         """, unsafe_allow_html=True)
         
         if st.button("Ver opciones de Hotelería", key="btn_reserva_sp"):
-            # Combinamos tu toast con la navegación a Hotelería
             st.toast("¡Preparando tus opciones para San Pedro! 🌿")
             st.query_params["nav"] = "Hoteleria"
             st.rerun()
@@ -144,17 +132,10 @@ def render_landing_sp():
                 </div>
             """, unsafe_allow_html=True)
 
-    # --- SECCIÓN TRAYECTORIA EMPRESA ---
-    st.markdown("""
-        <div class="trayectoria-box">
-            <strong>Con 29 años de trayectoria ininterrumpida</strong>, en Serrano Turismo hemos consolidado una marca definida por la transparencia y la responsabilidad. Nuestra mayor recompensa es haber cumplido el sueño del viaje de egresados a más de <strong>100.000 chicos</strong>.
-        </div>
-    """, unsafe_allow_html=True)
-
     st.markdown("<br>", unsafe_allow_html=True)
     st.divider()
 
-    # --- VIDEO INSTITUCIONAL EN MARCO DE TV ---
+    # --- 3. VIDEO INSTITUCIONAL EN MARCO DE TV ---
     st.markdown("""
         <div class="tv-wrapper">
             <h3 style="text-align: center; color: #1b5e20; margin-bottom: 20px;">Conocé nuestra experiencia en San Pedro</h3>
@@ -170,7 +151,7 @@ def render_landing_sp():
 
     st.divider()
 
-    # --- 3. SECCIÓN EXPERIENCIAS ---
+    # --- 4. SECCIÓN EXPERIENCIAS ---
     st.markdown("<h2 style='text-align: center; color: #1b5e20;'>Experiencias Imperdibles</h2>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; color: #666;'>Todo lo que necesitás para un viaje perfecto</p>", unsafe_allow_html=True)
     st.write("")
@@ -202,24 +183,6 @@ def render_landing_sp():
         """, unsafe_allow_html=True)
 
     st.markdown("<br><br>", unsafe_allow_html=True)
-
-    # --- 4. SECCIÓN CONTACTO RÁPIDO ---
-    with st.container():
-        st.markdown("""
-            <div style="background-color: #f1f8e9; padding: 40px; border-radius: 20px; text-align: center;">
-                <h3>¿Necesitás asesoramiento personalizado?</h3>
-                <p>Nuestros expertos en San Pedro te ayudan a planificar tu itinerario sin cargo.</p>
-            </div>
-        """, unsafe_allow_html=True)
-        
-        c_left, c_mid, c_right = st.columns([1, 2, 1])
-        with c_mid:
-            with st.form("sp_contact_form"):
-                nombre = st.text_input("Nombre")
-                tel = st.text_input("WhatsApp")
-                submit = st.form_submit_button("Enviar consulta ahora")
-                if submit:
-                    st.success(f"¡Gracias {nombre}! Un asesor de Serrano Turismo te escribirá en breve.")
 
     # --- 5. FOOTER INSTITUCIONAL ---
     # Invocamos la función del archivo utilidades/footer.py
