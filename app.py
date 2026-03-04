@@ -1,101 +1,162 @@
 import streamlit as st
 
-def render_landing_sp():
-    # 1. CSS LIMPIO Y SIN ERRORES
-    st.markdown("""
-        <style>
-        /* Ajuste para subir el contenido al máximo */
-        .block-container { padding-top: 1rem !important; }
-        
-        .hero-section {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: -30px;
-            margin-bottom: 40px;
-        }
+# 1. CONFIGURACIÓN DE PÁGINA (Debe ser lo primero)
+st.set_page_config(
+    page_title="Serrano Turismo", 
+    layout="wide", 
+    initial_sidebar_state="collapsed"
+)
 
-        .hero-title {
-            font-size: 3.8rem !important;
-            font-weight: 800;
-            line-height: 1.1;
-            color: #1a1a1a;
-        }
+# 2. LÓGICA DE NAVEGACIÓN (Lectura de la URL)
+# Usamos query_params para que la navegación sea sólida al refrescar
+query_params = st.query_params
+nav_actual = query_params.get("nav", "Home")
+dest_actual = query_params.get("destino", None)
 
-        /* Sección Gris de lado a lado */
-        .grey-box {
-            background-color: #f1f3f5;
-            margin-left: -15vw;
-            margin-right: -15vw;
-            padding: 60px 15vw;
-            text-align: center;
-        }
+# Sincronizamos con la sesión interna
+st.session_state.nav = nav_actual
+st.session_state.destino = dest_actual
 
-        .exp-card {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-            height: 100%;
-        }
+# 3. IMPORTACIÓN DE SECCIONES
+try:
+    from secciones.landing import render_landing
+    from secciones.landing_sanpedro import render_landing_sp
+    from secciones.landing_carlospaz import render_landing_cp
+    from secciones.transporte import render_transporte
+    from secciones.hoteleria import render_hoteleria
+    from secciones.comidas import render_comidas
+    from secciones.excursiones import render_excursiones
+    from secciones.actividades_nocturnas import render_nocturnas
+    from secciones.seguro import render_seguro
+    from secciones.tarifas import render_tarifas
+    from secciones.adhesion import render_adhesion
+except ImportError as e:
+    st.error(f"⚠️ Error de importación: {e}")
+    st.stop()
 
-        .exp-icon { font-size: 3rem; margin-bottom: 15px; display: block; }
+# 4. CSS MAESTRO (Ajustes de Logo, Menú Negro y Hover Estable)
+st.markdown("""
+    <style>
+    /* Reset de Streamlit */
+    [data-testid="stHeader"], [data-testid="stSidebar"] { display: none !important; }
+    .main .block-container { padding-top: 0rem !important; }
+    .stApp { background-color: white !important; }
 
-        /* Footer Negro Proporcionado */
-        .footer-black {
-            background-color: #1a1a1a;
-            color: #888;
-            margin-left: -15vw;
-            margin-right: -15vw;
-            margin-bottom: -100px;
-            padding: 40px 15vw;
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .footer-black h4 { color: white; margin-bottom: 10px; font-size: 14px; }
-        .footer-black p { font-size: 13px; margin: 2px 0; }
-        </style>
-    """, unsafe_allow_html=True)
+    /* Navbar Fija */
+    .navbar {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 0 60px; height: 80px; background-color: white;
+        border-bottom: 1px solid #f0f0f0; position: fixed;
+        top: 0; left: 0; right: 0; z-index: 9999;
+    }
 
-    # 2. HERO SECTION
-    col_1, col_2 = st.columns([1, 1.2], gap="large")
+    .logo-box img { max-height: 55px; width: auto; }
+    .nav-links { display: flex; align-items: center; gap: 35px; }
+
+    /* Estilo de los links de texto: Negro, sin subrayado, Negrita */
+    .nav-item {
+        color: black !important; text-decoration: none !important; 
+        font-size: 13px; font-weight: 700; text-transform: uppercase;
+        letter-spacing: 0.5px; transition: 0.2s;
+    }
+    .nav-item:hover { color: #555 !important; }
+
+    /* DROPDOWN (Hover) */
+    .dropdown { position: relative; display: inline-block; }
+    .dropbtn {
+        color: black !important; font-size: 13px; font-weight: 700;
+        text-decoration: none !important; border: none; background: none;
+        cursor: pointer; text-transform: uppercase; padding: 30px 0;
+    }
+    .dropdown-content {
+        display: none; position: absolute; background-color: white;
+        min-width: 240px; box-shadow: 0px 8px 16px rgba(0,0,0,0.08);
+        z-index: 1000; border-radius: 8px; border: 1px solid #f0f0f0; top: 75px;
+    }
+    .dropdown:hover .dropdown-content { display: block; }
     
-    with col_1:
-        st.markdown('<div style="margin-top: 50px;">', unsafe_allow_html=True)
-        st.markdown('<h1 class="hero-title">San Pedro <br>Inolvidable</h1>', unsafe_allow_html=True)
-        st.markdown('<p style="font-size:1.2rem; color:#666;">Viví tu viaje de egresados en el corazón de la provincia.</p>', unsafe_allow_html=True)
-        st.markdown('<br><a href="/?nav=Transporte&destino=San+Pedro" target="_self" style="background:black; color:white; padding:15px 30px; text-decoration:none; border-radius:8px; font-weight:bold;">VER TRANSPORTE</a>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+    .dropdown-content a {
+        color: #444; padding: 12px 20px; text-decoration: none;
+        display: block; font-size: 13px; transition: 0.2s;
+    }
+    .dropdown-content a:hover { background-color: #f8f9fa; color: #000 !important; padding-left: 25px; }
 
-    with col_2:
-        st.image("https://raw.githubusercontent.com/martinszurman-ux/Serrano-Dashboard/dc30c61e09bc3c22068eb77157a6e63893dd1f63/assets/Landing_image.jpeg", use_container_width=True)
+    /* Sigla del destino activo */
+    .sigla-badge {
+        background: #000; color: #fff; padding: 4px 10px;
+        border-radius: 4px; font-weight: bold; font-size: 11px;
+    }
 
-    # 3. SECCIÓN GRIS (Side-to-Side)
-    st.markdown('<div class="grey-box">', unsafe_allow_html=True)
-    st.markdown('<h2 style="margin-bottom:40px; font-weight:700;">Experiencias Serrano</h2>', unsafe_allow_html=True)
-    
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        st.markdown('<div class="exp-card"><span class="exp-icon">🚌</span><h4>Buses Premium</h4><p>Unidades semicama con la mejor tecnología.</p></div>', unsafe_allow_html=True)
-    with c2:
-        st.markdown('<div class="exp-card"><span class="exp-icon">🏨</span><h4>Hoteles Top</h4><p>Ubicación estratégica y confort garantizado.</p></div>', unsafe_allow_html=True)
-    with c3:
-        st.markdown('<div class="exp-card"><span class="exp-icon">🍽️</span><h4>Comidas VIP</h4><p>Menú variado con las mejores marcas.</p></div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    .content-wrapper { margin-top: 100px; padding: 0 5%; }
+    </style>
+""", unsafe_allow_html=True)
 
-    # 4. FOOTER NEGRO
-    st.markdown("""
-        <div class="footer-black">
-            <div>
-                <h4>SERRANO TURISMO</h4>
-                <p>Especialistas en grupos.</p>
-                <p>© 2026 Todos los derechos reservados.</p>
-            </div>
-            <div>
-                <h4>CONTACTO</h4>
-                <p>WhatsApp: 11-4847-6467</p>
-                <p>Ituzaingó, Buenos Aires</p>
+# 5. CONSTRUCCIÓN DEL NAVBAR DINÁMICO
+logo_url = "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png"
+sigla = "SP" if dest_actual == "San Pedro" else "CP" if dest_actual == "Villa Carlos Paz" else ""
+
+if not dest_actual:
+    # Caso A: No hay destino (Menú de Selección)
+    links_html = f"""
+        <a href="./?nav=Home&destino=San+Pedro" class="nav-item" target="_self">SAN PEDRO</a>
+        <a href="./?nav=Home&destino=Villa+Carlos+Paz" class="nav-item" target="_self">CARLOS PAZ</a>
+    """
+else:
+    # Caso B: Destino elegido (Menú Completo)
+    links_html = f"""
+        <a href="./?nav=Home" class="nav-item" target="_self">HOME</a>
+        <div class="dropdown">
+            <button class="dropbtn">CONOCÉ TU VIAJE ▼</button>
+            <div class="dropdown-content">
+                <a href="./?nav=Transporte&destino={dest_actual}" target="_self">Transporte</a>
+                <a href="./?nav=Hoteleria&destino={dest_actual}" target="_self">Hotelería</a>
+                <a href="./?nav=Comidas&destino={dest_actual}" target="_self">Comidas</a>
+                <a href="./?nav=Excursiones&destino={dest_actual}" target="_self">Excursiones</a>
+                <a href="./?nav=Actividades&destino={dest_actual}" target="_self">Actividades</a>
+                <a href="./?nav=Seguro&destino={dest_actual}" target="_self">Seguro / Coordinación</a>
             </div>
         </div>
-    """, unsafe_allow_html=True)
+        <div class="dropdown">
+            <button class="dropbtn">ARMÁ TU VIAJE ▼</button>
+            <div class="dropdown-content">
+                <a href="./?nav=Tarifas&destino={dest_actual}" target="_self">Tarifas</a>
+                <a href="./?nav=Adhesion&destino={dest_actual}" target="_self">Ficha de Adhesión</a>
+            </div>
+        </div>
+        <div class="sigla-badge">{sigla}</div>
+    """
+
+# Inyección del Navbar
+st.markdown(f"""
+    <div class="navbar">
+        <div class="logo-box">
+            <a href="./?nav=Home" target="_self">
+                <img src="{logo_url}">
+            </a>
+        </div>
+        <div class="nav-links">{links_html}</div>
+        <div style="width:110px;"></div>
+    </div>
+""", unsafe_allow_html=True)
+
+# 6. RENDERIZADO DE CONTENIDO SEGÚN LA NAVEGACIÓN
+st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
+
+if nav_actual == "Home":
+    if dest_actual == "San Pedro":
+        render_landing_sp()
+    elif dest_actual == "Villa Carlos Paz":
+        render_landing_cp()
+    else:
+        render_landing()
+
+elif nav_actual == "Transporte": render_transporte(dest_actual)
+elif nav_actual == "Hoteleria": render_hoteleria(dest_actual)
+elif nav_actual == "Comidas": render_comidas(dest_actual)
+elif nav_actual == "Excursiones": render_excursiones(dest_actual)
+elif nav_actual == "Actividades": render_nocturnas(dest_actual)
+elif nav_actual == "Seguro": render_seguro(dest_actual)
+elif nav_actual == "Tarifas": render_tarifas(dest_actual)
+elif nav_actual == "Adhesion": render_adhesion(logo_url)
+
+st.markdown('</div>', unsafe_allow_html=True)
