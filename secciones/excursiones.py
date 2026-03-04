@@ -1,8 +1,8 @@
-import streamlit as st
+import streamlit st
 import os
 
 def render_excursiones(destino):
-    # --- 1. ESTILOS CSS (Slim, Mobile & TV Frame) ---
+    # --- ESTILOS CSS ---
     st.markdown("""
         <style>
         .excursion-card {
@@ -37,27 +37,54 @@ def render_excursiones(destino):
             margin-top: 10px;
             text-transform: uppercase;
         }
-        .tv-frame {
-            background: #222;
-            border: 10px solid #333;
-            border-radius: 20px;
+        .video-tv-frame {
+            background: #1a1a1a;
             padding: 10px;
+            border-radius: 20px;
+            border: 6px solid #333;
             box-shadow: 0px 10px 30px rgba(0,0,0,0.3);
             margin: 20px auto;
         }
         </style>
     """, unsafe_allow_html=True)
 
-    # --- 2. LÓGICA VILLA CARLOS PAZ ---
     if destino == "Villa Carlos Paz":
         if os.path.exists("assets/encabezado.jpg"):
             st.image("assets/encabezado.jpg", use_container_width=True)
-        
         st.markdown("## 🏞️ Experiencias en Carlos Paz")
-
-        # 1. Pekos
+        
+        # Pekos
         st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
         if os.path.exists("assets/pekos.jpg"):
             st.image("assets/pekos.jpg")
         st.markdown("""
             <div class="excursion-content">
+                <div class="excursion-title">🚌 1. Pekos Multiparque</div>
+                <div class="excursion-desc">Cine 5D, laberintos y adrenalina en un complejo recreativo único.</div>
+                <div class="excursion-tag">Full Day • Diversión</div>
+            </div>
+        </div>""", unsafe_allow_html=True)
+
+        # Aqua
+        st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
+        if os.path.exists("assets/aqua.jpg"):
+            st.image("assets/aqua.jpg")
+        st.markdown("""
+            <div class="excursion-content">
+                <div class="excursion-title">🚌 2. Wave Zone & Aquaventure</div>
+                <div class="excursion-desc">Piletas de olas y toboganes gigantes para vivir un día de sol.</div>
+                <div class="excursion-tag">Agua • Adrenalina</div>
+            </div>
+        </div>""", unsafe_allow_html=True)
+
+    elif destino == "San Pedro":
+        # 1. ENCABEZADO (Archivo: assets/sanpedroexc.jpg)
+        if os.path.exists("assets/sanpedroexc.jpg"):
+            st.image("assets/sanpedroexc.jpg", use_container_width=True)
+        
+        st.markdown("## 🏞️ Excursiones San Pedro")
+
+        # 2. EL FUERTE DE OBLIGADO (Archivo: assets/sanpedroexc2.jpg)
+        st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
+        if os.path.exists("assets/sanpedroexc2.jpg"):
+            st.image("assets/sanpedro
