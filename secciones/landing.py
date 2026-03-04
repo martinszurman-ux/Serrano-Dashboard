@@ -1,146 +1,147 @@
 import streamlit as st
 
 def render_landing():
-    # LINK RAW QUE PASASTE
+    # Link directo (Raw) de tu imagen en GitHub
     LANDING_IMG = "https://raw.githubusercontent.com/martinszurman-ux/Serrano-Dashboard/dc30c61e09bc3c22068eb77157a6e63893dd1f63/assets/Landing_image.jpeg"
 
+    # CSS específico para la Landing (Hero, Experiencias y Footer)
     st.markdown("""
         <style>
-        /* --- SECCIÓN HERO --- */
+        /* HERO SECTION */
         .hero-container {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 40px;
-            padding: 60px 0;
+            padding: 40px 0;
         }
         .hero-title {
-            font-size: 4.8rem !important;
+            font-size: 4.2rem !important;
             font-weight: 800;
             color: #1a1a1a;
-            line-height: 0.9;
+            line-height: 1;
             margin-bottom: 15px;
         }
         .hero-subtitle {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             color: #555;
             margin-bottom: 35px;
         }
         .img-hero-style {
             width: 100%;
-            max-width: 520px;
-            border-radius: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 500px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
         }
 
-        /* --- SECCIÓN EXPERIENCIAS (Burbujas) --- */
+        /* SECCIÓN EXPERIENCIAS */
         .section-title {
             text-align: center;
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 700;
-            margin: 80px 0 50px 0;
+            margin: 60px 0 40px 0;
             color: #1a1a1a;
         }
         .exp-card {
             text-align: center;
-            padding: 20px;
+            padding: 15px;
         }
         .exp-circle {
-            width: 180px;
-            height: 180px;
-            background-color: #f0f2f6;
+            width: 150px;
+            height: 150px;
+            background-color: #f8f9fa;
             border-radius: 50%;
             margin: 0 auto 20px auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            border: 2px solid #eeeeee;
+            font-size: 2.5rem;
+            border: 1px solid #eee;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
         }
-        .exp-card h3 { font-size: 1.3rem; margin-bottom: 10px; }
-        .exp-card p { font-size: 0.95rem; color: #666; }
 
-        /* --- FOOTER --- */
-        .footer-full {
+        /* FOOTER */
+        .footer-container {
             background-color: #1a1a1a;
             color: white;
-            padding: 60px 5% 30px 5%;
-            margin-top: 100px;
-            margin-left: -10%; /* Para romper el padding del contenedor de streamlit */
+            padding: 50px 5%;
+            margin-top: 80px;
+            margin-left: -10%;
             margin-right: -10%;
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             flex-wrap: wrap;
         }
-        .footer-col { flex: 1; min-width: 250px; margin-bottom: 30px; }
-        .footer-col h4 { color: #ffffff; margin-bottom: 20px; font-size: 1.1rem; }
-        .footer-col p { color: #bbb; font-size: 0.9rem; margin-bottom: 10px; }
+        .footer-col { flex: 1; min-width: 200px; padding: 10px; }
+        .footer-col h4 { color: #fff; margin-bottom: 15px; font-size: 1rem; letter-spacing: 1px; }
+        .footer-col p { color: #aaa; font-size: 0.85rem; line-height: 1.6; }
         </style>
     """, unsafe_allow_html=True)
 
-    # 1. HERO SECTION
-    st.markdown('<div class="hero-container">', unsafe_allow_html=True)
+    # 1. HERO SECTION (Título e Imagen)
     col_text, col_img = st.columns([1, 1], gap="large")
 
     with col_text:
+        st.markdown('<div style="margin-top:30px;">', unsafe_allow_html=True)
         st.markdown('<h1 class="hero-title">Serrano <br>Turismo</h1>', unsafe_allow_html=True)
         st.markdown('<p class="hero-subtitle">Tu aventura de egresados empieza acá.<br>Elegí tu destino para conocer más:</p>', unsafe_allow_html=True)
         
-        c1, c2, _ = st.columns([1, 1, 0.5])
-        with c1:
-            if st.button("📍 Carlos Paz", use_container_width=True):
-                st.query_params["destino"] = "Villa Carlos Paz"
+        # Botones de Acción: Actualizan Session State y Rerunean la App
+        btn_col1, btn_col2, _ = st.columns([1, 1, 0.5])
+        with btn_col1:
+            if st.button("📍 Carlos Paz", use_container_width=True, key="btn_cp"):
+                st.session_state.destino = "Villa Carlos Paz"
+                st.session_state.nav = "Transporte"
                 st.rerun()
-        with c2:
-            if st.button("📍 San Pedro", use_container_width=True):
-                st.query_params["destino"] = "San Pedro"
+        with btn_col2:
+            if st.button("📍 San Pedro", use_container_width=True, key="btn_sp"):
+                st.session_state.destino = "San Pedro"
+                st.session_state.nav = "Transporte"
                 st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
 
     with col_img:
         st.markdown(f'<img src="{LANDING_IMG}" class="img-hero-style">', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
-    # 2. SECCIÓN EXPERIENCIAS
+    # 2. SECCIÓN EXPERIENCIAS (Burbujas del Wireframe)
     st.markdown('<h2 class="section-title">Experiencias Inolvidables</h2>', unsafe_allow_html=True)
     
     e1, e2, e3 = st.columns(3)
     with e1:
         st.markdown("""<div class="exp-card">
             <div class="exp-circle">🚌</div>
-            <h3>Transporte de Primera</h3>
-            <p>Unidades de última generación con el máximo confort y seguridad para el grupo.</p>
+            <h4>Transporte Premium</h4>
+            <p>Unidades modernas con el máximo confort para un viaje seguro.</p>
         </div>""", unsafe_allow_html=True)
     with e2:
         st.markdown("""<div class="exp-card">
             <div class="exp-circle">🏨</div>
-            <h3>Hoteles Exclusivos</h3>
-            <p>Alojamiento en hoteles seleccionados con todas las comodidades y régimen de comidas.</p>
+            <h4>Hoteles Propios</h4>
+            <p>Alojamiento exclusivo con servicios pensados para egresados.</p>
         </div>""", unsafe_allow_html=True)
     with e3:
         st.markdown("""<div class="exp-card">
             <div class="exp-circle">🏞️</div>
-            <h3>Excursiones Únicas</h3>
-            <p>Actividades diseñadas para que cada momento del viaje sea una aventura nueva.</p>
+            <h4>Full Excursiones</h4>
+            <p>Cronograma completo de actividades para no parar ni un segundo.</p>
         </div>""", unsafe_allow_html=True)
 
-    # 3. FOOTER
-    st.markdown(f"""
-        <div class="footer-full">
+    # 3. FOOTER INSTITUCIONAL
+    st.markdown("""
+        <div class="footer-container">
             <div class="footer-col">
                 <h4>SERRANO TURISMO</h4>
-                <p>Más de 20 años acompañando a grupos estudiantiles a cumplir sus sueños.</p>
-            </div>
-            <div class="footer-item" style="flex:1;">
-                <h4>CONTACTO</h4>
-                <p>📍 Av. Rivadavia 4532 - Gal. Alefa (L. 10)</p>
-                <p>📍 Del Cimarrón 1846 - Ituzaingo</p>
-                <p>📞 11 - 4847-6467</p>
+                <p>Expertos en viajes estudiantiles con más de 20 años de trayectoria impecable.</p>
             </div>
             <div class="footer-col">
-                <h4>LEGAL</h4>
-                <p>Legajo N° 12345</p>
-                <p>Agencia autorizada por el Ministerio de Turismo.</p>
+                <h4>CONTACTO</h4>
+                <p>📍 Rivadavia 4532 - CABA</p>
+                <p>📍 Del Cimarrón 1846 - Ituzaingo</p>
+                <p>📞 11-4847-6467</p>
+            </div>
+            <div class="footer-col">
+                <h4>NOSOTROS</h4>
+                <p>Legajo N° 12345<br>Agencia habilitada por el Ministerio de Turismo y Deportes.</p>
             </div>
         </div>
     """, unsafe_allow_html=True)
