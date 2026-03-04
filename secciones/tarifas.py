@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import os
+from utilidades.footer import render_footer
 
 def render_tarifas(destino):
     # 1. INICIALIZACIÓN DE SESIÓN Y CARPETAS
@@ -167,3 +168,7 @@ def render_tarifas(destino):
                 st.markdown(f'<p style="font-size:0.8rem; margin-bottom:2px; color:#495057;">✓ {b}</p>', unsafe_allow_html=True)
     else:
         st.warning(f"No se encontró el archivo en data/{folder}/")
+
+ # --- 5. FOOTER INSTITUCIONAL ---
+    # Invocamos la función del archivo utilidades/footer.py
+    render_footer()
