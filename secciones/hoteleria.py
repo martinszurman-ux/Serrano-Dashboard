@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+from utilidades.footer import render_footer
 
 def render_hoteleria(destino):
     st.markdown(f"<h1 style='text-align: center; color: #1E3A8A;'>🏨 HOTELERÍA EN {destino.upper()}</h1>", unsafe_allow_html=True)
@@ -79,3 +80,8 @@ def render_hoteleria(destino):
                 st.error(f"⚠️ No se encontró: {img_rueda}")
         with col8:
             st.markdown(f"<div style='font-size: 0.9rem; line-height: 1.5;'>{features_html}</div>", unsafe_allow_html=True)
+
+
+ # --- 5. FOOTER INSTITUCIONAL ---
+    # Invocamos la función del archivo utilidades/footer.py
+    render_footer()
