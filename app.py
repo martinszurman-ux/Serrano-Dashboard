@@ -58,7 +58,7 @@ st.markdown("""
 
     /* Estilo para la imagen del header_elije_destino */
     .header-img-instruccion {
-        max-height: 25px; /* Ajustado para que no sea más grande que el texto previo */
+        max-height: 50px; /* Ajustado para que no sea más grande que el texto previo */
         width: auto;
         margin-right: 5px;
     }
@@ -184,3 +184,4 @@ elif nav_actual == "Tarifas": render_tarifas(dest_actual)
 elif nav_actual == "Adhesion": render_adhesion(logo_url)
 
 st.markdown('</div>', unsafe_allow_html=True)
+
