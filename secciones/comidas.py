@@ -9,7 +9,7 @@ def render_comidas(destino):
     ruta_base = "assets/"
 
     # --- TEXTO EN UNA SOLA LÍNEA PARA EVITAR ERRORES DE RENDERIZADO ---
-    features_html = "<p style='margin-bottom:12px;'>✔️ <b>Pensión completa:</b> desayuno, almuerzo, merienda, cena y quinta comida.</p><p style='margin-bottom:12px;'>✔️ <b>Menú buffet libre:</b> Variedad y calidad garantizada.</p><p style='margin-bottom:12px;'>✔️ <b>Hidratación:</b> Provisión de agua mineral libre las 24hs.</p><p style='margin-bottom:12px;'>✔️ <b>Sistema Todo Incluido:</b> Sándwiches, alfajores, bizcochuelos, frutas, helados, gaseosas y jugos libre todos los días.</p><p style='margin-bottom:12px;'>✔️ <b>Servicio en Ruta:</b> Desayuno y almuerzo en el viaje de ida. Almuerzo y merienda en el regreso en nuestros paradores exclusivos.</p><p style='margin-bottom:12px;'>✔️ <b>Estaciones Saludables:</b> Disponibles en excursiones y hotel.</p><p style='margin-bottom:12px;'>✔️ <b>Menú Diferenciado:</b> Atención especial en dietas médicas o celíacas.</p>" #
+    features_html = "<p style='margin-bottom:12px;'>✔️ <b>Pensión completa:</b> desayuno, almuerzo, merienda, cena y quinta comida.</p><p style='margin-bottom:12px;'>✔️ <b>Menú buffet libre:</b> Variedad y calidad garantizada.</p><p style='margin-bottom:12px;'>✔️ <b>Hidratación:</b> Provisión de agua mineral libre las 24hs.</p><p style='margin-bottom:12px;'>✔️ <b>Sistema Todo Incluido:</b> Sándwiches, alfajores, bizcochuelos, frutas, helados, gaseosas y jugos libre todos los días.</p><p style='margin-bottom:12px;'>✔️ <b>Servicio en Ruta:</b> Desayuno y almuerzo en el viaje de ida. Almuerzo y merienda en el regreso en nuestros paradores exclusivos.</p><p style='margin-bottom:12px;'>✔️ <b>Estaciones Saludables:</b> Disponibles en excursiones y hotel.</p><p style='margin-bottom:12px;'>✔️ <b>Menú Diferenciado:</b> Atención especial a dietas médicas, celíacos, vegetarianos, veganos, etc.</p>" #
 
     if "Villa Carlos Paz" in destino:
         fotos = ["desayuno.jpg", "almuerzo.jpg", "refrigerio.jpg", "dietas.png"]
@@ -35,6 +35,6 @@ def render_comidas(destino):
         # Renderizado directo sin espacios extra
         st.markdown(f"<div style='background-color:#f8f9fa; padding:25px; border-radius:15px; border-left:5px solid #1E3A8A; color:#333; font-size:1.05rem; line-height:1.2;'>{features_html}</div>", unsafe_allow_html=True) #
 
- # --- 5. FOOTER INSTITUCIONAL ---
+    # --- 5. FOOTER INSTITUCIONAL ---
     # Invocamos la función del archivo utilidades/footer.py
     render_footer()
