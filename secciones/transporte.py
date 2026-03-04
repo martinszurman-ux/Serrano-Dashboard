@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+from utilidades.footer import render_footer
 
 def render_transporte(destino):
     # Lógica para el título dinámico con emojis
@@ -65,3 +66,6 @@ def render_transporte(destino):
         * ✅ **Empresas de transporte Charter:** Seguridad y exclusividad garantizada.
         * ✅ **Exclusividad:** El mismo bus queda a disposición del grupo durante todos los días del viaje para los traslados a excursiones.
         """)
+ # --- 5. FOOTER INSTITUCIONAL ---
+    # Invocamos la función del archivo utilidades/footer.py
+    render_footer()
