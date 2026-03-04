@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+from utilidades.footer import render_footer
 
 def render_seguro(destino):
     # 1. ESTILOS CSS (Slim & Trust-Focused)
@@ -146,3 +147,8 @@ def render_seguro(destino):
 
     st.write("")
     st.info("💡 **Dato Serrano:** La seguridad de nuestros pasajeros no es un opcional, es nuestra prioridad absoluta desde hace 29 años.")
+
+
+ # --- 5. FOOTER INSTITUCIONAL ---
+    # Invocamos la función del archivo utilidades/footer.py
+    render_footer()
