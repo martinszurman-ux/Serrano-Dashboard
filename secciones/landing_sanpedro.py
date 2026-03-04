@@ -1,5 +1,7 @@
 import streamlit as st
 import os
+# Importamos la función desde la carpeta utilidades
+from utilidades.footer import mostrar_footer
 
 def render_landing_sp():
     # --- ESTILO CSS ACTUALIZADO ---
@@ -11,11 +13,11 @@ def render_landing_sp():
             color: #1b5e20;
             line-height: 1.2;
         }
-        /* Estilos para el Footer Unificado */
+        /* Estilos para el Footer Unificado (Deben estar aquí o en un CSS global) */
         .footer-container {
             display: flex;
             justify-content: space-around;
-            background-color: #1b5e20; /* Color verde oscuro institucional */
+            background-color: #1b5e20; 
             color: white;
             padding: 40px 20px;
             margin-top: 50px;
@@ -54,8 +56,7 @@ def render_landing_sp():
             st.balloons()
 
     with col2:
-        # Intento de carga de imagen con extensión corregida
-        ruta_img = "assets/landing_sanPedro_imagen.png" # Ajustar a .png si corresponde
+        ruta_img = "assets/landing_sanPedro_imagen.png" 
         if os.path.exists(ruta_img):
             st.image(ruta_img, use_container_width=True)
         else:
@@ -76,17 +77,5 @@ def render_landing_sp():
         st.subheader("🏛️ Historia")
         st.write("Museos y Vuelta de Obligado.")
 
-    # --- FOOTER INSTITUCIONAL (Igual a la Home) ---
-    st.markdown("""
-        <div class="footer-container">
-            <div class="footer-col">
-                <h4>SERRANO TURISMO</h4>
-                <p>© 2026 Todos los derechos reservados.</p>
-            </div>
-            <div class="footer-col">
-                <h4>CONTACTO</h4>
-                <p>San Pedro, Buenos Aires</p>
-                <p>WhatsApp: 11-4847-6467</p>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
+    # --- LLAMADA AL FOOTER EXTERNO ---
+    mostrar_footer()
