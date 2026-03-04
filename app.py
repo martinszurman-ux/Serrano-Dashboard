@@ -1,52 +1,54 @@
 import streamlit as st
+from secciones import landing_sanpedro, landing_carlospaz
 
-def render():
-    # Configuración de cabecera
-    st.title("☀️ Villa Carlos Paz: El Corazón del Valle de Punilla")
-    st.subheader("Tu próxima aventura comienza aquí")
+# 1. Configuración de la página (esto debe ir PRIMERO)
+st.set_page_config(
+    page_title="Portal Turístico: San Pedro & Carlos Paz",
+    page_icon="📍",
+    layout="wide"
+)
 
-    # Banner principal o Imagen destacada
-    st.image("https://images.unsplash.com/photo-1590059392253-ba1914940562?auto=format&fit=crop&q=80", 
-             caption="Vista del Lago San Roque", use_container_width=True)
+# 2. Estilos personalizados (opcional, para darle onda)
+st.markdown("""
+    <style>
+    .main {
+        background-color: #f5f7f9;
+    }
+    .stButton>button {
+        width: 100%;
+        border-radius: 5px;
+        height: 3em;
+        background-color: #ff4b4b;
+        color: white;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
-    # Introducción
-    st.markdown("""
-    ### ¡Bienvenido a la Perla de Córdoba!
-    Villa Carlos Paz combina la serenidad de sus sierras con una vibrante vida nocturna y cartelera teatral. 
-    Es el destino ideal tanto para familias como para jóvenes que buscan diversión y naturaleza.
-    """)
+# 3. Sidebar para Navegación
+st.sidebar.image("https://www.gstatic.com/images/branding/product/2x/maps_96in128dp.png", width=100)
+st.sidebar.title("📍 Guía de Destinos")
+st.sidebar.markdown("Seleccioná la ciudad que querés explorar:")
 
-    # Sección de Atractivos
-    st.divider()
-    col1, col2, col3 = st.columns(3)
+# Diccionario de rutas para mantener el código limpio
+PAGINAS = {
+    "Carlos Paz ☀️": landing_carlospaz,
+    "San Pedro 🍊": landing_sanpedro
+}
 
-    with col1:
-        st.write("🎭 **Teatro y Show**")
-        st.caption("La mejor cartelera de espectáculos del país durante todo el verano.")
+# Selector de radio en el sidebar
+seleccion = st.sidebar.radio("Navegar a:", list(PAGINAS.keys()))
 
-    with col2:
-        st.write("🌊 **Lago San Roque**")
-        st.caption("Deportes acuáticos, paseos en catamarán y la emblemática costanera.")
+# 4. Renderizado dinámico
+st.sidebar.divider()
+st.sidebar.caption("Proyecto Landing Pages 2026")
 
-    with col3:
-        st.write("🚠 **Aerosilla**")
-        st.caption("Vistas panorámicas increíbles de toda la ciudad y las sierras.")
+# Ejecutamos la función render() del archivo seleccionado
+if seleccion in PAGINAS:
+    PAGINAS[seleccion].render()
 
-    # Sección Informativa / Datos clave
-    st.divider()
-    st.info("📌 **Tip de viajero:** No olvides visitar el famoso Reloj Cuclú y caminar por la costanera al atardecer.")
-
-    # Formulario de Contacto / Lead Magnet
-    with st.expander("📩 ¿Quieres recibir más información sobre paquetes?"):
-        with st.form("contacto_carlospaz"):
-            nombre = st.text_input("Nombre completo")
-            email = st.text_input("Correo electrónico")
-            mensaje = st.text_area("¿Qué te gustaría visitar?")
-            
-            submit = st.form_submit_button("¡Enviar consulta!")
-            if submit:
-                st.success(f"¡Gracias {nombre}! Pronto te enviaremos novedades a {email}.")
-
-# Si quieres probarlo directamente ejecutando este archivo:
-if __name__ == "__main__":
-    render()
+# 5. Footer simple
+st.divider()
+st.center = st.markdown(
+    "<p style='text-align: center; color: grey;'>© 2026 - Todos los derechos reservados</p>", 
+    unsafe_allow_html=True
+)
