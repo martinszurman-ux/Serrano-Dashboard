@@ -4,24 +4,23 @@ def render_landing():
     # URL de la imagen en tu GitHub
     LANDING_IMG = "https://raw.githubusercontent.com/martinszurman-ux/Serrano-Dashboard/dc30c61e09bc3c22068eb77157a6e63893dd1f63/assets/Landing_image.jpeg"
 
-    # CSS TOTAL - AJUSTADO PARA ELIMINAR ESPACIO FINAL
+    # CSS TOTAL - WHATSAPP A LA IZQUIERDA Y ANIMADO
     st.markdown("""
         <style>
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
         
         /* 1. RESET ESTRUCTURAL AGRESIVO */
         header {visibility: hidden;}
-        footer {display: none !important;} /* Elimina el footer nativo de Streamlit */
+        footer {display: none !important;}
         
         .main .block-container {
             padding-top: 0rem !important;
-            padding-bottom: 0rem !important; /* Elimina espacio al final */
+            padding-bottom: 0rem !important;
             padding-left: 0rem !important;
             padding-right: 0rem !important;
             max-width: 100% !important;
         }
 
-        /* Fuerza al contenedor de la aplicación a no tener scroll extra */
         [data-testid="stVerticalBlock"] {
             gap: 0px !important;
         }
@@ -69,7 +68,7 @@ def render_landing():
             padding: 0 20px;
         }
 
-        /* 4. SPACERS SIMÉTRICOS (Blanco antes y después) */
+        /* 4. SPACERS SIMÉTRICOS */
         .simetric-spacer {
             background-color: white;
             height: 80px; 
@@ -81,7 +80,7 @@ def render_landing():
             margin-right: -50vw;
         }
 
-        /* 5. FOOTER FINAL (Ajuste para que sea el fin absoluto) */
+        /* 5. FOOTER FINAL */
         .footer-full {
             background-color: #1a1a1a;
             color: white;
@@ -96,17 +95,40 @@ def render_landing():
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 30px;
-            margin-bottom: -50px !important; /* "Pisa" el posible margen final */
+            margin-bottom: -50px !important;
         }
 
-        /* WHATSAPP */
+        /* 6. WHATSAPP FLOTANTE - LADO IZQUIERDO CON ANIMACIÓN */
         .whatsapp-btn {
-            position: fixed; bottom: 25px; right: 25px;
-            background-color: #25d366; color: white !important;
-            width: 55px; height: 55px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 28px; z-index: 9999;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: fixed; 
+            bottom: 25px; 
+            left: 25px; /* CAMBIADO A LA IZQUIERDA */
+            background-color: #25d366; 
+            color: white !important;
+            width: 60px; 
+            height: 60px; 
+            border-radius: 50%;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            font-size: 32px; 
+            z-index: 9999;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            text-decoration: none !important;
+            
+            /* Animación de pulso */
+            animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        .whatsapp-btn:hover {
+            transform: scale(1.1);
+            background-color: #128c7e;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -164,7 +186,7 @@ def render_landing():
     # 4. SPACER DESPUÉS
     st.markdown('<div class="simetric-spacer"></div>', unsafe_allow_html=True)
 
-    # 5. FOOTER FINAL (Sin espacio blanco después)
+    # 5. FOOTER FINAL
     st.markdown("""
         <div class="footer-full">
             <div style="flex:1; min-width:250px;">
@@ -185,5 +207,5 @@ def render_landing():
         </div>
     """, unsafe_allow_html=True)
 
-    # 6. WHATSAPP
+    # 6. WHATSAPP FLOTANTE A LA IZQUIERDA
     st.markdown('<a href="https://wa.me/5491156096283" class="whatsapp-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>', unsafe_allow_html=True)
