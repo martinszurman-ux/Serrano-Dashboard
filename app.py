@@ -16,7 +16,7 @@ st.session_state.destino = dest_actual
 try:
     from secciones.landing import render_landing
     from secciones.landing_sanpedro import render_landing_sp
-    from secciones/landing_carlospaz import render_landing_cp  # <--- NUEVA IMPORTACIÓN
+    from secciones.landing_carlospaz import render_landing_cp  # <--- CORREGIDO: PUNTO EN VEZ DE BARRA
     from secciones.transporte import render_transporte
     from secciones.hoteleria import render_hoteleria
     from secciones.comidas import render_comidas
@@ -27,7 +27,7 @@ try:
     from secciones.adhesion import render_adhesion
 except ImportError as e:
     st.error(f"⚠️ Error de importación: {e}")
-    st.info("Asegúrate de que los nombres de archivo en /secciones coincidan exactamente.")
+    st.info("Asegúrate de que los nombres de archivo en /secciones coincidan exactamente y usen puntos en el import.")
     st.stop()
 
 # 4. CSS (Mantenemos el estilo de la barra superior)
@@ -134,4 +134,5 @@ elif nav_actual == "Tarifas": render_tarifas(dest_actual)
 elif nav_actual == "Adhesion": render_adhesion(logo_url)
 
 st.markdown('</div>', unsafe_allow_html=True)
+
 
