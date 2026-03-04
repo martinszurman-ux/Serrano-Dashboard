@@ -1,8 +1,8 @@
-import streamlit st
+import streamlit as st
 import os
 
 def render_excursiones(destino):
-    # --- ESTILOS CSS ---
+    # --- 1. ESTILOS CSS (Slim, Mobile & TV Frame) ---
     st.markdown("""
         <style>
         .excursion-card {
@@ -37,9 +37,10 @@ def render_excursiones(destino):
             margin-top: 10px;
             text-transform: uppercase;
         }
+        /* ESTILO TV FRAME PARA EL VIDEO */
         .video-tv-frame {
             background: #1a1a1a;
-            padding: 10px;
+            padding: 12px;
             border-radius: 20px;
             border: 6px solid #333;
             box-shadow: 0px 10px 30px rgba(0,0,0,0.3);
@@ -48,11 +49,13 @@ def render_excursiones(destino):
         </style>
     """, unsafe_allow_html=True)
 
+    # --- 2. VILLA CARLOS PAZ ---
     if destino == "Villa Carlos Paz":
         if os.path.exists("assets/encabezado.jpg"):
             st.image("assets/encabezado.jpg", use_container_width=True)
-        st.markdown("## 🏞️ Experiencias en Carlos Paz")
         
+        st.markdown("## 🏞️ Experiencias en Carlos Paz")
+
         # Pekos
         st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
         if os.path.exists("assets/pekos.jpg"):
@@ -60,7 +63,7 @@ def render_excursiones(destino):
         st.markdown("""
             <div class="excursion-content">
                 <div class="excursion-title">🚌 1. Pekos Multiparque</div>
-                <div class="excursion-desc">Cine 5D, laberintos y adrenalina en un complejo recreativo único.</div>
+                <div class="excursion-desc">Cine 5D, laberintos y adrenalina en un complejo recreativo único diseñado para el disfrute del grupo.</div>
                 <div class="excursion-tag">Full Day • Diversión</div>
             </div>
         </div>""", unsafe_allow_html=True)
@@ -72,19 +75,38 @@ def render_excursiones(destino):
         st.markdown("""
             <div class="excursion-content">
                 <div class="excursion-title">🚌 2. Wave Zone & Aquaventure</div>
-                <div class="excursion-desc">Piletas de olas y toboganes gigantes para vivir un día de sol.</div>
+                <div class="excursion-desc">Piletas de olas y toboganes gigantes para vivir un día de sol y pura acción en las sierras.</div>
                 <div class="excursion-tag">Agua • Adrenalina</div>
             </div>
         </div>""", unsafe_allow_html=True)
 
+        # Otros VCP
+        st.markdown("""
+            <div class="excursion-card"><div class="excursion-content">
+                <div class="excursion-title">🚌 3. Crazy Donkey</div>
+                <div class="excursion-desc">Aventura extrema con tirolesas y desafíos naturales.</div>
+                <div class="excursion-tag">Aventura</div>
+            </div></div>
+            <div class="excursion-card"><div class="excursion-content">
+                <div class="excursion-title">🏙️ 4. City Tour</div>
+                <div class="excursion-desc">Reloj Cucú y las mejores fábricas de alfajores tradicionales.</div>
+                <div class="excursion-tag">Cultura</div>
+            </div></div>
+        """, unsafe_allow_html=True)
+
+    # --- 3. SAN PEDRO ---
     elif destino == "San Pedro":
-        # 1. ENCABEZADO (Archivo: assets/sanpedroexc.jpg)
+        # Encabezado San Pedro
         if os.path.exists("assets/sanpedroexc.jpg"):
             st.image("assets/sanpedroexc.jpg", use_container_width=True)
         
         st.markdown("## 🏞️ Excursiones San Pedro")
 
-        # 2. EL FUERTE DE OBLIGADO (Archivo: assets/sanpedroexc2.jpg)
+        # El Fuerte (con foto sanpedroexc2.jpg)
         st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
         if os.path.exists("assets/sanpedroexc2.jpg"):
-            st.image("assets/sanpedro
+            st.image("assets/sanpedroexc2.jpg")
+        st.markdown("""
+            <div class="excursion-content">
+                <div class="excursion-title">🚌 1. El Fuerte de Obligado</div>
+                <div class="excursion-desc">Turismo aventura extremo: palestra, péndulo, rappel y tirolesa. Almu
