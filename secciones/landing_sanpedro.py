@@ -151,9 +151,9 @@ def render_landing_sp():
 
     st.divider()
 
-    # --- 4. SECCIÓN EXPERIENCIAS ---
-    st.markdown("<h2 style='text-align: center; color: #1b5e20;'>Experiencias Imperdibles</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; color: #666;'>Todo lo que necesitás para un viaje perfecto</p>", unsafe_allow_html=True)
+    # --- 4. SECCIÓN EXPERIENCIAS EGRESADOS ---
+    st.markdown("<h2 style='text-align: center; color: #1b5e20;'>Tu Viaje de Egresados Inolvidable</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #666;'>El equilibrio perfecto entre diversión para los chicos y tranquilidad para las familias.</p>", unsafe_allow_html=True)
     st.write("")
 
     exp_col1, exp_col2, exp_col3 = st.columns(3)
@@ -161,24 +161,24 @@ def render_landing_sp():
     with exp_col1:
         st.markdown("""
             <div class="activity-card">
-                <h3>🚣 Náutica</h3>
-                <p>Navegación por las islas, alquiler de kayaks y pesca deportiva en el Delta del Paraná.</p>
+                <h3>🚣 Aventura y Naturaleza</h3>
+                <p>Navegación grupal por las islas, actividades al aire libre y mucha diversión en contacto con el río.</p>
             </div>
         """, unsafe_allow_html=True)
 
     with exp_col2:
         st.markdown("""
             <div class="activity-card">
-                <h3>🥐 Sabores</h3>
-                <p>Circuito gastronómico de la Ensaimada, visitas a plantaciones de cítricos y asados al asador.</p>
+                <h3>🥐 Momentos Compartidos</h3>
+                <p>Comidas pensadas para el grupo, asados al aire libre y el clásico circuito para probar la ensaimada local.</p>
             </div>
         """, unsafe_allow_html=True)
 
     with exp_col3:
         st.markdown("""
             <div class="activity-card">
-                <h3>🏛️ Historia</h3>
-                <p>Visita al sitio histórico de la Batalla de la Vuelta de Obligado y museos locales.</p>
+                <h3>🏛️ Descubriendo la Historia</h3>
+                <p>Recorridos dinámicos y entretenidos por la Vuelta de Obligado para aprender y disfrutar al mismo tiempo.</p>
             </div>
         """, unsafe_allow_html=True)
 
