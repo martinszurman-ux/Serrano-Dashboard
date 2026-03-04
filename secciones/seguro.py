@@ -2,7 +2,7 @@ import streamlit as st
 import os
 
 def render_seguro(destino):
-    # 1. ESTILOS CSS (Slim & Modern)
+    # 1. ESTILOS CSS (Slim & Trust-Focused)
     st.markdown("""
         <style>
         .staff-header {
@@ -20,11 +20,24 @@ def render_seguro(destino):
             display: block;
         }
         .feature-box {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #e0e0e0;
+            background: #ffffff;
+            padding: 18px;
+            border-radius: 12px;
+            border: 1px solid #eef2f6;
             height: 100%;
+            box-shadow: 0px 2px 4px rgba(0,0,0,0.02);
+        }
+        .insurance-partner {
+            background: #f1f5f9;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 700;
+            color: #1e293b;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #cbd5e1;
         }
         .experience-badge {
             background: #1a1a1a;
@@ -76,8 +89,8 @@ def render_seguro(destino):
         <div class="viaxlab-card">
             <h3 style='color: white; margin-bottom: 10px;'>📱 Seguí el viaje con Viaxlab</h3>
             <p style='font-size: 0.95rem; opacity: 0.9;'>
-                Toda la información del viaje en la palma de tu mano. 
-                Fotos en tiempo real, itinerario actualizado y comunicación directa.
+                Todos los pasajeros están identificados con una <b>pulsera de seguimiento</b> vinculada a la App, 
+                conteniendo sus datos médicos actualizados para una respuesta inmediata.
             </p>
         </div>
     """, unsafe_allow_html=True)
@@ -90,31 +103,46 @@ def render_seguro(destino):
 
     st.divider()
 
-    # 5. DETALLES DE COBERTURA MÉDICA
-    st.markdown("### 🛡️ Cobertura Médica Total")
+    # 5. COBERTURA MÉDICA AMPLIADA
+    st.markdown("### 🛡️ Respaldo y Cobertura Total")
     
+    # Partners de Seguro
+    st.markdown("""
+        <div style='margin-bottom: 20px;'>
+            <div class="insurance-partner">🛡️ San Cristóbal Seguros</div>
+            <div class="insurance-partner">⚕️ Assistravel</div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    st.write("Contamos con el respaldo de las empresas más importantes del país, con asistencia inmediata y permanente desde el inicio hasta el fin del tour.")
+
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("""
             <div class="feature-box">
-                <h4 style='color: #4A90E2; font-size: 1.1rem;'>🚑 Asistencia 24hs</h4>
-                <p style='font-size: 0.85rem; color: #555;'>
-                    Atención médica en el hotel y centros especializados de alta complejidad. 
-                    Traslados en ambulancias propias y servicio de enfermería permanente.
-                </p>
+                <h4 style='color: #4A90E2; font-size: 1rem;'>🏥 Infraestructura Médica</h4>
+                <ul style='font-size: 0.85rem; color: #444; padding-left: 20px;'>
+                    <li><b>Médico permanente</b> a disposición 24hs en el hotel.</li>
+                    <li>Acceso a más de <b>45 Clínicas y Sanatorios</b> en todo el trayecto.</li>
+                    <li>Atención en ruta y destino asegurada.</li>
+                    <li>Traslados terrestres y aéreos (regulares y sanitarios).</li>
+                </ul>
             </div>
         """, unsafe_allow_html=True)
 
     with col2:
         st.markdown("""
             <div class="feature-box">
-                <h4 style='color: #4A90E2; font-size: 1.1rem;'>💊 Medicamentos</h4>
-                <p style='font-size: 0.85rem; color: #555;'>
-                    Cobertura total en medicamentos recetados, asistencia odontológica de urgencia 
-                    y seguros de Accidentes Personales incluidos.
-                </p>
+                <h4 style='color: #4A90E2; font-size: 1rem;'>💊 Cobertura Prestacional</h4>
+                <ul style='font-size: 0.85rem; color: #444; padding-left: 20px;'>
+                    <li><b>Medicamentos en mano</b> para respuesta eficaz.</li>
+                    <li>Internaciones, cirugías (mayor y menor) y yesos.</li>
+                    <li>Odontología de urgencia y material descartable.</li>
+                    <li>Cobertura de <b>preexistencias agudizadas</b>.</li>
+                    <li>Seguimiento post-viaje hasta el alta médica.</li>
+                </ul>
             </div>
         """, unsafe_allow_html=True)
 
     st.write("")
-    st.caption("Serrano Turismo: Seguridad y confianza respaldada por casi 3 décadas de experiencia.")
+    st.info("💡 **Dato Serrano:** La seguridad de nuestros pasajeros no es un opcional, es nuestra prioridad absoluta desde hace 29 años.")
