@@ -2,7 +2,7 @@ import streamlit as st
 import os
 
 def render_excursiones(destino):
-    # --- ESTILOS CSS (Slim, Mobile & TV Frame Real) ---
+    # --- 1. ESTILOS CSS (Slim & TV Frame) ---
     st.markdown("""
         <style>
         .excursion-card {
@@ -37,54 +37,56 @@ def render_excursiones(destino):
             margin-top: 10px;
             text-transform: uppercase;
         }
-        /* MARCO DE TV MEJORADO */
         .tv-frame {
             background: #222;
-            border: 12px solid #333;
-            border-radius: 25px;
+            border: 10px solid #333;
+            border-radius: 20px;
             padding: 10px;
-            box-shadow: 0px 15px 35px rgba(0,0,0,0.4);
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.3);
             margin: 20px auto;
         }
         </style>
     """, unsafe_allow_html=True)
 
+    # --- 2. LÓGICA VILLA CARLOS PAZ ---
     if destino == "Villa Carlos Paz":
-        # (Aquí va tu bloque de VCP que ya tenías)
-        st.markdown("## 🏞️ Experiencias en Carlos Paz")
-        # ...
-
-    elif destino == "San Pedro":
-        # 1. ENCABEZADO (Archivo: assets/sanpedroexc.jpg)
-        if os.path.exists("assets/sanpedroexc.jpg"):
-            st.image("assets/sanpedroexc.jpg", use_container_width=True)
+        if os.path.exists("assets/encabezado.jpg"):
+            st.image("assets/encabezado.jpg", use_container_width=True)
         
-        st.markdown("## 🏞️ Excursiones San Pedro")
+        st.markdown("## 🏞️ Experiencias en Carlos Paz")
 
-        # 1. EL FUERTE DE OBLIGADO (Archivo: assets/sanpedroexc2.jpg)
+        # Pekos
         st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
-        if os.path.exists("assets/sanpedroexc2.jpg"):
-            st.image("assets/sanpedroexc2.jpg")
+        if os.path.exists("assets/pekos.jpg"):
+            st.image("assets/pekos.jpg")
         st.markdown("""
             <div class="excursion-content">
-                <div class="excursion-title">🚌 1. El Fuerte de Obligado</div>
-                <div class="excursion-desc">Turismo aventura extremo: palestra, péndulo, rappel y tirolesa. Además, toboganes de agua y un asado criollo a tenedor libre inolvidable.</div>
-                <div class="excursion-tag">Aventura • Asado Criollo</div>
+                <div class="excursion-title">🚌 1. Pekos Multiparque</div>
+                <div class="excursion-desc">Cine 5D, laberintos y adrenalina en un complejo recreativo único diseñado para el disfrute de todo el grupo.</div>
+                <div class="excursion-tag">Full Day • Diversión</div>
             </div>
-        </div>
-        """, unsafe_allow_html=True)
+        </div>""", unsafe_allow_html=True)
 
-        # 2. BEACH DAY CON CANOTAJE
+        # Aqua
+        st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
+        if os.path.exists("assets/aqua.jpg"):
+            st.image("assets/aqua.jpg")
         st.markdown("""
-            <div class="excursion-card">
-                <div class="excursion-content">
-                    <div class="excursion-title">🚌 2. Beach Day con Canotaje</div>
-                    <div class="excursion-desc">Día de playa en balneario privado con bautismo de canotaje en sectores seguros, ideal para disfrutar el sol y el río.</div>
-                    <div class="excursion-tag">Playa • Náutica</div>
-                </div>
+            <div class="excursion-content">
+                <div class="excursion-title">🚌 2. Wave Zone & Aquaventure</div>
+                <div class="excursion-desc">Piletas de olas y toboganes gigantes para vivir un día de sol y pura acción en las sierras.</div>
+                <div class="excursion-tag">Agua • Adrenalina</div>
             </div>
-        """, unsafe_allow_html=True)
+        </div>""", unsafe_allow_html=True)
 
-        # 3. COMPLEJO LAS AMALIAS
+        # Crazy Donkey & City
         st.markdown("""
-            <div class
+            <div class="excursion-card"><div class="excursion-content">
+                <div class="excursion-title">🚌 3. Crazy Donkey</div>
+                <div class="excursion-desc">Aventura extrema con tirolesas y desafíos naturales.</div>
+            </div></div>
+            <div class="excursion-card"><div class="excursion-content">
+                <div class="excursion-title">🏙️ 4. City Tour</div>
+                <div class="excursion-desc">Reloj Cucú y las mejores fábricas de alfajores.</div>
+            </div></div>
+        """,
