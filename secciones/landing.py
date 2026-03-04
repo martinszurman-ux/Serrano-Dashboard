@@ -9,7 +9,7 @@ def render_landing():
         <style>
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
         
-        /* 1. RESET ESTRUCTURAL */
+        /* 1. RESET ESTRUCTURAL - ELIMINA ESPACIO ENTRE HEADER Y CONTENIDO */
         .main .block-container {
             padding-top: 0rem !important;
             padding-bottom: 0rem !important;
@@ -17,10 +17,15 @@ def render_landing():
             padding-right: 0rem !important;
             max-width: 100% !important;
         }
+        
+        /* Ajuste específico para subir Serrano Turismo & Imagen */
+        [data-testid="stVerticalBlock"] > div:first-child {
+            margin-top: -50px !important;
+        }
 
-        /* 2. HERO SECTION (Subida y con margen) */
+        /* 2. HERO SECTION */
         .hero-container {
-            padding: 20px 8% 40px 8%;
+            padding: 10px 8% 30px 8%; /* Reducido padding superior */
             background-color: white;
             display: flex;
             align-items: center;
@@ -33,9 +38,10 @@ def render_landing():
             margin-top: 0px !important;
         }
         .hero-subtitle {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             color: #555;
-            margin-top: 20px;
+            margin-top: 15px;
+            line-height: 1.4;
         }
         .img-hero-style {
             width: 100%;
@@ -44,17 +50,17 @@ def render_landing():
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
-        /* 3. SECCIÓN EXPERIENCIAS (Fondo gris de lado a lado) */
+        /* 3. SECCIÓN EXPERIENCIAS (Gris Full Width) */
         .experiences-outer {
-            background-color: #d1d5db; /* Gris de la referencia */
+            background-color: #d1d5db;
             width: 100vw;
             position: relative;
             left: 50%;
             right: 50%;
             margin-left: -50vw;
             margin-right: -50vw;
-            padding: 80px 0; /* Espaciado interno */
-            margin-top: 20px; /* Separación de la imagen de arriba */
+            padding: 70px 0;
+            margin-top: 30px;
         }
         
         .experiences-inner {
@@ -67,7 +73,7 @@ def render_landing():
         .section-title-grey {
             font-size: 2.5rem;
             font-weight: 700;
-            margin-bottom: 60px;
+            margin-bottom: 50px;
             color: #1a1a1a;
         }
 
@@ -86,19 +92,19 @@ def render_landing():
         }
 
         .exp-icon-circle {
-            width: 120px;
-            height: 120px;
+            width: 110px;
+            height: 110px;
             background: white;
             border-radius: 50%;
             margin: 0 auto 20px auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
+            font-size: 2.8rem;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
-        /* 4. FOOTER COMPACTO */
+        /* 4. FOOTER */
         .footer-full {
             background-color: #1a1a1a;
             color: white;
@@ -129,13 +135,14 @@ def render_landing():
 
     # --- CONTENIDO ---
 
-    # 1. HERO SECTION
+    # 1. HERO SECTION (Subida al máximo)
     st.markdown('<div class="hero-container">', unsafe_allow_html=True)
     c1, c2 = st.columns([1, 1])
     with c1:
-        st.markdown('<div style="margin-top:40px;">', unsafe_allow_html=True)
+        st.markdown('<div style="margin-top:20px;">', unsafe_allow_html=True)
         st.markdown('<h1 class="hero-title">Serrano <br>Turismo</h1>', unsafe_allow_html=True)
-        st.markdown('<p class="hero-subtitle">Tu aventura de egresados empieza acá.<br>28 años de trayectoria y confianza.</p>', unsafe_allow_html=True)
+        # TEXTO ACTUALIZADO CON 29 AÑOS
+        st.markdown('<p class="hero-subtitle">Tu aventura de egresados empieza acá.<br>Luego de 29 años de trayectoria y confianza.</p>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
     with c2:
         st.markdown(f'<div style="text-align:right;"><img src="{LANDING_IMG}" class="img-hero-style"></div>', unsafe_allow_html=True)
@@ -149,18 +156,18 @@ def render_landing():
                 <div class="exp-grid">
                     <div class="exp-card-grey">
                         <div class="exp-icon-circle">🚌</div>
-                        <h4>Transporte Premium</h4>
-                        <p>Unidades modernas de última generación para un viaje seguro.</p>
+                        <h4 style="font-weight:700;">Transporte Premium</h4>
+                        <p style="color:#4b5563;">Unidades modernas de última generación para un viaje seguro.</p>
                     </div>
                     <div class="exp-card-grey">
                         <div class="exp-icon-circle">🏨</div>
-                        <h4>Hoteles Propios</h4>
-                        <p>Exclusividad y seguridad en los mejores destinos del país.</p>
+                        <h4 style="font-weight:700;">Hoteles Propios</h4>
+                        <p style="color:#4b5563;">Exclusividad y seguridad en los mejores destinos del país.</p>
                     </div>
                     <div class="exp-card-grey">
                         <div class="exp-icon-circle">🛡️</div>
-                        <h4>Seguridad 24/7</h4>
-                        <p>Coordinación permanente y asistencia médica integral.</p>
+                        <h4 style="font-weight:700;">Seguridad 24/7</h4>
+                        <p style="color:#4b5563;">Coordinación permanente y asistencia médica integral.</p>
                     </div>
                 </div>
             </div>
@@ -171,15 +178,15 @@ def render_landing():
     st.markdown("""
         <div class="footer-full">
             <div style="flex:1; min-width:250px;">
-                <h4 style="margin-bottom:15px;">SERRANO TURISMO</h4>
-                <p style="color:#999; font-size:0.85rem;">Expertos en viajes estudiantiles con casi tres décadas de trayectoria.</p>
+                <h4 style="margin-bottom:15px; font-weight:700;">SERRANO TURISMO</h4>
+                <p style="color:#999; font-size:0.85rem;">Expertos en viajes estudiantiles con casi tres décadas de trayectoria impecable.</p>
             </div>
             <div style="flex:1; min-width:250px;">
-                <h4 style="margin-bottom:15px;">CONTACTO</h4>
-                <p style="color:#999; font-size:0.85rem;">📍 CABA: Av. Rivadavia 4532<br>📞 11-4847-6467</p>
+                <h4 style="margin-bottom:15px; font-weight:700;">CONTACTO</h4>
+                <p style="color:#999; font-size:0.85rem;">📍 CABA: Av. Rivadavia 4532<br>📍 Ituzaingó: Parque Leloir<br>📞 11-4847-6467</p>
             </div>
             <div style="flex:1; min-width:200px;">
-                <h4 style="margin-bottom:15px;">REDES SOCIALES</h4>
+                <h4 style="margin-bottom:15px; font-weight:700;">REDES SOCIALES</h4>
                 <div style="display:flex; gap:15px;">
                     <a href="https://instagram.com/serrano_turismo" target="_blank" style="color:white; font-size:1.5rem;"><i class="fab fa-instagram"></i></a>
                     <a href="https://facebook.com/serranoturismo" target="_blank" style="color:white; font-size:1.5rem;"><i class="fab fa-facebook-f"></i></a>
