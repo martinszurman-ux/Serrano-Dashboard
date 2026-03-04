@@ -33,7 +33,7 @@ def render_landing_sp():
 
     with col2:
         try:
-            st.image("assets/landing_sanPedro_imagen", use_container_width=True)
+            st.image("assets/landing_sanPedro_imagen.png", use_container_width=True)
         except:
             st.info("🖼️ Imagen de San Pedro")
 
