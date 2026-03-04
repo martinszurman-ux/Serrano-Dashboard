@@ -52,17 +52,27 @@ st.markdown("""
     }
 
     .logo-box img { max-height: 55px; width: auto; }
-    
-    /* Contenedor de links y la imagen de "Elegí tu destino" */
-    .nav-links { display: flex; align-items: center; gap: 30px; }
+    .nav-links { display: flex; align-items: center; gap: 20px; }
 
-    /* Estilo para la imagen del header_elije_destino */
-    .header-img-instruccion {
-        max-height: 50px; /* Ajustado para que no sea más grande que el texto previo */
-        width: auto;
-        margin-right: 5px;
+    /* Estilo para los botones de destino (Caso A) */
+    .btn-destino {
+        background-color: #000;
+        color: #fff !important;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none !important;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: 0.3s;
+    }
+    .btn-destino:hover {
+        background-color: #444;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
 
+    /* Estilo para los links del menú (Caso B) */
     .nav-item {
         color: black !important; text-decoration: none !important; 
         font-size: 13px; font-weight: 700; text-transform: uppercase;
@@ -106,27 +116,24 @@ st.markdown("""
         align-items: flex-start;
     }
     .footer-col h4 { color: white; font-size: 14px; margin-bottom: 10px; }
-    .footer-col p { font-size: 12px; margin-bottom: 5px; }
     </style>
 """, unsafe_allow_html=True)
 
 # 5. CONSTRUCCIÓN DEL NAVBAR DINÁMICO
 logo_url = "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png"
-# URL de la imagen de instrucción (asegurate que la ruta sea accesible desde la web o GitHub)
-# Si la tenés local en Streamlit Cloud, recordá que a veces es mejor usar la URL de GitHub Raw
-instruccion_url = "https://raw.githubusercontent.com/martinszurman-ux/Serrano-Dashboard/main/assets/header_elije_destino.png"
-
 sigla = "SP" if dest_actual == "San Pedro" else "CP" if dest_actual == "Villa Carlos Paz" else ""
 
 if not dest_actual:
-    # Caso A: No hay destino (Menú de Selección con Imagen)
+    # Caso A: No hay destino (Texto + Botones)
     links_html = f"""
-        <img src="{instruccion_url}" class="header-img-instruccion">
-        <a href="./?nav=Home&destino=San+Pedro" class="nav-item" target="_self">SAN PEDRO</a>
-        <a href="./?nav=Home&destino=Villa+Carlos+Paz" class="nav-item" target="_self">CARLOS PAZ</a>
+        <span style="color: #888; font-size: 12px; font-weight: 600; text-transform: uppercase; margin-right: 5px;">
+            Elegí tu destino:
+        </span>
+        <a href="./?nav=Home&destino=San+Pedro" class="btn-destino" target="_self">SAN PEDRO</a>
+        <a href="./?nav=Home&destino=Villa+Carlos+Paz" class="btn-destino" target="_self">CARLOS PAZ</a>
     """
 else:
-    # Caso B: Destino elegido (Menú Completo)
+    # Caso B: Destino elegido (Home + Menús Desplegables)
     links_html = f"""
         <a href="./?nav=Home" class="nav-item" target="_self">HOME</a>
         <div class="dropdown">
@@ -184,4 +191,3 @@ elif nav_actual == "Tarifas": render_tarifas(dest_actual)
 elif nav_actual == "Adhesion": render_adhesion(logo_url)
 
 st.markdown('</div>', unsafe_allow_html=True)
-
