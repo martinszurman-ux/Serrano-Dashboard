@@ -115,7 +115,11 @@ sigla = "SP" if dest_actual == "San Pedro" else "CP" if dest_actual == "Villa Ca
 
 if not dest_actual:
     # Caso A: No hay destino (Menú de Selección)
+    # Agregamos el texto a la izquierda con un estilo similar a los nav-items pero sin hover
     links_html = f"""
+        <span style="color: #888; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-right: 10px;">
+            Elegí tu destino:
+        </span>
         <a href="./?nav=Home&destino=San+Pedro" class="nav-item" target="_self">SAN PEDRO</a>
         <a href="./?nav=Home&destino=Villa+Carlos+Paz" class="nav-item" target="_self">CARLOS PAZ</a>
     """
@@ -129,7 +133,7 @@ else:
                 <a href="./?nav=Transporte&destino={dest_actual}" target="_self">Transporte</a>
                 <a href="./?nav=Hoteleria&destino={dest_actual}" target="_self">Hotelería</a>
                 <a href="./?nav=Comidas&destino={dest_actual}" target="_self">Comidas</a>
-                <a href="./?nav=Excursiones&destino={dest_actual}" target="_self">Excursiones</a>
+                <a href="/?nav=Excursiones&destino={dest_actual}" target="_self">Excursiones</a>
                 <a href="./?nav=Actividades&destino={dest_actual}" target="_self">Actividades</a>
                 <a href="./?nav=Seguro&destino={dest_actual}" target="_self">Seguro / Coordinación</a>
             </div>
@@ -143,19 +147,6 @@ else:
         </div>
         <div class="sigla-badge">{sigla}</div>
     """
-
-# Inyección del Navbar
-st.markdown(f"""
-    <div class="navbar">
-        <div class="logo-box">
-            <a href="./?nav=Home" target="_self">
-                <img src="{logo_url}">
-            </a>
-        </div>
-        <div class="nav-links">{links_html}</div>
-        <div style="width:110px;"></div>
-    </div>
-""", unsafe_allow_html=True)
 
 # 6. RENDERIZADO DE CONTENIDO SEGÚN LA NAVEGACIÓN
 st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
@@ -178,4 +169,5 @@ elif nav_actual == "Tarifas": render_tarifas(dest_actual)
 elif nav_actual == "Adhesion": render_adhesion(logo_url)
 
 st.markdown('</div>', unsafe_allow_html=True)
+
 
