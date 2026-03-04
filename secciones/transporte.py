@@ -33,7 +33,6 @@ def render_transporte(destino):
         st.subheader("🚍 Opción Terrestre")
         if os.path.exists(img_micro_local):
             st.image(img_micro_local, caption="Nuestras unidades de Serrano Turismo", width=650)
-            st.info("ℹ️ Toda nuestra flota cumple estrictamente con las normativas de la CNRT.")
         else:
             st.error(f"⚠️ No se encontró: {img_micro_local}")
             
@@ -53,7 +52,6 @@ def render_transporte(destino):
         
         if os.path.exists(img_micro_local):
             st.image(img_micro_local, caption="Unidades equipadas para tu confort", width=650)
-            st.info("ℹ️ Toda nuestra flota cumple estrictamente con las normativas de la CNRT.")
         else:
             st.error(f"⚠️ No se encontró: {img_micro_local}")
             
@@ -66,6 +64,7 @@ def render_transporte(destino):
         * ✅ **Empresas de transporte Charter:** Seguridad y exclusividad garantizada.
         * ✅ **Exclusividad:** El mismo bus queda a disposición del grupo durante todos los días del viaje para los traslados a excursiones.
         """)
- # --- 5. FOOTER INSTITUCIONAL ---
+
+    # --- 5. FOOTER INSTITUCIONAL ---
     # Invocamos la función del archivo utilidades/footer.py
     render_footer()
