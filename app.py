@@ -27,7 +27,7 @@ except ImportError as e:
     st.error(f"Error crítico de importación: {e}")
     st.stop()
 
-# 3. CSS MAESTRO (Restauración del Look & Feel Slim)
+# 3. CSS MAESTRO (Look & Feel Slim Optimizado para Mobile)
 st.markdown("""
     <style>
     /* FORZAR COLORES LIGHT */
@@ -42,11 +42,11 @@ st.markdown("""
     }
     .logo-container img { max-width: 110px !important; }
 
-    /* BOTONES SLIM (Achicados horizontal y verticalmente) */
+    /* BOTONES SLIM OPTIMIZADOS PARA DEDO Y PANTALLA CHICA */
     [data-testid="stSidebarContent"] [data-testid="stVerticalBlock"] > div {
         width: 100% !important;
-        padding-left: 10px !important;
-        padding-right: 10px !important;
+        padding-left: 8px !important;
+        padding-right: 8px !important;
     }
     
     div.stButton > button {
@@ -54,15 +54,17 @@ st.markdown("""
         color: white !important;
         border: 1px solid #1a1a1a !important;
         border-radius: 6px !important;
-        height: 38px !important;
+        height: 40px !important; /* Altura optimizada */
         font-weight: 600 !important;
-        font-size: 14px !important;
+        font-size: 13px !important; /* Fuente para evitar saltos de línea */
         text-align: left !important;
         display: flex !important;
         align-items: center !important;
         justify-content: flex-start !important;
         width: 100% !important;
-        margin-bottom: -12px !important;
+        margin-bottom: -10px !important;
+        white-space: nowrap !important; /* Fuerza una sola línea */
+        overflow: hidden !important;
         transition: all 0.3s ease !important;
     }
     
@@ -77,7 +79,8 @@ st.markdown("""
         background: linear-gradient(145deg, #1a1a1a, #000000) !important;
         justify-content: center !important;
         margin-top: 5px !important;
-        height: 42px !important;
+        height: 44px !important;
+        border: 1px solid #4A90E2 !important;
     }
 
     /* WHATSAPP ANIMADO */
@@ -98,7 +101,7 @@ st.markdown("""
     /* CONTACTO COMPACTO */
     .sidebar-footer { 
         color: #666666 !important; 
-        font-size: 0.7rem; 
+        font-size: 0.65rem; 
         line-height: 1.3; 
         text-align: center;
         padding-top: 10px;
@@ -125,7 +128,8 @@ with st.sidebar:
     if st.button("🍽️ 3. Comidas"): st.session_state.seccion_activa = "Comidas"
     if st.button("🏞️ 4. Excursiones"): st.session_state.seccion_activa = "Excursiones"
     if st.button("🌙 5. Actividades"): st.session_state.seccion_activa = "Actividades"
-    if st.button("🏥 6. Seguro Médico"): st.session_state.seccion_activa = "Seguro"
+    # BOTÓN ACTUALIZADO
+    if st.button("🏥 6. Coordinación/Seguro"): st.session_state.seccion_activa = "Seguro"
     if st.button("💰 7. Tarifas"): st.session_state.seccion_activa = "Tarifas"
 
     # Botón Ficha de Adhesión
@@ -133,7 +137,7 @@ with st.sidebar:
     if st.button("📝 FICHA DE ADHESIÓN"): st.session_state.seccion_activa = "Adhesión"
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # Lógica de Botón Admin Oculto (Acceso via URL ?admin=true)
+    # Lógica de Botón Admin Oculto
     if st.query_params.get("admin") == "true":
         st.markdown('<div class="btn-admin">', unsafe_allow_html=True)
         if st.button("⚙️ Configuración"): 
