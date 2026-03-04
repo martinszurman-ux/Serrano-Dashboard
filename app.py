@@ -7,21 +7,16 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 2. LÓGICA DE ESTADO Y PARÁMETROS
+# 2. LÓGICA DE ESTADO
 params = st.query_params
-if "nav" in params:
-    st.session_state.nav = params["nav"]
-if "destino" in params:
-    st.session_state.destino = params["destino"]
-
-# Inicialización por defecto
-if "nav" not in st.session_state: st.session_state.nav = "Home"
-if "destino" not in st.session_state: st.session_state.destino = None
+# Priorizamos los parámetros de la URL para la navegación
+st.session_state.nav = params.get("nav", "Home")
+st.session_state.destino = params.get("destino", None)
 
 # 3. IMPORTACIÓN DE SECCIONES
 try:
     from secciones.landing import render_landing
-    from secciones.landing_sanpedro import render_landing_sp  # Importación corregida
+    from secciones.landing_sanpedro import render_landing_sp  
     from secciones.transporte import render_transporte
     from secciones.hoteleria import render_hoteleria
     from secciones.comidas import render_comidas
@@ -31,17 +26,16 @@ try:
     from secciones.tarifas import render_tarifas
     from secciones.adhesion import render_adhesion
 except ImportError as e:
-    st.error(f"Error de importación: {e}")
+    st.error(f"⚠️ Error de importación: {e}")
     st.stop()
 
-# 4. CSS MAESTRO (Solución al parpadeo del menú y logo)
+# 4. CSS MAESTRO
 st.markdown("""
     <style>
     [data-testid="stHeader"], [data-testid="stSidebar"] { display: none !important; }
     .main .block-container { padding-top: 0rem !important; }
     .stApp { background-color: white !important; }
 
-    /* Navbar */
     .navbar {
         display: flex; justify-content: space-between; align-items: center;
         padding: 0 60px; height: 80px; background-color: white;
@@ -58,37 +52,26 @@ st.markdown("""
         letter-spacing: 1px;
     }
 
-    /* DROPDOWN ESTABLE */
     .dropdown { position: relative; display: inline-block; }
-    
     .dropbtn {
         color: black !important; font-size: 14px; font-weight: 700;
         text-decoration: none !important; border: none; background: none;
-        cursor: pointer; text-transform: uppercase;
-        padding: 30px 0; /* Área de contacto ampliada verticalmente */
+        cursor: pointer; text-transform: uppercase; padding: 30px 0;
     }
 
     .dropdown-content {
         display: none; position: absolute; background-color: white;
         min-width: 240px; box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
-        z-index: 1000; border-radius: 8px; border: 1px solid #f0f0f0;
-        top: 75px; /* Pegado al área de contacto del botón */
+        z-index: 1000; border-radius: 8px; border: 1px solid #f0f0f0; top: 75px;
     }
 
-    /* El 'puente' invisible para evitar que el menú se cierre al mover el mouse hacia abajo */
-    .dropdown:hover .dropdown-content { 
-        display: block; 
-    }
+    .dropdown:hover .dropdown-content { display: block; }
 
     .dropdown-content a {
         color: #444; padding: 12px 20px; text-decoration: none;
         display: block; font-size: 13px; transition: 0.2s;
     }
-    .dropdown-content a:hover { 
-        background-color: #f8f9fa; 
-        color: #000 !important; 
-        padding-left: 25px;
-    }
+    .dropdown-content a:hover { background-color: #f8f9fa; color: #000 !important; padding-left: 25px; }
 
     .sigla-badge {
         background: #000; color: #fff; padding: 4px 10px;
@@ -105,7 +88,7 @@ dest = st.session_state.destino
 sigla = "CP" if dest == "Villa Carlos Paz" else "SP" if dest == "San Pedro" else ""
 
 if not dest:
-    # Menú sin destino seleccionado
+    # MENÚ INICIAL (Sin destino)
     nav_html = f"""
     <div class="navbar">
         <div class="logo-box"><a href="/?nav=Home" target="_self"><img src="{logo_url}"></a></div>
@@ -117,12 +100,13 @@ if not dest:
     </div>
     """
 else:
-    # Menú con destino seleccionado
+    # MENÚ CON DESTINO (Home ahora limpia el destino)
     nav_html = f"""
     <div class="navbar">
         <div class="logo-box"><a href="/?nav=Home" target="_self"><img src="{logo_url}"></a></div>
         <div class="nav-links">
-            <a href="/?nav=Home&destino={dest}" class="nav-item" target="_self">HOME</a>
+            <a href="/?nav=Home" class="nav-item" target="_self">HOME</a>
+            
             <div class="dropdown">
                 <button class="dropbtn">CONOCÉ TU VIAJE DE EGRESADOS ▼</button>
                 <div class="dropdown-content">
@@ -154,6 +138,7 @@ st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 n = st.session_state.nav
 
 if n == "Home":
+    # Si no hay destino en la URL, render_landing() mostrará la opción de elegir
     if dest == "San Pedro":
         render_landing_sp()
     else:
