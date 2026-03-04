@@ -48,10 +48,24 @@ def render_excursiones(destino):
             st.image("assets/sanpedroexc.jpg", use_container_width=True)
         st.markdown("## 🏞️ Excursiones San Pedro")
 
-        # Video San Pedro
-        st.markdown('<div class="tv-container">', unsafe_allow_html=True)
-        st.video("https://www.youtube.com/watch?v=xBDqSrNB8Ro")
-        st.markdown('</div>', unsafe_allow_html=True)
+        # Dos imágenes en reemplazo del video
+        col_img1, col_img2 = st.columns(2)
+        
+        with col_img1:
+            # Reemplazá "imagen1.jpg" por el nombre de tu primer foto
+            if os.path.exists("assets/imagen1.jpg"):
+                st.image("assets/imagen1.jpg", use_container_width=True, border=True)
+            else:
+                st.info("🖼️ Falta cargar: assets/imagen1.jpg")
+                
+        with col_img2:
+            # Reemplazá "imagen2.jpg" por el nombre de tu segunda foto
+            if os.path.exists("assets/imagen2.jpg"):
+                st.image("assets/imagen2.jpg", use_container_width=True, border=True)
+            else:
+                st.info("🖼️ Falta cargar: assets/imagen2.jpg")
+
+        st.markdown("<br>", unsafe_allow_html=True)
 
         # El Fuerte
         st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
@@ -65,7 +79,6 @@ def render_excursiones(destino):
         st.markdown('<div class="excursion-card"><div class="excursion-content"><div class="excursion-title">🚢 4. Sunset Catamarán</div><div class="excursion-desc">Navegación por el Paraná con música al atardecer.</div><div class="excursion-tag">Navegación</div></div></div>', unsafe_allow_html=True)
         st.markdown('<div class="excursion-card"><div class="excursion-content"><div class="excursion-title">🏙️ 5. City Tour</div><div class="excursion-desc">Recorrido por barrancas y compras regionales.</div><div class="excursion-tag">Cultura</div></div></div>', unsafe_allow_html=True)
 
-
- # --- 5. FOOTER INSTITUCIONAL ---
+    # --- 5. FOOTER INSTITUCIONAL ---
     # Invocamos la función del archivo utilidades/footer.py
     render_footer()
