@@ -1,4 +1,5 @@
 import streamlit as st
+from utilidades.footer import render_footer
 
 def render_landing():
     # URL de la imagen en tu GitHub
@@ -180,26 +181,6 @@ def render_landing():
     # 4. SPACER DESPUÉS
     st.markdown('<div class="simetric-spacer"></div>', unsafe_allow_html=True)
 
-    # 5. FOOTER FINAL NEGRO
-    st.markdown("""
-        <div class="footer-full">
-            <div style="flex:1; min-width:280px;">
-                <h4 style="margin-bottom:20px; font-weight:700; color:white; letter-spacing:1px;">SERRANO TURISMO</h4>
-                <p style="color:#aaa; font-size:0.9rem; line-height:1.7;">Expertos en viajes de egresados y turismo educativo. 29 años de compromiso ininterrumpido con las familias.</p>
-            </div>
-            <div style="flex:1; min-width:280px;">
-                <h4 style="margin-bottom:20px; font-weight:700; color:white; letter-spacing:1px;">CONTACTO</h4>
-                <p style="color:#aaa; font-size:0.9rem; line-height:1.7;">📍 CABA: Av. Rivadavia 4532<br>📍 Ituzaingó: Parque Leloir<br>📞 11-4847-6467</p>
-            </div>
-            <div style="flex:1; min-width:200px;">
-                <h4 style="margin-bottom:20px; font-weight:700; color:white; letter-spacing:1px;">REDES</h4>
-                <div style="display:flex; gap:20px;">
-                    <a href="https://instagram.com/serrano_turismo" target="_blank" style="color:white; font-size:1.8rem;"><i class="fab fa-instagram"></i></a>
-                    <a href="https://facebook.com/serranoturismo" target="_blank" style="color:white; font-size:1.8rem;"><i class="fab fa-facebook-f"></i></a>
-                </div>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
-
-    # 6. WHATSAPP FLOTANTE A LA IZQUIERDA
-    st.markdown('<a href="https://wa.me/5491156096283" class="whatsapp-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>', unsafe_allow_html=True)
+  # --- 5. FOOTER INSTITUCIONAL ---
+    # Invocamos la función del archivo utilidades/footer.py
+    render_footer()
