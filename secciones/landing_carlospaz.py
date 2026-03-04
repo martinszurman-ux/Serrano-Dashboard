@@ -1,5 +1,5 @@
 import streamlit as st
-from utilidades.footer import generar_footer  # Importamos tu utilidad
+from utilidades.footer import render_footer  # Importación corregida
 
 def render_landing_cp():
     # 1. Hero Section
@@ -8,7 +8,7 @@ def render_landing_cp():
     st.title("☀️ Villa Carlos Paz: El Corazón del Valle de Punilla")
     st.markdown("""
     **Villa Carlos Paz** no es solo un destino, es una experiencia completa. 
-    Desde el icónico Reloj Cuclú hasta las noches vibrantes de teatro, la ciudad ofrece el equilibrio perfecto entre sierras y entretenimiento.
+    Desde el icónico Reloj Cuclú hasta las noches vibrantes de teatro.
     """)
 
     st.divider()
@@ -23,36 +23,16 @@ def render_landing_cp():
 
     # 3. Secciones Destacadas con Tabs
     st.subheader("📍 ¿Qué hacer en la Villa?")
-    
     tab1, tab2, tab3 = st.tabs(["Naturaleza", "Entretenimiento", "Gastronomía"])
 
     with tab1:
-        st.markdown("""
-        ### El contacto con la sierra
-        * **Cerro de la Cruz:** Un ascenso con la mejor vista panorámica de la ciudad.
-        * **Costanera del Lago:** 5 km de recorrido ideal para caminatas, mates o running.
-        * **Balneario El Fantasio:** El clásico río para refrescarse en las tardes de verano.
-        """)
-
+        st.markdown("* **Cerro de la Cruz**\n* **Costanera del Lago**\n* **Balneario El Fantasio**")
     with tab2:
-        st.markdown("""
-        ### La ciudad que nunca duerme
-        * **Teatros:** Disfrutá de las producciones más importantes del país en la calle 9 de Julio.
-        * **Complejo Aerosilla:** Un viaje a las alturas con actividades de aventura.
-        * **Pekos Multiparque:** Diversión garantizada para los más chicos.
-        """)
-
+        st.markdown("* **Teatros de la calle 9 de Julio**\n* **Complejo Aerosilla**\n* **Pekos Multiparque**")
     with tab3:
-        st.markdown("""
-        ### Sabores de Punilla
-        * **Alfajores regionales:** Un clásico imperdible.
-        * **Cenas frente al Lago:** Gastronomía de nivel en la Av. Atlantis.
-        * **Cervecerías Artesanales:** El punto de encuentro tras el río.
-        """)
+        st.markdown("* **Alfajores regionales**\n* **Cenas frente al Lago**\n* **Cervecerías Artesanales**")
 
-    # 4. CTA y Formulario
-    st.info("💡 **Dato Pro:** Si vas en temporada alta, reservá tus entradas de teatro con anticipación.")
-
+    # 4. Formulario de contacto
     with st.container(border=True):
         st.subheader("📩 ¿Querés recibir una guía de precios?")
         col1, col2 = st.columns(2)
@@ -65,14 +45,12 @@ def render_landing_cp():
         
         if st.button("Descargar Guía de Carlos Paz 🚀"):
             if nombre and email:
-                st.success(f"¡Genial {nombre}! Te enviamos la guía a {email}.")
+                st.success(f"¡Enviado a {email}!")
             else:
-                st.warning("Por favor, completa los campos.")
+                st.warning("Completa los campos.")
 
-    # --- AQUÍ LLAMAMOS AL FOOTER ---
-    st.divider()
-    generar_footer()
+    # --- LLAMADA AL FOOTER ---
+    render_footer()
 
-# Para testing individual
 if __name__ == "__main__":
     render_landing_cp()
