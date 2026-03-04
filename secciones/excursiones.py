@@ -2,7 +2,7 @@ import streamlit as st
 import os
 
 def render_excursiones(destino):
-    # --- ESTILOS CSS (Slim & Mobile Ready) ---
+    # --- ESTILOS CSS (Slim, Mobile & TV Frame) ---
     st.markdown("""
         <style>
         .excursion-card {
@@ -37,84 +37,91 @@ def render_excursiones(destino):
             margin-top: 10px;
             text-transform: uppercase;
         }
-        .video-container {
-            margin-bottom: 25px;
-            border-radius: 12px;
-            overflow: hidden;
+        /* ESTILO TV FRAME PARA EL VIDEO */
+        .video-tv-frame {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 25px;
+            border: 8px solid #333;
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.3);
+            margin: 20px auto;
+            max-width: 800px;
         }
         </style>
     """, unsafe_allow_html=True)
 
     if destino == "Villa Carlos Paz":
-        # (Aquí va tu código actual de Carlos Paz que ya funciona perfecto)
+        # Mantenemos tu código de Carlos Paz aquí...
         st.markdown("## 🏞️ Experiencias en Carlos Paz")
-        # ... resto del código de VCP ...
+        # (Resto del código de VCP)
 
     elif destino == "San Pedro":
-        # 1. ENCABEZADO (Foto nueva encabezado_sp.jpg)
-        if os.path.exists("assets/encabezado_sp.jpg"):
-            st.image("assets/encabezado_sp.jpg", use_container_width=True)
+        # 1. ENCABEZADO (Archivo: assets/sanpedroexc.jpg)
+        if os.path.exists("assets/sanpedroexc.jpg"):
+            st.image("assets/sanpedroexc.jpg", use_container_width=True)
         
-        # 2. VIDEO INSTITUCIONAL
-        st.markdown('<div class="video-container">', unsafe_allow_html=True)
-        st.video("https://www.youtube.com/watch?v=xBDqSrNB8Ro")
-        st.markdown('</div>', unsafe_allow_html=True)
-
         st.markdown("## 🏞️ Excursiones San Pedro")
 
-        # 1. EL FUERTE DE OBLIGADO (Con foto fuerte.jpg)
+        # 2. EL FUERTE DE OBLIGADO (Archivo: assets/2.jpg)
         st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
-        if os.path.exists("assets/fuerte.jpg"):
-            st.image("assets/fuerte.jpg")
+        if os.path.exists("assets/2.jpg"):
+            st.image("assets/2.jpg")
         st.markdown("""
             <div class="excursion-content">
                 <div class="excursion-title">🚌 1. El Fuerte de Obligado</div>
-                <div class="excursion-desc">Turismo aventura en estado puro: palestra, péndulo, rappel y tirolesa. Además, disfrutamos de toboganes de agua y un auténtico asado criollo a tenedor libre.</div>
-                <div class="excursion-tag">Aventura • Gastronomía</div>
+                <div class="excursion-desc">Turismo aventura extremo: palestra, péndulo, rappel y tirolesa. Además, toboganes de agua y un asado criollo a tenedor libre inolvidable.</div>
+                <div class="excursion-tag">Aventura • Asado Criollo</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
-        # 2. BEACH DAY CON CANOTAJE
+        # 3. BEACH DAY CON CANOTAJE
         st.markdown("""
             <div class="excursion-card">
                 <div class="excursion-content">
                     <div class="excursion-title">🚌 2. Beach Day con Canotaje</div>
-                    <div class="excursion-desc">Día de playa exclusivo en balneario privado con actividades deportivas. Incluye bautismo de canotaje en sectores seguros y controlados.</div>
+                    <div class="excursion-desc">Día de playa en balneario privado con bautismo de canotaje en sectores seguros, ideal para disfrutar el sol y el río.</div>
                     <div class="excursion-tag">Playa • Náutica</div>
                 </div>
             </div>
         """, unsafe_allow_html=True)
 
-        # 3. COMPLEJO LAS AMALIAS
+        # 4. COMPLEJO LAS AMALIAS
         st.markdown("""
             <div class="excursion-card">
                 <div class="excursion-content">
                     <div class="excursion-title">🚌 3. Complejo Las Amalias</div>
-                    <div class="excursion-desc">Tarde de recreación total: laberinto de ligustrinas, plaza húmeda, pileta, fútbol y vóley en un predio diseñado para el grupo.</div>
+                    <div class="excursion-desc">Laberinto de ligustrinas, plaza húmeda, piletas y deportes. Un predio gigante para la recreación del grupo.</div>
                     <div class="excursion-tag">Recreación • Aire Libre</div>
                 </div>
             </div>
         """, unsafe_allow_html=True)
 
-        # 4. SUNSET CATAMARÁN
+        # 5. SUNSET CATAMARÁN
         st.markdown("""
             <div class="excursion-card">
                 <div class="excursion-content">
                     <div class="excursion-title">🚢 4. Sunset Catamarán</div>
-                    <div class="excursion-desc">Navegación exclusiva por el Río Paraná. Disfrutamos del atardecer con la mejor música a bordo de un catamarán de primer nivel.</div>
-                    <div class="excursion-tag">Navegación • Fiesta</div>
+                    <div class="excursion-desc">Navegación por el Paraná al atardecer con música exclusiva. Una experiencia mágica para cerrar el día.</div>
+                    <div class="excursion-tag">Navegación • Música</div>
                 </div>
             </div>
         """, unsafe_allow_html=True)
 
-        # 5. CITY TOUR
+        # 6. CITY TOUR
         st.markdown("""
             <div class="excursion-card">
                 <div class="excursion-content">
                     <div class="excursion-title">🏙️ 5. City Tour</div>
-                    <div class="excursion-desc">Recorrido histórico por la ciudad, zona de barrancas y el Vía Crucis. Finalizamos con tiempo para compras de artículos regionales.</div>
-                    <div class="excursion-tag">Cultura • Regional</div>
+                    <div class="excursion-desc">Recorrido por barrancas, Vía Crucis y centros históricos, con tiempo para compras de productos regionales.</div>
+                    <div class="excursion-tag">Cultura • Regalos</div>
                 </div>
             </div>
         """, unsafe_allow_html=True)
+
+        # 7. VIDEO INSTITUCIONAL AL FINAL (Con Marco de TV)
+        st.markdown("---")
+        st.markdown("### 🎥 Mirá cómo vivimos San Pedro")
+        st.markdown('<div class="video-tv-frame">', unsafe_allow_html=True)
+        st.video("https://www.youtube.com/watch?v=xBDqSrNB8Ro")
+        st.markdown('</div>', unsafe_allow_html=True)
