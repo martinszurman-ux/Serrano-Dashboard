@@ -1,8 +1,7 @@
 import streamlit as st
 
-def render():
-    # 1. Hero Section (Imagen y Título Principal)
-    # Usamos la ruta local que mencionaste
+# Por esto:
+def render_landing_cp():
     st.image("assets/landingcarlospazimagen.png", use_container_width=True)
     
     st.title("☀️ Villa Carlos Paz: El Corazón del Valle de Punilla")
