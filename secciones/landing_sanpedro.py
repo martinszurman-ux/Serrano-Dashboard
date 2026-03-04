@@ -55,7 +55,7 @@ def render_landing_sp():
 
     with col2:
         # Intento de carga de imagen con extensión corregida
-        ruta_img = "assets/landing_sanPedro_imagen.jpg" # Ajustar a .png si corresponde
+        ruta_img = "assets/landing_sanPedro_imagen.png" # Ajustar a .png si corresponde
         if os.path.exists(ruta_img):
             st.image(ruta_img, use_container_width=True)
         else:
