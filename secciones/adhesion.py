@@ -1,6 +1,7 @@
 import streamlit as st
 from datetime import datetime
 import streamlit.components.v1 as components
+from utilidades.footer import render_footer
 
 def render_adhesion(logo_url):
     # CSS Optimizado para impresión en una sola carilla A4
@@ -146,3 +147,7 @@ def render_adhesion(logo_url):
         """,
         height=70,
     )
+
+ # --- 5. FOOTER INSTITUCIONAL ---
+    # Invocamos la función del archivo utilidades/footer.py
+    render_footer()
