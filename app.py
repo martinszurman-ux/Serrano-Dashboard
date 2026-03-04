@@ -16,7 +16,7 @@ st.session_state.destino = dest_actual
 try:
     from secciones.landing import render_landing
     from secciones.landing_sanpedro import render_landing_sp
-    from secciones.landing_carlospaz import render_landing_cp  # <--- NUEVA IMPORTACIÓN
+    from secciones/landing_carlospaz import render_landing_cp  # <--- NUEVA IMPORTACIÓN
     from secciones.transporte import render_transporte
     from secciones.hoteleria import render_hoteleria
     from secciones.comidas import render_comidas
@@ -134,3 +134,4 @@ elif nav_actual == "Tarifas": render_tarifas(dest_actual)
 elif nav_actual == "Adhesion": render_adhesion(logo_url)
 
 st.markdown('</div>', unsafe_allow_html=True)
+
