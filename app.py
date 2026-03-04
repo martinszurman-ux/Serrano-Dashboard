@@ -1,11 +1,4 @@
 import streamlit as st
-from pages.landing import render_landing
-
-st.write("DEBUG: Estoy en el main") # Esto DEBE aparecer arriba de todo
-
-# Fuerza la ejecución de la landing sin importar nada más
-render_landing() 
-st.stop() # Esto detiene todo lo que venga después
 
 # 1. CONFIGURACIÓN
 st.set_page_config(page_title="Serrano Turismo", layout="wide", initial_sidebar_state="collapsed")
@@ -169,4 +162,5 @@ elif n == "Seguro": render_seguro(dest)
 elif n == "Tarifas": render_tarifas(dest)
 elif n == "Adhesion": render_adhesion(logo_url)
 st.markdown('</div>', unsafe_allow_html=True)
+
 
