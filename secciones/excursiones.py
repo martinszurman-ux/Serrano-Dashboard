@@ -54,14 +54,14 @@ def render_excursiones(destino):
         with col_img1:
             # Reemplazá "imagen1.jpg" por el nombre de tu primer foto
             if os.path.exists("assets/imagen1.jpg"):
-                st.image("assets/imagen1.jpg", use_container_width=True, border=True)
+                st.image("assets/imagen1.jpg", use_container_width=True)
             else:
                 st.info("🖼️ Falta cargar: assets/imagen1.jpg")
                 
         with col_img2:
             # Reemplazá "imagen2.jpg" por el nombre de tu segunda foto
             if os.path.exists("assets/imagen2.jpg"):
-                st.image("assets/imagen2.jpg", use_container_width=True, border=True)
+                st.image("assets/imagen2.jpg", use_container_width=True)
             else:
                 st.info("🖼️ Falta cargar: assets/imagen2.jpg")
 
