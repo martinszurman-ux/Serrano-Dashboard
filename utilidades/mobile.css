@@ -1,43 +1,56 @@
 /* --- AJUSTES PARA CELULARES --- */
 
 .navbar {
-    flex-direction: column !important; /* Apila logo arriba y botones abajo */
-    height: auto !important;           /* Permite que la barra crezca hacia abajo */
-    padding: 10px 0 !important;
+    flex-direction: column !important;
+    height: auto !important;
+    padding: 15px 0 !important;
     justify-content: center !important;
+    position: fixed !important;
 }
 
 .logo-box {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .logo-box img {
-    max-height: 45px !important; /* Achicamos el logo para que no ocupe toda la pantalla */
+    max-height: 45px !important;
+    display: block !important;
+    margin: 0 auto;
 }
 
 .nav-links {
     gap: 8px !important;
     justify-content: center !important;
     width: 100%;
+    display: flex !important;
 }
 
-/* Botones de destino más compactos para que entren en una línea */
 .btn-destino {
     font-size: 10px !important;
-    padding: 6px 10px !important;
+    padding: 8px 12px !important;
     white-space: nowrap;
 }
 
-/* --- CORRECCIÓN DE VISIBILIDAD (Serrano Turismo) --- */
-/* Forzamos que los títulos sean visibles sobre el fondo blanco */
+/* --- CORRECCIÓN DE VISIBILIDAD --- */
+/* Forzamos color oscuro en títulos y párrafos para que no sean invisibles */
 .content-wrapper h1, 
 .content-wrapper h2, 
-.content-wrapper .stMarkdown p {
+.content-wrapper h3,
+.content-wrapper p,
+.content-wrapper span {
     color: #1a1a1a !important; 
 }
 
-/* IMPORTANTE: Bajamos el contenido para que no lo tape la nueva navbar alta */
+/* Bajamos el contenido para que la navbar doble no lo tape */
 .content-wrapper {
-    margin-top: 130px !important; 
-    padding: 0 20px !important;
+    margin-top: 150px !important; 
+    padding: 0 15px !important;
+}
+
+/* Ocultar espacios vacíos innecesarios en mobile */
+[style*="width:110px"] {
+    display: none !important;
 }
