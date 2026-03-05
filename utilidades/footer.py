@@ -1,13 +1,10 @@
 import streamlit as st
 
 def render_footer():
-    """Footer definitivo sin saltos de línea para evitar el formateo de código de Streamlit"""
+    """Footer definitivo con exterminio total de badges de Streamlit Cloud"""
     
     st.markdown("""<style>
-#MainMenu {visibility: hidden;}
-footer {visibility: hidden !important; display: none !important;}
-header {visibility: hidden !important; display: none !important;}
-[data-testid="stHeader"] {display: none !important;}
+#MainMenu, footer, header, [data-testid="stHeader"], [data-testid="stToolbar"], [data-testid="stDecoration"], [data-testid="stAppCreatorProfile"], [data-testid="stViewerBadge"], [class^="viewerBadge"], [class*="viewerBadge"], .stDeployButton {visibility: hidden !important; display: none !important;}
 .main .block-container {padding-bottom: 0rem !important;}
 .footer-container {background-color: white; border-top: 1px solid #eee; padding: 30px 20px; margin-top: 50px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; width: 100%; font-family: sans-serif;}
 .f-col {flex: 1; min-width: 250px; margin: 10px 0;}
