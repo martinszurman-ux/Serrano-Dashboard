@@ -1,44 +1,60 @@
-/* --- AJUSTE DE NAVBAR COMPACTA --- */
+/* --- DISEÑO MOBILE REFORZADO --- */
+
+/* 1. Navbar en bloques para que nada se encime */
 .navbar {
-    display: flex !important;
-    flex-direction: row !important; /* Volvemos a ponerlos de costado */
-    flex-wrap: nowrap !important;   /* Que no se bajen */
-    justify-content: space-between !important;
-    align-items: center !important;
-    padding: 10px 15px !important;
-    height: 90px !important; /* Altura fija controlada */
+    flex-direction: column !important;
+    height: auto !important;
+    padding: 15px 0 !important;
+    background-color: white !important;
+    border-bottom: 1px solid #eee;
 }
 
-/* Forzamos que el texto "ELEGÍ TU DESTINO" se rompa en 3 líneas */
-.navbar span {
-    display: inline-block !important;
-    max-width: 60px !important; /* Al ser angosto, las palabras caen solas */
-    line-height: 1.1 !important;
-    font-size: 10px !important;
-    margin-right: 5px !important;
-    text-align: left;
+.logo-box {
+    margin-bottom: 12px !important;
 }
 
 .logo-box img {
-    max-height: 40px !important; /* Logo presente pero discreto */
+    max-height: 50px !important; /* Logo recupera su tamaño */
     width: auto !important;
 }
 
 .nav-links {
     display: flex !important;
-    flex-direction: row !important;
+    flex-direction: column !important; /* Texto arriba, botones abajo */
     align-items: center !important;
-    gap: 5px !important; /* Pegamos un poco los botones */
+    gap: 10px !important;
+}
+
+/* El texto "ELEGÍ TU DESTINO" centrado y legible */
+.nav-links span {
+    max-width: 100% !important;
+    text-align: center !important;
+    display: block !important;
+    font-size: 12px !important;
+    color: #666 !important;
 }
 
 .btn-destino {
-    font-size: 10px !important;
-    padding: 10px 8px !important; /* Botones más flacos y altos */
-    min-width: 75px !important;    /* Aseguramos que el texto no se corte */
-    text-align: center;
+    width: 80% !important; /* Botones anchos fáciles de tocar */
+    text-align: center !important;
+    padding: 12px !important;
+    font-size: 14px !important;
 }
 
-/* Bajamos el contenido un poco menos ahora que la barra es más fina */
-.content-wrapper {
-    margin-top: 100px !important; 
+/* 2. ¡HACER VISIBLE SERRANO TURISMO! */
+/* Atacamos todos los niveles posibles de Streamlit */
+h1, h2, .stMarkdown h1, .stMarkdown h2, [data-testid="stMarkdownContainer"] h1 {
+    color: #1a1a1a !important;
+    -webkit-text-fill-color: #1a1a1a !important; /* Para navegadores móviles */
+    opacity: 1 !important;
+    visibility: visible !important;
 }
+
+/* 3. Espacio para el contenido */
+.content-wrapper {
+    margin-top: 200px !important; /* Bajamos el contenido para la nueva navbar */
+    padding: 0 20px !important;
+}
+
+/* Limpieza de espaciadores de desktop */
+div[style*="width:110px"] { display: none !important; }
