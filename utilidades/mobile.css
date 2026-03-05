@@ -75,3 +75,15 @@ h1, [data-testid="stMarkdownContainer"] h1 {
     text-align: center !important;
     font-size: 26px !important;
 }
+
+.desktop-only { display: none !important; }
+.mobile-only { display: block !important; }
+
+/* Aseguramos que la navbar mobile no use estilos de la desktop */
+.navbar-mobile {
+    background: white;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 99999;
+    border-bottom: 1px solid #eee;
+}
