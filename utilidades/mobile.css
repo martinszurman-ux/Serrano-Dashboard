@@ -1,132 +1,121 @@
 /* ============================================================
-   SERRANO TURISMO - MOBILE.CSS (VERSIÓN FINAL CORREGIDA)
+   SERRANO TURISMO - MOBILE.CSS (VERSIÓN COMPACTA LANDINGS)
    ============================================================ */
 
-/* 1. ESTRUCTURA DE LA NAVBAR (FORZADO VERTICAL) */
+/* 1. NAVBAR COMPACTA */
 .navbar {
     display: flex !important;
-    flex-direction: column !important; /* Apila todo hacia abajo */
+    flex-direction: column !important;
     height: auto !important;
-    padding: 20px 0 !important;
+    padding: 10px 0 !important;
     background-color: white !important;
     align-items: center !important;
-    gap: 12px !important;
+    gap: 8px !important;
     border-bottom: 1px solid #eeeeee;
     position: fixed !important;
     top: 0; left: 0; right: 0;
     z-index: 99999 !important;
 }
 
-/* 2. CONTROL DEL LOGO */
-.logo-box {
-    display: flex !important;
-    justify-content: center !important;
-    width: 100% !important;
-    margin-bottom: 5px !important;
-}
-
+/* 2. LOGO MINIATURA (PARA GANAR ESPACIO VERTICAL) */
 .logo-box img {
-    max-height: 50px !important; /* Tamaño equilibrado */
+    max-height: 35px !important;
     width: auto !important;
 }
 
-/* 3. BOTONES Y LINKS DEL MENÚ */
+/* 3. BOTONES Y NAVEGACIÓN */
 .nav-links {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     width: 100% !important;
-    gap: 10px !important;
+    gap: 5px !important;
 }
 
-/* Texto "ELEGÍ TU DESTINO" */
-.nav-links span {
-    font-size: 12px !important;
-    color: #666666 !important;
-    font-weight: 700 !important;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* Botones Negros (Home y Destinos) */
+/* Botón HOME y Destinos (Versión Slim) */
 .btn-destino, .nav-item {
-    width: 85% !important;
+    width: 90% !important;
     max-width: 300px;
-    padding: 12px !important;
-    font-size: 14px !important;
+    padding: 8px !important;
+    font-size: 11px !important;
+    background-color: #000 !important;
+    color: #fff !important;
+    border-radius: 4px !important;
     text-align: center !important;
-    background-color: #000000 !important;
-    color: #ffffff !important;
-    border-radius: 8px !important;
     text-decoration: none !important;
     font-weight: 700 !important;
-    display: block !important;
     text-transform: uppercase;
 }
 
-/* 4. MENÚS DE LAS LANDINGS (CONOCÉ/ARMÁ TU VIAJE) */
+/* Texto ELEGÍ TU DESTINO */
+.nav-links span {
+    font-size: 11px !important;
+    color: #888 !important;
+    font-weight: 700 !important;
+}
+
+/* 4. MENÚS DE LANDING EN CUADRÍCULA (2 COLUMNAS) */
 .dropdown {
-    width: 85% !important;
-    max-width: 300px;
+    width: 95% !important;
 }
 
 .dropbtn {
     width: 100% !important;
-    background-color: #f5f5f5 !important;
-    color: #333333 !important;
-    border: 1px solid #dddddd !important;
-    padding: 12px !important;
-    border-radius: 8px !important;
-    font-size: 12px !important;
-    font-weight: 700 !important;
+    background-color: #f8f9fa !important;
+    color: #444 !important;
+    border: none !important;
+    padding: 5px !important;
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase;
+    pointer-events: none; /* Actúa como etiqueta */
 }
 
 .dropdown-content {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    justify-content: center !important;
-    gap: 8px !important;
-    position: static !important;
-    box-shadow: none !important;
-    padding: 10px 5px !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr; /* Dividimos en dos columnas */
+    gap: 4px !important;
+    width: 100% !important;
+    padding: 5px 0 !important;
 }
 
 .dropdown-content a {
-    font-size: 12px !important;
+    background-color: #ffffff !important;
+    border: 1px solid #e0e0e0 !important;
+    border-radius: 3px !important;
+    font-size: 10px !important;
+    padding: 6px 2px !important;
+    text-decoration: none !important;
     color: #007bff !important;
-    text-decoration: underline !important;
-    padding: 4px !important;
+    text-align: center !important;
+    display: block !important;
 }
 
-/* 5. VISIBILIDAD CRÍTICA: "SERRANO TURISMO" */
-/* Forzamos negro total para evitar que se vea invisible */
-h1, h2, h3, .stMarkdown h1, .stMarkdown h2, [data-testid="stMarkdownContainer"] h1 {
+/* 5. VISIBILIDAD DE TÍTULOS Y TEXTO */
+h1, [data-testid="stMarkdownContainer"] h1 {
     color: #000000 !important;
     -webkit-text-fill-color: #000000 !important;
-    opacity: 1 !important;
-    visibility: visible !important;
+    font-size: 20px !important; /* Más pequeño para que no ocupe toda la pantalla */
     font-weight: 800 !important;
     text-align: center !important;
-    margin-top: 10px !important;
-    margin-bottom: 10px !important;
+    margin: 10px 0 !important;
 }
 
-/* 6. AJUSTE DE CONTENIDO (MÁRGENES) */
+p, span, div {
+    color: #333333 !important;
+}
+
+/* 6. AJUSTE DE MARGEN (PARA QUE LAS TARIFAS SUBAN) */
 .content-wrapper {
-    /* Este margen evita que el menú tape el título */
-    margin-top: 160px !important; 
-    padding: 0 20px !important;
+    /* Ajustado para que el contenido empiece justo después del menú compacto */
+    margin-top: 185px !important; 
+    padding: 0 10px !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
 }
 
-/* Limpieza de basura visual */
-div[style*="width:110px"], .espaciador-desktop {
-    display: none !important;
-}
-
-[data-testid="stHeader"], [data-testid="stSidebar"] {
+/* LIMPIEZA FINAL */
+.espaciador-desktop, div[style*="width:110px"] {
     display: none !important;
 }
