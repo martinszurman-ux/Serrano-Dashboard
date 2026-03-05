@@ -1,63 +1,44 @@
-/* --- AJUSTES DEFINITIVOS PARA MOBILE --- */
-
-/* 1. Arreglamos la Navbar para que no tape nada */
+/* --- AJUSTE DE NAVBAR COMPACTA --- */
 .navbar {
-    flex-direction: column !important;
-    height: auto !important;
-    padding: 15px 10px !important;
-    background-color: white !important;
-    position: fixed !important;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 99999 !important;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex !important;
+    flex-direction: row !important; /* Volvemos a ponerlos de costado */
+    flex-wrap: nowrap !important;   /* Que no se bajen */
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 10px 15px !important;
+    height: 90px !important; /* Altura fija controlada */
 }
 
-.logo-box {
-    margin-bottom: 10px !important;
+/* Forzamos que el texto "ELEGÍ TU DESTINO" se rompa en 3 líneas */
+.navbar span {
+    display: inline-block !important;
+    max-width: 60px !important; /* Al ser angosto, las palabras caen solas */
+    line-height: 1.1 !important;
+    font-size: 10px !important;
+    margin-right: 5px !important;
+    text-align: left;
 }
 
 .logo-box img {
-    max-height: 40px !important; /* Un poquito más chico para ganar aire */
+    max-height: 40px !important; /* Logo presente pero discreto */
+    width: auto !important;
 }
 
 .nav-links {
     display: flex !important;
-    justify-content: center !important;
-    gap: 10px !important;
-    width: 100% !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 5px !important; /* Pegamos un poco los botones */
 }
 
-/* 2. Botones de destino más legibles */
 .btn-destino {
-    font-size: 11px !important;
-    padding: 8px 12px !important;
-    background-color: #000 !important;
-    color: #fff !important;
-    border-radius: 4px;
-    text-decoration: none !important;
+    font-size: 10px !important;
+    padding: 10px 8px !important; /* Botones más flacos y altos */
+    min-width: 75px !important;    /* Aseguramos que el texto no se corte */
+    text-align: center;
 }
 
-/* 3. ¡EL TÍTULO INVISIBLE! Lo forzamos a negro con todo */
-.content-wrapper h1, 
-.content-wrapper h2,
-.content-wrapper [data-testid="stMarkdownContainer"] h1,
-.content-wrapper [data-testid="stMarkdownContainer"] h2 {
-    color: #1a1a1a !important;
-    font-weight: 800 !important;
-    text-align: center !important;
-    line-height: 1.2 !important;
-    margin-bottom: 20px !important;
-}
-
-/* 4. Bajamos el contenido para que la navbar no lo tape */
+/* Bajamos el contenido un poco menos ahora que la barra es más fina */
 .content-wrapper {
-    margin-top: 160px !important; /* Aumentamos el margen para que el texto baje */
-    padding: 0 20px !important;
-}
-
-/* Ocultamos el espacio extra que definiste en el HTML de la navbar */
-div[style*="width:110px"] {
-    display: none !important;
+    margin-top: 100px !important; 
 }
