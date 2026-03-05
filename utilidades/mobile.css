@@ -1,56 +1,63 @@
-/* --- AJUSTES PARA CELULARES --- */
+/* --- AJUSTES DEFINITIVOS PARA MOBILE --- */
 
+/* 1. Arreglamos la Navbar para que no tape nada */
 .navbar {
     flex-direction: column !important;
     height: auto !important;
-    padding: 15px 0 !important;
-    justify-content: center !important;
+    padding: 15px 10px !important;
+    background-color: white !important;
     position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99999 !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .logo-box {
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: center;
-    width: 100%;
+    margin-bottom: 10px !important;
 }
 
 .logo-box img {
-    max-height: 45px !important;
-    display: block !important;
-    margin: 0 auto;
+    max-height: 40px !important; /* Un poquito más chico para ganar aire */
 }
 
 .nav-links {
-    gap: 8px !important;
-    justify-content: center !important;
-    width: 100%;
     display: flex !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    width: 100% !important;
 }
 
+/* 2. Botones de destino más legibles */
 .btn-destino {
-    font-size: 10px !important;
+    font-size: 11px !important;
     padding: 8px 12px !important;
-    white-space: nowrap;
+    background-color: #000 !important;
+    color: #fff !important;
+    border-radius: 4px;
+    text-decoration: none !important;
 }
 
-/* --- CORRECCIÓN DE VISIBILIDAD --- */
-/* Forzamos color oscuro en títulos y párrafos para que no sean invisibles */
+/* 3. ¡EL TÍTULO INVISIBLE! Lo forzamos a negro con todo */
 .content-wrapper h1, 
-.content-wrapper h2, 
-.content-wrapper h3,
-.content-wrapper p,
-.content-wrapper span {
-    color: #1a1a1a !important; 
+.content-wrapper h2,
+.content-wrapper [data-testid="stMarkdownContainer"] h1,
+.content-wrapper [data-testid="stMarkdownContainer"] h2 {
+    color: #1a1a1a !important;
+    font-weight: 800 !important;
+    text-align: center !important;
+    line-height: 1.2 !important;
+    margin-bottom: 20px !important;
 }
 
-/* Bajamos el contenido para que la navbar doble no lo tape */
+/* 4. Bajamos el contenido para que la navbar no lo tape */
 .content-wrapper {
-    margin-top: 150px !important; 
-    padding: 0 15px !important;
+    margin-top: 160px !important; /* Aumentamos el margen para que el texto baje */
+    padding: 0 20px !important;
 }
 
-/* Ocultar espacios vacíos innecesarios en mobile */
-[style*="width:110px"] {
+/* Ocultamos el espacio extra que definiste en el HTML de la navbar */
+div[style*="width:110px"] {
     display: none !important;
 }
