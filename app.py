@@ -39,19 +39,17 @@ try:
     with open("utilidades/mobile.css", "r", encoding="utf-8") as f:
         mobile_style = f.read().strip()
 
-    # Construcción manual para evitar que Streamlit "escupa" el código como texto
     css_html = "<style>"
     css_html += '[data-testid="stHeader"], [data-testid="stSidebar"] { display: none !important; } '
     css_html += '.stApp { background-color: white !important; } '
     
-    # Inyectamos Desktop (solo si pantalla > 768px)
+    # Inyectamos Desktop (> 768px)
     css_html += "@media screen and (min-width: 769px) { " + desktop_style + " } "
     
-    # Inyectamos Mobile (solo si pantalla <= 768px)
+    # Inyectamos Mobile (<= 768px)
     css_html += "@media screen and (max-width: 768px) { " + mobile_style + " }"
     css_html += "</style>"
 
-    # El .replace('\n', ' ') es el secreto para que no se vea el código en pantalla
     st.markdown(css_html.replace('\n', ' '), unsafe_allow_html=True)
 
 except Exception as e:
@@ -62,18 +60,26 @@ logo_url = "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png
 sigla = "SP" if dest_actual == "San Pedro" else "CP" if dest_actual == "Villa Carlos Paz" else ""
 
 if not dest_actual:
-    # Caso A: No hay destino (Texto + Botones)
+    # --- CASO HOME: MENU SIEMPRE VISIBLE ---
     links_html = f"""
-        <span style="color: #888; font-size: 12px; font-weight: 600; text-transform: uppercase; margin-right: 5px;">
-            Elegí tu destino:
-        </span>
+        <span class="eleccion-texto">Elegí tu destino:</span>
         <a href="./?nav=Home&destino=San+Pedro" class="btn-destino" target="_self">SAN PEDRO</a>
         <a href="./?nav=Home&destino=Villa+Carlos+Paz" class="btn-destino" target="_self">CARLOS PAZ</a>
     """
+    navbar_final = f"""
+        <div class="navbar">
+            <div class="logo-box-home">
+                <a href="./?nav=Home" target="_self"><img src="{logo_url}"></a>
+            </div>
+            <div class="nav-links-visible">
+                {links_html}
+            </div>
+        </div>
+    """
 else:
-    # Caso B: Destino elegido (Home + Menús Desplegables)
+    # --- CASO LANDING: MENU COLAPSABLE (Details/Summary) ---
     links_html = f"""
-        <a href="./?nav=Home" class="nav-item" target="_self">HOME</a>
+        <a href="./?nav=Home" class="nav-item" target="_self">VOLVER AL HOME</a>
         <div class="dropdown">
             <button class="dropbtn">CONOCÉ TU VIAJE ▼</button>
             <div class="dropdown-content">
@@ -92,21 +98,23 @@ else:
                 <a href="./?nav=Adhesion&destino={dest_actual}" target="_self">Ficha de Adhesión</a>
             </div>
         </div>
-        <div class="sigla-badge">{sigla}</div>
+    """
+    navbar_final = f"""
+        <div class="navbar">
+            <details class="menu-desplegable">
+                <summary class="logo-box-summary">
+                    <img src="{logo_url}">
+                    <span class="menu-label">MENÚ ☰</span>
+                </summary>
+                <div class="nav-links-collapsed">
+                    {links_html}
+                </div>
+            </details>
+        </div>
     """
 
-# Inyección del Navbar
-st.markdown(f"""
-    <div class="navbar">
-        <div class="logo-box">
-            <a href="./?nav=Home" target="_self">
-                <img src="{logo_url}">
-            </a>
-        </div>
-        <div class="nav-links">{links_html}</div>
-        <div style="width:110px;"></div>
-    </div>
-""", unsafe_allow_html=True)
+# Inyección única de la Navbar construida
+st.markdown(navbar_final, unsafe_allow_html=True)
 
 # 6. RENDERIZADO DE CONTENIDO
 st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
@@ -129,8 +137,3 @@ elif nav_actual == "Tarifas": render_tarifas(dest_actual)
 elif nav_actual == "Adhesion": render_adhesion(logo_url)
 
 st.markdown('</div>', unsafe_allow_html=True)
-
-
-
-
-
