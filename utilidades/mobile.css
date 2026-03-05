@@ -1,5 +1,5 @@
 /* ============================================================
-   SERRANO TURISMO - MOBILE.CSS (RESTAURADO)
+   SERRANO TURISMO - MOBILE.CSS (VERSIÓN BLACK ELEGANCE)
    ============================================================ */
 
 /* 1. NAVBAR BASE */
@@ -15,19 +15,14 @@
     align-items: center !important;
 }
 
-/* 2. HOME: LOGO CENTRADO Y BOTONES NEGROS (RESTAURADO) */
+/* 2. HOME: LOGO CENTRADO Y BOTONES NEGROS */
 .logo-box-mobile-home {
     display: flex !important;
     justify-content: center !important;
     width: 100% !important;
     padding: 15px 0 5px 0 !important;
 }
-
-.logo-box-mobile-home img {
-    max-height: 80px !important;
-    width: auto !important;
-}
-
+.logo-box-mobile-home img { max-height: 80px !important; width: auto !important; }
 .eleccion-texto {
     display: block !important;
     color: #1a1a1a !important;
@@ -36,10 +31,8 @@
     text-transform: uppercase;
     text-align: center !important;
     margin-bottom: 8px !important;
-    letter-spacing: 0.5px;
     width: 100%;
 }
-
 .nav-links-visible {
     display: flex !important;
     flex-direction: column !important;
@@ -49,108 +42,103 @@
     padding-bottom: 20px !important;
 }
 
-/* 3. LANDING: MENÚ ☰ A LA IZQUIERDA Y LOGO A LA DERECHA */
-.menu-desplegable { 
-    width: 100% !important; 
-}
-
+/* 3. LANDING: CABECERA (LOGO DER / MENU IZQ) */
+.menu-desplegable { width: 100% !important; }
 .logo-box-summary {
     display: flex !important;
     flex-direction: row-reverse !important;
     justify-content: space-between !important;
     align-items: center !important;
-    padding: 10px 15px !important;
+    padding: 12px 20px !important;
     list-style: none !important;
-    cursor: pointer;
 }
-.logo-box-summary::-webkit-details-marker { display: none; }
-
-.logo-box-summary img { 
-    max-height: 35px !important; 
-    margin: 0 !important;
-}
-
+.logo-box-summary img { max-height: 35px !important; }
 .menu-label {
-    background: #000; 
-    color: #fff !important;
-    padding: 6px 12px; 
-    border-radius: 4px;
-    font-size: 12px; 
-    font-weight: 800;
+    background: #000; color: #fff !important;
+    padding: 6px 14px; border-radius: 4px;
+    font-size: 11px; font-weight: 800;
 }
 
+/* 4. EL NUEVO MENÚ DESPLEGABLE (FONDO NEGRO / LETRAS BLANCAS) */
 .nav-links-collapsed {
     display: flex !important;
     flex-direction: column !important;
-    align-items: center !important;
-    gap: 12px !important;
-    padding: 15px 0 !important;
-    border-top: 1px solid #f5f5f5;
+    align-items: flex-start !important; /* Alineado a la izquierda para la lista */
+    gap: 0 !important;
+    padding: 20px 25px !important;
+    background-color: #000000 !important; /* Fondo Negro total */
 }
 
-/* 4. ESTILO DE BOTONES (GENERAL Y HOME) */
-.btn-destino, .nav-item {
-    width: 85% !important;
-    max-width: 320px;
-    padding: 12px !important;
-    background-color: #000000 !important;
-    color: #ffffff !important;
-    border-radius: 6px !important;
-    text-align: center !important;
-    font-size: 13px !important;
-    font-weight: 700 !important;
-    text-decoration: none !important;
-    text-transform: uppercase;
-}
-
-/* Dropdowns internos en Landing */
-.dropdown { width: 85%; max-width: 320px; }
+/* Títulos de categorías (Conocé / Armá) */
 .dropbtn {
     width: 100% !important;
-    background-color: #f8f9fa !important;
-    color: #333 !important;
-    padding: 10px !important;
-    border: 1px solid #ddd !important;
-    border-radius: 6px !important;
-    font-size: 11px !important;
+    background: none !important;
+    color: #ffffff !important; /* Blanco */
+    font-size: 14px !important;
     font-weight: 800 !important;
-}
-.dropdown-content {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    justify-content: center !important;
-    gap: 8px !important;
-    padding: 10px 0 !important;
-}
-.dropdown-content a {
-    font-size: 11px !important;
-    color: #007bff !important;
-    text-decoration: underline !important;
+    text-align: left !important;
+    padding: 15px 0 10px 0 !important;
+    border: none !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-/* 5. VISIBILIDAD DE TÍTULOS (ALINEADO A LA IZQUIERDA) */
+/* Contenedor de links */
+.dropdown-content {
+    display: flex !important;
+    flex-direction: column !important; /* Lista hacia abajo */
+    width: 100% !important;
+    padding-left: 10px !important;
+}
+
+/* Los links individuales */
+.dropdown-content a {
+    color: #cccccc !important; /* Gris claro para no cansar la vista */
+    font-size: 14px !important;
+    text-decoration: none !important;
+    padding: 8px 0 !important;
+    display: block !important;
+    font-weight: 400 !important;
+    border-bottom: 1px solid #222; /* Divisor muy sutil */
+}
+
+/* Botón Volver al Home al final */
+.nav-item {
+    width: 100% !important;
+    padding: 20px 0 !important;
+    margin-top: 10px !important;
+    background-color: transparent !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    font-size: 13px !important;
+    text-align: left !important;
+    text-decoration: underline !important;
+    border-top: 1px solid #333 !important;
+}
+
+/* 5. BOTONES DEL HOME (NEGROS) */
+.btn-destino {
+    width: 85% !important;
+    padding: 12px !important;
+    background-color: #000 !important;
+    color: #fff !important;
+    border-radius: 6px !important;
+    text-align: center !important;
+    font-weight: 700 !important;
+}
+
+/* 6. TÍTULOS DE PÁGINA */
 h1, [data-testid="stMarkdownContainer"] h1 {
-    color: #000000 !important;
-    -webkit-text-fill-color: #000000 !important;
-    opacity: 1 !important;
+    color: #000 !important;
     font-size: 28px !important;
     font-weight: 900 !important;
     text-align: left !important;
-    margin: 15px 0 !important;
 }
 
-/* 6. AJUSTE DE CONTENIDO */
 .content-wrapper {
     margin-top: 150px !important;
-    padding: 0 15px !important;
+    padding: 0 20px !important;
 }
 
-/* OCULTAR ELEMENTOS INNECESARIOS */
-.desktop-only, .espaciador-desktop {
-    display: none !important;
-}
-
-.mobile-only {
-    display: block !important;
-}
+.desktop-only, .espaciador-desktop { display: none !important; }
+.mobile-only { display: block !important; }
