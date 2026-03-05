@@ -1,1 +1,37 @@
+/* Arreglo de Navbar en Mobile */
+.navbar {
+    padding: 0 15px !important; /* Menos espacio a los costados */
+    height: auto !important;
+    flex-direction: column !important; /* Apilamos logo y botones */
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
 
+.logo-box img {
+    max-height: 40px !important; /* Logo más pequeño para que entre */
+    display: block !important;
+}
+
+.nav-links {
+    gap: 10px !important;
+    margin-top: 10px;
+    flex-wrap: wrap; /* Si no entran los botones, que bajen */
+    justify-content: center;
+}
+
+.btn-destino {
+    font-size: 11px !important;
+    padding: 8px 12px !important;
+}
+
+/* Arreglo del Título Invisible (Serrano Turismo) */
+/* Asumiendo que es un h1 o h2 dentro de tu landing */
+.content-wrapper h1, .content-wrapper h2 {
+    color: #1a1a1a !important; /* Forzamos color oscuro */
+    font-size: 28px !important; /* Achicamos un poco el tamaño */
+    text-align: center;
+}
+
+.content-wrapper {
+    margin-top: 140px !important; /* Más margen arriba porque la navbar ahora es más alta al ser doble fila */
+}
