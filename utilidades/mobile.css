@@ -1,121 +1,83 @@
 /* ============================================================
-   SERRANO TURISMO - MOBILE.CSS (VERSIÓN FINAL PULIDA)
+   SERRANO TURISMO - MOBILE COMPACTO (ACORDEÓN)
    ============================================================ */
 
-/* 1. NAVBAR (ESTRUCTURA BASE) */
 .navbar {
     display: flex !important;
     flex-direction: column !important;
     height: auto !important;
-    padding: 15px 0 !important;
+    padding: 10px 0 !important;
     background-color: white !important;
     position: fixed !important;
     top: 0; left: 0; right: 0;
     z-index: 99999 !important;
-    border-bottom: 1px solid #f0f0f0;
-    align-items: center !important;
+    border-bottom: 1px solid #eee;
 }
 
-/* Logo centrado y moderado */
+/* 1. CABECERA SIEMPRE VISIBLE (Logo + Botón) */
 .logo-box {
-    width: 100% !important;
     display: flex !important;
-    justify-content: center !important;
-    margin-bottom: 10px !important;
-}
-
-.logo-box img {
-    max-height: 45px !important;
-    width: auto !important;
-}
-
-/* 2. BOTONES PRINCIPALES (RECUPERANDO EL ESTILO DEL HOME) */
-.nav-links {
-    display: flex !important;
-    flex-direction: column !important;
+    justify-content: space-between !important;
     align-items: center !important;
+    width: 90% !important;
+    margin: 0 auto !important;
+}
+
+.logo-box img { max-height: 35px !important; }
+
+/* Botón de Menú (Visual) */
+.logo-box::after {
+    content: "MENÚ ☰";
+    font-size: 12px;
+    font-weight: 800;
+    background: #000;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+/* 2. OCULTAR EL CONTENIDO POR DEFECTO */
+.nav-links {
+    display: none !important; /* Aquí se esconde todo */
+    flex-direction: column !important;
     width: 100% !important;
-    gap: 8px !important;
+    padding: 15px 0 !important;
+    gap: 10px !important;
+    background: #fff;
 }
 
-/* Texto ELEGÍ TU DESTINO */
-.nav-links span {
-    font-size: 11px !important;
-    color: #888 !important;
-    font-weight: 700 !important;
-    text-transform: uppercase;
-    margin-bottom: 2px;
+/* 3. EFECTO AL TOCAR LA NAVBAR */
+/* Usamos :active para que mientras el usuario mantenga presionado o toque, se vea.
+   Para que quede fijo al tocar, lo ideal es un pequeño cambio en app.py, 
+   pero probemos esta versión de "Auto-expandir" primero: */
+
+.navbar:hover .nav-links, .navbar:active .nav-links {
+    display: flex !important;
 }
 
-.btn-destino, .nav-item {
+/* 4. BOTONES (ESTILO HOME) */
+.btn-destino, .nav-item, .dropbtn {
     width: 85% !important;
-    max-width: 320px;
+    max-width: 300px;
     padding: 12px !important;
+    font-size: 13px !important;
     background-color: #000 !important;
     color: #fff !important;
     border-radius: 6px !important;
-    font-size: 13px !important;
-    font-weight: 700 !important;
     text-align: center !important;
-    text-decoration: none !important;
-    text-transform: uppercase;
 }
 
-/* 3. MENÚS DE LANDING (COMPACTOS Y ALINEADOS) */
-.dropdown {
-    width: 85% !important;
-    max-width: 320px;
-    margin-top: 5px;
-}
+.dropbtn { background-color: #f5f5f5 !important; color: #333 !important; border: 1px solid #ddd !important; }
 
-.dropbtn {
-    width: 100% !important;
-    background-color: #f5f5f5 !important;
-    color: #444 !important;
-    padding: 8px !important;
-    font-size: 11px !important;
-    font-weight: 800 !important;
-    border: 1px solid #ddd !important;
-    border-radius: 4px !important;
-    text-transform: uppercase;
-}
-
-.dropdown-content {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    justify-content: center !important;
-    gap: 6px !important;
-    padding: 8px 0 !important;
-}
-
-.dropdown-content a {
-    font-size: 11px !important;
-    color: #007bff !important;
-    text-decoration: underline !important;
-    padding: 2px 5px !important;
-}
-
-/* 4. CENTRADO TOTAL DE "SERRANO TURISMO" */
+/* 5. AJUSTE DE CONTENIDO (MÁS ESPACIO!) */
 .content-wrapper {
-    margin-top: 200px !important; /* Ajustamos para que no tape */
+    margin-top: 80px !important; /* ¡REDUCIDO! Ahora el contenido sube mucho */
     padding: 0 15px !important;
-    width: 100% !important;
-    display: block !important; /* Cambiamos a block para centrado de texto estándar */
 }
 
 h1, [data-testid="stMarkdownContainer"] h1 {
-    color: #000000 !important;
-    -webkit-text-fill-color: #000000 !important;
-    font-size: 30px !important;
-    font-weight: 900 !important;
-    text-align: center !important; /* Centrado horizontal */
-    width: 100% !important;
-    margin: 20px 0 !important;
-    line-height: 1.1 !important;
-}
-
-/* 5. LIMPIEZA */
-div[style*="width:110px"], .espaciador-desktop {
-    display: none !important;
+    color: #000 !important;
+    font-size: 28px !important;
+    text-align: center !important;
+    margin-top: 20px !important;
 }
