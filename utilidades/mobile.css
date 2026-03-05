@@ -134,7 +134,7 @@ h1, [data-testid="stMarkdownContainer"] h1 {
     opacity: 1 !important;
     font-size: 28px !important;
     font-weight: 900 !important;
-    text-align: center !important;
+    text-align: left !important;
     margin: 15px 0 !important;
 }
 
