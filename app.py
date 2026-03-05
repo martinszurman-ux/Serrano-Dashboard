@@ -34,34 +34,26 @@ except ImportError as e:
 
 # 4. CSS MAESTRO
 try:
-    with open("utilidades/desktop.css", "r") as f:
+    with open("utilidades/desktop.css", "r", encoding="utf-8") as f:
         desktop_style = f.read()
-    with open("utilidades/mobile.css", "r") as f:
+    with open("utilidades/mobile.css", "r", encoding="utf-8") as f:
         mobile_style = f.read()
 
-    # Usamos una cadena normal (sin 'f') para evitar líos con las llaves {}
-    estilo_final = """
-    <style>
-    [data-testid="stHeader"], [data-testid="stSidebar"] { display: none !important; }
-    .stApp { background-color: white !important; }
+    # Construimos el HTML de forma ultra-limpia
+    # Usamos .replace('\n', ' ') para que Streamlit no se confunda con los párrafos
+    css_compacto = f"""
+<style>
+[data-testid="stHeader"], [data-testid="stSidebar"] {{ display: none !important; }}
+.stApp {{ background-color: white !important; }}
+@media screen and (min-width: 769px) {{ {desktop_style} }}
+@media screen and (max-width: 768px) {{ {mobile_style} }}
+</style>
+""".replace('\n', ' ').strip()
 
-    @media screen and (min-width: 769px) {
-        DESKTOP_PLACEHOLDER
-    }
-
-    @media screen and (max-width: 768px) {
-        MOBILE_PLACEHOLDER
-    }
-    </style>
-    """
-    # Inyectamos el contenido de los archivos manualmente
-    estilo_final = estilo_final.replace("DESKTOP_PLACEHOLDER", desktop_style)
-    estilo_final = estilo_final.replace("MOBILE_PLACEHOLDER", mobile_style)
-
-    st.markdown(estilo_final, unsafe_allow_html=True)
+    st.markdown(css_compacto, unsafe_allow_html=True)
 
 except Exception as e:
-    st.error(f"Error cargando CSS: {e}")
+    st.error(f"Error crítico en CSS: {e}")
 
 # 5. CONSTRUCCIÓN DEL NAVBAR DINÁMICO
 logo_url = "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png"
@@ -135,6 +127,7 @@ elif nav_actual == "Tarifas": render_tarifas(dest_actual)
 elif nav_actual == "Adhesion": render_adhesion(logo_url)
 
 st.markdown('</div>', unsafe_allow_html=True)
+
 
 
 
