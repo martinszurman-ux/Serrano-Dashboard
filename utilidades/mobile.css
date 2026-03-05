@@ -1,37 +1,43 @@
-/* Arreglo de Navbar en Mobile */
+/* --- AJUSTES PARA CELULARES --- */
+
 .navbar {
-    padding: 0 15px !important; /* Menos espacio a los costados */
-    height: auto !important;
-    flex-direction: column !important; /* Apilamos logo y botones */
-    padding-top: 10px !important;
-    padding-bottom: 10px !important;
+    flex-direction: column !important; /* Apila logo arriba y botones abajo */
+    height: auto !important;           /* Permite que la barra crezca hacia abajo */
+    padding: 10px 0 !important;
+    justify-content: center !important;
+}
+
+.logo-box {
+    margin-bottom: 5px;
 }
 
 .logo-box img {
-    max-height: 40px !important; /* Logo más pequeño para que entre */
-    display: block !important;
+    max-height: 45px !important; /* Achicamos el logo para que no ocupe toda la pantalla */
 }
 
 .nav-links {
-    gap: 10px !important;
-    margin-top: 10px;
-    flex-wrap: wrap; /* Si no entran los botones, que bajen */
-    justify-content: center;
+    gap: 8px !important;
+    justify-content: center !important;
+    width: 100%;
 }
 
+/* Botones de destino más compactos para que entren en una línea */
 .btn-destino {
-    font-size: 11px !important;
-    padding: 8px 12px !important;
+    font-size: 10px !important;
+    padding: 6px 10px !important;
+    white-space: nowrap;
 }
 
-/* Arreglo del Título Invisible (Serrano Turismo) */
-/* Asumiendo que es un h1 o h2 dentro de tu landing */
-.content-wrapper h1, .content-wrapper h2 {
-    color: #1a1a1a !important; /* Forzamos color oscuro */
-    font-size: 28px !important; /* Achicamos un poco el tamaño */
-    text-align: center;
+/* --- CORRECCIÓN DE VISIBILIDAD (Serrano Turismo) --- */
+/* Forzamos que los títulos sean visibles sobre el fondo blanco */
+.content-wrapper h1, 
+.content-wrapper h2, 
+.content-wrapper .stMarkdown p {
+    color: #1a1a1a !important; 
 }
 
+/* IMPORTANTE: Bajamos el contenido para que no lo tape la nueva navbar alta */
 .content-wrapper {
-    margin-top: 140px !important; /* Más margen arriba porque la navbar ahora es más alta al ser doble fila */
+    margin-top: 130px !important; 
+    padding: 0 20px !important;
 }
