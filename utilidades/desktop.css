@@ -1,7 +1,9 @@
+/* --- BASE DESKTOP --- */
 [data-testid="stHeader"], [data-testid="stSidebar"] { display: none !important; }
 .main .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; max-width: 100% !important; }
 .stApp { background-color: white !important; }
 
+/* NAVBAR */
 .navbar {
     display: flex; justify-content: space-between; align-items: center;
     padding: 0 60px; height: 80px; background-color: white;
@@ -10,13 +12,49 @@
 }
 
 .logo-box img { max-height: 55px; width: auto; }
-.nav-links { display: flex; align-items: center; gap: 20px; }
+.nav-links { display: flex; align-items: center; gap: 25px; }
+
+/* LINKS Y BOTONES */
+.nav-item {
+    color: black !important; text-decoration: none !important; 
+    font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
 
 .btn-destino {
     background-color: #000; color: #fff !important;
     padding: 10px 20px; border-radius: 6px;
-    font-size: 13px; font-weight: 700;
-    text-decoration: none !important; text-transform: uppercase;
+    font-size: 13px; font-weight: 700; text-decoration: none !important;
+    text-transform: uppercase;
 }
 
-.content-wrapper { margin-top: 85px; padding: 0 5%; }
+/* --- DROPDOWN (LO QUE SE HABÍA ROTO) --- */
+.dropdown { position: relative; display: inline-block; }
+
+.dropbtn {
+    color: black !important; font-size: 13px; font-weight: 700;
+    text-decoration: none !important; border: none; background: none;
+    cursor: pointer; text-transform: uppercase; padding: 30px 0;
+}
+
+.dropdown-content {
+    display: none; position: absolute; background-color: white;
+    min-width: 240px; box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
+    z-index: 10000; border-radius: 8px; border: 1px solid #f0f0f0; 
+    top: 70px; left: 0;
+}
+
+/* Mostrar al pasar el mouse */
+.dropdown:hover .dropdown-content { display: block !important; }
+
+.dropdown-content a {
+    color: #444 !important; padding: 12px 20px !important; 
+    text-decoration: none !important; display: block !important; 
+    font-size: 13px; text-align: left;
+}
+
+.dropdown-content a:hover { background-color: #f9f9f9; color: #000 !important; }
+
+/* CONTENIDO */
+.content-wrapper { margin-top: 100px; padding: 0 5%; }
+.sigla-badge { background: #000; color: #fff; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 11px; }
