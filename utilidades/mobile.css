@@ -15,38 +15,32 @@
     align-items: center !important;
 }
 
-/* 2. HOME: LOGO Y TEXTO DE INSTRUCCIÓN */
-.logo-box-mobile-home {
+/* 2 --- LANDING: LOGO A LA DERECHA Y MENÚ A LA IZQUIERDA --- */
+.logo-box-summary {
     display: flex !important;
-    justify-content: center !important;
-    width: 100% !important;
-    padding: 15px 0 5px 0 !important;
-}
-
-.logo-box-mobile-home img {
-    max-height: 80px !important; /* Logo más chico como pediste */
-    width: auto !important;
-}
-
-.eleccion-texto {
-    display: block !important;
-    color: #1a1a1a !important; /* Negro sólido visible */
-    font-size: 13px !important;
-    font-weight: 700 !important;
-    text-transform: uppercase;
-    text-align: center !important;
-    margin-bottom: 8px !important;
-    letter-spacing: 0.5px;
-    width: 100%;
-}
-
-.nav-links-visible {
-    display: flex !important;
-    flex-direction: column !important;
+    flex-direction: row-reverse !important; /* <--- Esto invierte el orden visual */
+    justify-content: space-between !important;
     align-items: center !important;
-    width: 100% !important;
-    gap: 10px !important;
-    padding-bottom: 20px !important;
+    padding: 10px 15px !important;
+    list-style: none !important;
+    cursor: pointer;
+}
+
+/* Quitamos cualquier margen automático que pueda empujar el logo */
+.logo-box-summary img { 
+    max-height: 35px !important; 
+    margin: 0 !important;
+}
+
+/* Ajuste opcional: si quieres que el texto del menú sea un poco más grande ahora que está a la izquierda */
+.menu-label {
+    background: #000; 
+    color: #fff !important;
+    padding: 6px 12px; 
+    border-radius: 4px;
+    font-size: 12px; /* Subimos un punto para legibilidad */
+    font-weight: 800;
+}
 }
 
 /* 3. LANDING: MENÚ COLAPSABLE (DETAILS) */
