@@ -35,22 +35,24 @@ except ImportError as e:
 # 4. CSS MAESTRO
 try:
     with open("utilidades/desktop.css", "r", encoding="utf-8") as f:
-        desktop_style = f.read()
+        desktop_style = f.read().strip()
     with open("utilidades/mobile.css", "r", encoding="utf-8") as f:
-        mobile_style = f.read()
+        mobile_style = f.read().strip()
 
-    # Construimos el HTML de forma ultra-limpia
-    # Usamos .replace('\n', ' ') para que Streamlit no se confunda con los párrafos
-    css_compacto = f"""
-<style>
-[data-testid="stHeader"], [data-testid="stSidebar"] {{ display: none !important; }}
-.stApp {{ background-color: white !important; }}
-@media screen and (min-width: 769px) {{ {desktop_style} }}
-@media screen and (max-width: 768px) {{ {mobile_style} }}
-</style>
-""".replace('\n', ' ').strip()
+    # Construcción manual para evitar que Streamlit "escupa" el código como texto
+    css_html = "<style>"
+    css_html += '[data-testid="stHeader"], [data-testid="stSidebar"] { display: none !important; } '
+    css_html += '.stApp { background-color: white !important; } '
+    
+    # Inyectamos Desktop (solo si pantalla > 768px)
+    css_html += "@media screen and (min-width: 769px) { " + desktop_style + " } "
+    
+    # Inyectamos Mobile (solo si pantalla <= 768px)
+    css_html += "@media screen and (max-width: 768px) { " + mobile_style + " }"
+    css_html += "</style>"
 
-    st.markdown(css_compacto, unsafe_allow_html=True)
+    # El .replace('\n', ' ') es el secreto para que no se vea el código en pantalla
+    st.markdown(css_html.replace('\n', ' '), unsafe_allow_html=True)
 
 except Exception as e:
     st.error(f"Error crítico en CSS: {e}")
@@ -127,6 +129,7 @@ elif nav_actual == "Tarifas": render_tarifas(dest_actual)
 elif nav_actual == "Adhesion": render_adhesion(logo_url)
 
 st.markdown('</div>', unsafe_allow_html=True)
+
 
 
 
