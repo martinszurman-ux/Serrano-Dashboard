@@ -1,60 +1,23 @@
-/* --- DISEÑO MOBILE REFORZADO --- */
-
-/* 1. Navbar en bloques para que nada se encime */
+/* --- NAVBAR MOBILE EN BLOQUES --- */
 .navbar {
-    flex-direction: column !important;
-    height: auto !important;
+    flex-direction: column !important; height: auto !important;
     padding: 15px 0 !important;
-    background-color: white !important;
-    border-bottom: 1px solid #eee;
 }
 
-.logo-box {
-    margin-bottom: 12px !important;
+.logo-box { margin-bottom: 10px !important; }
+.nav-links { 
+    flex-direction: column !important; gap: 10px !important; 
+    width: 100% !important; align-items: center !important;
 }
 
-.logo-box img {
-    max-height: 50px !important; /* Logo recupera su tamaño */
-    width: auto !important;
-}
-
-.nav-links {
-    display: flex !important;
-    flex-direction: column !important; /* Texto arriba, botones abajo */
-    align-items: center !important;
-    gap: 10px !important;
-}
-
-/* El texto "ELEGÍ TU DESTINO" centrado y legible */
-.nav-links span {
-    max-width: 100% !important;
+/* Títulos negros en Mobile */
+h1, h2, [data-testid="stMarkdownContainer"] h1 {
+    color: #000 !important;
     text-align: center !important;
-    display: block !important;
-    font-size: 12px !important;
-    color: #666 !important;
 }
 
-.btn-destino {
-    width: 80% !important; /* Botones anchos fáciles de tocar */
-    text-align: center !important;
-    padding: 12px !important;
-    font-size: 14px !important;
-}
+.content-wrapper { margin-top: 180px !important; }
 
-/* 2. ¡HACER VISIBLE SERRANO TURISMO! */
-/* Atacamos todos los niveles posibles de Streamlit */
-h1, h2, .stMarkdown h1, .stMarkdown h2, [data-testid="stMarkdownContainer"] h1 {
-    color: #1a1a1a !important;
-    -webkit-text-fill-color: #1a1a1a !important; /* Para navegadores móviles */
-    opacity: 1 !important;
-    visibility: visible !important;
-}
-
-/* 3. Espacio para el contenido */
-.content-wrapper {
-    margin-top: 200px !important; /* Bajamos el contenido para la nueva navbar */
-    padding: 0 20px !important;
-}
-
-/* Limpieza de espaciadores de desktop */
-div[style*="width:110px"] { display: none !important; }
+/* Ocultar dropdowns en mobile por ahora para que no estorben hasta que los hagamos clickeables */
+.navbar .dropdown { width: 100%; text-align: center; }
+.navbar .dropdown-content { position: static; box-shadow: none; border: none; }
