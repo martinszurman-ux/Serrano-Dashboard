@@ -1,5 +1,5 @@
 /* ============================================================
-   SERRANO TURISMO - MOBILE.CSS (VERSION FINAL CORREGIDA)
+   SERRANO TURISMO - MOBILE.CSS (VERSION BOUTIQUE / PROLIJA)
    ============================================================ */
 
 /* 1. NAVBAR BASE */
@@ -15,19 +15,14 @@
     align-items: center !important;
 }
 
-/* 2. HOME: LOGO CENTRADO Y TEXTO (RECUPERADO) */
+/* 2. HOME (SE MANTIENE IGUAL PORQUE YA TE GUSTABA) */
 .logo-box-mobile-home {
     display: flex !important;
     justify-content: center !important;
     width: 100% !important;
     padding: 15px 0 5px 0 !important;
 }
-
-.logo-box-mobile-home img {
-    max-height: 80px !important;
-    width: auto !important;
-}
-
+.logo-box-mobile-home img { max-height: 80px !important; width: auto !important; }
 .eleccion-texto {
     display: block !important;
     color: #1a1a1a !important;
@@ -36,121 +31,108 @@
     text-transform: uppercase;
     text-align: center !important;
     margin-bottom: 8px !important;
-    letter-spacing: 0.5px;
     width: 100%;
 }
 
-.nav-links-visible {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    width: 100% !important;
-    gap: 10px !important;
-    padding-bottom: 20px !important;
-}
-
-/* 3. LANDING: MENÚ ☰ A LA IZQUIERDA Y LOGO A LA DERECHA */
-.menu-desplegable { 
-    width: 100% !important; 
-}
-
+/* 3. LANDING: CABECERA LIMPIA */
+.menu-desplegable { width: 100% !important; }
 .logo-box-summary {
     display: flex !important;
-    flex-direction: row-reverse !important; /* Invierte el orden: Menú izq, Logo der */
+    flex-direction: row-reverse !important;
     justify-content: space-between !important;
     align-items: center !important;
-    padding: 10px 15px !important;
+    padding: 12px 20px !important;
     list-style: none !important;
-    cursor: pointer;
 }
-.logo-box-summary::-webkit-details-marker { display: none; }
-
-.logo-box-summary img { 
-    max-height: 35px !important; 
-    margin: 0 !important;
-}
-
+.logo-box-summary img { max-height: 32px !important; }
 .menu-label {
-    background: #000; 
-    color: #fff !important;
-    padding: 6px 12px; 
-    border-radius: 4px;
-    font-size: 12px; 
-    font-weight: 800;
+    background: #000; color: #fff !important;
+    padding: 6px 14px; border-radius: 20px; /* Forma de cápsula */
+    font-size: 11px; font-weight: 800;
 }
 
+/* 4. EL NUEVO MENÚ PROLIJO (CHIPS) */
 .nav-links-collapsed {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-    gap: 12px !important;
-    padding: 15px 0 !important;
-    border-top: 1px solid #f5f5f5;
+    gap: 15px !important;
+    padding: 20px 0 !important;
+    background-color: #ffffff;
 }
 
-/* 4. ESTILO DE BOTONES (GENERAL) */
-.btn-destino, .nav-item {
+/* Botón Home más sutil */
+.nav-item {
     width: 85% !important;
-    max-width: 320px;
-    padding: 12px !important;
-    background-color: #000000 !important;
-    color: #ffffff !important;
-    border-radius: 6px !important;
-    text-align: center !important;
-    font-size: 13px !important;
-    font-weight: 700 !important;
+    padding: 10px !important;
+    background-color: transparent !important;
+    color: #888 !important; /* Gris elegante, no negro fuerte */
+    border: 1px solid #eee !important;
+    border-radius: 8px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
     text-decoration: none !important;
-    text-transform: uppercase;
+    text-align: center !important;
 }
 
-/* Dropdowns internos en Landing */
-.dropdown { width: 85%; max-width: 320px; }
+/* Etiquetas de Categoría (Conocé / Armá) */
 .dropbtn {
     width: 100% !important;
-    background-color: #f8f9fa !important;
-    color: #333 !important;
-    padding: 10px !important;
-    border: 1px solid #ddd !important;
-    border-radius: 6px !important;
+    background: none !important;
+    color: #1a1a1a !important;
     font-size: 11px !important;
-    font-weight: 800 !important;
+    font-weight: 900 !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none !important;
+    margin-bottom: 5px !important;
 }
+
+/* Los links ahora son botones tipo "Chips" */
 .dropdown-content {
     display: flex !important;
     flex-direction: row !important;
     flex-wrap: wrap !important;
     justify-content: center !important;
     gap: 8px !important;
-    padding: 10px 0 !important;
-}
-.dropdown-content a {
-    font-size: 11px !important;
-    color: #007bff !important;
-    text-decoration: underline !important;
+    padding: 5px 10px !important;
 }
 
-/* 5. VISIBILIDAD DE TÍTULOS (ALINEADO A LA IZQUIERDA) */
+.dropdown-content a {
+    background-color: #f9f9f9 !important; /* Fondo apenas gris */
+    color: #444 !important; /* Texto oscuro, no azul */
+    padding: 8px 15px !important;
+    border-radius: 20px !important; /* Cápsulas */
+    font-size: 11px !important;
+    text-decoration: none !important;
+    border: 1px solid #eee !important;
+    font-weight: 600 !important;
+}
+
+/* 5. TÍTULOS Y CONTENIDO */
 h1, [data-testid="stMarkdownContainer"] h1 {
-    color: #000000 !important;
-    -webkit-text-fill-color: #000000 !important;
-    opacity: 1 !important;
-    font-size: 28px !important;
+    color: #000 !important;
+    font-size: 26px !important;
     font-weight: 900 !important;
     text-align: left !important;
-    margin: 15px 0 !important;
 }
 
-/* 6. AJUSTE DE CONTENIDO */
 .content-wrapper {
-    margin-top: 150px !important;
-    padding: 0 15px !important;
+    margin-top: 140px !important;
+    padding: 0 20px !important;
 }
 
-/* OCULTAR ELEMENTOS INNECESARIOS */
-.desktop-only, .espaciador-desktop, div[style*="width:110px"] {
-    display: none !important;
+/* Botones Negros solo para el HOME */
+.btn-destino {
+    width: 85% !important;
+    padding: 12px !important;
+    background-color: #000 !important;
+    color: #fff !important;
+    border-radius: 8px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
 }
 
-.mobile-only {
-    display: block !important;
-}
+/* RESET */
+.desktop-only, .espaciador-desktop { display: none !important; }
+.mobile-only { display: block !important; }
