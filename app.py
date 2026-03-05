@@ -32,92 +32,35 @@ except ImportError as e:
     st.error(f"⚠️ Error de importación: {e}")
     st.stop()
 
-# 4. CSS MAESTRO
-st.markdown("""
-    <style>
-    [data-testid="stHeader"], [data-testid="stSidebar"] { display: none !important; }
-    
-    .main .block-container { 
-        padding-top: 0rem !important; 
-        padding-bottom: 0rem !important; 
-        max-width: 100% !important;
-    }
-    .stApp { background-color: white !important; }
+# 4. CSS MAESTRO (Carga separada)
+def load_css():
+    try:
+        with open("css/desktop.css") as f:
+            desktop_style = f.read()
+        with open("css/mobile.css") as f:
+            mobile_style = f.read()
+            
+        st.markdown(f"""
+            <style>
+            /* CONFIGURACIÓN BASE (Común a ambos) */
+            [data-testid="stHeader"], [data-testid="stSidebar"] {{ display: none !important; }}
+            .stApp {{ background-color: white !important; }}
 
-    .navbar {
-        display: flex; justify-content: space-between; align-items: center;
-        padding: 0 60px; height: 80px; background-color: white;
-        border-bottom: 1px solid #f0f0f0; position: fixed;
-        top: 0; left: 0; right: 0; z-index: 9999;
-    }
+            /* CARGA PARA DESKTOP */
+            @media screen and (min-width: 769px) {{
+                {desktop_style}
+            }}
 
-    .logo-box img { max-height: 55px; width: auto; }
-    .nav-links { display: flex; align-items: center; gap: 20px; }
+            /* CARGA PARA MOBILE */
+            @media screen and (max-width: 768px) {{
+                {mobile_style}
+            }}
+            </style>
+        """, unsafe_allow_html=True)
+    except FileNotFoundError:
+        st.warning("Archivos CSS no encontrados. Revisa las rutas en GitHub.")
 
-    /* Estilo para los botones de destino (Caso A) */
-    .btn-destino {
-        background-color: #000;
-        color: #fff !important;
-        padding: 10px 20px;
-        border-radius: 6px;
-        font-size: 13px;
-        font-weight: 700;
-        text-decoration: none !important;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        transition: 0.3s;
-    }
-    .btn-destino:hover {
-        background-color: #444;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-
-    /* Estilo para los links del menú (Caso B) */
-    .nav-item {
-        color: black !important; text-decoration: none !important; 
-        font-size: 13px; font-weight: 700; text-transform: uppercase;
-        letter-spacing: 0.5px; transition: 0.2s;
-    }
-    .nav-item:hover { color: #555 !important; }
-
-    .dropdown { position: relative; display: inline-block; }
-    .dropbtn {
-        color: black !important; font-size: 13px; font-weight: 700;
-        text-decoration: none !important; border: none; background: none;
-        cursor: pointer; text-transform: uppercase; padding: 30px 0;
-    }
-    .dropdown-content {
-        display: none; position: absolute; background-color: white;
-        min-width: 240px; box-shadow: 0px 8px 16px rgba(0,0,0,0.08);
-        z-index: 1000; border-radius: 8px; border: 1px solid #f0f0f0; top: 75px;
-    }
-    .dropdown:hover .dropdown-content { display: block; }
-    .dropdown-content a {
-        color: #444; padding: 12px 20px; text-decoration: none;
-        display: block; font-size: 13px;
-    }
-
-    .sigla-badge {
-        background: #000; color: #fff; padding: 4px 10px;
-        border-radius: 4px; font-weight: bold; font-size: 11px;
-    }
-
-    .content-wrapper { margin-top: 85px; padding: 0 5%; }
-
-    .footer-container {
-        background-color: #1a1a1a;
-        color: #888;
-        padding: 30px 10% !important;
-        margin-left: -10vw !important;
-        margin-right: -10vw !important;
-        margin-bottom: -5rem !important;
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-    }
-    .footer-col h4 { color: white; font-size: 14px; margin-bottom: 10px; }
-    </style>
-""", unsafe_allow_html=True)
+load_css()
 
 # 5. CONSTRUCCIÓN DEL NAVBAR DINÁMICO
 logo_url = "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png"
@@ -191,3 +134,4 @@ elif nav_actual == "Tarifas": render_tarifas(dest_actual)
 elif nav_actual == "Adhesion": render_adhesion(logo_url)
 
 st.markdown('</div>', unsafe_allow_html=True)
+
