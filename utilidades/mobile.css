@@ -1,23 +1,59 @@
-/* --- NAVBAR MOBILE EN BLOQUES --- */
+/* --- LAYOUT MOBILE VERTICAL --- */
+
 .navbar {
-    flex-direction: column !important; height: auto !important;
-    padding: 15px 0 !important;
+    display: flex !important;
+    flex-direction: column !important; /* Todo uno abajo del otro */
+    height: auto !important;
+    padding: 20px 0 !important;
+    background-color: white !important;
+    align-items: center !important;
+    gap: 10px !important;
 }
 
-.logo-box { margin-bottom: 10px !important; }
-.nav-links { 
-    flex-direction: column !important; gap: 10px !important; 
-    width: 100% !important; align-items: center !important;
+/* Logo muy pequeño y centrado */
+.logo-box img {
+    max-height: 35px !important;
+    margin-bottom: 5px !important;
 }
 
-/* Títulos negros en Mobile */
-h1, h2, [data-testid="stMarkdownContainer"] h1 {
-    color: #000 !important;
+/* Contenedor de links en columna */
+.nav-links {
+    display: flex !important;
+    flex-direction: column !important; 
+    align-items: center !important;
+    width: 100% !important;
+    gap: 12px !important;
+}
+
+/* Texto "ELEGÍ TU DESTINO" */
+.nav-links span {
+    font-size: 14px !important;
+    color: #444 !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Botones grandes y fáciles de tocar */
+.btn-destino {
+    width: 80% !important; /* Ocupan casi todo el ancho */
+    max-width: 280px;
+    padding: 15px !important;
+    font-size: 14px !important;
     text-align: center !important;
+    background-color: #000 !important;
+    color: #fff !important;
+    border-radius: 8px !important;
 }
 
-.content-wrapper { margin-top: 180px !important; }
+/* --- VISIBILIDAD DE TEXTOS --- */
+/* Esto soluciona el problema de las letras blancas invisibles */
+h1, h2, h3, p, span, div {
+    color: #1a1a1a !important; 
+}
 
-/* Ocultar dropdowns en mobile por ahora para que no estorben hasta que los hagamos clickeables */
-.navbar .dropdown { width: 100%; text-align: center; }
-.navbar .dropdown-content { position: static; box-shadow: none; border: none; }
+/* Ajuste de margen para que la nueva navbar no tape el inicio */
+.content-wrapper {
+    margin-top: 220px !important; 
+    padding: 0 20px !important;
+}
