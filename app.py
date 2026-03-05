@@ -7,7 +7,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 2. LÓGICA DE NAVEGACIÓN (Definimos las variables primero)
+# 2. LÓGICA DE NAVEGACIÓN
 query_params = st.query_params
 nav_actual = query_params.get("nav", "Home")
 dest_actual = query_params.get("destino", None)
@@ -44,13 +44,11 @@ try:
     [data-testid="stHeader"], [data-testid="stSidebar"] {{ display: none !important; }} 
     .stApp {{ background-color: white !important; }} 
     
-    /* Regla para Desktop */
     @media screen and (min-width: 769px) {{
         .mobile-only {{ display: none !important; }}
         {desktop_style}
     }}
     
-    /* Regla para Mobile */
     @media screen and (max-width: 768px) {{
         .desktop-only {{ display: none !important; }}
         {mobile_style}
@@ -64,16 +62,19 @@ except Exception as e:
 # 5. CONSTRUCCIÓN DEL NAVBAR DINÁMICO
 logo_url = "https://serranoturismo.com.ar/assets/images/logoserrano-facebook.png"
 
-# --- Lógica de Links (Se usa en ambas versiones) ---
+# --- Lógica de Links Diferenciada ---
 if not dest_actual:
-    links_html = f"""
+    # Links comunes para el Home
+    links_home = f"""
         <span class="eleccion-texto">Elegí tu destino:</span>
         <a href="./?nav=Home&destino=San+Pedro" class="btn-destino" target="_self">SAN PEDRO</a>
         <a href="./?nav=Home&destino=Villa+Carlos+Paz" class="btn-destino" target="_self">CARLOS PAZ</a>
     """
+    links_desktop = links_home
+    links_mobile = links_home
 else:
-    links_html = f"""
-        <a href="./?nav=Home" class="nav-item" target="_self">HOME</a>
+    # Estructura base de menús (común a ambos)
+    menus_interiores = f"""
         <div class="dropdown">
             <button class="dropbtn">CONOCÉ TU VIAJE ▼</button>
             <div class="dropdown-content">
@@ -93,20 +94,24 @@ else:
             </div>
         </div>
     """
+    # Desktop usa HOME al principio
+    links_desktop = f'<a href="./?nav=Home" class="nav-item" target="_self">HOME</a>' + menus_interiores
+    # Mobile usa VOLVER al final
+    links_mobile = menus_interiores + f'<a href="./?nav=Home" class="nav-item" target="_self">VOLVER A ELEGIR DESTINO</a>'
 
-# INYECCIÓN: Una para Desktop y otra para Mobile (CSS decide cuál mostrar)
+# INYECCIÓN: El CSS decide cuál mostrar
 st.markdown(f"""
     <div class="navbar desktop-only">
         <div class="logo-box">
             <a href="./?nav=Home" target="_self"><img src="{logo_url}"></a>
         </div>
-        <div class="nav-links">{links_html}</div>
+        <div class="nav-links">{links_desktop}</div>
         <div style="width:110px;"></div>
     </div>
 
     <div class="navbar-mobile mobile-only">
-        {"<div class='logo-box-mobile-home'><img src='" + logo_url + "'></div><div class='nav-links-visible'>" + links_html + "</div>" if not dest_actual else 
-        "<details class='menu-desplegable'><summary class='logo-box-summary'><img src='" + logo_url + "'><span class='menu-label'>MENÚ ☰</span></summary><div class='nav-links-collapsed'>" + links_html + "</div></details>"}
+        {"<div class='logo-box-mobile-home'><img src='" + logo_url + "'></div><div class='nav-links-visible'>" + links_mobile + "</div>" if not dest_actual else 
+        "<details class='menu-desplegable'><summary class='logo-box-summary'><img src='" + logo_url + "'><span class='menu-label'>MENÚ ☰</span></summary><div class='nav-links-collapsed'>" + links_mobile + "</div></details>"}
     </div>
 """, unsafe_allow_html=True)
 
