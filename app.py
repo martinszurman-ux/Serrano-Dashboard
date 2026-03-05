@@ -35,9 +35,9 @@ except ImportError as e:
 # 4. CSS MAESTRO (Carga separada)
 def load_css():
     try:
-        with open("css/desktop.css") as f:
+        with open("utilidades/desktop.css") as f:
             desktop_style = f.read()
-        with open("css/mobile.css") as f:
+        with open("utilidades/mobile.css") as f:
             mobile_style = f.read()
             
         st.markdown(f"""
@@ -134,4 +134,5 @@ elif nav_actual == "Tarifas": render_tarifas(dest_actual)
 elif nav_actual == "Adhesion": render_adhesion(logo_url)
 
 st.markdown('</div>', unsafe_allow_html=True)
+
 
