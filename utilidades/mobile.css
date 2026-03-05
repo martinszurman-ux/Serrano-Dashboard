@@ -1,5 +1,5 @@
 /* ============================================================
-   SERRANO TURISMO - MOBILE.CSS (VERSIÓN BLACK ELEGANCE)
+   SERRANO TURISMO - MOBILE.CSS (VERSIÓN BLACK ELEGANCE PRO)
    ============================================================ */
 
 /* 1. NAVBAR BASE */
@@ -51,6 +51,7 @@
     align-items: center !important;
     padding: 12px 20px !important;
     list-style: none !important;
+    outline: none !important;
 }
 .logo-box-summary img { max-height: 35px !important; }
 .menu-label {
@@ -58,22 +59,23 @@
     padding: 6px 14px; border-radius: 4px;
     font-size: 11px; font-weight: 800;
 }
+.logo-box-summary::-webkit-details-marker { display: none; }
 
-/* 4. EL NUEVO MENÚ DESPLEGABLE (FONDO NEGRO / LETRAS BLANCAS) */
+/* 4. EL MENÚ DESPLEGABLE (FONDO NEGRO / LISTA ELEGANTE) */
 .nav-links-collapsed {
     display: flex !important;
     flex-direction: column !important;
-    align-items: flex-start !important; /* Alineado a la izquierda para la lista */
+    align-items: flex-start !important;
     gap: 0 !important;
     padding: 20px 25px !important;
-    background-color: #000000 !important; /* Fondo Negro total */
+    background-color: #000000 !important;
 }
 
-/* Títulos de categorías (Conocé / Armá) */
+/* Títulos de categorías */
 .dropbtn {
     width: 100% !important;
     background: none !important;
-    color: #ffffff !important; /* Blanco */
+    color: #ffffff !important;
     font-size: 14px !important;
     font-weight: 800 !important;
     text-align: left !important;
@@ -86,34 +88,43 @@
 /* Contenedor de links */
 .dropdown-content {
     display: flex !important;
-    flex-direction: column !important; /* Lista hacia abajo */
+    flex-direction: column !important;
     width: 100% !important;
     padding-left: 10px !important;
 }
 
-/* Los links individuales */
+/* Links individuales */
 .dropdown-content a {
-    color: #cccccc !important; /* Gris claro para no cansar la vista */
+    color: #cccccc !important;
     font-size: 14px !important;
     text-decoration: none !important;
-    padding: 8px 0 !important;
+    padding: 10px 0 !important;
     display: block !important;
     font-weight: 400 !important;
-    border-bottom: 1px solid #222; /* Divisor muy sutil */
+    border-bottom: 1px solid #222;
 }
 
-/* Botón Volver al Home al final */
-.nav-item {
+/* BOTÓN: VOLVER A ELEGIR DESTINO (Ajustado) */
+.nav-links-collapsed .nav-item {
     width: 100% !important;
-    padding: 20px 0 !important;
-    margin-top: 10px !important;
+    padding: 25px 0 !important;
+    margin-top: 15px !important;
     background-color: transparent !important;
     color: #ffffff !important;
     font-weight: 800 !important;
-    font-size: 13px !important;
+    font-size: 11px !important; /* Un poco más chico por el largo del texto */
     text-align: left !important;
-    text-decoration: underline !important;
+    text-decoration: none !important;
     border-top: 1px solid #333 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Agregamos una flechita visual antes del texto */
+.nav-links-collapsed .nav-item::before {
+    content: "← ";
+    font-size: 14px;
+    margin-right: 5px;
 }
 
 /* 5. BOTONES DEL HOME (NEGROS) */
@@ -125,6 +136,7 @@
     border-radius: 6px !important;
     text-align: center !important;
     font-weight: 700 !important;
+    text-decoration: none !important;
 }
 
 /* 6. TÍTULOS DE PÁGINA */
@@ -133,6 +145,7 @@ h1, [data-testid="stMarkdownContainer"] h1 {
     font-size: 28px !important;
     font-weight: 900 !important;
     text-align: left !important;
+    margin-top: 10px !important;
 }
 
 .content-wrapper {
