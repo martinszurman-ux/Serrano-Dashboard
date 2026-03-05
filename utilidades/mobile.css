@@ -1,59 +1,64 @@
-/* --- LAYOUT MOBILE VERTICAL --- */
+/* --- NAVEGACIÓN DE LANDINGS EN MOBILE --- */
 
-.navbar {
-    display: flex !important;
-    flex-direction: column !important; /* Todo uno abajo del otro */
-    height: auto !important;
-    padding: 20px 0 !important;
-    background-color: white !important;
-    align-items: center !important;
-    gap: 10px !important;
-}
-
-/* Logo muy pequeño y centrado */
-.logo-box img {
-    max-height: 35px !important;
-    margin-bottom: 5px !important;
-}
-
-/* Contenedor de links en columna */
+/* Ajustamos el contenedor de links para que sea una lista limpia */
 .nav-links {
     display: flex !important;
-    flex-direction: column !important; 
+    flex-direction: column !important;
     align-items: center !important;
+    gap: 15px !important;
     width: 100% !important;
-    gap: 12px !important;
 }
 
-/* Texto "ELEGÍ TU DESTINO" */
-.nav-links span {
+/* El link de HOME y la Sigla (SP/CP) */
+.nav-item, .sigla-badge {
     font-size: 14px !important;
-    color: #444 !important;
-    font-weight: 600 !important;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    margin: 5px 0 !important;
 }
 
-/* Botones grandes y fáciles de tocar */
-.btn-destino {
-    width: 80% !important; /* Ocupan casi todo el ancho */
-    max-width: 280px;
-    padding: 15px !important;
-    font-size: 14px !important;
+/* --- TRANSFORMACIÓN DE DROPDOWNS EN MENÚS MÓVILES --- */
+.dropdown {
+    width: 90% !important;
     text-align: center !important;
-    background-color: #000 !important;
-    color: #fff !important;
-    border-radius: 8px !important;
 }
 
-/* --- VISIBILIDAD DE TEXTOS --- */
-/* Esto soluciona el problema de las letras blancas invisibles */
-h1, h2, h3, p, span, div {
-    color: #1a1a1a !important; 
+/* Convertimos el botón del menú en una barra ancha */
+.dropbtn {
+    width: 100% !important;
+    background-color: #f8f9fa !important;
+    border: 1px solid #ddd !important;
+    padding: 12px !important;
+    border-radius: 6px !important;
+    font-size: 12px !important;
+    color: #333 !important;
+    display: block !important;
 }
 
-/* Ajuste de margen para que la nueva navbar no tape el inicio */
+/* Hacemos que el contenido del menú sea una lista simple debajo del botón */
+.dropdown-content {
+    display: block !important; /* En mobile los dejamos siempre visibles o listados */
+    position: static !important;
+    box-shadow: none !important;
+    border: none !important;
+    width: 100% !important;
+    padding-top: 10px !important;
+}
+
+.dropdown-content a {
+    padding: 8px !important;
+    font-size: 13px !important;
+    color: #007bff !important; /* Color de link clásico para que sepa que es clickeable */
+    text-decoration: underline !important;
+}
+
+/* --- TÍTULOS DE LANDING (Serrano Turismo + Destino) --- */
+.content-wrapper h1 {
+    color: #1a1a1a !important;
+    font-size: 24px !important;
+    margin-top: 30px !important;
+    text-align: center !important;
+}
+
+/* Ajuste de margen superior para landings */
 .content-wrapper {
-    margin-top: 220px !important; 
-    padding: 0 20px !important;
+    margin-top: 250px !important; /* Más espacio porque este menú es más largo */
 }
