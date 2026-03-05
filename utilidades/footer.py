@@ -1,4 +1,5 @@
 import streamlit as st
+
 def render_footer():
     """Renderiza el footer sin indentación para evitar que Streamlit lo lea como código."""
     
