@@ -58,3 +58,6 @@
 /* CONTENIDO */
 .content-wrapper { margin-top: 100px; padding: 0 5%; }
 .sigla-badge { background: #000; color: #fff; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 11px; }
+
+.mobile-only { display: none !important; }
+.desktop-only { display: flex !important; }
