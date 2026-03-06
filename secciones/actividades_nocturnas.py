@@ -53,7 +53,7 @@ def render_nocturnas(destino):
                 <div class="night-card">
                     <div class="night-content">
                         <div class="night-title">🧩 Juegos Nocturnos</div>
-                        <div class="night-desc">En el marco del hotel realizaremos actividades como búsqueda del tesoro, noche de brujas, luces y sonidos y mucho mas.</div>
+                        <div class="night-desc">En el marco del hotel realizaremos actividades como búsqueda del tesoro y juegos por equipos.</div>
                     </div>
                 </div>
             """, unsafe_allow_html=True)
@@ -61,7 +61,7 @@ def render_nocturnas(destino):
             st.markdown("""
                 <div class="night-card" style="border-left: 5px solid #1E3A8A;">
                     <div class="night-content">
-                        <div class="night-title">🎭 Matinée Serrano VIP</div>
+                        <div class="night-title">🪩 Matinée Serrano VIP</div>
                         <div class="night-desc">Noche de Fiesta Privada en la Disco <b>MOLINO ROJO</b>, contando con la exclusividad del lugar para nuestros pasajeros.</div>
                     </div>
                 </div>
@@ -90,7 +90,17 @@ def render_nocturnas(destino):
                 <div class="night-card" style="border-left: 5px solid #1E3A8A;">
                     <div class="night-content">
                         <div class="night-title">💦 Pool Party</div>
-                        <div class="night-desc">Fiesta increíble en pileta climatizada del complejo Crazy Donkey con show de luces y animacion en un marco de total diversión y seguridad, seguido de una cena con asado tenedor libre y un show especial para cerrar la noche de la mejor manera.</div>
+                        <div class="night-desc">Comenzamos con una espectacular fiesta de la espuma, seguido de la Fiesta increíble en la pileta climatizada de Crazy Donkey con show de luces y animacion en un marco de total diversión y seguridad, ademas cerraremos esta hermosa noche con una cena con asado tenedor libre y un show espectacular para cerrar este hermoso dia.</div>
+                    </div>
+                </div>
+            """, unsafe_allow_html=True)
+
+            # NUEVA ACTIVIDAD CARLOS PAZ CON ACLARACIÓN
+            st.markdown("""
+                <div class="night-card">
+                    <div class="night-content">
+                        <div class="night-title">🎭 Fiesta de Disfraces</div>
+                        <div class="night-desc">Una noche espectacular donde cada pasajero podrá lucir su mejor disfraz. Se realiza dentro del hotel, contando con un sector especialmente preparado con luces y sonido para disfrutar a lo grande.</div>
                     </div>
                 </div>
             """, unsafe_allow_html=True)
@@ -116,7 +126,7 @@ def render_nocturnas(destino):
                 <div class="night-card">
                     <div class="night-content">
                         <div class="night-title">🧩 Juegos Nocturnos</div>
-                        <div class="night-desc">En el marco del hotel realizaremos actividades como fiesta de disfraces, búsqueda del tesoro y fiestas temáticas.</div>
+                        <div class="night-desc">En el marco del hotel realizaremos actividades como búsqueda del tesoro, noche de brujas, luces y sonidos y fiestas temáticas.</div>
                     </div>
                 </div>
             """, unsafe_allow_html=True)
