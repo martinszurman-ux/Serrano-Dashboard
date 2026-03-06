@@ -87,7 +87,7 @@ def render_excursiones(destino):
         # Paseos clásicos (Sin fotos, solo iconos)
         st.markdown("<h3 style='color: #1E3A8A;'>🏙️ Paseos Clásicos</h3>", unsafe_allow_html=True)
         
-        c_city, c_alfa = st.columns(2)
+        c_city, c_alfa, c_planetario = st.columns(3) # Ampliado a 3 columnas para incluir el Planetario
         with c_city:
             st.markdown("""
                 <div class="excursion-card" style="border-left: 5px solid #1E3A8A;">
@@ -106,6 +106,17 @@ def render_excursiones(destino):
                         <div class="excursion-title">🍫 Fábrica de Alfajores</div>
                         <div class="excursion-desc">Visita guiada para conocer los secretos de la elaboración de los alfajores cordobeses. ¡Obviamente incluye degustación!</div>
                         <div class="excursion-tag">Gastronomía</div>
+                    </div>
+                </div>
+            """, unsafe_allow_html=True)
+
+        with c_planetario:
+            st.markdown("""
+                <div class="excursion-card" style="border-left: 5px solid #1E3A8A;">
+                    <div class="excursion-content">
+                        <div class="excursion-title">🪐 Planetario Pekos</div>
+                        <div class="excursion-desc">Un viaje a través del cosmos con tecnología de vanguardia para descubrir los secretos del universo.</div>
+                        <div class="excursion-tag">Educativo</div>
                     </div>
                 </div>
             """, unsafe_allow_html=True)
