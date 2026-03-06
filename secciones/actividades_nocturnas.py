@@ -53,7 +53,7 @@ def render_nocturnas(destino):
                 <div class="night-card">
                     <div class="night-content">
                         <div class="night-title">🧩 Juegos Nocturnos</div>
-                        <div class="night-desc">En el marco del hotel realizaremos actividades como fiesta de disfraces, búsqueda del tesoro y fiestas temáticas.</div>
+                        <div class="night-desc">En el marco del hotel realizaremos actividades como búsqueda del tesoro, noche de brujas, luces y sonidos y mucho mas.</div>
                     </div>
                 </div>
             """, unsafe_allow_html=True)
@@ -90,7 +90,7 @@ def render_nocturnas(destino):
                 <div class="night-card" style="border-left: 5px solid #1E3A8A;">
                     <div class="night-content">
                         <div class="night-title">💦 Pool Party</div>
-                        <div class="night-desc">Fiesta increíble en pileta climatizada con show de láser y luces en un marco de total diversión y seguridad.</div>
+                        <div class="night-desc">Fiesta increíble en pileta climatizada del complejo Crazy Donkey con show de luces y animacion en un marco de total diversión y seguridad, seguido de una cena con asado tenedor libre y un show especial para cerrar la noche de la mejor manera.</div>
                     </div>
                 </div>
             """, unsafe_allow_html=True)
