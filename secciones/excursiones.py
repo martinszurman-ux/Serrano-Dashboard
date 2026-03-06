@@ -55,7 +55,7 @@ def render_excursiones(destino):
                 st.image("assets/pekos.png", use_container_width=True)
             else:
                 st.info("🖼️ Falta: assets/pekos.png")
-            st.markdown('<div class="excursion-content"><div class="excursion-title">🎡 Pekos Multiparque</div><div class="excursion-desc">Cine 5D, laberintos de espejos, montañas rusas, shows y juegos mecánicos en un complejo recreativo inmenso.</div><div class="excursion-tag">Día Completo</div></div></div>', unsafe_allow_html=True)
+            st.markdown('<div class="excursion-content"><div class="excursion-title">🎡 Pekos Multiparque</div><div class="excursion-desc">Cine 5D, laberintos de espejos, montañas rusas, shows, la noria mas grande de sudamerica y juegos mecánicos en un complejo recreativo inmenso.</div><div class="excursion-tag">Día Completo</div></div></div>', unsafe_allow_html=True)
 
             # 3. Crazy Donkey
             st.markdown('<div class="excursion-card">', unsafe_allow_html=True)
