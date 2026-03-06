@@ -36,12 +36,12 @@ def render_transporte(destino):
         else:
             st.error(f"⚠️ No se encontró: {img_micro_local}")
             
-        st.write(f"Nuestras unidades de **Serrano Turismo** te llevan a **{destino}** recorriendo los mejores caminos cordobeses.")
+        st.write(f"Unidades exclusivas para **Serrano Turismo** te llevan a **{destino}** recorriendo los mejores caminos cordobeses.")
 
         # Características (Igualadas)
         st.markdown("### ✨ Características de nuestro servicio:")
         st.markdown("""
-        * ✅ **Buses de última generación:** Unidades modernas con máximo confort.
+        * ✅ **Buses de última generación de un solo piso:** Unidades modernas con máximo confort.
         * ✅ **Empresas de transporte Charter:** Seguridad y exclusividad garantizada.
         * ✅ **Exclusividad:** El mismo bus queda a disposición del grupo durante todos los días del viaje para los traslados a excursiones.
         """)
