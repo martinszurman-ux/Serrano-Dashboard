@@ -90,7 +90,7 @@ def render_nocturnas(destino):
                 <div class="night-card" style="border-left: 5px solid #1E3A8A;">
                     <div class="night-content">
                         <div class="night-title">💦 Pool Party</div>
-                        <div class="night-desc">Comenzamos con una espectacular fiesta de la espumas seguido de la Fiesta increíble en la pileta climatizada de Crazy Donkey con show de luces y animacion en un marco de total diversión y seguridad, ademas cerraremos esta hermosa noche con una cena con asado tenedor libre y un show espectacular para cerrar este hermoso dia.</div>
+                        <div class="night-desc">Comenzamos con una espectacular fiesta de la espuma, seguido de la Fiesta increíble en la pileta climatizada de Crazy Donkey con show de luces y animacion en un marco de total diversión y seguridad, ademas cerraremos esta hermosa noche con una cena con asado tenedor libre y un show espectacular para cerrar este hermoso dia.</div>
                     </div>
                 </div>
             """, unsafe_allow_html=True)
