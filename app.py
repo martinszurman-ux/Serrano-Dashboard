@@ -82,7 +82,7 @@ else:
                 <a href="./?nav=Hoteleria&destino={dest_actual}" target="_self">Hotelería</a>
                 <a href="./?nav=Comidas&destino={dest_actual}" target="_self">Comidas</a>
                 <a href="./?nav=Excursiones&destino={dest_actual}" target="_self">Excursiones</a>
-                <a href="./?nav=Actividades&destino={dest_actual}" target="_self">Actividades</a>
+                <a href="./?nav=Actividades&destino={dest_actual}" target="_self">Actividades Nocturnas</a>
                 <a href="./?nav=Seguro&destino={dest_actual}" target="_self">Seguro / Coordinación</a>
             </div>
         </div>
@@ -132,3 +132,4 @@ elif nav_actual == "Tarifas": render_tarifas(dest_actual)
 elif nav_actual == "Adhesion": render_adhesion(logo_url)
 
 st.markdown('</div>', unsafe_allow_html=True)
+
