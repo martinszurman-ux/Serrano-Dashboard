@@ -1,9 +1,10 @@
 import streamlit as st
 
 def render_footer():
-    """Footer with extreme CSS targeting for Streamlit Cloud badges"""
+    """Footer with extreme CSS targeting for Streamlit Cloud badges and Dark Mode"""
     
     st.markdown("""<style>
+/* Ocultar elementos por defecto de Streamlit */
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden !important; display: none !important;}
 header {visibility: hidden !important; display: none !important;}
@@ -13,6 +14,8 @@ header {visibility: hidden !important; display: none !important;}
 .viewerBadge_container__1QSob {display: none !important;}
 #st-app-creator-profile {display: none !important;}
 .main .block-container {padding-bottom: 0rem !important;}
+
+/* Estilos base del Footer (Modo Claro) */
 .footer-container {background-color: white; border-top: 1px solid #eee; padding: 30px 20px; margin-top: 50px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; width: 100%; font-family: sans-serif;}
 .f-col {flex: 1; min-width: 250px; margin: 10px 0;}
 .f-brand h4 {color: #333333 !important; font-weight: 800; font-size: 1.1rem; margin: 0; text-transform: uppercase;}
@@ -22,6 +25,29 @@ header {visibility: hidden !important; display: none !important;}
 .f-right {text-align: right;}
 .f-right a {color: #333 !important; font-size: 1.5rem; margin-left: 20px; text-decoration: none !important;}
 .wa-float {position: fixed; bottom: 30px; left: 30px; background-color: #25d366; color: white !important; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; z-index: 999999; box-shadow: 0 4px 12px rgba(0,0,0,0.25); text-decoration: none !important;}
+
+/* --- ADAPTACIÓN A MODO OSCURO --- */
+@media (prefers-color-scheme: dark) {
+    .footer-container {
+        background-color: #121212 !important;
+        border-top: 1px solid #333 !important;
+    }
+    .f-brand h4 {
+        color: #ffffff !important;
+    }
+    .f-brand p {
+        color: #aaaaaa !important;
+    }
+    .f-center {
+        color: #cccccc !important;
+    }
+    .f-center p {
+        color: #cccccc !important;
+    }
+    .f-right a {
+        color: #ffffff !important;
+    }
+}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <div class="footer-container">
