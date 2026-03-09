@@ -112,7 +112,7 @@
     background-color: transparent !important;
     color: #ffffff !important;
     font-weight: 800 !important;
-    font-size: 11px !important; /* Un poco más chico por el largo del texto */
+    font-size: 11px !important;
     text-align: left !important;
     text-decoration: none !important;
     border-top: 1px solid #333 !important;
@@ -120,7 +120,6 @@
     letter-spacing: 0.5px;
 }
 
-/* Agregamos una flechita visual antes del texto */
 .nav-links-collapsed .nav-item::before {
     content: "← ";
     font-size: 14px;
@@ -155,3 +154,83 @@ h1, [data-testid="stMarkdownContainer"] h1 {
 
 .desktop-only, .espaciador-desktop { display: none !important; }
 .mobile-only { display: block !important; }
+
+/* ============================================================
+   6.5. FIX WHATSAPP (Lado derecho, más arriba para no chocar)
+   ============================================================ */
+a[href*="wa.me"], a[href*="whatsapp"], a[href*="api.whatsapp.com"] {
+    left: auto !important;
+    right: 20px !important;
+    bottom: 90px !important; /* Lo subimos para que no tape los iconos morados/rojos */
+}
+
+/* ============================================================
+   7. ADAPTACIÓN A MODO OSCURO (DARK MODE) - ESTADO SEGURO FINAL
+   ============================================================ */
+@media (prefers-color-scheme: dark) {
+    /* 1. Fondo general */
+    .stApp { background-color: #121212 !important; }
+    
+    /* 2. MENÚ SÓLIDO (No transparente) */
+    .navbar-mobile,
+    .nav-links-collapsed,
+    .dropdown-content,
+    .logo-box-mobile-home,
+    .logo-box-summary {
+        background-color: #121212 !important;
+        opacity: 1 !important;
+    }
+
+    /* 3. Textos generales básicos */
+    h1, h2, h3, h4, h5, h6, p, span,
+    [data-testid="stMarkdownContainer"] h1,
+    [data-testid="stMarkdownContainer"] h2,
+    [data-testid="stMarkdownContainer"] h3,
+    [data-testid="stMarkdownContainer"] p {
+        color: #f5f5f5 !important;
+    }
+
+    /* "ELEGÍ TU DESTINO" al blanco */
+    .eleccion-texto {
+        color: #ffffff !important;
+    }
+
+    /* 4. TÍTULOS INVISIBLES EN EL HOME ("Serrano Turismo") */
+    [style*="color: black"], [style*="color: #000"], [style*="color: rgb(0, 0, 0)"] {
+        color: #ffffff !important;
+    }
+
+    /* 5. BOTONES NORMALES (Hacerlos grises para que se vean) */
+    .stButton > button, div[data-testid="stButton"] button {
+        background-color: #2a2a2a !important;
+        border: 1px solid #666 !important;
+        color: #ffffff !important;
+    }
+
+    /* 6. BOTÓN / VIAJE SELECCIONADO (Destacarlo fuerte) */
+    /* Cuando el botón es primary o le hacés clic (focus) */
+    div[data-testid="stButton"] button[kind="primary"],
+    div[data-testid="stButton"] button:focus,
+    div[data-testid="stButton"] button:active {
+        border: 3px solid #ff4b4b !important;
+        color: #ff4b4b !important;
+        background-color: #1e1e1e !important;
+        font-weight: 900 !important;
+    }
+
+    /* 7. TARIFAS Y CARACTERÍSTICAS (Letras oscuras en cajas blancas) */
+    [data-testid="stAlert"] *,
+    [data-testid="stAlert"] p,
+    [data-testid="stAlert"] h1,
+    [data-testid="stAlert"] h2,
+    [data-testid="stAlert"] h3,
+    [data-testid="stAlert"] span {
+        color: #1a1a1a !important;
+    }
+
+    /* Cajas HTML inyectadas (Detecta todas las variantes de blanco) */
+    div[style*="white"] *, div[style*="#fff"] *, div[style*="#FFF"] *, 
+    div[style*="#ffffff"] *, div[style*="#FFFFFF"] *, div[style*="rgb(255, 255, 255)"] * {
+        color: #1a1a1a !important;
+    }
+}
