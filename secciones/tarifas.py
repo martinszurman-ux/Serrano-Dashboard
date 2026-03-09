@@ -15,7 +15,7 @@ def render_tarifas(destino):
             "Temporada", 
             options=["Temporada 2026", "Temporada 2027"], 
             default="Temporada 2026",
-            # label_visibility="collapsed" # Comentado para compatibilidad si da error
+            # label_visibility="collapsed"
         )
         archivo_nombre = "tarifas_2026.csv" if temporada == "Temporada 2026" else "tarifas_2027.csv"
         suffix = "2026" if temporada == "Temporada 2026" else "2027"
@@ -28,7 +28,7 @@ def render_tarifas(destino):
     if session_key not in st.session_state:
         st.session_state[session_key] = 0
 
-    # 2. ESTILOS CSS (VERSION COMPACTA)
+    # 2. ESTILOS CSS (Con estrategia de fondos oscuros)
     st.markdown("""
         <style>
         [data-testid="stImage"] { margin-top: -55px; margin-bottom: -20px; }
@@ -36,7 +36,7 @@ def render_tarifas(destino):
         div[data-testid="stPills"] > div { justify-content: center !important; display: flex !important; gap: 6px; }
         .instruccion-pago { text-align: center; font-weight: 700; color: #495057; margin-bottom: 8px; font-size: 0.95rem; }
         
-        /* Itinerarios más chicos */
+        /* Itinerarios (Modo Día) */
         .plan-card-container { border-radius: 12px; padding: 10px; background: #E8E8E8; border: 1px solid #d1d1d1; text-align: center; min-height: 110px; display: flex; flex-direction: column; justify-content: center; align-items: center; margin-bottom: 5px; transition: all 0.3s ease; }
         .selected-plan { border: 2px solid #4A90E2 !important; background-color: #ffffff !important; box-shadow: 0px 2px 8px rgba(0,0,0,0.05); }
         .header-content { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; }
@@ -44,18 +44,56 @@ def render_tarifas(destino):
         .transport-icon { font-size: 1.5rem; line-height: 1; margin: 0; }
         .day-text { color: #495057; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-top: 5px; }
         
-        /* Hero Widget más compacto */
+        /* Hero Widget (Modo Día) */
         .hero-payment-card { background: linear-gradient(145deg, #ffffff, #f0f2f6); border-radius: 20px; padding: 20px 30px; text-align: center; border: 1px solid #e0e4e8; box-shadow: 10px 10px 30px #d9dbe0; max-width: 400px; margin: 15px auto; transition: all 0.5s ease; cursor: default; }
         .hero-payment-card:hover { transform: translateY(-5px); }
         .hero-label { color: #6c757d; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; }
-        .hero-value { color: #1a1c1e; font-size: 2.8rem; font-weight: 900; margin: 0; line-height: 1; background: -webkit-linear-gradient(#1a1c1e, #4A90E2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-value { font-size: 2.8rem; font-weight: 900; margin: 0; line-height: 1; background: -webkit-linear-gradient(#1a1c1e, #4A90E2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero-subtitle { color: #4A90E2; font-size: 1rem; font-weight: 600; margin-top: 5px; }
         
-        /* Beneficio más discreto */
+        /* Beneficio (Modo Día) */
         .beneficio-box { max-width: 600px; margin: 15px auto; padding: 12px; background-color: #f0f7ff; border-radius: 10px; border: 1px dashed #4A90E2; }
         
         .styled-table th { background-color: #333333 !important; color: white !important; font-size: 0.8rem; padding: 5px !important; }
         .styled-table td { font-size: 0.8rem; padding: 5px !important; }
+
+        /* =======================================================
+           TRANSFORMACIÓN A MODO OSCURO (DARK MODE)
+           ======================================================= */
+        @media (prefers-color-scheme: dark) {
+            /* Transformamos la caja de precio a gris oscuro */
+            .hero-payment-card {
+                background: linear-gradient(145deg, #1e1e1e, #2a2a2a) !important;
+                border: 1px solid #444 !important;
+                box-shadow: 5px 5px 15px #0a0a0a !important;
+            }
+            /* El gradiente del precio cambia para resaltar en la oscuridad */
+            .hero-value {
+                background: -webkit-linear-gradient(#ffffff, #4A90E2) !important;
+                -webkit-background-clip: text !important;
+                -webkit-text-fill-color: transparent !important;
+            }
+            
+            /* Transformamos los botones de itinerario a oscuros */
+            .plan-card-container {
+                background: #2a2a2a !important;
+                border: 1px solid #444 !important;
+            }
+            .selected-plan {
+                background-color: #1e1e1e !important;
+                border: 2px solid #ff4b4b !important; /* Rojo para destacar */
+            }
+            
+            /* Transformamos la caja de beneficio a oscura */
+            .beneficio-box {
+                background-color: #1e1e1e !important;
+                border: 1px dashed #ff4b4b !important;
+            }
+            
+            /* Aseguramos que los iconitos de transporte y números se vean bien */
+            .transport-icon { color: #ffffff !important; }
+            .day-number { color: #4A90E2 !important; }
+        }
         </style>
     """, unsafe_allow_html=True)
 
@@ -87,7 +125,6 @@ def render_tarifas(destino):
             numero = partes[0]
             resto = partes[1] if len(partes) > 1 else ""
             
-            # CAMBIO: Si el destino es San Pedro, forzamos icono de micro.
             if destino == "San Pedro" or "bus" in plan.lower():
                 icono = "🚌"
             else:
@@ -142,7 +179,7 @@ def render_tarifas(destino):
         # Beneficio Serrano Compacto
         st.markdown(f"""
             <div class='beneficio-box'>
-                <p style='font-size: 0.85rem; color: #33; text-align: center; margin: 0;'>
+                <p style='font-size: 0.85rem; color: #333; text-align: center; margin: 0;'>
                     🎁 <b>¡10% OFF Serrano!</b> Pagando del 1 al 10 en efectivo (aplicado en última cuota).
                 </p>
             </div>
@@ -169,6 +206,5 @@ def render_tarifas(destino):
     else:
         st.warning(f"No se encontró el archivo en data/{folder}/")
 
- # --- 5. FOOTER INSTITUCIONAL ---
-    # Invocamos la función del archivo utilidades/footer.py
+    # --- 5. FOOTER INSTITUCIONAL ---
     render_footer()
