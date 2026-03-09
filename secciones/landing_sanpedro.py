@@ -12,7 +12,7 @@ def render_landing_sp():
     # --- 1. ESTILOS CSS ESPECÍFICOS DE LA LANDING ---
     st.markdown("""
         <style>
-        /* Tipografía y Colores */
+        /* Tipografía y Colores (Modo Día) */
         .hero-title {
             font-size: 60px;
             font-weight: 900;
@@ -41,7 +41,7 @@ def render_landing_sp():
             background-color: #1b5e20;
             transform: translateY(-2px);
         }
-        /* Tarjetas de actividades */
+        /* Tarjetas de actividades (Modo Día) */
         .activity-card {
             background-color: white;
             padding: 25px;
@@ -97,6 +97,33 @@ def render_landing_sp():
             margin: 0 auto;
             border-radius: 10px;
             box-shadow: 0px 5px 10px rgba(0,0,0,0.5);
+        }
+
+        /* =======================================================
+           TRANSFORMACIÓN A MODO OSCURO (DARK MODE)
+           ======================================================= */
+        @media (prefers-color-scheme: dark) {
+            /* Tarjetas oscuras para que el texto blanco haga contraste */
+            .activity-card {
+                background-color: #1e1e1e !important;
+                border-left: 5px solid #4caf50 !important; /* Verde más brillante para resaltar */
+                box-shadow: 5px 5px 15px #0a0a0a !important;
+            }
+            
+            /* Iluminamos los títulos que eran muy oscuros */
+            .hero-title {
+                color: #ffffff !important;
+                -webkit-text-fill-color: #ffffff !important;
+            }
+            .sub-text {
+                color: #dddddd !important;
+                -webkit-text-fill-color: #dddddd !important;
+            }
+            
+            /* Textos centrales forzados a blanco */
+            h2, h3, p {
+                color: #f5f5f5 !important;
+            }
         }
         </style>
     """, unsafe_allow_html=True)
@@ -187,3 +214,6 @@ def render_landing_sp():
     # --- 5. FOOTER INSTITUCIONAL ---
     # Invocamos la función del archivo utilidades/footer.py
     render_footer()
+
+if __name__ == "__main__":
+    render_landing_sp()
