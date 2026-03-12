@@ -69,7 +69,7 @@ def render_adhesion(logo_url):
     nom1.text_input("Nombre/s", key="pas_nom_f")
 
     cd1, cd2, cd3 = st.columns([1, 1, 1])
-    cd1.text_input("DNI / CUIL", key="pas_dni_f")
+    cd1.text_input("CUIL", key="pas_dni_f")
     cd2.text_input("Fecha de Vencimiento DNI", key="pas_vence_f")
     cd3.date_input("Fecha de Nacimiento", min_value=datetime(1990, 1, 1), key="pas_nace_f")
 
