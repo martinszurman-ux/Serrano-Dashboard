@@ -61,3 +61,26 @@
 
 .mobile-only { display: none !important; }
 .desktop-only { display: flex !important; }
+
+/* ── IMPRESIÓN: ocultar todo excepto el formulario ── */
+@media print {
+    .navbar,
+    .navbar-mobile,
+    .footer-container,
+    .wa-float,
+    iframe,
+    [data-testid="stHeader"],
+    [data-testid="stToolbar"],
+    [data-testid="stDecoration"],
+    [data-testid="stSidebar"],
+    .stButton,
+    footer {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+    }
+    .content-wrapper {
+        margin-top: 0 !important;
+        padding: 0 !important;
+    }
+}
