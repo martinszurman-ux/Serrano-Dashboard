@@ -51,7 +51,7 @@ def render_adhesion(logo_url):
     c1.date_input("Fecha de Solicitud", datetime.now())
     c2.text_input("N° de Cliente", key="ctrl_nclie_f")
     c3.text_input("N° de Contrato", key="ctrl_contr_f")
-    c4.text_input("% Localidad", key="ctrl_loc_f")
+    c4.text_input("% Liberado", key="ctrl_loc_f")
 
     inst1, inst2 = st.columns([2, 1])
     inst1.text_input("Establecimiento Educativo", key="ctrl_inst_f")
