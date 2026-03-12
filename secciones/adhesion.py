@@ -29,17 +29,20 @@ def render_adhesion(logo_url):
         </style>
     """, unsafe_allow_html=True)
 
-    # ── CABECERA ──────────────────────────────────────────────────────────────
+    # ── CABECERA: logo + título + subtítulo en la misma línea ─────────────────
     c_logo, c_tit = st.columns([1, 5])
     with c_logo:
         st.image(logo_url, width=65)
     with c_tit:
         st.markdown(
-            "<h1 style='color: black; margin: 0; padding: 0;'>SOLICITUD DE INGRESO</h1>",
-            unsafe_allow_html=True,
-        )
-        st.markdown(
-            "<p style='font-weight: bold; color: black; margin-top: -5px;'>Serrano Turismo - Ficha de Adhesión</p>",
+            """<div style="display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;">
+                <h1 style="color:black; margin:0; padding:0; font-size:1.6rem; line-height:1.2;">
+                    SOLICITUD DE INGRESO
+                </h1>
+                <span style="font-weight:600; color:#444; font-size:1rem; white-space:nowrap;">
+                    Serrano Turismo - Ficha de Adhesión
+                </span>
+               </div>""",
             unsafe_allow_html=True,
         )
 
@@ -51,7 +54,7 @@ def render_adhesion(logo_url):
     c1.date_input("Fecha de Solicitud", datetime.now())
     c2.text_input("N° de Cliente", key="ctrl_nclie_f")
     c3.text_input("N° de Contrato", key="ctrl_contr_f")
-    c4.text_input("% Liberado", key="ctrl_loc_f")
+    c4.text_input("% Localidad", key="ctrl_loc_f")
 
     inst1, inst2 = st.columns([2, 1])
     inst1.text_input("Establecimiento Educativo", key="ctrl_inst_f")
@@ -70,11 +73,39 @@ def render_adhesion(logo_url):
     cd2.text_input("Fecha de Vencimiento DNI", key="pas_vence_f")
     cd3.date_input("Fecha de Nacimiento", min_value=datetime(1990, 1, 1), key="pas_nace_f")
 
-    st.radio("Sexo", ["Masculino", "Femenino", "X"], horizontal=True, key="pas_sexo_f")
+    # ── SEXO | DOMICILIO | LOCALIDAD en una sola fila ─────────────────────────
+    col_sexo, col_dom, col_cp = st.columns([1, 2, 1])
 
-    dom1, dom2 = st.columns([2, 1])
-    dom1.text_input("Domicilio Particular", key="pas_dom_f")
-    dom2.text_input("Localidad / CP", key="pas_cp_f")
+    with col_sexo:
+        st.markdown("""
+            <p style="font-weight:700; font-size:0.85rem; color:black; margin-bottom:4px;">Sexo</p>
+            <div style="display:flex; align-items:center; gap:14px; font-size:0.85rem; color:black;">
+                <label style="display:flex; align-items:center; gap:4px; cursor:pointer;">
+                    <input type="radio" name="sexo_sel" value="M" checked
+                           style="accent-color:#e25454; width:13px; height:13px;
+                                  border:none !important; background:none !important;">
+                    Masculino
+                </label>
+                <label style="display:flex; align-items:center; gap:4px; cursor:pointer;">
+                    <input type="radio" name="sexo_sel" value="F"
+                           style="accent-color:#e25454; width:13px; height:13px;
+                                  border:none !important; background:none !important;">
+                    Femenino
+                </label>
+                <label style="display:flex; align-items:center; gap:4px; cursor:pointer;">
+                    <input type="radio" name="sexo_sel" value="X"
+                           style="accent-color:#e25454; width:13px; height:13px;
+                                  border:none !important; background:none !important;">
+                    X
+                </label>
+            </div>
+        """, unsafe_allow_html=True)
+
+    with col_dom:
+        st.text_input("Domicilio Particular", key="pas_dom_f")
+
+    with col_cp:
+        st.text_input("Localidad / CP", key="pas_cp_f")
 
     st.markdown("<hr style='margin: 5px 0;'>", unsafe_allow_html=True)
 
@@ -125,7 +156,7 @@ def render_adhesion(logo_url):
         """, unsafe_allow_html=True)
 
     # ── FIRMAS ────────────────────────────────────────────────────────────────
-    st.markdown('<div class="firmas-container" style="margin-top: 25px;">', unsafe_allow_html=True)
+    st.markdown('<div class="firmas-container" style="margin-top: 60px;">', unsafe_allow_html=True)
     f1, f2 = st.columns(2)
     f1.markdown(
         "<hr style='border:0.5px solid black; margin-bottom:0;'>"
@@ -195,7 +226,7 @@ def render_adhesion(logo_url):
                     padding-bottom: 0 !important;
                 }
                 [data-testid="stHorizontalBlock"] { gap: 0.5rem !important; }
-                input {
+                input[type="text"], input[type="number"] {
                     border: none !important;
                     border-bottom: 1px solid #000 !important;
                     background: transparent !important;
@@ -209,7 +240,7 @@ def render_adhesion(logo_url):
                 label p { font-size: 0.72rem !important; margin: 0 !important; }
                 hr { margin: 2px 0 !important; }
                 [data-testid="stImage"] img { max-height: 45px !important; width: auto !important; }
-                .firmas-container { margin-top: 10px !important; }
+                .firmas-container { margin-top: 50px !important; }
                 .main { page-break-inside: avoid; }
             `;
             doc.head.appendChild(printStyle);
@@ -238,4 +269,5 @@ def render_adhesion(logo_url):
         """,
         height=70,
     )
+
     render_footer()
