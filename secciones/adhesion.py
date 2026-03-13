@@ -53,7 +53,7 @@ def render_adhesion(logo_url):
     c1.date_input("Fecha de Solicitud", datetime.now())
     c2.text_input("N° de Cliente", key="ctrl_nclie_f")
     c3.text_input("N° de Contrato", key="ctrl_contr_f")
-    c4.text_input("% Liberado", key="ctrl_loc_f")
+    c4.text_input("% Liberados", key="ctrl_loc_f")
 
     inst1, inst2 = st.columns([2, 1])
     inst1.text_input("Establecimiento Educativo", key="ctrl_inst_f")
@@ -124,7 +124,7 @@ def render_adhesion(logo_url):
     with col_plan:
         st.pills("Seleccione su Plan de Pago:",
                  options=["PLAN 1", "PLAN 2", "PLAN 3", "PLAN 4", "PLAN 5", "OTRO"],
-                 default="PLAN 4", key="plan_sel_f")
+                 default="", key="plan_sel_f")
 
     with col_legal:
         st.markdown("""
