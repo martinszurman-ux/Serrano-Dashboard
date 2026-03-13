@@ -3,7 +3,6 @@ from datetime import datetime
 import streamlit.components.v1 as components
 from utilidades.footer import render_footer
 
-
 def render_adhesion(logo_url):
 
     st.markdown("""
@@ -29,7 +28,7 @@ def render_adhesion(logo_url):
         </style>
     """, unsafe_allow_html=True)
 
-    # ── CABECERA: logo + título + subtítulo en la misma línea ─────────────────
+    # ── CABECERA ──────────────────────────────────────────────────────────────
     c_logo, c_tit = st.columns([1, 5])
     with c_logo:
         st.image(logo_url, width=65)
@@ -73,7 +72,6 @@ def render_adhesion(logo_url):
     cd2.text_input("Fecha de Vencimiento DNI", key="pas_vence_f")
     cd3.date_input("Fecha de Nacimiento", min_value=datetime(1990, 1, 1), key="pas_nace_f")
 
-    # ── SEXO | DOMICILIO | LOCALIDAD en una sola fila ─────────────────────────
     col_sexo, col_dom, col_cp = st.columns([1, 2, 1])
 
     with col_sexo:
@@ -82,36 +80,29 @@ def render_adhesion(logo_url):
             <div style="display:flex; align-items:center; gap:14px; font-size:0.85rem; color:black;">
                 <label style="display:flex; align-items:center; gap:4px; cursor:pointer;">
                     <input type="radio" name="sexo_sel" value="M" checked
-                           style="accent-color:#e25454; width:13px; height:13px;
-                                  border:none !important; background:none !important;">
+                           style="accent-color:#e25454; width:13px; height:13px;">
                     Masculino
                 </label>
                 <label style="display:flex; align-items:center; gap:4px; cursor:pointer;">
                     <input type="radio" name="sexo_sel" value="F"
-                           style="accent-color:#e25454; width:13px; height:13px;
-                                  border:none !important; background:none !important;">
+                           style="accent-color:#e25454; width:13px; height:13px;">
                     Femenino
                 </label>
                 <label style="display:flex; align-items:center; gap:4px; cursor:pointer;">
                     <input type="radio" name="sexo_sel" value="X"
-                           style="accent-color:#e25454; width:13px; height:13px;
-                                  border:none !important; background:none !important;">
+                           style="accent-color:#e25454; width:13px; height:13px;">
                     X
                 </label>
             </div>
         """, unsafe_allow_html=True)
 
-    with col_dom:
-        st.text_input("Domicilio Particular", key="pas_dom_f")
-
-    with col_cp:
-        st.text_input("Localidad / CP", key="pas_cp_f")
+    with col_dom: st.text_input("Domicilio Particular", key="pas_dom_f")
+    with col_cp: st.text_input("Localidad / CP", key="pas_cp_f")
 
     st.markdown("<hr style='margin: 5px 0;'>", unsafe_allow_html=True)
 
     # ── DATOS DE TUTORES ──────────────────────────────────────────────────────
     st.markdown("### 👥 DATOS DE LOS PADRES / TUTORES")
-
     st.markdown("**DATOS TUTOR 1**")
     t1_1, t1_2, t1_3 = st.columns([2, 1, 1])
     t1_1.text_input("Nombre y Apellido", key="t1_nom_f")
@@ -128,23 +119,18 @@ def render_adhesion(logo_url):
 
     st.markdown("<hr style='margin: 5px 0;'>", unsafe_allow_html=True)
 
-    # ── PLAN DE PAGO + DISCLAIMER (lado a lado) ───────────────────────────────
+    # ── PLAN DE PAGO + DISCLAIMER ─────────────────────────────────────────────
     col_plan, col_legal = st.columns([1, 1])
-
     with col_plan:
-        st.pills(
-            "Seleccione su Plan de Pago:",
-            options=["PLAN 1", "PLAN 2", "PLAN 3", "PLAN 4", "PLAN 5", "OTRO"],
-            default="PLAN 4",
-            key="plan_sel_f",
-        )
+        st.pills("Seleccione su Plan de Pago:",
+                 options=["PLAN 1", "PLAN 2", "PLAN 3", "PLAN 4", "PLAN 5", "OTRO"],
+                 default="PLAN 4", key="plan_sel_f")
 
     with col_legal:
         st.markdown("""
             <div style="font-size: 0.65rem; text-align: justify; border: 1px solid #ccc;
                         padding: 8px; background-color: #f9f9f9; color: black;
-                        border-radius: 5px; line-height: 1.15; height: 100%;
-                        box-sizing: border-box;">
+                        border-radius: 5px; line-height: 1.15; box-sizing: border-box;">
             Declaro bajo juramento que los datos aqui volcados son absolutamente exactos y acepto,
             para la cancelacion de los servicios a prestar por <b>SERRANO TURISMO</b>, el plan de pagos
             que figura en la solicitud de reserva mencionada anteriormente denominado.
@@ -158,42 +144,22 @@ def render_adhesion(logo_url):
     # ── FIRMAS ────────────────────────────────────────────────────────────────
     st.markdown('<div class="firmas-container" style="margin-top: 60px;">', unsafe_allow_html=True)
     f1, f2 = st.columns(2)
-    f1.markdown(
-        "<hr style='border:0.5px solid black; margin-bottom:0;'>"
-        "<p style='text-align:center; font-size:8pt; color:black;'>Firma Responsable</p>",
-        unsafe_allow_html=True,
-    )
-    f2.markdown(
-        "<hr style='border:0.5px solid black; margin-bottom:0;'>"
-        "<p style='text-align:center; font-size:7pt; color:black;'>Aclaración y N° de C.U.I.L.</p>",
-        unsafe_allow_html=True,
-    )
+    f1.markdown("<hr style='border:0.5px solid black; margin-bottom:0;'><p style='text-align:center; font-size:8pt; color:black;'>Firma Responsable</p>", unsafe_allow_html=True)
+    f2.markdown("<hr style='border:0.5px solid black; margin-bottom:0;'><p style='text-align:center; font-size:7pt; color:black;'>Aclaración y N° de C.U.I.L.</p>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # ── BOTÓN DE IMPRESIÓN CON JS ─────────────────────────────────────────────
+    # ── BOTÓN DE IMPRESIÓN CON JS (LÍNEAS CORREGIDAS) ─────────────────────────
     components.html(
         """
         <html><body>
-        <button
-            id="print-btn"
-            style="background-color: #2E7D32; color: white; padding: 10px; border: none;
-                   border-radius: 8px; cursor: pointer; width: 100%; font-size: 16px;
-                   font-weight: bold;"
-            onclick="prepareAndPrint()">
+        <button id="print-btn" style="background-color: #2E7D32; color: white; padding: 10px; border: none; border-radius: 8px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold;" onclick="prepareAndPrint()">
             🖨️ GENERAR COMPROBANTE PDF
         </button>
 
         <script>
         function prepareAndPrint() {
             const doc = window.parent.document;
-
-            const selectorsToHide = [
-                '.navbar', '.navbar-mobile',
-                '[data-testid="stHeader"]', '[data-testid="stToolbar"]',
-                '[data-testid="stDecoration"]', '[data-testid="stSidebar"]',
-                '[data-testid="stSidebarNav"]',
-                '.stButton', 'footer', '.footer-container', '.wa-float', 'iframe',
-            ];
+            const selectorsToHide = ['.navbar', '.navbar-mobile', '[data-testid="stHeader"]', '[data-testid="stToolbar"]', '[data-testid="stDecoration"]', '[data-testid="stSidebar"]', '[data-testid="stSidebarNav"]', '.stButton', 'footer', '.footer-container', '.wa-float', 'iframe'];
             const snapshot = [];
             selectorsToHide.forEach(sel => {
                 doc.querySelectorAll(sel).forEach(el => {
@@ -203,7 +169,6 @@ def render_adhesion(logo_url):
             });
 
             const wrapper = doc.querySelector('.content-wrapper');
-            const prevMargin = wrapper ? wrapper.style.marginTop : null;
             if (wrapper) wrapper.style.marginTop = '0px';
 
             const printStyle = doc.createElement('style');
@@ -211,57 +176,33 @@ def render_adhesion(logo_url):
             printStyle.textContent = `
                 @page { size: A4 portrait; margin: 1cm; }
                 body, html { background: white !important; }
-                .main .block-container {
-                    padding: 0 !important;
-                    margin: 0 !important;
-                    max-width: 100% !important;
-                }
-                .content-wrapper { margin-top: 0 !important; padding: 0 !important; }
-                [data-testid="stVerticalBlock"] {
-                    gap: 0.25rem !important;
-                    row-gap: 0.25rem !important;
-                }
-                [data-testid="stVerticalBlock"] > * {
-                    margin-bottom: 0 !important;
-                    padding-bottom: 0 !important;
-                }
-                [data-testid="stHorizontalBlock"] { gap: 0.5rem !important; }
-                input[type="text"], input[type="number"] {
+                .main .block-container { padding: 0 !important; margin: 0 !important; max-width: 100% !important; }
+                [data-testid="stVerticalBlock"] { gap: 0.25rem !important; }
+                
+                /* AQUÍ ESTÁ LA CORRECCIÓN: Quitamos el borde inferior negro */
+                input[type="text"], input[type="number"], .stTextInput input {
                     border: none !important;
-                    border-bottom: 1px solid #000 !important;
                     background: transparent !important;
                     height: 20px !important;
                     font-size: 0.8rem !important;
                     padding: 0 !important;
                 }
-                h1 { font-size: 1.1rem !important; margin: 0 0 2px !important; line-height: 1.2 !important; }
-                h3 { font-size: 0.82rem !important; margin: 3px 0 1px !important; line-height: 1.2 !important; }
-                p  { font-size: 0.78rem !important; margin: 1px 0 !important; line-height: 1.2 !important; }
+
+                h1 { font-size: 1.1rem !important; margin: 0 !important; }
+                h3 { font-size: 0.82rem !important; margin: 3px 0 !important; }
+                p { font-size: 0.78rem !important; margin: 1px 0 !important; }
                 label p { font-size: 0.72rem !important; margin: 0 !important; }
                 hr { margin: 2px 0 !important; }
                 [data-testid="stImage"] img { max-height: 45px !important; width: auto !important; }
                 .firmas-container { margin-top: 50px !important; }
-                .main { page-break-inside: avoid; }
             `;
             doc.head.appendChild(printStyle);
 
             setTimeout(() => {
                 window.parent.print();
-
-                function restoreAll() {
-                    const injected = doc.getElementById('serrano-print-overrides');
-                    if (injected) injected.remove();
-                    snapshot.forEach(({ el, prev }) => { el.style.display = prev; });
-                    if (wrapper && prevMargin !== null) wrapper.style.marginTop = prevMargin;
-                }
-
-                const fallbackTimer = setTimeout(restoreAll, 2000);
-                window.parent.addEventListener('afterprint', function restore() {
-                    clearTimeout(fallbackTimer);
-                    restoreAll();
-                    window.parent.removeEventListener('afterprint', restore);
-                }, { once: true });
-
+                const injected = doc.getElementById('serrano-print-overrides');
+                if (injected) injected.remove();
+                snapshot.forEach(({ el, prev }) => { el.style.display = prev; });
             }, 300);
         }
         </script>
