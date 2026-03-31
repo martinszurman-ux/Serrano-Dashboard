@@ -29,18 +29,18 @@ def render_transporte(destino):
         col1, col2, col3 = st.columns([1, 6, 1])
         with col2:
             if os.path.exists(img_avion_local):
-                st.image(img_avion_local, caption="Vuelos exclusivamente por Aerolineas Argentinas", use_container_width=True)
+                st.image(img_avion_local, caption="Vuelos exclusivos para Serrano Turismo", use_container_width=True)
             else:
                 st.error(f"⚠️ No se encontró: {img_avion_local}")
             
-        st.write("Optimizamos tu tiempo con cupos confirmados en nuestra aerolínea de bandera. Volando a la ida por la mañana y regresando por la tarde/noche del ultimo dia")
+        st.write("Optimizamos tu tiempo con cupos confirmados en nuestra aerolínea de bandera.")
         st.divider()
         
         st.subheader("🚍 Opción Terrestre")
         col_m1, col_m2, col_m3 = st.columns([1, 6, 1])
         with col_m2:
             if os.path.exists(img_micro_local):
-                st.image(img_micro_local, caption="Unidades de un solo piso a disposicion de Serrano Turismo", use_container_width=True)
+                st.image(img_micro_local, caption="Nuestras unidades de Serrano Turismo", use_container_width=True)
             else:
                 st.error(f"⚠️ No se encontró: {img_micro_local}")
 
