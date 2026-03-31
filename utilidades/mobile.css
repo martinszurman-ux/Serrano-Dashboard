@@ -112,7 +112,7 @@
     background-color: transparent !important;
     color: #ffffff !important;
     font-weight: 800 !important;
-    font-size: 11px !important; /* Un poco más chico por el largo del texto */
+    font-size: 11px !important;
     text-align: left !important;
     text-decoration: none !important;
     border-top: 1px solid #333 !important;
@@ -176,5 +176,54 @@ h1, [data-testid="stMarkdownContainer"] h1 {
     .content-wrapper {
         margin-top: 0 !important;
         padding: 0 !important;
+    }
+}
+
+/* ============================================================
+   DARK MODE - CORRECCIONES GLOBALES
+   ============================================================ */
+@media (prefers-color-scheme: dark) {
+
+    /* Navbar mobile en modo oscuro */
+    .navbar-mobile {
+        background-color: #1a1a1a !important;
+        border-bottom: 1px solid #333 !important;
+    }
+
+    /* Fondo general de la app */
+    .stApp {
+        background-color: #121212 !important;
+    }
+
+    /* Textos generales */
+    [data-testid="stMarkdownContainer"] p,
+    [data-testid="stMarkdownContainer"] h1,
+    [data-testid="stMarkdownContainer"] h2,
+    [data-testid="stMarkdownContainer"] h3,
+    [data-testid="stMarkdownContainer"] h4,
+    [data-testid="stMarkdownContainer"] h5 {
+        color: #e0e0e0 !important;
+    }
+
+    /* Expander */
+    [data-testid="stExpander"] {
+        background-color: #1a1a1a !important;
+        border-color: #444 !important;
+    }
+    [data-testid="stExpander"] summary p {
+        color: #ffffff !important;
+    }
+
+    /* Tablas de Streamlit */
+    [data-testid="stTable"] table {
+        background-color: #1a1a1a !important;
+    }
+    [data-testid="stTable"] th {
+        background-color: #333333 !important;
+        color: #ffffff !important;
+    }
+    [data-testid="stTable"] td {
+        color: #e0e0e0 !important;
+        border-color: #444 !important;
     }
 }
