@@ -179,7 +179,7 @@ def render_tarifas(destino):
         # Beneficio Serrano Compacto
         st.markdown(f"""
             <div class='beneficio-box'>
-                <p style='font-size: 0.85rem; color: #333; text-align: center; margin: 0;'>
+                <p style='font-size: 0.85rem; text-align: center; margin: 0;'>
                     🎁 <b>¡10% OFF Serrano!</b> Pagando del 1 al 10 en efectivo (aplicado en última cuota).
                 </p>
             </div>
