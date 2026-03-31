@@ -29,7 +29,7 @@ def render_transporte(destino):
         col1, col2, col3 = st.columns([1, 6, 1])
         with col2:
             if os.path.exists(img_avion_local):
-                st.image(img_avion_local, caption="Vuelos exclusivos para Serrano Turismo", use_container_width=True)
+                st.image(img_avion_local, caption="Volamos en Aerolineas Argentinas", use_container_width=True)
             else:
                 st.error(f"⚠️ No se encontró: {img_avion_local}")
             
